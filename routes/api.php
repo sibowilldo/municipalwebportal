@@ -11,18 +11,21 @@ use Illuminate\Http\Request;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-
 */
 
-Route::prefix('auth')->group(function () {
 
-    Route::post('login', 'Api\UserController@login');
-    Route::post('register', 'Api\UserController@register');
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', 'Api\AuthController@login');
+    Route::post('signup', 'Api\AuthController@signup');
+    Route::get('account/activate/{token}', 'Api\AuthController@AccountActivate');
 
-    Route::middleware(['auth:api'])->group(function () {
-        Route::get('logout', 'Api\UserController@logout');
-        Route::get('user', 'Api\UserController@details');
-        Route::get('users', 'Api\UserController@users');
+    Route::group(['middleware' => ['auth:api', 'accountVerified']], function() {
+        Route::get('logout', 'Api\AuthController@logout');
+
+        Route::get('user/{id}', 'Api\UserController@user');
+        Route::get('user', 'Api\UserController@profile');
+        Route::resource('permissions', 'Api\PermissionController');
+        Route::resource('roles', 'Api\RoleController');
+        Route::post('roles/assign/{user}', 'Api\RoleController@assign');
     });
-
 });

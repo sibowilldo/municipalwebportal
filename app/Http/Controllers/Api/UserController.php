@@ -6,75 +6,32 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Validator;
+use App\Http\Resources\User as UserResource;
 
 class UserController extends Controller
 {
-    public $successStatus = 200;
+
     /**
-     * login api
+     * Get the authenticated User
      *
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\User
      */
-    public function login()
+    public function user($id)
     {
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
-            $user = Auth::user();
-            $success['token'] =  $user->createToken('Web Portal Access Token')-> accessToken;
-            return response()->json(['success' => $success], $this-> successStatus);
-        }
-        else{
-            return response()->json(['error'=>'Unauthorised'], 401);
-        }
+        $user = User::findOrFail($id);
+
+        return new UserResource($user);
     }
 
     /**
-     * Logout user (Revoke the token)
+     * Get the authenticated User
      *
-     * @return [string] message
+     * @return \App\Http\Resources\User
      */
-    public function logout(Request $request)
-    {
-        $request->user()->token()->revoke();
-        return response()->json([
-            'message' => 'Successfully logged out'
-        ]);
-    }
-
-    /**
-     * Register api
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'contactnumber' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'password_confirmation' => 'required|same:password',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);
-        }
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['token'] =  $user->createToken('Web Portal Access Token')-> accessToken;
-        $success['name'] =  $user->firstname;
-        return response()->json(['success'=>$success], $this-> successStatus);
-    }
-    /**
-     * details api
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function details()
+    public function profile()
     {
         $user = Auth::user();
-        return response()->json(['success' => $user], $this-> successStatus);
+        return new UserResource($user);
     }
 }
 
