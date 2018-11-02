@@ -33,15 +33,17 @@ class AuthController extends Controller
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'contactnumber' => $request->contactnumber,
-            'activation_token' => str_random(60),
+            'activation_token' => '', // ToDo set to str_random(60) later
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'status_is' => 'inactive'
+            'status_is' => 'inactive' //ToDo set to inactive later
         ]);
 
         $user->save();
         $user->assignRole($request->roles); //assign role(s) to user
-        $user->notify(new AccountActivate($user)); //send account activation notification
+
+        //ToDo Enable later
+//        $user->notify(new AccountActivate($user)); //send account activation notification
 
         return new UserResource($user);
     }
