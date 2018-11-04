@@ -36,7 +36,7 @@ class AuthController extends Controller
             'activation_token' => '', // ToDo set to str_random(60) later
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'status_is' => 'inactive' //ToDo set to inactive later
+            'status_is' => 'active' //ToDo set to inactive later
         ]);
 
         $user->save();
