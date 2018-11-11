@@ -71,7 +71,9 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <example-component></example-component>
+            <user-component></user-component>
+            {{--@yield('content')--}}
         </main>
     </div>
 </body>

@@ -34,6 +34,7 @@ class AuthController extends Controller
             'lastname' => $request->lastname,
             'contactnumber' => $request->contactnumber,
             'activation_token' => '', // ToDo set to str_random(60) later
+            'email_verified_at' => Carbon::now(),
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'status_is' => 'active' //ToDo set to inactive later
