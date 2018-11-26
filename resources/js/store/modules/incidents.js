@@ -6,9 +6,10 @@ import VueAxios from 'vue-axios'
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 
-export default new Vuex.Store({
+export default{
     state:{
-        incidents:[]
+        incidents:{}
+
     },
     actions:{
         allIncidents ({ commit }){
@@ -16,16 +17,13 @@ export default new Vuex.Store({
                 .get('/api/auth/incidents')
                 .then(response => response.data)
                 .then(incidents => {
-                    console.log(incidents)
-                    // commit('set_incidents', incidents)
+                    commit('set_incidents', incidents)
                 })
         }
     },
     mutations:{
         set_incidents(state, incidents){
-            state.incidents = incidents
+            state.incidents = incidents.data
         }
     }
-});
-
-// export default IncidentStore;
+};

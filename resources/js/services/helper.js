@@ -19,9 +19,9 @@ export default {
 
     check(){
         return axios.post('/api/auth/check').then(response =>  {
-            return !!response.data.authenticated;
+            return localStorage.getItem('jwt') != null;
         }).catch(error =>{
-            return response.data.authenticated;
+            return localStorage.getItem('jwt') != null;
         });
     },
 

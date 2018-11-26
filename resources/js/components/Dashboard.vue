@@ -1,23 +1,19 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Example Component</div>
-
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-xl-8">
+                <incidents-list></incidents-list>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
+    import IncidentsList from './widgets/_incidents-list'
+
     export default {
+        components: {IncidentsList},
+        name: 'Dashboard',
         mounted() {
-            console.log('Component mounted.')
+            console.log('Dashboard mounted.')
         }
     }
 </script>

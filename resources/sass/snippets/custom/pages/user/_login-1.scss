@@ -67,16 +67,15 @@
                     position: relative;
 
                     .form-control {                        
-                        @include border-radius(0);
-                        border: 0;
-                        border-bottom: 1px solid get-color(light, panel); 
-                        padding: 1rem 0;
-                        margin-top: 0.1rem;
+                        @include border-radius(60px);
+                        border: 1px solid get-color(light, panel);
+                        padding: 1rem;
+                        margin-top: 0.7rem;
 
                         @include input-placeholder(#9496a0);
                             
                         &.m-login__form-input--last {
-                            border: 0;
+                            border: 1px solid get-color(light, panel);
                         }
 
                         &:focus {

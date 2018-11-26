@@ -1,5 +1,7 @@
 <template>
-    $END$
+    <div>
+        <h1>404 <small>Page Not Found</small></h1>
+    </div>
 </template>
 
 <script>

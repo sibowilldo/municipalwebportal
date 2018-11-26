@@ -18,14 +18,21 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'Api\AuthController@login');
     Route::post('signup', 'Api\AuthController@signup');
     Route::get('account/activate/{token}', 'Api\AuthController@AccountActivate');
+    Route::post('check', function (){
+        return response(['authenticated' => false]);
+    });
 
     Route::group(['middleware' => ['auth:api', 'accountVerified']], function() {
-        Route::get('logout', 'Api\AuthController@logout');
 
+        // Auth, Roles and Permissions Routes
+        Route::get('logout', 'Api\AuthController@logout');
         Route::get('user/{id}', 'Api\UserController@user');
         Route::get('user', 'Api\UserController@profile');
         Route::resource('permissions', 'Api\PermissionController');
         Route::resource('roles', 'Api\RoleController');
         Route::post('roles/assign/{user}', 'Api\RoleController@assign');
+
+        // Incident Routes
+        Route::resource('incidents', 'Api\IncidentController');
     });
 });

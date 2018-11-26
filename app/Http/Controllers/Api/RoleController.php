@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Auth;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -130,8 +131,12 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user=Auth::user();
         $role = Role::findById($id);
+
+        if($user->hasRole($role)){
+            return response()->json(['message' => 'error', 'data' => 'Cannot delete role assigned to you.']);
+        }
         $role->delete();
 
         return response()->json(['message' => 'success', 'data' => $role->name. ' was removed.']);
@@ -147,8 +152,8 @@ class RoleController extends Controller
      */
     public function assign(Request $request, User $user)
     {
-//        dd($request->roles);
         $user->syncRoles($request->roles);
+
         return response()->json([
             "message" => "Success"
         ]);

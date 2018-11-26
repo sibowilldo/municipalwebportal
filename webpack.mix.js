@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-// mix.browserSync('http://localhost:8000');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,6 +11,21 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .js('resources/js/bootstrap.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+var plugin =  'resources/plugins/';
+var fonts =  'resources/fonts/';
+
+mix.js('resources/js/app.js', 'public/js/app.js')
+    .combine([
+        plugin + 'jquery/jquery.min.js',
+        plugin + 'popper/popper.min.js',
+        plugin + 'bootstrap/bootstrap.min.js',
+        plugin + 'moment/moment.min.js',
+        plugin + 'toastr/toastr.min.js',
+        plugin + 'slimscroll/jquery.slimscroll.js',
+        plugin + 'waves/waves.js',
+        plugin + 'sidebarmenu.js',
+        plugin + 'sticky-kit/sticky-kit.min.js',
+        'resources/js/custom.js',
+        'public/js/app.js', ],'public/js/bundle.min.js')
+    .sass('resources/sass/style.scss', 'public/css')
+    .browserSync('http://localhost:8000');

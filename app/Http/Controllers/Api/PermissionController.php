@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -103,8 +104,12 @@ class PermissionController extends Controller
     public function destroy($id)
     {
         //
+        $user = Auth::user();
 
         $permission = Permission::findOrFail($id);
+        if($user->hasPermissionTo($permission)){
+            return response()->json(['message' => 'error', 'data' => 'Cannot delete permission given to you. Request user with Administrator role to revoke permission']);
+        }
         $permission->delete();
 
         return response()->json(['message' => 'success', 'data' => 'Permission removed.']);

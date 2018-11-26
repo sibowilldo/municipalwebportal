@@ -1,37 +1,52 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Login</div>
+    <div class="m-grid m-grid--hor m-grid--root m-page">
+        <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-grid--tablet-and-mobile m-grid--hor-tablet-and-mobile m-login m-login--1 m-login--signin" id="m_login">
+            <div class="m-grid__item m-grid__item--order-tablet-and-mobile-2 m-login__aside">
+                <div class="m-stack m-stack--hor m-stack--desktop">
+                    <div class="m-stack__item m-stack__item--fluid">
+                        <div class="m-login__wrapper">
 
-                    <div class="card-body">
-                        <form method="POST" action="/login">
-                            <div class="form-group row">
-                                <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" v-model="email" required autofocus>
-                                </div>
+                            <div class="m-login__logo">
+                                <a href="#">
+                                    <img src="assets/img/ethekwini-logo.jpg" alt="eThekwini Municipality">
+                                </a>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" v-model="password" required>
+                            <div class="m-login__signin">
+                                <div class="m-login__head">
+                                    <h3 class="m-login__title">Sign In To Admin</h3>
                                 </div>
+                                <form class="m-login__form m-form" action="/login" method="POST">
+                                    <div class="form-group m-form__group">
+                                        <input class="form-control m-input" type="text" placeholder="Email" v-model="email" autocomplete="off">
+                                    </div>
+                                    <div class="form-group m-form__group">
+                                        <input class="form-control m-input m-login__form-input--last" type="password" placeholder="Password" v-model="password">
+                                    </div>
+                                    <div class="row m-login__form-sub">
+                                        <div class="col m--align-left">
+                                            <label class="m-checkbox m-checkbox--focus">
+                                                <input type="checkbox" name="remember"> Remember me
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="m-login__form-action">
+                                        <button id="m_login_signin_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air" @click="handleSubmit">Sign In</button>
+                                    </div>
+                                </form>
                             </div>
 
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary" @click="handleSubmit">
-                                        Login
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="m-grid__item m-grid__item--fluid m-grid m-grid--center m-grid--hor m-grid__item--order-tablet-and-mobile-1	m-login__content m-grid-item--center" style="background-image: url('/assets/img/durban-beach.jpg')">
+                <div class="m-grid__item">
+                    <h3 class="m-login__welcome">eThekwini Municipality</h3>
+                    <p class="m-login__msg">
+
+                    </p>
                 </div>
             </div>
         </div>
@@ -59,9 +74,9 @@
                         .then(response => {
                             localStorage.setItem('user',response.data.data.firstname)
                             localStorage.setItem('jwt',response.data.access_token)
-
                             if (localStorage.getItem('jwt') != null){
-                                this.$router.go('/board')
+                                console.log('here...')
+                                this.$router.push('/dashboard')
                             }
                         })
                         .catch(function (error) {
@@ -74,5 +89,24 @@
 </script>
 
 <style scoped>
-
+    .m-page{
+        height: 100vh;
+    }
+    .m-login__content:after{
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right:0;
+        background:rgba(58, 59, 145, .8);
+    }
+    .m-login__content{
+        position: relative;
+    }
+    .m-login__content > div{
+        position: relative;
+        z-index: 1;
+    }
+    .m-login__logo img{width: 50%}
 </style>

@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname','lastname', 'contactnumber', 'email', 'password', 'last_loggedin_at', 'email_verified_at', 'activation_token', 'status_is'
+        'firstname','lastname', 'contactnumber', 'email', 'email_verified_at', 'activation_token','password', 'status_is', 'last_loggedin_at'
     ];
 
     /**
@@ -43,4 +43,27 @@ class User extends Authenticatable
     ];
 
 
+    //
+    public function incidents()
+    {
+        return $this->belongsToMany(Incident::class);
+    }
+
+    //
+    public function devices()
+    {
+        return $this->belongsToMany(Device::class);
+    }
+
+    //
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
+
+    //
+    public function otp()
+    {
+        return $this->hasMany(OTP::class);
+    }
 }
