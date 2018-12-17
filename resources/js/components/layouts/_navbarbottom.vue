@@ -19,7 +19,7 @@
                                                 <a href="#" class="btn btn-focus m-btn m-btn--icon m-btn--pill">
 																<span>
 																	<i class="la la-plus"></i>
-																	<span>New order</span>
+																	<span>New Incident</span>
 																</span>
                                                 </a>
                                             </div>

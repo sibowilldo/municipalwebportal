@@ -28,8 +28,8 @@
 ///////////// DO NOT MODIFY ABOVE INCLUDE ORDER ////////////////
 ////////////////////////////////////////////////////////////////
 
-//== 6: Demo Config
-@import "demo-config";
+//== 6: Config
+@import "config";
 @import "base/_config";
 @import "header/_config";
 @import "aside/_config";
@@ -37,7 +37,7 @@
 @import "menu-aside/_config";   
 @import "footer/_config";
 
-//== 7: Demo Layout
+//== 7: Layout
 @import "base/page";
 @import "base/body";
 
@@ -56,3 +56,5 @@
 @import "subheader/default";
 
 @import "footer/default";
+@import "../js/plugins/bootstrap/sass/bootstrap.scss";
+@import "../js/plugins/toastr/toastr.min.css";

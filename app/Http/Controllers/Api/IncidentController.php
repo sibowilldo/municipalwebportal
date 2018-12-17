@@ -55,7 +55,7 @@ class IncidentController extends Controller
         ]);
 
         $incident = new Incident([
-            'reference' => 'reference', //ToDo: Auto-Generate
+            'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
             'name' => $request->name,
             'description' => $request->description,
             'location_description' => $request->location_description,

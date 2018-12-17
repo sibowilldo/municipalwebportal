@@ -15,6 +15,6 @@ class IncidentTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('incidents')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        factory(App\Incident::class, 5)->create();
+        factory(App\Incident::class, 50)->create();
     }
 }

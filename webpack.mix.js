@@ -11,7 +11,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
  |
  */
 
-var plugin =  'resources/plugins/';
+var plugin =  'resources/js/plugins/';
 var fonts =  'resources/fonts/';
 
 mix.js('resources/js/app.js', 'public/js/app.js')
@@ -22,10 +22,12 @@ mix.js('resources/js/app.js', 'public/js/app.js')
         plugin + 'moment/moment.min.js',
         plugin + 'toastr/toastr.min.js',
         plugin + 'slimscroll/jquery.slimscroll.js',
+        plugin + 'perfect-scrollbar/perfect-scrollbar.js',
         plugin + 'waves/waves.js',
         plugin + 'sidebarmenu.js',
         plugin + 'sticky-kit/sticky-kit.min.js',
-        'resources/js/custom.js',
-        'public/js/app.js', ],'public/js/bundle.min.js')
+        plugin + 'scripts.bundle.js',
+                 'resources/js/custom.js',
+                 'public/js/app.js', ],'public/js/bundle.min.js')
     .sass('resources/sass/style.scss', 'public/css')
     .browserSync('http://localhost:8000');

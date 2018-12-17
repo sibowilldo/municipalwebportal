@@ -59,7 +59,8 @@
         data(){
             return {
                 email : "",
-                password : ""
+                password : "",
+                remember_me: ""
             }
         },
         methods: {
@@ -75,12 +76,12 @@
                             localStorage.setItem('user',response.data.data.firstname)
                             localStorage.setItem('jwt',response.data.access_token)
                             if (localStorage.getItem('jwt') != null){
-                                console.log('here...')
+                                toastr['success']('Signed in');
                                 this.$router.push('/dashboard')
                             }
                         })
                         .catch(function (error) {
-                            console.error(error);
+                            toastr['error'](error.response.data.message);
                         });
                 }
             }
