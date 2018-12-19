@@ -1,8 +1,8 @@
 export default {
     logout(){
         return axios.post('/api/auth/logout').then(response =>  {
-            localStorage.removeItem('auth_token');
             axios.defaults.headers.common['Authorization'] = null;
+            localStorage.removeItem('jwt')
             toastr['success'](response.data.message);
         }).catch(error => {
             console.log(error);

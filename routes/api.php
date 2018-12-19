@@ -25,7 +25,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['middleware' => ['auth:api', 'accountVerified']], function() {
 
         // Auth, Roles and Permissions Routes
-        Route::get('logout', 'Api\AuthController@logout');
+        Route::post('logout', 'Api\AuthController@logout');
         Route::get('user/{id}', 'Api\UserController@user');
         Route::get('user', 'Api\UserController@profile');
         Route::resource('permissions', 'Api\PermissionController');
