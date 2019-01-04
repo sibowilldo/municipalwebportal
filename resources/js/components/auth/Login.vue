@@ -16,23 +16,23 @@
                                 <div class="m-login__head">
                                     <h3 class="m-login__title">Sign In To Dashboard</h3>
                                 </div>
-                                <form class="m-login__form m-form" action="/login" method="POST">
+                                <form class="m-login__form m-form" @submit.prevent="submit">
                                     <div class="form-group m-form__group">
-                                        <input class="form-control m-input" type="text" placeholder="Email" v-model="email" autocomplete="off">
+                                        <input class="form-control m-input" type="text" placeholder="Email" v-model="loginForm.email" autocomplete="off">
                                     </div>
                                     <div class="form-group m-form__group">
-                                        <input class="form-control m-input m-login__form-input--last" type="password" placeholder="Password" v-model="password">
+                                        <input class="form-control m-input m-login__form-input--last" type="password" placeholder="Password" v-model="loginForm.password">
                                     </div>
                                     <div class="row m-login__form-sub">
                                         <div class="col m--align-left">
                                             <label class="m-checkbox m-checkbox--focus">
-                                                <input type="checkbox" name="remember"> Remember me
+                                                <input type="checkbox" name="remember" v-model="loginForm.remember_me" false-value="false" true-value="true"> Remember me
                                                 <span></span>
                                             </label>
                                         </div>
                                     </div>
                                     <div class="m-login__form-action">
-                                        <button id="m_login_signin_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air" @click="handleSubmit">Sign In</button>
+                                        <button id="m_login_signin_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air" type="submit">Sign In</button>
                                     </div>
                                 </form>
                             </div>
@@ -58,31 +58,27 @@
         name: "Login",
         data(){
             return {
-                email : "",
-                password : "",
-                remember_me: ""
+                loginForm:{
+                    email : "",
+                    password : "",
+                    remember_me: false
+                }
             }
         },
         methods: {
-            handleSubmit(e){
-                e.preventDefault()
-
-                if (this.password.length > 0) {
-                    axios.post('api/auth/login', {
-                        email: this.email,
-                        password: this.password
-                    })
-                        .then(response => {
-                            localStorage.setItem('user',response.data.data.firstname)
-                            localStorage.setItem('jwt',response.data.access_token)
-                            if (localStorage.getItem('jwt') != null){
-                                toastr['success']('Signed in');
-                                this.$router.push('/dashboard')
-                            }
-                        })
-                        .catch(function (error) {
-                            toastr['error'](error.response.data.message);
-                        });
+            submit(e){
+                if (this.loginForm.password.length > 0) {
+                    this.loginForm.remember_me === "true" ? this.loginForm.remember_me = true : this.loginForm.remember_me = false;
+                    axios.post('api/auth/login', this.loginForm).then(response =>  {
+                        localStorage.setItem('auth_token',response.data.access_token);
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('auth_token');
+                        if (localStorage.getItem('auth_token') != null){
+                            toastr['success']('Signed in');
+                            this.$router.push({ path: '/dashboard'})
+                        }
+                    }).catch(error => {
+                        toastr['error'](error.response.data.message);
+                    });
                 }
             }
         }

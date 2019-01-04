@@ -2,7 +2,7 @@ export default {
     logout(){
         return axios.post('/api/auth/logout').then(response =>  {
             axios.defaults.headers.common['Authorization'] = null;
-            localStorage.removeItem('jwt')
+            localStorage.removeItem('auth_token')
             toastr['success'](response.data.message);
         }).catch(error => {
             console.log(error);
@@ -19,9 +19,9 @@ export default {
 
     check(){
         return axios.post('/api/auth/check').then(response =>  {
-            return localStorage.getItem('jwt') != null;
+            return localStorage.getItem('auth_token') != null;
         }).catch(error =>{
-            return localStorage.getItem('jwt') != null;
+            return localStorage.getItem('auth_token') != null;
         });
     },
 

@@ -9,7 +9,6 @@ Vue.use(VueAxios, axios)
 export default{
     state:{
         incidents:{}
-
     },
     actions:{
         allIncidents ({ commit }){

@@ -15,9 +15,6 @@
 
     export default {
         components: {IncidentsSummary, IncidentsList},
-        name: 'Dashboard',
-        mounted() {
-            console.log('Dashboard mounted.')
-        }
+        name: 'Dashboard'
     }
 </script>

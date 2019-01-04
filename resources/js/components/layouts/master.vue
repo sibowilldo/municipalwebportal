@@ -30,9 +30,6 @@
             NavBar
         },
         methods:{},
-        mounted(){
-            console.log('master mounted')
-        }
     }
 </script>
 

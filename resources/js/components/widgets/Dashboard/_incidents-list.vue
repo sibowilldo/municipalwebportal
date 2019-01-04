@@ -125,6 +125,11 @@
     import { mapState } from 'vuex'
     export default {
         name: "incidents-list",
+        data(){
+            return{
+
+            }
+        },
         created() {
             this.$store.dispatch('allIncidents')
         },
