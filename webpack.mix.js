@@ -16,7 +16,7 @@ var fonts =  'resources/fonts/';
 
 mix.js('resources/js/app.js', 'public/js/app.js')
     .combine([
-        plugin + 'jquery/jquery.min.js',
+        plugin + 'jquery/dist/jquery.min.js',
         plugin + 'popper/popper.min.js',
         plugin + 'bootstrap/bootstrap.min.js',
         plugin + 'moment/moment.min.js',

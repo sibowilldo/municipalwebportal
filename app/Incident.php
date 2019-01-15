@@ -15,7 +15,6 @@ class Incident extends Model
         'reference','name', 'description', 'location_description', 'latitude', 'longitude','suburb_id', 'type_id', 'status_id'
     ];
 
-
     //An Incident belongs to many users through pivot (incident_user)
     public function users()
     {
@@ -37,12 +36,12 @@ class Incident extends Model
     //An Incident has one Status
     public function status()
     {
-        return $this->hasOne(Status::class);
+        return $this->belongsTo(Status::class);
     }
 
     //An Incident has one Type
     public function type()
     {
-        return $this->hasOne(Type::class);
+        return $this->belongsTo(Type::class);
     }
 }

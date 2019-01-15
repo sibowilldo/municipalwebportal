@@ -27,7 +27,7 @@
                                                 <li class="m-nav__item">
                                                     <a href="" class="m-nav__link">
                                                         <i class="m-nav__link-icon flaticon-share"></i>
-                                                        <span class="m-nav__link-text">Create Post</span>
+                                                        <span class="m-nav__link-text">New Incident</span>
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
@@ -74,47 +74,66 @@
         </div>
         <div class="m-portlet__body">
             <!--begin: Datatable -->
-            <div class="m_datatable m-datatable m-datatable--default m-datatable--loaded m-datatable--scroll" id="m_datatable_latest_orders" style="">
-                <table class="m-datatable__table" style="display: block; min-height: 300px; max-height: 380px;">
-                    <thead class="m-datatable__head">
-                        <tr class="m-datatable__row" style="left: 0px;">
-                            <th data-field="RecordID" class="m-datatable__cell--center m-datatable__cell m-datatable__cell--check">
-                                <span style="width: 40px;"><label class="m-checkbox m-checkbox--single m-checkbox--all m-checkbox--solid m-checkbox--brand"><input type="checkbox">&nbsp;<span></span></label></span></th>
-                            <th data-field="OrderID" class="m-datatable__cell m-datatable__cell--sort" data-sort="asc"><span style="width: 50px;">ID<i class="la la-arrow-up"></i></span></th>
-                            <th data-field="ShipName" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 150px;">Reference</span></th>
-                            <th data-field="ShipDate" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 110px;">Name</span></th>
-                            <th data-field="Type" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 100px;">Reported</span></th>
-                            <th data-field="Status" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 100px;">Status</span></th>
-                            <th data-field="Actions" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 110px;">Actions</span></th>
-                        </tr>
-                    </thead>
-                    <tbody class="m-datatable__body ps ps--active-y" style="max-height: 329px;">
-                        <tr data-row="0" class="m-datatable__row" style="left: 0px;"  v-for="incident in incidents.incidents">
-                            <td class="m-datatable__cell--center m-datatable__cell m-datatable__cell--check" data-field="RecordID"><span style="width: 40px;"><label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand"><input type="checkbox" value="45">&nbsp;<span></span></label></span>
-                            </td>
-                            <td class="m-datatable__cell--sorted m-datatable__cell" data-field="incidentId"><span style="width: 50px;">{{ incident.id }}</span></td>
-                            <td data-field="reference" class="m-datatable__cell"><span style="width: 150px;">{{ incident.reference }}</span></td>
-                            <td data-field="incidentName" class="m-datatable__cell"><span style="width: 110px;">{{ incident.name }}</span></td>
-                            <td data-field="incidentDate" class="m-datatable__cell"><span style="width: 100px;"><span class="m-badge m-badge--primary m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-primary">{{ incident.created_at | moment("DD MMM YYYY") }}</span></span></td>
-                            <td data-field="incidentStatus" class="m-datatable__cell"><span style="width: 100px;"><span class="m-badge  m-badge--success m-badge--wide">Success</span></span></td>
-                            <td data-field="Actions" class="m-datatable__cell"><span style="overflow: visible; position: relative; width: 110px;">
-                                <div class="dropdown "><a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown"><i class="la la-ellipsis-h"></i></a>
-                                <div class="dropdown-menu dropdown-menu-left">
-                                    <a class="dropdown-item" href="#"><i class="la la-edit"></i> Edit Details</a>
-                                    <a class="dropdown-item" href="#"><i class="la la-leaf"></i> Update Status</a>
-                                    <a class="dropdown-item" href="#"><i class="la la-print"></i> Generate Report</a>
-                                </div>
-                            </div>
-                                <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details">
-                                    <i class="la la-edit"></i>
-                                </a>
-                                <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Delete">
-                                    <i class="la la-trash"></i>
-                                </a>
-                            </span></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div id="m_datatable" class="m_datatable">
+                <el-row style="margin-bottom: 10px">
+                    <el-col :span="4" :offset="14">
+                        <el-button @click="clearFilter">
+                            Clear Filters
+                        </el-button>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="filters[0].value" placeholder="Search Filter...">
+                        </el-input>
+                    </el-col>
+                </el-row>
+                <data-tables ref="incidentsTable" :data="this.incidents.incidents"  :table-props="tableProps" :filters="filters" :pageSize="5" :pagination-props="{ pageSizes: [5, 10, 15, 20] }"  sortable="custom">
+                    <el-table-column type="expand">
+                        <template slot-scope="props">
+                            <el-table-column type="expand">
+                                <template slot-scope="props">
+                                    <p><strong>Description: </strong>{{ props.row.description }}</p>
+                                    <p><strong>Location: </strong>{{ props.row.longitude }}, {{ props.row.latitude }}</p>
+                                    <p><strong>Type: </strong>{{ props.row.type.name }}</p>
+                                </template>
+                            </el-table-column>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-for="title in titles" :prop="title.prop" :label="title.label" :key="title.prop">
+                    </el-table-column>
+                    <el-table-column
+                            prop="status.name"
+                            label="Status"
+                            sortable
+                            :filters="[{text: 'Completed', value: 'Completed'}, {text: 'In Progress', value: 'In Progress'}, {text: 'Active', value: 'Active'}]"
+                            :filter-method="filterHandler">
+                    </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="Operations"
+                            width="200">
+                        <template slot-scope="scope">
+                            <el-popover
+                                    placement="right"
+                                    trigger="hover">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <div>
+                                            <el-button type="text" @click="handleEditIncident(scope.row.id, $event)"><i class="la la-edit"></i> Edit Details</el-button>
+                                        </div>
+                                        <div>
+                                            <el-button type="text"><i class="la la-leaf"></i> Update Status</el-button>
+                                        </div>
+                                        <div>
+                                            <el-button type="text"><i class="la la-print"></i> Generate Report</el-button>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                                <el-button slot="reference" icon="el-icon-more" round size="small"> More</el-button>
+                            </el-popover>
+                            <el-button type="primary" icon="el-icon-check" circle size="small"></el-button>
+                        </template>
+                    </el-table-column>
+                </data-tables>
             </div>
             <!--end: Datatable -->
         </div>
@@ -122,24 +141,89 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     import { mapState } from 'vuex'
+    import ElementUI from 'element-ui'
+    import 'element-ui/lib/theme-chalk/index.css' // set language to EN
+    import lang from 'element-ui/lib/locale/lang/en'
+    import locale from 'element-ui/lib/locale'
+    import { DataTables, DataTablesServer } from 'vue-data-tables'
+
+    Vue.use(DataTables)
+    Vue.use(DataTablesServer)
+
+    // import DataTables and DataTablesServer together
+    import VueDataTables from 'vue-data-tables'
+    Vue.use(VueDataTables)
+
+    locale.use(lang)
+    Vue.use(ElementUI)
+
+
     export default {
         name: "incidents-list",
-        data(){
+        data() {
             return{
-
+                loading: false,
+                titles: [
+                    {
+                        prop: 'id',
+                        label: 'ID',
+                        width: 10
+                    },
+                    {
+                        prop: 'reference',
+                        label: 'Reference',
+                        width: 180
+                    },
+                    {
+                        prop: 'name',
+                        label: 'Name'
+                    },
+                    {
+                        prop: 'created',
+                        label: 'Reported'
+                    }
+                ],
+                filters:[
+                    {
+                        value: '',
+                        prop: ['id', 'name', 'status']
+                    }
+                ],
+                tableProps: {
+                    border: false,
+                    stripe: true,
+                    defaultSort: {
+                        prop: 'id',
+                        order: 'ascending'
+                    }
+                }
             }
         },
         created() {
-            this.$store.dispatch('allIncidents')
+            this.$store.dispatch('all_incidents')
         },
         computed: {
-            ...mapState({
-                incidents: 'incidents'
-            })
+            ...mapState(['incidents'])
         },
-
-    }
+        methods:{
+            handleEditIncident: function(id, event){
+                this.$notify({
+                    title: 'Success',
+                    message: 'Selected Record ID: ' + id,
+                    type: 'success'
+                });
+            },
+            filterHandler(value, row, column) {
+                return row.status.name === value;
+            },
+            clearFilter() {
+                this.$refs.incidentsTable.$refs.elTable.clearFilter();
+            }
+        },
+        mounted(){}
+    };
 </script>
 
 <style scoped>

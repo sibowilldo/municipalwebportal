@@ -44,17 +44,17 @@
             </div>
         </div>
 
-        <navbar-bottom></navbar-bottom>
+        <tab-nav></tab-nav>
     </header>
     <!-- end::Header -->
 </template>
 
 <script>
     import TopBar from '../../components/layouts/_topbar'
-    import NavbarBottom from '../../components/layouts/_navbarbottom'
+    import TabNav from '../../components/layouts/_tabnav'
     export default {
         components : {
-            TopBar, NavbarBottom
+            TopBar, TabNav
         },
         name: "navbar"
     }

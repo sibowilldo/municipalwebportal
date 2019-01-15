@@ -8,30 +8,27 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Incident as IncidentResource;
+use App\Http\Resources\IncidentCollection;
+use App\Http\Resources\UserCollection;
 
 class IncidentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\IncidentCollection
      */
     public function index()
     {
         $incidents = Incident::with('users')->get()->sortBy('created_at');
 
         if(!count($incidents)){
-            printf(response()->json([
+            return response()->json([
                 'data' => 'Nothing Found!',
                 'message' => 'OK'
-            ], 404));
+            ], 404);
         }
-
-
-        return response()->json([
-            'data' =>$incidents ,
-            'message' => 'OK'
-        ], 200);
+        return IncidentResource::collection($incidents);
     }
 
 

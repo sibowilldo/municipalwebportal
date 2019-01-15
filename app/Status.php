@@ -27,6 +27,6 @@ class Status extends Model
     //
     public function incident()
     {
-        return $this->belongsTo(Incident::class);
+        return $this->hasOne(Incident::class);
     }
 }

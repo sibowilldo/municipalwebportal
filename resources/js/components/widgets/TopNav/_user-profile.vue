@@ -103,8 +103,7 @@
                     this.user.lastname = response.data.lastname,
                     this.user.email = response.data.email,
                     this.user.contactnumber = response.data.contactnumber,
-                    this.user.roles = response.data.roles,
-                    console.log(response.data.firstname)
+                    this.user.roles = response.data.roles
                 }
             )
         },

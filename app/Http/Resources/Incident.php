@@ -16,6 +16,7 @@ class Incident extends JsonResource
     {
 //        dd($this);
         return [
+            'id' => $this->id,
             'reference' => $this->reference,
             'name' => $this->name,
             'description' => $this->description,
@@ -23,7 +24,7 @@ class Incident extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'suburb_id' => $this->suburb_id,
-            'created' => $this->created_at,
+            'created' => $this->created_at->format('d M Y'),
             'type' => $this->type,
             'status' => $this->status,
             'user' => $this->user

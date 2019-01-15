@@ -8,10 +8,15 @@ Vue.use(VueAxios, axios)
 
 export default{
     state:{
-        incidents:{}
+        incidents:[]
+    },
+    getters: {
+        all: state =>{
+            return state.incidents
+        }
     },
     actions:{
-        allIncidents ({ commit }){
+        all_incidents ({ commit }){
             axios
                 .get('/api/auth/incidents')
                 .then(response => response.data)

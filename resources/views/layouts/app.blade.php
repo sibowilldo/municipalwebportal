@@ -14,5 +14,5 @@
         <router-view></router-view>
     </div>
     <script src="/js/bundle.min.js"></script>
-</body>
+</body> 
 </html>
