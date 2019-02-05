@@ -73,11 +73,20 @@
                         localStorage.setItem('auth_token',response.data.access_token);
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('auth_token');
                         if (localStorage.getItem('auth_token') != null){
-                            toastr['success']('Signed in');
+                            this.$notify({
+                                title: 'Success',
+                                message: 'Signed in successfully.',
+                                type: 'success'
+                            })
                             this.$router.push({ path: '/dashboard'})
                         }
                     }).catch(error => {
-                        toastr['error'](error.response.data.message);
+
+                        this.$notify({
+                            title: 'Error',
+                            message: error.response.data.message,
+                            type: 'error'
+                        })
                     });
                 }
             }

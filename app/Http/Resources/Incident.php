@@ -14,7 +14,6 @@ class Incident extends JsonResource
      */
     public function toArray($request)
     {
-//        dd($this);
         return [
             'id' => $this->id,
             'reference' => $this->reference,
@@ -24,7 +23,7 @@ class Incident extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'suburb_id' => $this->suburb_id,
-            'created' => $this->created_at->format('d M Y'),
+            'created' => $this->created_at->format('d M Y h:i:s A'),
             'type' => $this->type,
             'status' => $this->status,
             'user' => $this->user

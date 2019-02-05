@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Category;
+use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return CategoryResource::collection(Category::get());
     }
 
     /**
@@ -35,7 +37,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category($request->all());
+        $category->save();
+        return response()->json([
+            'message' => 'Category Saved Successfully',
+            'data' => $category
+            ],
+        200
+        );
     }
 
     /**

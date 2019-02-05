@@ -9,10 +9,10 @@
     <link href=" {{ mix('css/style.css') }}" rel="stylesheet">
     <link href=" {{ asset('assets/fonts/fonts.css') }}" rel="stylesheet">
 </head>
-<body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+<body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default m-header--minimize-off">
     <div id="app" class="m-grid m-grid--hor m-grid--root m-page">
         <router-view></router-view>
     </div>
     <script src="/js/bundle.min.js"></script>
-</body> 
+</body>
 </html>

@@ -34,5 +34,14 @@ Route::group(['prefix' => 'auth'], function () {
 
         // Incident Routes
         Route::resource('incidents', 'Api\IncidentController');
+
+        // Status Routes
+        Route::resource('statuses', 'Api\StatusController');
+
+        // Category Routes
+        Route::resource('categories', 'Api\CategoryController');
+
+        // Type Routes
+        Route::resource('types', 'Api\TypeController');
     });
 });

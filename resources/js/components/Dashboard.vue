@@ -1,5 +1,8 @@
 <template>
         <div class="row">
+            <template slot="page_title">
+                <h3 class="m-subheader__title ">Dashboard</h3>
+            </template>
             <div class="col-xl-8">
                 <incidents-list></incidents-list>
             </div>

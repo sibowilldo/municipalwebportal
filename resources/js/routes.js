@@ -6,6 +6,7 @@ import Guest from './components/layouts/guest'
 import Errors from './components/layouts/errors'
 
 import Dashboard from './components/Dashboard'
+import System from './components/System'
 import Login from './components/auth/Login'
 import Email from './components/auth/passwords/Email'
 import Reset from './components/auth/passwords/Reset'
@@ -25,6 +26,11 @@ let routes = [
                 path: '/dashboard',
                 name: 'dashboard',
                 component: Dashboard
+            },,
+            {
+                path: '/system',
+                name: 'system',
+                component: System
             },
 
         ]

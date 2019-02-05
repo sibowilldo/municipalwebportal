@@ -8,26 +8,26 @@ Vue.use(VueAxios, axios)
 
 export default{
     state:{
-        incidents:[]
+        categories:[]
     },
     getters: {
-        allIncidents: state =>{
-            return state.incidents
+        allCategories: state =>{
+            return state.categories
         }
     },
     actions:{
-        fetchIncidents ({ commit }){
+        fetchCategories ({ commit }){
             axios
-                .get('/api/auth/incidents')
+                .get('/api/auth/categories')
                 .then(response => response.data)
-                .then(incidents => {
-                    commit('SET_INCIDENTS', incidents)
+                .then(categories => {
+                    commit('SET_CATEGORIES', categories)
                 })
         }
     },
     mutations:{
-        SET_INCIDENTS(state, incidents){
-            state.incidents = incidents.data
+        SET_CATEGORIES(state, categories){
+            state.categories = categories.data
         }
     }
 };

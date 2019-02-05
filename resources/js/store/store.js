@@ -5,6 +5,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import auth from './modules/auth'
 import incidents from './modules/incidents'
+import categories from './modules/categories'
 import * as Cookies from 'js-cookie'
 
 
@@ -15,7 +16,7 @@ Vue.use(VueAxios, axios)
 const store = new Vuex.Store({
 
     modules:{
-        auth, incidents
+        auth, incidents,categories
     },
     state: { },
     mutations: { },

@@ -1,10 +1,11 @@
 <template>
+
     <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
         <div class="m-portlet__head">
             <div class="m-portlet__head-caption">
                 <div class="m-portlet__head-title">
                     <h3 class="m-portlet__head-text">
-                        Incidents
+                        Categories
                     </h3>
                 </div>
             </div>
@@ -92,8 +93,6 @@
                             <el-table-column type="expand">
                                 <template slot-scope="props">
                                     <p><strong>Description: </strong>{{ props.row.description }}</p>
-                                    <p><strong>Location: </strong>{{ props.row.longitude }}, {{ props.row.latitude }}</p>
-                                    <p><strong>Type: </strong>{{ props.row.type.name }}</p>
                                 </template>
                             </el-table-column>
                         </template>
@@ -140,6 +139,7 @@
     </div>
 </template>
 
+
 <script>
     import Vue from 'vue'
     import { mapState } from 'vuex'
@@ -170,16 +170,16 @@
                         label: 'ID'
                     },
                     {
-                        prop: 'reference',
-                        label: 'Reference'
-                    },
-                    {
                         prop: 'name',
                         label: 'Name'
                     },
                     {
                         prop: 'created',
-                        label: 'Reported'
+                        label: 'Created'
+                    },
+                    {
+                        prop: 'description',
+                        label: 'Description'
                     },
                     {
                         prop: 'type.name',
@@ -204,7 +204,7 @@
         },
         created() {
             let vm = this;
-            this.$store.dispatch('fetchIncidents')
+            this.$store.dispatch('all_incidents')
 
             axios
                 .get('api/auth/statuses/')
@@ -212,9 +212,6 @@
                     vm.statuses = response.data.data.map(vm.mapFilters)
                 })
                 .catch((error)=>console.log('Error', error))
-        },
-        mounted(){
-
         },
         computed: {
             ...mapState(['incidents'])
@@ -237,7 +234,8 @@
                 let text_value = {text: item.name, value: item.name}
                 return text_value
             }
-        }
+        },
+        mounted(){}
     };
 </script>
 
