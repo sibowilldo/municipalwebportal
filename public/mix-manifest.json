@@ -1,5 +1,9 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/style.css": "/css/style.css",
-    "/js/bundle.min.js": "/js/bundle.min.js"
+    "/css/vendors.css": "/css/vendors.css",
+    "/css/styles.css": "/css/styles.css",
+    "/js/mandatory.js": "/js/mandatory.js",
+    "/js/vendors.js": "/js/vendors.js",
+    "/js/scripts.bundle.js": "/js/scripts.bundle.js",
+    "/js/dashboard.js": "/js/dashboard.js",
+    "/js/google-maps.js": "/js/google-maps.js"
 }

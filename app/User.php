@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(OTP::class);
     }
+
+    // Get user full name
+    public function getFullNameAttribute() {
+        return ucfirst($this->firstname) . ' ' . ucfirst($this->lastname);
+    }
 }

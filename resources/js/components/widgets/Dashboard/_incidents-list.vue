@@ -86,7 +86,7 @@
                         </el-input>
                     </el-col>
                 </el-row>
-                <data-tables v-loading="loading" ref="incidentsTable" :data="this.incidents.incidents"  :table-props="tableProps" :filters="filters" :pageSize="5" :pagination-props="{ pageSizes: [5, 10, 15, 20] }"  sortable="custom">
+                <data-tables v-loading="loading" ref="incidentsTable" :data="this.incidents.incidents"  :table-props="tableProps" :filters="filters" :pageSize="10" :pagination-props="{ pageSizes: [10, 15, 20] }"  sortable="custom">
                     <el-table-column type="expand">
                         <template slot-scope="props">
                             <el-table-column type="expand">
@@ -120,7 +120,7 @@
                                         <div>
                                             <el-button type="text" @click="handleEditIncident(scope.row.id, $event)"><i class="m-nav__link-icon la la-edit"></i> Edit Details</el-button>
                                         </div>
-                                        <div v-show="scope.row.status.name !== 'Completed'">
+                                        <div v-show="hideAssignOption(scope.row.status.name)">
                                             <el-button type="text" icon="m-nav__link-icon  flaticon-user-settings">Assign Engineer</el-button>
                                         </div>
                                         <div>
@@ -236,6 +236,9 @@
             mapFilters(item, index){
                 let text_value = {text: item.name, value: item.name}
                 return text_value
+            },
+            hideAssignOption: function(status){
+                return status !== 'Assigned' && status !== 'Rejected' && status !== 'Closed'
             }
         }
     };

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Status;
+use App\Type;
 use Illuminate\Http\Request;
+use App\Incident;
+use App\Http\Resources\Incident as IncidentResource;
 
 class HomeController extends Controller
 {
@@ -23,6 +27,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $incidents = Incident::with('users')->get()->sortByDesc('created_at');
+        $statues = Status::all('id', 'name');
+        $types = Type::all('id', 'name');
+
+//        dd($incidents);
+
+        return view('dashboard', compact('incidents', 'statues', 'types'));
     }
+
 }

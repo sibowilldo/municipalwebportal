@@ -19379,6 +19379,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
         mapFilters: function mapFilters(item, index) {
             var text_value = { text: item.name, value: item.name };
             return text_value;
+        },
+
+        hideAssignOption: function hideAssignOption(status) {
+            return status !== 'Assigned' && status !== 'Rejected' && status !== 'Closed';
         }
     }
 });
@@ -25821,7 +25825,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -25909,8 +25913,8 @@ var render = function() {
                   data: this.incidents.incidents,
                   "table-props": _vm.tableProps,
                   filters: _vm.filters,
-                  pageSize: 5,
-                  "pagination-props": { pageSizes: [5, 10, 15, 20] },
+                  pageSize: 10,
+                  "pagination-props": { pageSizes: [10, 15, 20] },
                   sortable: "custom"
                 }
               },
@@ -26025,11 +26029,11 @@ var render = function() {
                                           {
                                             name: "show",
                                             rawName: "v-show",
-                                            value:
-                                              scope.row.status.name !==
-                                              "Completed",
+                                            value: _vm.hideAssignOption(
+                                              scope.row.status.name
+                                            ),
                                             expression:
-                                              "scope.row.status.name !== 'Completed'"
+                                              "hideAssignOption(scope.row.status.name)"
                                           }
                                         ]
                                       },

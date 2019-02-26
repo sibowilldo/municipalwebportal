@@ -133,7 +133,7 @@
         },
         watch:{
             types: function(){
-                
+
             }
         }
     }

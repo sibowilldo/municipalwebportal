@@ -19,9 +19,20 @@
 //
 Auth::routes();
 //
-//Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/', 'HomeController@index')->name('dashboard');
+Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
-Route::get('/{vue?}', function () {
-    return view('welcome');
-})->where('vue', '[\/\w\.-]*')->name('home');
+Route::resource('incidents', 'IncidentController');
+Route::get('/api/incidents', 'IncidentController@jsonIndex');
+
+Route::resource('types', 'TypeController');
+Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
+
+Route::resource('categories', 'CategoryController');
+Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
+
+//
+//Route::get('/{vue?}', function () {
+//    return view('pages.dashboard');
+//})->where('vue', '[\/\w\.-]*')->name('home');

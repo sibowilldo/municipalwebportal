@@ -42,6 +42,6 @@ Route::group(['prefix' => 'auth'], function () {
         Route::resource('categories', 'Api\CategoryController');
 
         // Type Routes
-        Route::resource('types', 'Api\TypeController');
+//        Route::resource('types', 'Api\TypeController');
     });
 });
