@@ -30,7 +30,6 @@ class IncidentController extends Controller
                 'message' => 'OK'
             ], 404);
         }
-//        dd($incidents);
         return IncidentResource::collection($incidents);
     }
 

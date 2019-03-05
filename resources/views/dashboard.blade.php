@@ -188,8 +188,7 @@
                                             <td>{{ $incident->status->id }}</td>
                                             <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
                                             <td>{{ $incident->suburb_id }}</td>
-                                            <td></td>
-                                            {{--<td>{{ $incident->user ? $incident->user->name : '' }}</td>--}}
+                                            <td>{{ $incident->users ? $incident->users->firstname : '' }}</td>
                                             <td></td>
                                         </tr>
                                         @endforeach
