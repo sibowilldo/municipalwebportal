@@ -51,9 +51,6 @@ class IncidentController extends Controller
      */
     public function store(Request $request)
     {
-        //
-//        dd($request->all());
-
         $user = Auth::user();
 
         $request->validate([
@@ -78,11 +75,9 @@ class IncidentController extends Controller
 
         ]);
         $incident->save();
-//        dd($incident->id);
-
         $user->incidents()->attach($incident, ['has_location' => true, 'has_attachment' => false, 'source_id' => 0]);
 
-        return  redirect()->action('HomeController@index');
+        return  redirect()->back(201);
     }
 
     /**
@@ -129,4 +124,5 @@ class IncidentController extends Controller
     {
         //
     }
+
 }
