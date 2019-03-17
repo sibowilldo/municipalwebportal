@@ -9,13 +9,9 @@
             <div class="m-subheader ">
                 <div class="d-flex align-items-center">
                     <div class="mr-auto">
-                        <h3 class="m-subheader__title ">{{ __('Dashboard') }}</h3>
+                        <h3 class="m-subheader__title ">{{ __('User Management') }}</h3>
                     </div>
                 </div>
-            </div>
-
-            <div class="m-content">
-                @include('widgets.dashboard.incidents-at-a-glance')
             </div>
 
             <!-- END: Subheader -->
@@ -30,7 +26,7 @@
                                 <div class="m-portlet__head-caption">
                                     <div class="m-portlet__head-title">
                                         <h3 class="m-portlet__head-text">
-                                            {{ __('Incidents') }}
+                                            {{ __('Users') }}
                                         </h3>
                                     </div>
                                 </div>
@@ -115,9 +111,9 @@
                                                             <div class="m-form__control">
                                                                 <select class="form-control m-bootstrap-select" id="m_form_status">
                                                                     <option value="">{{ __('All') }}</option>
-                                                                    @foreach($statues as $status)
+                                                                    {{-- @foreach($statuses as $status)
                                                                     <option value="{{ $status->id }}">{{ $status->name }}</option>
-                                                                    @endforeach
+                                                                    @endforeach --}}
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -131,9 +127,9 @@
                                                             <div class="m-form__control">
                                                                 <select class="form-control m-bootstrap-select" id="m_form_type">
                                                                     <option value="">{{ __('All') }}</option>
-                                                                    @foreach($types as $type)
+                                                                    {{-- @foreach($types as $type)
                                                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                                                    @endforeach
+                                                                    @endforeach --}}
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -150,47 +146,48 @@
                                                 </div>
                                             </div>
                                             <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                                <button type="button" data-toggle="modal" data-target="#log_incident_modal" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-												<span>
-													<i class="la la-plus"></i>
-													<span>{{ __('Log Incident') }}</span>
-												</span>
-                                                </button>
+                                                <a href="{{ route('users.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                                <span>
+                                                    <i class="la la-plus"></i>
+                                                    {{ __('Add User')}}
+                                                </span>
+                                                </a>
                                                 <div class="m-separator m-separator--dashed d-xl-none"></div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!--end: Search Form -->
-                                    <table class="m_datatable" id="incidents">
+                                    <table class="m_datatable" id="users">
                                         <thead>
                                         <tr>
                                             <th data-field="id">{{ __('#') }}</th>
-                                            <th data-field="Reference">{{ __('Reference') }}</th>
-                                            <th data-field="Name">{{ __('Name') }}</th>
-                                            <th data-field="LoggedAt">{{ __('Logged At') }}</th>
-                                            <th data-field="Type">{{ __('Type') }}</th>
+                                            <th data-field="FullName">{{ __('Full Name') }}</th>
+                                            <th data-field="ContactNumber">{{ __('Contact Number') }}</th>
+                                            <th data-field="Email">{{ __('Email') }}</th>
+                                            <th data-field="JoinedAt">{{ __('Joined At') }}</th>
                                             <th data-field="Status">{{ __('Status') }}</th>
-                                            <th data-field="Location">{{ __('Location') }}</th>
-                                            <th data-field="SuburbID">{{ __('Suburb') }}</th>
-                                            <th data-field="User">{{ __('User') }}</th>
+                                            <th data-field="Role">{{ __('Role') }}</th>
                                             <th data-field="Actions" style="text-align: right;">{{ __('Actions') }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($incidents as $incident)
+                                        @foreach($users as $user)
                                         <tr>
-                                            <td>{{ $incident->id }}</td>
-                                            <td>{{ $incident->reference }}</td>
-                                            <td>{{ $incident->name }}</td>
-                                            <td>{{ $incident->created_at }}</td>
-                                            <td>{{ $incident->type->id }}</td>
-                                            <td>{{ $incident->status->id }}</td>
-                                            <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
-                                            <td>{{ $incident->suburb_id }}</td>
-                                            <td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>
-                                            <td></td>
-                                            {{-- <td></td> --}}
+                                            <td>{{ $user->id }}</td>
+                                            <td>{{ $user->fullname }}</td>
+                                            <td>{{ $user->contactnumber }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->created_at }}</td>
+                                            <td>{{ $user->status_is }}</td>
+                                            <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>
+                                            <td>
+                                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary m-btn m-btn--custom m-btn--pill pull-left " style="margin-right: 3px;">Edit</a>
+
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id]]) !!}
+                                                <button type="submit" class="btn btn-link">Delete</button>
+                                                {!! Form::close() !!}
+                                            </td>
                                         </tr>
                                         @endforeach
                                         </tbody>
@@ -214,36 +211,6 @@
         .m-datatable__lock--right{
             overflow: visible !important;
         }
-        #map {
-            width: 100%;
-            height: 400px;
-        }
-        .mapControls {
-            margin-top: 10px;
-            border: 1px solid transparent;
-            border-radius: 2px 0 0 2px;
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            height: 32px;
-            outline: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        }
-        #searchMapInput {
-            background-color: #fff;
-            font-family: Roboto;
-            font-size: 15px;
-            font-weight: 300;
-            margin-left: 12px;
-            padding: 0 11px 0 13px;
-            text-overflow: ellipsis;
-            width: 50%;
-            top: 10px !important;
-        }
-        #searchMapInput:focus {
-            border-color: #4d90fe;
-        }
-        .pac-container{
-            z-index: 9999;}
     </style>
 @stop
 
@@ -253,7 +220,7 @@
         var IncidentsTable = function() {
             var incidents = function() {
 
-                var datatable = $('#incidents').mDatatable({
+                var datatable = $('#users').mDatatable({
                     data: {
                         saveState: {cookie: false},
                     },
@@ -286,75 +253,71 @@
                             width: 25
                         },
                         {
-                            field: 'LoggedAt',
+                            field: 'JoinedAt',
                             type: 'date',
                             format: 'YYYY-MM-DD',
                         },
-                        {
-                            field: 'Location',
-                            width: 180,
-                        },
-                        {
-                            field: 'Status',
-                            title: 'Status',
-                            // callback function support for column rendering
-                            template: function(row) {
-                                var status = {
-                                    1: {'title': 'Closed', 'class': 'm-badge--brand'},
-                                    2: {'title': 'Assigned', 'class': ' m-badge--success'},
-                                    3: {'title': 'Overdue', 'class': ' m-badge--danger'},
-                                    4: {'title': 'Rejected', 'class': ' m-badge--info'},
-                                    5: {'title': 'Cancelled', 'class': ' m-badge--warning'},
-                                    6: {'title': 'Open', 'class': ' m-badge--warning'},
-                                };
-                                return '<span class="m-badge ' + status[row.Status].class + ' m-badge--wide">' + status[row.Status].title + '</span>';
-                            },
-                        },
-                        {
-                            field: 'Type',
-                            title: 'Type',
-                            width: 150,
-                            // callback function support for column rendering
-                            template: function(row) {
-                                var status = {
-                                    1: {'title': 'Animal Carcass', 'state': 'warning'},
-                                    2: {'title': 'Bin not Collected', 'state': 'primary'},
-                                    3: {'title': 'Illegal Dumping', 'state': 'accent'},
-                                    4: {'title': 'Electricity Outage', 'state': 'success'},
-                                    5: {'title': 'Faulty Meter', 'state': 'danger'},
-                                };
-                                return '<span class="m-badge m-badge--' + status[row.Type].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' +
-                                    status[row.Type].state + '">' +
-                                    status[row.Type].title + '</span>';
-                            },
-                        },
-                        {
-                            field: "Actions",
-                            width: 110,
-                            title: "Actions",
-                            textAlign: 'center',
-                            sortable: false,
-                            locked: {right: 'lg'},
-                            overflow: 'visible',
-                            template: function(row, index, datatable) {
-                                var dropup = (datatable.getPageSize() - index) <= 4 ? 'dropup' : '';
-                                return '\
-                                    <div class="dropdown ' + dropup + '">\
-                                        <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">\
-                                            <i class="la la-ellipsis-h"></i>\
-                                        </a>\
-                                        <div class="dropdown-menu dropdown-menu-right">\
-                                            <a class="dropdown-item" href="/incidents/' + row.id + '/edit"><i class="la la-edit"></i> Edit Details</a>\
-                                            <a class="dropdown-item" href="#"><i class="flaticon-cogwheel-1"></i> Assign Engineer</a>\
-                                            <a class="dropdown-item" href="#"><i class="flaticon-network"></i> Assign Working Group</a>\
-                                        </div>\
-                                    </div>\
-                                    <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Close Incident">\
-                                        <i class="flaticon-interface-5"></i>\
-                                    </a>\
-                                ';
-                            }
-                        }
+                        // {
+                        //     field: 'Status',
+                        //     title: 'Status',
+                        //     // callback function support for column rendering
+                        //     template: function(row) {
+                        //         var status = {
+                        //             1: {'title': 'Closed', 'class': 'm-badge--brand'},
+                        //             2: {'title': 'Assigned', 'class': ' m-badge--success'},
+                        //             3: {'title': 'Overdue', 'class': ' m-badge--danger'},
+                        //             4: {'title': 'Rejected', 'class': ' m-badge--info'},
+                        //             5: {'title': 'Cancelled', 'class': ' m-badge--warning'},
+                        //             6: {'title': 'Open', 'class': ' m-badge--warning'},
+                        //         };
+                        //         return '<span class="m-badge ' + status[row.Status].class + ' m-badge--wide">' + status[row.Status].title + '</span>';
+                        //     },
+                        // },
+                        // {
+                        //     field: 'Type',
+                        //     title: 'Type',
+                        //     width: 150,
+                        //     // callback function support for column rendering
+                        //     template: function(row) {
+                        //         var status = {
+                        //             1: {'title': 'Animal Carcass', 'state': 'warning'},
+                        //             2: {'title': 'Bin not Collected', 'state': 'primary'},
+                        //             3: {'title': 'Illegal Dumping', 'state': 'accent'},
+                        //             4: {'title': 'Electricity Outage', 'state': 'success'},
+                        //             5: {'title': 'Faulty Meter', 'state': 'danger'},
+                        //         };
+                        //         return '<span class="m-badge m-badge--' + status[row.Type].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' +
+                        //             status[row.Type].state + '">' +
+                        //             status[row.Type].title + '</span>';
+                        //     },
+                        // },
+                        // {
+                        //     field: "Actions",
+                        //     width: 110,
+                        //     title: "Actions",
+                        //     textAlign: 'center',
+                        //     sortable: false,
+                        //     locked: {right: 'lg'},
+                        //     overflow: 'visible',
+                        //     template: function(row, index, datatable) {
+                        //         var dropup = (datatable.getPageSize() - index) <= 4 ? 'dropup' : '';
+                        //         return '\
+                        //             <div class="dropdown ' + dropup + '">\
+                        //                 <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">\
+                        //                     <i class="la la-ellipsis-h"></i>\
+                        //                 </a>\
+                        //                 <div class="dropdown-menu dropdown-menu-right">\
+                        //                     <a class="dropdown-item" href="/incidents/' + row.id + '/edit"><i class="la la-edit"></i> Edit Details</a>\
+                        //                     <a class="dropdown-item" href="#"><i class="flaticon-cogwheel-1"></i> Assign Engineer</a>\
+                        //                     <a class="dropdown-item" href="#"><i class="flaticon-network"></i> Assign Working Group</a>\
+                        //                 </div>\
+                        //             </div>\
+                        //             <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Close Incident">\
+                        //                 <i class="flaticon-interface-5"></i>\
+                        //             </a>\
+                        //         ';
+                        //     }
+                        // }
                     ],
                 });
 
@@ -417,8 +380,6 @@
             IncidentsTable.init();
         });
     </script>
-    <script src="{{ asset('js/google-maps.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>
 @endsection
 
 @section('modals')

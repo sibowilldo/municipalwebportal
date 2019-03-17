@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\User;
 
-class SuperAdminSeeder extends Seeder
+class AdminTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,18 +12,19 @@ class SuperAdminSeeder extends Seeder
      */
     public function run()
     {
-        //
+       
         $user = new User([
-            'firstname' => 'su',
-            'lastname' => 'super-administrator',
+            'firstname' => 'Sibongiseni',
+            'lastname' => 'Msomi',
             'contactnumber' => '0718988006',
             'activation_token' => '',
-            'email' => 'sibongiseni.msomis@gmail.com',
+            'email' => 'msomis@gmail.com',
             'password' => bcrypt('admin123'),
             'status_is' => 'active'
         ]);
 
+
         $user->save();
-        $user->assignRole('super-administrator');
+        $user->assignRole('administrator');
     }
 }

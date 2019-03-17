@@ -22,11 +22,14 @@ class IncidentController extends Controller
     {
         $incidents = Incident::with('users')->get()->sortBy('created_at');
 
-        if(!count($incidents)){
-            return response()->json([
-                'data' => 'Nothing Found!',
-                'message' => 'OK'
-            ], 404);
+        if (!count($incidents)) {
+            return response()->json(
+                [
+                    'data' => 'Nothing Found!',
+                    'message' => 'OK'
+                ],
+                404
+            );
         }
         return IncidentResource::collection($incidents);
     }
@@ -36,37 +39,47 @@ class IncidentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \App\Http\Resources\Incident
      */
     public function store(Request $request)
     {
         $user = User::findOrFail($request->user_id);
 
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'location_description' => 'required|string',
-            'latitude' => 'required|string',
-            'longitude' => 'required|string',
-            'suburb_id' => 'required',
-        ]);
+        $request->validate(
+            [
+                'name' => 'required|string',
+                'description' => 'required|string',
+                'location_description' => 'required|string',
+                'latitude' => 'required|string',
+                'longitude' => 'required|string',
+                'suburb_id' => 'required',
+            ]
+        );
 
-        $incident = new Incident([
-            'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
-            'name' => $request->name,
-            'description' => $request->description,
-            'location_description' => $request->location_description,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'suburb_id' => $request->suburb_id,
-            'type_id' => $request->type_id,
-            'status_id' => $request->status_id
+        $incident = new Incident(
+            [
+                'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
+                'name' => $request->name,
+                'description' => $request->description,
+                'location_description' => $request->location_description,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'suburb_id' => $request->suburb_id,
+                'type_id' => $request->type_id,
+                'status_id' => $request->status_id
+            ]
+        );
 
-        ]);
+        $incident->save();
+        $user->incidents()->attach(
+            $incident,
+            [
+                'has_location' => true, 'has_attachment' => false, 'source_id' => 0
+            ]
+        );
 
-        $user->incidents()->attach($incident);
-
-        dd($user->with('incidents')->all());
+        return new IncidentResource($incident);
     }
 
     /**

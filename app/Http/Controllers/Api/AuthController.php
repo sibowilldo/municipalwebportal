@@ -29,16 +29,18 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed'
         ]);
 
-        $user = new User([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'contactnumber' => $request->contactnumber,
-            'activation_token' => '', // ToDo set to str_random(60) later
-            'email_verified_at' => Carbon::now(),
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'status_is' => 'active' //ToDo set to inactive later
-        ]);
+        $user = new User(
+            [
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'contactnumber' => $request->contactnumber,
+                'activation_token' => '', // ToDo set to str_random(60) later
+                'email_verified_at' => Carbon::now(),
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'status_is' => 'active' //ToDo set to inactive later
+            ]
+        );
 
         $user->save();
         $user->assignRole($request->roles); //assign role(s) to user
@@ -65,7 +67,7 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
 
-        if(!Auth::attempt($credentials)){
+        if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'Invalid Credentials'
             ], 401);
@@ -82,7 +84,7 @@ class AuthController extends Controller
         $token->save();
 
         return response()->json([
-            'data' =>  new UserResource($user),
+            'data' => new UserResource($user),
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(

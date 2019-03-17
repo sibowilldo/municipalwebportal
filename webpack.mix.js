@@ -1,18 +1,18 @@
 const mix = require('laravel-mix');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel application. By default, we are compiling the Sass
- | file for the application as well as bundling up all the JS files.
- |
- */
+    /*
+     |--------------------------------------------------------------------------
+     | Mix Asset Management
+     |--------------------------------------------------------------------------
+     |
+     | Mix provides a clean, fluent API for defining some Webpack build steps
+     | for your Laravel application. By default, we are compiling the Sass
+     | file for the application as well as bundling up all the JS files.
+     |
+     */
 
 // var plugin =  'resources/js/plugins/';
-var vendors =  'resources/assets/vendors/';
+var vendors = 'resources/assets/vendors/';
 // var fonts =  'resources/fonts/';
 
 mix
@@ -58,7 +58,7 @@ mix
         'resources/assets/css/style.bundle.css'
     ], 'public/css/styles.css')
     .combine([
-        <!--begin:: Global Mandatory Vendors -->
+        // <!--begin:: Global Mandatory Vendors -->
         vendors + 'jquery/dist/jquery.js',
         vendors + 'popper.js/dist/umd/popper.js',
         vendors + 'bootstrap/dist/js/bootstrap.min.js',
@@ -67,10 +67,10 @@ mix
         vendors + 'tooltip.js/dist/umd/tooltip.min.js',
         vendors + 'perfect-scrollbar/dist/perfect-scrollbar.js',
         vendors + 'wnumb/wNumb.js',
-        <!--end:: Global Mandatory Vendors -->
+        // <!--end:: Global Mandatory Vendors -->
     ], 'public/js/mandatory.js')
     .combine([
-        <!--begin:: Global Optional Vendors -->
+        // <!--begin:: Global Optional Vendors -->
         vendors + 'jquery.repeater/src/lib.js',
         vendors + 'jquery.repeater/src/jquery.input.js',
         vendors + 'jquery.repeater/src/repeater.js',
@@ -130,7 +130,7 @@ mix
     .scripts(['resources/assets/js/dashboard.js'], 'public/js/dashboard.js')
     .scripts(['resources/assets/js/google-maps.js'], 'public/js/google-maps.js')
     .sourceMaps()
-    .browserSync('http://localhost:8000');
+    .browserSync('http://municipalwebportal.test');
 
 if (mix.inProduction()) {
     mix.version();
