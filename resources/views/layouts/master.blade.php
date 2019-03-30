@@ -49,11 +49,27 @@
     <!-- begin::Header -->
     @include('layouts.sections.header')
     <!-- end::Header -->
+    <div class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop m-page__container m-body">
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
 
-    <!-- begin::Body -->
-    @yield('content')
-    <!-- end::Body -->
+            <!-- BEGIN: Subheader -->
+            <div class="m-subheader ">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="m-subheader__title ">@yield('title')</h3>
+                    </div>
+                </div>
+            </div>
 
+            <!-- END: Subheader -->
+            <div class="m-content">
+
+                <!-- begin::Body -->
+                @yield('content')
+                <!-- end::Body -->
+            </div>
+        </div>
+    </div>
     <!-- begin::Footer -->
     @include('layouts.sections.footer')
     <!-- end::Footer -->
@@ -91,5 +107,7 @@
 {{--begin::Modals--}}
 @yield('modals')
 {{--end::Modals--}}
+
+@include('flash::message')
 </body>
 </html>

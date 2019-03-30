@@ -94,8 +94,8 @@ class User extends Authenticatable
      * @var array
      */
     public static $statuses = [
-        'Inactive' => 'Inactive',
-        'Active' => 'Active',
-        'Blocked' => 'Blocked',
+        'inactive' => 'inactive',
+        'active' => 'active',
+        'blocked' => 'blocked',
     ];
 }

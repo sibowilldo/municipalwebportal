@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Incident;
+use App\User;
 use Illuminate\Http\Request;
 
 class AssignGroupController extends Controller
@@ -78,6 +80,19 @@ class AssignGroupController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
+    {
+        //
+    }
+
+    /**
+     * Assign Working Group to Incident.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Incident  $incident
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function assign(User $user, Incident $incident)
     {
         //
     }

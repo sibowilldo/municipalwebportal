@@ -28,7 +28,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = User::all();
+        $users = User::withTrashed()->get();
         $statuses = User::$statuses;
         return view('backend.users.index', compact('users', 'statuses'));
     }
@@ -102,8 +102,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
+        $statuses = User::$statuses; //Get all statuses
 
-        return view('backend.users.edit', compact('user', 'roles')); //pass user and roles data to view
+        return view('backend.users.edit', compact('user', 'roles', 'statuses')); //pass user roles and statuses data to view
 
     }
 
@@ -117,17 +118,19 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id); //Get role specified by id
-
         //Validate name, email and password fields
         $this->validate(
             $request,
             [
-                'name'=>'required|max:120',
+                'firstname'=>'required|max:120',
+                'lastname'=>'required|max:120',
+                'contactnumber'=>'required|max:20',
                 'email'=>'required|email|unique:users,email,'.$id,
-                'password'=>'required|min:6|confirmed'
+                // 'password'=>'required|min:6|confirmed'
             ]
         );
-        $input = $request->only(['name', 'email', 'password']); //Retreive the name, email and password fields
+        $input = $request->only(['firstname', 'lastname', 'contactnumber', 'status_is', 'email']); //Retreive the name, email and password fields
+
         $roles = $request['roles']; //Retreive all roles
         $user->fill($input)->save();
 
@@ -152,7 +155,26 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $user->delete();
 
-            return redirect()->route('users.index')
-                ->with('flash_message', 'User successfully deleted.');
+            return response()->json([
+                "message"=> $user->fullname . ' was deleted successfully',
+                "url" => route('users.index')
+            ], 200);
+    }
+
+    /**
+     * Restores the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        //Find a user with a given id and restore
+            $user = User::withTrashed()->findOrFail($id);
+            $user->restore();
+            return response()->json([
+                "message"=> $user->fullname . ' was restored successfully',
+                "url" => route('users.index')
+            ], 200);
     }
 }

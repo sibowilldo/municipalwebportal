@@ -9,8 +9,8 @@
                     <div class="m-stack m-stack--ver m-stack--general m-stack--inline">
                         <div class="m-stack__item m-stack__item--middle m-brand__logo">
                             <a href="index.html" class="m-brand__logo-wrapper">
-                                <img alt="" src="assets/demo/media/img/logo/logo.png" class="m-brand__logo-default" />
-                                <img alt="" src="assets/demo/media/img/logo/logo_inverse.png" class="m-brand__logo-inverse" />
+                                <img alt="" src="{{ asset('assets/img/Webportal_logo_Inverted.png') }}" class="m-brand__logo-default" style="height:50px"/>
+                                <img alt="" src="{{ asset('assets/img/Webportal_logo.png') }}" class="m-brand__logo-inverse" style="height:50px"/>
                             </a>
                         </div>
                         <div class="m-stack__item m-stack__item--middle m-brand__tools">

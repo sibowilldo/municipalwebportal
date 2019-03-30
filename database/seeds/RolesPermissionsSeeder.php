@@ -17,35 +17,35 @@ class RolesPermissionsSeeder extends Seeder
         app()['cache']->forget('spatie.permission.cache');
 
         // create roles
-        Permission::create(['guard_name' => 'api', 'name' => 'create role']);
-        Permission::create(['guard_name' => 'api', 'name' => 'edit role']);
-        Permission::create(['guard_name' => 'api', 'name' => 'delete role']);
-        Permission::create(['guard_name' => 'api', 'name' => 'list roles']);
+        Permission::create(['guard_name' => 'web', 'name' => 'create role']);
+        Permission::create(['guard_name' => 'web', 'name' => 'edit role']);
+        Permission::create(['guard_name' => 'web', 'name' => 'delete role']);
+        Permission::create(['guard_name' => 'web', 'name' => 'list roles']);
         //permissions
-        Permission::create(['guard_name' => 'api', 'name' => 'create permission']);
-        Permission::create(['guard_name' => 'api', 'name' => 'edit permission']);
-        Permission::create(['guard_name' => 'api', 'name' => 'delete permission']);
-        Permission::create(['guard_name' => 'api', 'name' => 'list permissions']);
+        Permission::create(['guard_name' => 'web', 'name' => 'create permission']);
+        Permission::create(['guard_name' => 'web', 'name' => 'edit permission']);
+        Permission::create(['guard_name' => 'web', 'name' => 'delete permission']);
+        Permission::create(['guard_name' => 'web', 'name' => 'list permissions']);
         //users
-        Permission::create(['guard_name' => 'api', 'name' => 'create user']);
-        Permission::create(['guard_name' => 'api', 'name' => 'edit user']);
-        Permission::create(['guard_name' => 'api', 'name' => 'delete user']);
-        Permission::create(['guard_name' => 'api', 'name' => 'list users']);
+        Permission::create(['guard_name' => 'web', 'name' => 'create user']);
+        Permission::create(['guard_name' => 'web', 'name' => 'edit user']);
+        Permission::create(['guard_name' => 'web', 'name' => 'delete user']);
+        Permission::create(['guard_name' => 'web', 'name' => 'list users']);
         //faults
-        Permission::create(['guard_name' => 'api', 'name' => 'create fault']);
-        Permission::create(['guard_name' => 'api', 'name' => 'edit fault']);
-        Permission::create(['guard_name' => 'api', 'name' => 'delete fault']);
-        Permission::create(['guard_name' => 'api', 'name' => 'list faults']);
+        Permission::create(['guard_name' => 'web', 'name' => 'create fault']);
+        Permission::create(['guard_name' => 'web', 'name' => 'edit fault']);
+        Permission::create(['guard_name' => 'web', 'name' => 'delete fault']);
+        Permission::create(['guard_name' => 'web', 'name' => 'list faults']);
 
         // create roles and assign created permissions
 
-        $role = Role::create(['guard_name' => 'api', 'name' => 'user']);
+        $role = Role::create(['guard_name' => 'web', 'name' => 'user']);
         $role->givePermissionTo(['create fault', 'edit fault', 'list faults']);
 
-        $role = Role::create(['guard_name' => 'api', 'name' => 'administrator']);
+        $role = Role::create(['guard_name' => 'web', 'name' => 'administrator']);
         $role->givePermissionTo(['create user', 'create fault', 'edit user', 'edit fault', 'delete user', 'delete fault', 'list users', 'list faults']);
 
-        $role = Role::create(['guard_name' => 'api', 'name' => 'super-administrator']);
+        $role = Role::create(['guard_name' => 'web', 'name' => 'super-administrator']);
         $role->givePermissionTo(Permission::all());
     }
 }

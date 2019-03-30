@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Incident;
 use App\Http\Resources\Incident as IncidentResource;
 
+use App\Category;
 
 class HomeController extends Controller
 {
@@ -29,7 +30,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         $incidents = Incident::with('users')->get()->sortByDesc('created_at');
         $statues = Status::all('id', 'name');
         $types = Type::all('id', 'name');

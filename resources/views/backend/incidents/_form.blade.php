@@ -40,6 +40,9 @@
             <option value="{{ $category->id }}">{{ $category->name }}</option>
         @endforeach
     </select>
+
+    {!! Form::select('category_id', \App\Category::pluck('name', 'id'), 6, ['class'=>'form-control m-input']) !!}
+
 </div>
 <div class="form-group m-form__group">
     {!! Form::label('type_id', 'Type:') !!}

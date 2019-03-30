@@ -129,6 +129,7 @@ mix
     .scripts(['resources/assets/js/scripts.bundle.js'], 'public/js/scripts.bundle.js')
     .scripts(['resources/assets/js/dashboard.js'], 'public/js/dashboard.js')
     .scripts(['resources/assets/js/google-maps.js'], 'public/js/google-maps.js')
+    .scripts(['resources/assets/js/project-mdatatable.js'], 'public/js/project-mdatatable.js')
     .sourceMaps()
     .browserSync('http://municipalwebportal.test');
 

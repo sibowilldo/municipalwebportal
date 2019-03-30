@@ -17,7 +17,7 @@ class AssignEngineerController extends Controller
      */
     public function index(Incident $incident)
     {
-        $engineers = User::role('Engineer')->get();
+        $engineers = User::role('engineer')->get();
 
         dd($engineers);
     }
@@ -84,6 +84,19 @@ class AssignEngineerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
+    {
+        //
+    }
+
+    /**
+     * Assign Engineer to Incident.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Incident  $incident
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function assign(User $user, Incident $incident)
     {
         //
     }
