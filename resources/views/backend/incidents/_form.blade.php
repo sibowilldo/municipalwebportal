@@ -34,14 +34,7 @@
 </div>
 <div class="form-group m-form__group">
     {!! Form::label('category_id', 'Category:') !!}
-    <select name="category_id" id="category_id" class="form-control m-input">
-        <option value="0">{{ __('Choose Category...')}}</option>
-        @foreach(\App\Category::all(['name', 'id']) as $category)
-            <option value="{{ $category->id }}">{{ $category->name }}</option>
-        @endforeach
-    </select>
-
-    {!! Form::select('category_id', \App\Category::pluck('name', 'id'), 6, ['class'=>'form-control m-input']) !!}
+    {!! Form::select('category_id', \App\Category::pluck('name', 'id'), 1, ['class'=>'form-control m-input']) !!}
 
 </div>
 <div class="form-group m-form__group">

@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
-                    {{ Form::open(array('url' => 'permissions')) }}
+                    {{ Form::open(array('route' => 'permissions.store')) }}
 
                     <div class="form-group">
                         {{ Form::label('name', 'Name') }}

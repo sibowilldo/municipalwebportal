@@ -15,11 +15,9 @@ class AssignEngineerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Incident $incident)
+    public function index()
     {
-        $engineers = User::role('engineer')->get();
 
-        dd($engineers);
     }
 
     /**
@@ -89,6 +87,21 @@ class AssignEngineerController extends Controller
     }
 
     /**
+     * List Available Engineers.
+     *
+     *
+     * @param  \App\Incident  $incident
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list(Incident $incident)
+    {
+        $engineers = User::role('engineer')->get();
+
+        return view('backend.engineers.list', compact('engineers', 'incident'));
+    }
+
+    /**
      * Assign Engineer to Incident.
      *
      * @param  \App\User  $user
@@ -96,8 +109,11 @@ class AssignEngineerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function assign(User $user, Incident $incident)
+    public function assign(Incident $incident, Request $request)
     {
-        //
+        //Add Incident to Assignments table
+        //Add Incident to IncidentHistory table
+
+        dd($request->all());
     }
 }

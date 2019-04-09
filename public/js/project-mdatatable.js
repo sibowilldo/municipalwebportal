@@ -4,7 +4,7 @@ const LoadDeleteFx = (function(){
 
         var id = el.data('id');
         var url = el.data('url');
-        var token = $("meta[name='csrf-token']").attr('content');
+        var token = $('meta[name="csrf-token"]').attr('content');
         Swal.fire({
             title: 'Are you sure?',
             text: 'You may not be able to undo this!',
@@ -33,14 +33,13 @@ const LoadDeleteFx = (function(){
                             });
                         })
                         .fail(function(){
-                            swal('Oops..', 'Something went wrong with ajax !', 'error');
+                            swal('Oops...', 'Something went wrong with ajax !', 'error');
                         });
                 });
             },
             allowOutsideClick: false
         });
     }
-
     return {
         init: function(ev, el){
             deleteFx(ev, el);

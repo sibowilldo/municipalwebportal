@@ -264,6 +264,11 @@
                 }
             }
         }();
+        /**
+         * Function REQUIRED!
+         *
+         *
+        */
         const TableMethods = function(){
             return{
                 init:function(datatable){
@@ -345,7 +350,7 @@
                                         </a>\
                                         <div class="dropdown-menu dropdown-menu-right">\
                                             <a class="dropdown-item" href="/incidents/' + row.id + '/edit"><i class="la la-edit"></i> Edit Details</a>\
-                                            <a class="dropdown-item" href="#"><i class="flaticon-cogwheel-1"></i> Assign Engineer</a>\
+                                            <a class="dropdown-item" href="/engineers/' + row.id + '/list"><i class="flaticon-cogwheel-1"></i> Assign Engineer</a>\
                                             <a class="dropdown-item" href="#"><i class="flaticon-network"></i> Assign Working Group</a>\
                                         </div>\
                                     </div>\
@@ -367,7 +372,7 @@
 
 @section('modals')
 
-    <!--begin::Modal-->
+    <!--begin:: Log Incident Modal-->
     <div class="modal fade" id="log_incident_modal" tabindex="-1" role="dialog" aria-labelledby="logincident" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">

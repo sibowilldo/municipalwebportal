@@ -61,7 +61,7 @@
                 </div>
                 <div class="m-portlet__body">
                     @include('layouts.form-errors')
-                    {{ Form::open(array('url' => 'roles')) }}
+                    {{ Form::open(array('route' => 'roles.store')) }}
 
                     <div class="form-group">
                         {{ Form::label('name', 'Name') }}
