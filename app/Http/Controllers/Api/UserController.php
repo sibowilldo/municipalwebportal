@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Incident;
+use App\Http\Resources\Incident as IncidentResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -32,6 +34,14 @@ class UserController extends Controller
     {
         $user = Auth::user();
         return new UserResource($user);
+    }
+
+    public function incidents(int $id)
+    {
+        $user = User::findOrFail($id);
+        $incidents = $user->incidents;
+
+        return IncidentResource::collection($incidents);
     }
 }
 

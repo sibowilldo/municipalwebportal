@@ -28,6 +28,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('logout', 'Api\AuthController@logout');
         Route::get('user/{id}', 'Api\UserController@user');
         Route::get('user', 'Api\UserController@profile');
+        Route::get('users/{id}/incidents', 'Api\UserController@incidents');
 
         //permissions routes
         Route::get('permissions', 'Api\PermissionController@index');
