@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
-@section('title', 'Manage Roles')
+
+@section('title', 'Departments ')
 
 @section('content')
 
@@ -11,7 +12,7 @@
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
                             <h3 class="m-portlet__head-text">
-                                {{ __('Available Roles') }}
+                                {{ __('Available Departments') }}
                             </h3>
                         </div>
                     </div>
@@ -32,15 +33,21 @@
                                                             <span class="m-nav__section-text">Useful Links</span>
                                                         </li>
                                                         <li class="m-nav__item">
+                                                            <a href="{{ route('departments.create') }}" class="m-nav__link">
+                                                                <i class="m-nav__link-icon la la-building"></i>
+                                                                <span class="m-nav__link-text">Add New Department</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="m-nav__item">
                                                             <a href="{{ route('users.index') }}" class="m-nav__link">
                                                                 <i class="m-nav__link-icon la la-users"></i>
                                                                 <span class="m-nav__link-text">Users</span>
                                                             </a>
                                                         </li>
                                                         <li class="m-nav__item">
-                                                            <a href="{{ route('permissions.index') }}" class="m-nav__link">
-                                                                <i class="m-nav__link-icon flaticon-safe-shield-protection"></i>
-                                                                <span class="m-nav__link-text">Available Permissions</span>
+                                                            <a href="{{ route('roles.index') }}" class="m-nav__link">
+                                                                <i class="m-nav__link-icon flaticon-users-1"></i>
+                                                                <span class="m-nav__link-text">Available Roles</span>
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -72,37 +79,39 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a href="{{ route('roles.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-                                    <span>
-                                        <i class="la la-plus"></i>
-                                        {{ __('Add Role')}}
-                                    </span>
-                                    </a>
-                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
-                                </div>
                             </div>
                         </div>
 
                         <!--end: Search Form -->
-                        <table class="m_datatable" id="roles">
+                        <table class="m_datatable" id="departments">
                             <thead>
                             <tr>
                                 <th data-field="id">{{ __('#') }}</th>
-                                <th data-field="Role">{{ __('Role') }}</th>
-                                <th data-field="Permissions">{{ __('Permissions') }}</th>
+                                <th data-field="Name">{{ __('Name') }}</th>
+                                <th data-field="District">{{ __('District') }}</th>
+                                <th data-field="Description">{{ __('Description') }}</th>
+                                <th data-field="Contact Number">{{ __('Contact Number') }}</th>
+                                <th data-field="Email">{{ __('Email') }}</th>
+                                <th data-field="Alt">{{ __('Alt. Contact Number') }}</th>
+                                <th data-field="Address">{{ __('Address') }}</th>
+                                <th data-field="Status">{{ __('Status') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($roles as $role)
+                            @foreach($departments as $department)
                                 <tr>
-                                    <td>{{ $role->id }}</td>
-                                    <td>{{ $role->name }}</td>
-                                    <td>{{ str_replace(array('[',']','"'),'', $role->permissions()->pluck('name')) }}</td>
+                                    <td>{{ $department->id }}</td>
+                                    <td>{{ $department->name }}</td>
+                                    <td>{{ $department->district }}</td>
+                                    <td>{{ $department->description }}</td>
+                                    <td>{{ $department->contact_number }}</td>
+                                    <td><a href="mailto:{{ $department->email }}">{{ $department->email }}</a></td>
+                                    <td>{{ $department->alt_contact_number }}</td>
+                                    <td>{{ $department->address }}</td>
+                                    <td>{{ $department->status_is }}</td>
                                     <td>
-                                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-sm btn-secondary m-btn pull-left " style="margin-right: 3px;">{{ __('Edit') }}</a>
-                                        <button class="btn btn-sm btn-danger m-btn m-btn--custom btn-delete" type="button" data-id="{{ $role->id }}" data-url="{{ route('roles.destroy', $role->id) }}">{{ __('Delete') }}</button>
+                                        <a href="{{ route('departments.edit', $department->id) }}">Edit</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -118,18 +127,16 @@
 
 @endsection
 
-
 @section('js')
     {{ Html::script('js/project-mdatatable.js') }}
     <script>
-        {{-- TableMethods Function used in project-mdatatable.js --}}
-        const TableMethods = (function(){
+        const TableMethods = function(){
             return{
                 init:function(datatable){
 
                 }
             }
-        }());
+        }();
         const columns = [
             {
                 field: 'id',
@@ -138,22 +145,46 @@
                 width: 25
             },
             {
-                field: 'Role',
-                title: 'Role'
+                field: 'Address',
+                title: 'Address',
+                type: 'text',
+                width: 300
             },
             {
-                field: 'Permissions',
-                title: 'Permissions'
+                field: 'Alt',
+                title: 'Alt. Contact Number',
+                type: 'text',
+                autoHide: true,
+                width: 200
+            },
+            {
+                field: 'Status',
+                title: 'Status',
+                autoHide: true,
+            // callback function support for column rendering
+                template: function(row) {
+                var status = {
+                    'available': {'title': 'Available', 'state': 'primary'},
+                    'inactive': {'title': 'Inactive', 'state': 'accent'},
+                    'active': {'title': 'Active', 'state': 'success'},
+                    'blocked': {'title': 'Blocked', 'state': 'danger'},
+                };
+                return '<span class="m-badge m-badge--' + status[row.Status].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' +
+                    status[row.Status].state + '">' +
+                    status[row.Status].title + '</span>';
+        },
             },
             {
                 field: 'Actions',
                 title: 'Actions',
-                width: 150
-            },
+                sortable: false,
+                width: 110,
+                overflow: 'visible',
+            }
         ];
         jQuery(document).ready(function() {
-            {{--TableElement Function from project-mdatatable.js--}}
-            TableElement.init($('#roles'), columns);
+
+            TableElement.init($('#departments'), columns);
         });
 
     </script>

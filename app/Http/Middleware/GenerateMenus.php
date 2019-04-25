@@ -16,21 +16,33 @@ class GenerateMenus
     public function handle($request, Closure $next)
     {
         \Menu::make('MHeaderBottom', function ($menu) {
-            $menu->add('Dashboard', 'dashboard')->active('/*')->active('engineers/*');
-            $menu->dashboard->add('Dashboard', ['route' => 'dashboard','icon'=>'flaticon-line-graph']);
+            $menu->add('Dashboard', 'dashboard')
+                ->active('/*')
+                ->active('engineers/*')
+                ->data('icon', 'flaticon-line-graph');
+            //
+//            $menu->dashboard->add('Dashboard', ['route' => 'dashboard']);
 
 
-            $menu->add('Incidents', ['route' => 'incidents.index', ]);
+            $menu->add('Incidents', ['route' => 'incidents.index', ])
+                ->data('icon', 'flaticon-warning-sign');
 
-            $menu->add('Users',  ['route' => 'users.index', ]);
-            $menu->users->add('View All', ['route' => 'users.index',]);
 
-            $menu->add('Manage', [])->active('manage/*');
-            $menu->manage->add('Roles', ['route' => 'roles.index',])->data('permission', 'list roles');;
-            $menu->manage->add('Permissions', ['route' => 'permissions.index',])->data('permission', 'list permissions');;
-            $menu->manage->add('Users', ['route' => 'users.index',])->data('permission', 'list users');;
+            $menu->add('Users',  ['route' => 'users.index', ])
+                ->data('icon', 'flaticon-users');
+            ;
+            $menu->users->add('All Users', ['route' => 'users.index',]);
 
-            $menu->add('System', []);
+            $menu->add('Manage', [])->active('manage/*')
+                ->data('icon', 'flaticon-interface-8');
+
+            $menu->manage->add('Roles', ['route' => 'roles.index',])->data('permission', 'list roles');
+            $menu->manage->add('Permissions', ['route' => 'permissions.index',])->data('permission', 'list permissions');
+            $menu->manage->add('Departments', ['route' => 'departments.index',])->data('permission', 'list departments');
+
+            $menu->add('System', [])
+                ->data('icon', 'flaticon-cogwheel-2');
+
 
         });
 

@@ -5,7 +5,7 @@
 @section('content')
     <div class="row">
         <div class="col-xl-12">
-            <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+            <div class="m-portlet m-portlet--mobile ">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
@@ -53,7 +53,6 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
-
                     <!--begin: Datatable -->
                     <div class="m_datatable">
                         <!--begin: Search Form -->
@@ -155,7 +154,6 @@
                             </tbody>
                         </table>
                     </div>
-
                     <!--end: Datatable -->
                 </div>
             </div>
@@ -224,7 +222,6 @@
                 $('#m_form_status, #m_form_type').selectpicker();
 
             };
-
             return {
                 //== Public functions
                 init: function() {
@@ -260,7 +257,6 @@
                     }
                 })
             }
-
             return {
                 init: function(){
                     types();
@@ -310,7 +306,6 @@
                     })
                 });
             }
-
             return {
                 init: function(){
                     deleteFx();
@@ -359,7 +354,6 @@
                     })
                 });
             }
-
             return {
                 init: function(){
                     restoreFx();

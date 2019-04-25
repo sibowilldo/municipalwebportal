@@ -1,20 +1,7 @@
 const mix = require('laravel-mix');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
-    /*
-     |--------------------------------------------------------------------------
-     | Mix Asset Management
-     |--------------------------------------------------------------------------
-     |
-     | Mix provides a clean, fluent API for defining some Webpack build steps
-     | for your Laravel application. By default, we are compiling the Sass
-     | file for the application as well as bundling up all the JS files.
-     |
-     */
 
-// var plugin =  'resources/js/plugins/';
 var vendors = 'resources/assets/vendors/';
-// var fonts =  'resources/fonts/';
-
 mix
     .styles([
         vendors + 'perfect-scrollbar/css/perfect-scrollbar.css',
@@ -26,6 +13,7 @@ mix
         vendors + 'bootstrap-touchspin/dist/jquery.bootstrap-touchspin.css',
         vendors + 'bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
         vendors + 'bootstrap-select/dist/css/bootstrap-select.css',
+        vendors + 'bootstrap-tagsinput/tagsinput.css',
         vendors + 'select2/dist/css/select2.css',
         vendors + 'nouislider/distribute/nouislider.css',
         vendors + 'owl.carousel/dist/assets/owl.carousel.css',
@@ -54,7 +42,6 @@ mix
     .copyDirectory(vendors + 'metronic/fonts', 'public/fonts')
     .copyDirectory(vendors + 'fontawesome5/webfonts', 'public/webfonts')
     .styles([
-        vendors + 'tether/dist/css/tether.css',
         'resources/assets/css/style.bundle.css'
     ], 'public/css/styles.css')
     .combine([
@@ -89,6 +76,7 @@ mix
         vendors + 'js/framework/components/plugins/forms/bootstrap-switch.init.js',
         vendors + 'vendors/bootstrap-multiselectsplitter/bootstrap-multiselectsplitter.min.js',
         vendors + 'bootstrap-select/dist/js/bootstrap-select.js',
+        vendors + 'bootstrap-tagsinput/tagsinput.js',
         vendors + 'select2/dist/js/select2.full.js',
         vendors + 'typeahead.js/dist/typeahead.bundle.js',
         vendors + 'handlebars/dist/handlebars.js',
@@ -136,24 +124,3 @@ mix
 if (mix.inProduction()) {
     mix.version();
 }
-
-
-
-
-// mix.js('resources/js/app.js', 'public/js/app.js')
-//     .combine([
-//         plugin + 'jquery/dist/jquery.min.js',
-//         plugin + 'popper/popper.min.js',
-//         plugin + 'bootstrap/bootstrap.min.js',
-//         plugin + 'moment/moment.min.js',
-//         plugin + 'toastr/toastr.min.js',
-//         plugin + 'slimscroll/jquery.slimscroll.js',
-//         plugin + 'perfect-scrollbar/perfect-scrollbar.js',
-//         plugin + 'waves/waves.js',
-//         plugin + 'sidebarmenu.js',
-//         plugin + 'sticky-kit/sticky-kit.min.js',
-//         plugin + 'scripts.bundle.js',
-//                  'resources/js/custom.js',
-//                  'public/js/app.js', ],'public/js/bundle.min.js')
-//     .sass('resources/sass/style.scss', 'public/css')
-//     .browserSync('http://localhost:8000');

@@ -13,6 +13,11 @@ use App\Http\Resources\UserCollection;
 
 class IncidentController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware(['auth']);//isAdmin middleware lets only users with a //specific permission permission to access these resources
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -90,6 +95,9 @@ class IncidentController extends Controller
      */
     public function show($id)
     {
+        $incident = Incident::findOrFail($id);
+
+        return view('backend.incidents.show', compact('incident'));
         //
     }
 
@@ -101,6 +109,9 @@ class IncidentController extends Controller
      */
     public function edit($id)
     {
+        $incident = Incident::findOrFail($id);
+
+        return view('backend.incidents.edit', compact('incident'));
         //
     }
 
@@ -113,6 +124,7 @@ class IncidentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $incident = Incident::findOrFail($id);
         //
     }
 
@@ -124,6 +136,7 @@ class IncidentController extends Controller
      */
     public function destroy($id)
     {
+        $incident = Incident::findOrFail($id);
         //
     }
 }

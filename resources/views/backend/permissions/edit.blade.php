@@ -64,7 +64,7 @@
 
                     <div class="form-group">
                         {{ Form::label('name', 'Permission Name') }}
-                        {{ Form::text('name', null, array('class' => 'form-control')) }}
+                        {{ Form::text('name', null, array('class' => 'form-control m-input')) }}
                     </div>
 
                     {{ Form::submit('Save Changes', array('class' => 'btn btn-primary m-btn m-btn--air')) }}

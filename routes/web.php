@@ -47,6 +47,8 @@ Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
 Route::resource('categories', 'CategoryController');
 Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
 
+Route::resource('manage/departments', 'DepartmentController');
+
 //
 //Route::get('/{vue?}', function () {
 //    return view('pages.dashboard');

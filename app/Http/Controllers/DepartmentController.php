@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Incident;
-use App\User;
+use App\Department;
 use Illuminate\Http\Request;
 
-class AssignGroupController extends Controller
+class DepartmentController extends Controller
 {
 
     public function __construct() {
@@ -20,7 +19,8 @@ class AssignGroupController extends Controller
      */
     public function index()
     {
-        //
+//        dd(Department::all());
+        return view('backend.departments.index')->with('departments', Department::all());
     }
 
     /**
@@ -30,7 +30,7 @@ class AssignGroupController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.departments.create')->with('statuses', Department::$statuses);
     }
 
     /**
@@ -41,7 +41,20 @@ class AssignGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'district' => 'required|string',
+            'description' => 'required|string',
+            'contact_number' => 'required|string',
+            'email' => 'required|email|string',
+            'alt_contact_number' => 'required|string',
+            'address' => 'required',
+        ]);
+
+        $department = Department::create($request->all());
+
+        flash($department->name . ' added successfully')->success();
+        return redirect()->route('departments.index');
     }
 
     /**
@@ -53,6 +66,8 @@ class AssignGroupController extends Controller
     public function show($id)
     {
         //
+        $department = Department::findorFail($id);
+        return view('backend.departments.show', compact('department'));
     }
 
     /**
@@ -63,7 +78,9 @@ class AssignGroupController extends Controller
      */
     public function edit($id)
     {
-        //
+        $department = Department::findorFail($id);
+        $statuses = Department::$statuses;
+        return view('backend.departments.edit', compact('department', 'statuses'));
     }
 
     /**
@@ -75,7 +92,13 @@ class AssignGroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $department = Department::findorFail($id);
+        $department->update($request->all());
+
+        $department->save();
+
+        flash($department->name . ' added successfully')->success();
+        return redirect()->route('departments.show', $department->id);
     }
 
     /**
@@ -85,19 +108,6 @@ class AssignGroupController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
-    }
-
-    /**
-     * Assign Working Group to Incident.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Incident  $incident
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function assign(User $user, Incident $incident)
     {
         //
     }

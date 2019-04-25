@@ -42,14 +42,13 @@ class User extends Authenticatable
         'password', 'remember_token', 'activation_token'
     ];
 
-
     /**
      *
      *
      */
-    public function incidents()
+    public function assignments()
     {
-        return $this->belongsToMany(Incident::class);
+        return $this->hasMany(Assignment::class);
     }
 
     /**
@@ -65,10 +64,20 @@ class User extends Authenticatable
      *
      *
      */
-    public function assignments()
+    public function departments()
     {
-        return $this->hasMany(Assignment::class);
+        return $this->belongsToMany(Department::class);
     }
+
+    /**
+     *
+     *
+     */
+    public function incidents()
+    {
+        return $this->belongsToMany(Incident::class);
+    }
+
 
     /**
      *

@@ -31,25 +31,36 @@
 
 
 <!-- begin::Body -->
-<body style="background-image: url({{ asset('assets/img/durban-beach.jpg') }})" class="m-page--fluid m-page--loading-enabled m-page--loading m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default">
+<body class="m-page--fluid m--skin-light m-page--loading-enabled  m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 
 <!-- begin::Page loader -->
 <div class="m-page-loader m-page-loader--base">
     <div class="m-blockui">
         <span>Please wait...</span>
         <span>
-					<div class="m-loader m-loader--brand"></div>
-				</span>
+            <div class="m-loader m-loader--brand"></div>
+        </span>
     </div>
 </div>
 
 
 <!-- begin:: Page -->
 <div class="m-grid m-grid--hor m-grid--root m-page">
+
     <!-- begin::Header -->
     @include('layouts.sections.header')
     <!-- end::Header -->
-    <div class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop m-page__container m-body">
+
+    <!-- begin::Body -->
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+        <!-- BEGIN: Left Aside -->
+        <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn"><i class="la la-close"></i></button>
+        <div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-dark ">
+            <!-- BEGIN: Aside Menu -->
+            @include('layouts.sections.m-header__bottom')
+            <!-- END: Aside Menu -->
+        </div>
+        <!-- END: Left Aside -->
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
 
             <!-- BEGIN: Subheader -->
@@ -60,7 +71,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- END: Subheader -->
             <div class="m-content">
 
@@ -88,7 +98,7 @@
 <!-- end::Scroll Top -->
 
 <!-- begin::Quick Nav -->
-@include('layouts.sections.quick-nav')
+{{--@include('layouts.sections.quick-nav')--}}
 
 <script type="text/javascript" src="/js/mandatory.js"></script>
 <script type="text/javascript" src="/js/vendors.js"></script>
