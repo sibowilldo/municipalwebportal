@@ -102,6 +102,8 @@ class AssignEngineerController extends Controller
     public function list(Incident $incident)
     {
         $engineers = User::role('engineer')->get();
+//        $engineer=User::where('id', 2)->first();
+//        dd($engineer->incidents()->where('id', 2)->first()->id);
 
         return view('backend.engineers.list', compact('engineers', 'incident'));
     }
@@ -118,6 +120,11 @@ class AssignEngineerController extends Controller
     {
         //Add Incident to Assignments table
         //Add Incident to IncidentHistory table
+        // update incident status
+        // update user status
+
+
+//        dd(explode(',', $request->assigned_engineers));
 
         dd($request->all());
     }

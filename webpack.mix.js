@@ -113,6 +113,7 @@ mix
         vendors + 'es6-promise-polyfill/promise.min.js',
         vendors + 'sweetalert2/dist/sweetalert2.min.js',
         vendors + 'js/framework/components/plugins/base/sweetalert2.init.js',
+        'resources/assets/js/bootstrap-notify.init.js',
     ], 'public/js/vendors.js')
     .scripts(['resources/assets/js/scripts.bundle.js'], 'public/js/scripts.bundle.js')
     .scripts(['resources/assets/js/dashboard.js'], 'public/js/dashboard.js')
