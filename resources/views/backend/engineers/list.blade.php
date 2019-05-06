@@ -23,7 +23,7 @@
                             <!--begin: Datatable -->
                             <div class="m_datatable">
                                 <!--begin: Search Form -->
-                                <div class="m-form m-form--label-align-right m--margin-30">
+                                <div class="m-form m-form--label-align-right m--margin-bottom-30">
                                     <div class="row align-items-end">
                                         <div class="col-xl-12 order-2 order-xl-1">
                                             <div class="form-group m-form__group row align-items-center">
@@ -107,18 +107,17 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
-                    <div class="m-widget14">
-                        <div class="m-widget14__items">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <h3 class="display-1 m--font-info m--align-center">{{ $incident->created_at->format('H:i:s') }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {{--<div class="m-widget14">--}}
+                        {{--<div class="m-widget14__items">--}}
+                            {{--<div class="row">--}}
+                                {{--<div class="col-lg-12">--}}
+                                    {{--<h3 class="display-1 m--font-info m--align-center">{{ $incident->created_at->format('H:i:s') }}</h3>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                     <div class="tab-content">
                         <div id="event-details" class="tab-pane active show">
-
                             <div class="m-widget1">
                                 {!! Form::open(array('route' => array('engineers.assign', $incident->id), 'method' => 'POST')) !!}
                                     {{ csrf_field() }}
@@ -166,21 +165,30 @@
                                     </div>
                                     <div class="m-widget1__item">
                                         <div class="m-widget4__info">
-                                        <label for="engineers-list" class="m-widget4__title m--font-boldest">
-                                            Assigned Engineers
-                                        </label>
-                                        <div class="mb-5">
+                                            <label for="engineers-list" class="m-widget4__title m--font-boldest">
+                                                Assigned Engineers
+                                            </label>
                                              <span class="m-widget4__sub">
                                                  {{ Form::text('assigned_engineers', null,
                                                     ["id" => "engineers-list",
                                                     "data-role"=>"tagsinput",
                                                     "class"=>"form-control m-input",
                                                     "multiple"=>"multiple"]) }}
-                                                <br>
-                                                <button class="btn btn-success m--margin-top-20 m-btn--pill" type="submit">Save Changes</button>
                                             </span>
                                         </div>
-
+                                    </div><div class="m-widget1__item">
+                                        <div class="m-widget4__info">
+                                            <label for="engineers-list" class="m-widget4__title m--font-boldest">
+                                                Instructions
+                                            </label>
+                                            <div class="mb-5">
+                                                 <span class="m-widget4__sub">
+                                                     {{ Form::textarea('instructions', null,
+                                                        ["id" => "instructions","class"=>"form-control m-input"]) }}
+                                                    <br>
+                                                    <button class="btn btn-success m--margin-top-20 m-btn--pill" type="submit">Save Changes</button>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 {!! Form::close() !!}
@@ -218,6 +226,9 @@
         //Global Declaration and Initialization
         let EngineerSelection = JSON.parse(localStorage.getItem('EngineerSelection')) || {},
             elt = $('#engineers-list');
+        if (performance.navigation.type !== 1) {
+            EngineerSelection = {};
+        }
 
         elt.tagsinput({
             itemValue: function(item) {

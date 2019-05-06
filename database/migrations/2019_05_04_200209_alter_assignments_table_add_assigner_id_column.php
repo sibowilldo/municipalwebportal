@@ -15,7 +15,11 @@ class AlterAssignmentsTableAddAssignerIdColumn extends Migration
     {
         Schema::table('assignments', function (Blueprint $table) {
             //
-            
+            $table->integer('assigner_id')->unsigned()->after('user_id');
+
+            $table->foreign('assigner_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 
@@ -27,7 +31,7 @@ class AlterAssignmentsTableAddAssignerIdColumn extends Migration
     public function down()
     {
         Schema::table('assignments', function (Blueprint $table) {
-            //
+            $table->dropColumn('assigner_id');
         });
     }
 }

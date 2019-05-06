@@ -16,13 +16,13 @@ class CreateDepartmentsTable extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->text('district')->nullable()->default(null);
-            $table->text('description')->nullable()->default(null);
-            $table->text('contact_number')->nullable()->default(null);
-            $table->text('email')->default('');
-            $table->text('alt_contact_number')->nullable()->default(null);
-            $table->mediumText('address')->nullable()->default(null);
-            $table->text('status_is')->default('active');
+            $table->string('district')->default('');
+            $table->text('description')->nullable();
+            $table->string('contact_number')->default('');
+            $table->string('email')->default('');
+            $table->string('alt_contact_number')->default('');
+            $table->mediumText('address')->nullable();
+            $table->string('status_is')->default('active');
 
             $table->timestamps();
         });
