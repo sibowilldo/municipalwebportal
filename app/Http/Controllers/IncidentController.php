@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Status;
+use App\Type;
 use Illuminate\Http\Request;
 use App\Http\Resources\Incident as IncidentResource;
 use App\Incident;
@@ -21,7 +23,12 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        //
+
+        $incidents = Incident::with('users')->get()->sortByDesc('created_at');
+        $statues = Status::all('id', 'name');
+        $types = Type::all('id', 'name');
+
+        return view('backend.incidents.index', compact('incidents', 'statues', 'types'));
     }
 
     public function jsonIndex()

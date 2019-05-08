@@ -1,11 +1,8 @@
 @extends('layouts.master')
 
-@section('title', 'Dashboard')
+@section('title', 'Incidents')
 
 @section('content')
-
-    @include('widgets.dashboard.incidents-at-a-glance')
-
     <!--Begin::Section-->
     <div class="row">
         <div class="col-xl-12">
@@ -37,7 +34,7 @@
                                                     <select class="form-control m-bootstrap-select" id="m_form_status">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach($statues as $status)
-                                                        <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                                            <option value="{{ $status->id }}">{{ $status->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -93,26 +90,24 @@
                                 <th data-field="Type">{{ __('Type') }}</th>
                                 <th data-field="Status">{{ __('Status') }}</th>
                                 <th data-field="Location">{{ __('Location') }}</th>
-                                <th data-field="SuburbID">{{ __('Suburb') }}</th>
                                 <th data-field="User">{{ __('User') }}</th>
                                 <th data-field="Actions" style="text-align: right;">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($incidents as $incident)
-                            <tr>
-                                <td>{{ $incident->id }}</td>
-                                <td>{{ $incident->reference }}</td>
-                                <td>{{ $incident->name }}</td>
-                                <td>{{ $incident->created_at }}</td>
-                                <td>{{ $incident->type->id }}</td>
-                                <td>{{ $incident->status->id }}</td>
-                                <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
-                                <td>{{ $incident->suburb_id }}</td>
-                                <td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>
-                                <td></td>
-                                {{-- <td></td> --}}
-                            </tr>
+                                <tr>
+                                    <td>{{ $incident->id }}</td>
+                                    <td>{{ $incident->reference }}</td>
+                                    <td>{{ $incident->name }}</td>
+                                    <td>{{ $incident->created_at }}</td>
+                                    <td>{{ $incident->type->id }}</td>
+                                    <td>{{ $incident->status->id }}</td>
+                                    <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
+                                    <td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>
+                                    <td></td>
+                                    {{-- <td></td> --}}
+                                </tr>
                             @endforeach
                             </tbody>
                         </table>
@@ -206,7 +201,7 @@
          * Function REQUIRED!
          *
          *
-        */
+         */
         const TableMethods = function(){
             return{
                 init:function(datatable){
@@ -221,91 +216,6 @@
                 }
             }
         }();
-
-
-        var statusChart = function() {
-            var data = [];
-            var series = ['Open', 'Closed', 'Assigned', 'Cancelled', 'Rejected', 'Overdue'];
-            var color = [
-                mApp.getColor('accent'),
-                mApp.getColor('metal'),
-                mApp.getColor('success'),
-                mApp.getColor('warning'),
-                mApp.getColor('info'),
-                mApp.getColor('danger')]
-
-            for (var i = 0; i < series.length; i++) {
-                data[i] = {
-                    label: series[i],
-                    color: color[i],
-                    data: Math.floor(Math.random() * 100) + 1
-                };
-            }
-
-            $.plot($("#status_chart"), data, {
-                series: {
-                    pie: {
-                        show: true,
-                        radius: 1,
-                        label: {
-                            show: true,
-                            radius: 1,
-                            formatter: function(label, series) {
-                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
-                            },
-                            background: {
-                                opacity: 0.8
-                            }
-                        }
-                    }
-                },
-                legend: {
-                    show: false
-                }
-            });
-        }
-
-        var typeChart = function() {
-            var data = [];
-            var series = ['Illegal Dumping', 'Faulty Meter', 'Bin not collected', 'Electricity Outage', 'Animal Carcass'];
-            var color = [
-                mApp.getColor('accent'),
-                mApp.getColor('success'),
-                mApp.getColor('warning'),
-                mApp.getColor('info'),
-                mApp.getColor('danger')]
-
-            for (var i = 0; i < series.length; i++) {
-                data[i] = {
-                    label: series[i],
-                    color: color[i],
-                    data: Math.floor(Math.random() * 100) + 1
-                };
-            }
-
-            $.plot($("#types_chart"), data, {
-                series: {
-                    pie: {
-                        show: true,
-                        radius: 1,
-                        label: {
-                            show: true,
-                            radius: 1,
-                            formatter: function(label, series) {
-                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
-                            },
-                            background: {
-                                opacity: 0.8
-                            }
-                        }
-                    }
-                },
-                legend: {
-                    show: false
-                }
-            });
-        }
-
         const columns = [
             {
                 field: 'id',
@@ -386,8 +296,6 @@
         ];
         jQuery(document).ready(function() {
             LoadTypes.init();
-            statusChart();
-            typeChart();
             TableElement.init($('#incidents'), columns);
         });
     </script>

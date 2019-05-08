@@ -1,126 +1,72 @@
-<!--begin:: Widgets/Stats-->
+
+<!--Begin::Section-->
 <div class="m-portlet">
     <div class="m-portlet__body  m-portlet__body--no-padding">
         <div class="row m-row--no-padding m-row--col-separator-xl">
-            <div class="col-md-12 col-lg-6 col-xl-3">
+            <div class="col-xl-6">
 
-                <!--begin::Total Profit-->
-                <div class="m-widget24">
-                    <div class="m-widget24__item">
-                        <h4 class="m-widget24__title">
-                            {{ __('Summary') }}
-                        </h4><br>
-                        <span class="m-widget24__desc">
-													{{ __('All Incidents') }}
+                <!--begin:: Widgets/Daily Reports-->
+                <div class="m-widget14">
+                    <div class="m-widget14__header m--margin-bottom-30">
+                        <h3 class="m-widget14__title">
+                            Daily Reported Incidents
+                        </h3>
+                        <span class="m-widget14__desc">
+
 												</span>
-                        <span class="m-widget24__stats m--font-brand">
-													{{ count($incidents) }}
-												</span>
-                        <div class="m--space-10"></div>
-                        <div class="progress m-progress--sm">
-                            <div class="progress-bar m--bg-brand" role="progressbar" style="width: 78%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <span class="m-widget24__change">
-													Change
-												</span>
-                        <span class="m-widget24__number">
-													78%
-												</span>
+                    </div>
+                    <div class="m-widget14__chart" style="height:260px;">
+                        <canvas id="m_chart_daily_sales"></canvas>
                     </div>
                 </div>
 
-                <!--end::Total Profit-->
+                <!--end:: Widgets/Daily Reports-->
             </div>
-            <div class="col-md-12 col-lg-6 col-xl-3">
+            <div class="col-xl-3">
 
-                <!--begin::New Feedbacks-->
-                <div class="m-widget24">
-                    <div class="m-widget24__item">
-                        <h4 class="m-widget24__title">
-                            {{ __('Assigned') }}
-                        </h4><br>
-                        <span class="m-widget24__desc">
-                            {{ \Carbon\Carbon::today()->format('D, d M Y')}}
-												</span>
-                        <span class="m-widget24__stats m--font-success">
-													{{ count($incidents->where('status_id', 1)) }}
-
-												</span>
-
-                        <div class="m--space-10"></div>
-                        <div class="progress m-progress--sm">
-                            <div class="progress-bar m--bg-success" role="progressbar" style="width: 84%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                <!--begin:: Widgets/Status Breakdown-->
+                <div class="m-widget14">
+                    <div class="m-widget14__header">
+                        <h3 class="m-widget14__title">
+                            Incident Types
+                        </h3>
+                        <span class="m-widget14__desc">
+                        {{ Carbon\Carbon::now()->format('d M Y') }} Stats
+                        </span>
+                    </div>
+                    <div class="row  align-items-center">
+                        <div class="col">
+                            <div id="types_chart" class="m-widget14__chart" style="height: 260px; width: 260px">
+                            </div>
                         </div>
-                        <span class="m-widget24__change">
-													Change
-												</span>
-                        <span class="m-widget24__number">
-													84%
-												</span>
                     </div>
                 </div>
 
-                <!--end::New Feedbacks-->
+                <!--end:: Widgets/Status Breakdown-->
             </div>
-            <div class="col-md-12 col-lg-6 col-xl-3">
+            <div class="col-xl-3">
 
-                <!--begin::New Orders-->
-                <div class="m-widget24">
-                    <div class="m-widget24__item">
-                        <h4 class="m-widget24__title">
-                            New Orders
-                        </h4><br>
-                        <span class="m-widget24__desc">
-													Fresh Order Amount
-												</span>
-                        <span class="m-widget24__stats m--font-danger">
-													567
-												</span>
-                        <div class="m--space-10"></div>
-                        <div class="progress m-progress--sm">
-                            <div class="progress-bar m--bg-danger" role="progressbar" style="width: 69%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                <!--begin:: Widgets/Status Breakdown-->
+                <div class="m-widget14">
+                    <div class="m-widget14__header">
+                        <h3 class="m-widget14__title">
+                            Incident Statuses
+                        </h3>
+                        <span class="m-widget14__desc">
+                        {{ Carbon\Carbon::now()->format('d M Y') }} Stats
+                        </span>
+                    </div>
+                    <div class="row  align-items-center">
+                        <div class="col">
+                            <div id="status_chart" class="m-widget14__chart" style="height: 260px; width: 260px">
+                            </div>
                         </div>
-                        <span class="m-widget24__change">
-													Change
-												</span>
-                        <span class="m-widget24__number">
-													69%
-												</span>
                     </div>
                 </div>
 
-                <!--end::New Orders-->
-            </div>
-            <div class="col-md-12 col-lg-6 col-xl-3">
-
-                <!--begin::New Users-->
-                <div class="m-widget24">
-                    <div class="m-widget24__item">
-                        <h4 class="m-widget24__title">
-                            New Users
-                        </h4><br>
-                        <span class="m-widget24__desc">
-													Joined New User
-												</span>
-                        <span class="m-widget24__stats m--font-success">
-													276
-												</span>
-                        <div class="m--space-10"></div>
-                        <div class="progress m-progress--sm">
-                            <div class="progress-bar m--bg-success" role="progressbar" style="width: 90%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <span class="m-widget24__change">
-													Change
-												</span>
-                        <span class="m-widget24__number">
-													90%
-												</span>
-                    </div>
-                </div>
-
-                <!--end::New Users-->
+                <!--end:: Widgets/Status Breakdown-->
             </div>
         </div>
     </div>
 </div>
-<!--end:: Widgets/Stats-->
+

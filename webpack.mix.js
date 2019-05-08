@@ -103,6 +103,7 @@ mix
         vendors + 'jstree/dist/jstree.js',
         vendors + 'raphael/raphael.js',
         vendors + 'morris.js/morris.js',
+        vendors + 'flot/flot.bundle.js',
         vendors + 'chartist/dist/chartist.js',
         vendors + 'chart.js/dist/Chart.bundle.js',
         vendors + 'js/framework/components/plugins/charts/chart.init.js',
