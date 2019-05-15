@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attachment;
 use App\Incident;
+use App\Meta;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -56,8 +58,8 @@ class IncidentController extends Controller
                 'name' => 'required|string',
                 'description' => 'required|string',
                 'location_description' => 'required|string',
-                'latitude' => 'required|string',
-                'longitude' => 'required|string',
+                'latitude' => 'required',
+                'longitude' => 'required',
                 'suburb_id' => 'required',
             ]
         );
@@ -75,12 +77,34 @@ class IncidentController extends Controller
                 'status_id' => $request->status_id
             ]
         );
-
         $incident->save();
+
+        $has_attachments = false;
+        if(count($request->images)){
+            $has_attachments = true;
+            foreach($request->images as $image){
+                //Save & Get Metas (metadata)
+                $meta = new Meta(['metadata' => 'Nothing Here']);
+                $meta->save();
+
+                //Save & GET Attachments (meta_id, path, filename, is_active)
+                $attachment = new Attachment([
+                    'meta_id' => $meta->id,
+                    'path' => $image,
+                    'filename' => substr($image, strrpos($image, '/')+1),
+                    'is_active' => true
+                ]);
+                $attachment->save();
+
+                //attach Attachment to Incident ([is_active])
+                $incident->attachments()->attach($attachment, ['is_active' => false]);
+            }
+
+        }
         $user->incidents()->attach(
             $incident,
             [
-                'has_location' => true, 'has_attachment' => false, 'source_id' => 0
+                'has_location' => true, 'has_attachment' => $has_attachments, 'source_id' => 0
             ]
         );
 
@@ -97,7 +121,7 @@ class IncidentController extends Controller
     {
         $incident = Incident::findOrFail($id);
 
-        return view('backend.incidents.show', compact('incident'));
+        return new IncidentResource($incident);
         //
     }
 
@@ -111,7 +135,7 @@ class IncidentController extends Controller
     {
         $incident = Incident::findOrFail($id);
 
-        return view('backend.incidents.edit', compact('incident'));
+        return new IncidentResource($incident);
         //
     }
 

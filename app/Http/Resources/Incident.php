@@ -26,7 +26,9 @@ class Incident extends JsonResource
             'created' => $this->created_at->format('d M Y h:i:s A'),
             'type' => $this->type,
             'status' => $this->status,
-            'users' => $this->users
+            'users' => $this->users,
+            'images' => $this->attachments,
+            'assignments' => $this->assignments
         ];
     }
 }
