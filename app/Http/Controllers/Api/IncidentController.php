@@ -61,6 +61,7 @@ class IncidentController extends Controller
                 'latitude' => 'required',
                 'longitude' => 'required',
                 'suburb_id' => 'required',
+                'is_public' => 'required',
             ]
         );
 
@@ -73,6 +74,7 @@ class IncidentController extends Controller
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
                 'suburb_id' => $request->suburb_id,
+                'is_public' => $request->is_public,
                 'type_id' => $request->type_id,
                 'status_id' => $request->status_id
             ]

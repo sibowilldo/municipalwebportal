@@ -12,7 +12,7 @@ class Incident extends Model
      * @var array
      */
     protected $fillable = [
-        'reference','name', 'description', 'location_description', 'latitude', 'longitude','suburb_id', 'type_id', 'status_id'
+        'reference','name', 'description', 'location_description', 'latitude', 'longitude','suburb_id','is_public' , 'type_id', 'status_id'
     ];
 
     //An Incident belongs to many users through pivot (incident_user)
