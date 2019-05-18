@@ -23,6 +23,7 @@ class Incident extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'suburb_id' => $this->suburb_id,
+            'is_public' => $this->is_public,
             'created' => $this->created_at->format('d M Y h:i:s A'),
             'type' => $this->type,
             'status' => $this->status,
