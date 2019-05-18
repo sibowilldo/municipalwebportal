@@ -21,6 +21,7 @@
                 </div>
                 <div class="m-portlet__body">
 
+                @include('layouts.form-errors')
                     <!--begin: Datatable -->
                     <div class="m_datatable">
                         <!--begin: Search Form -->
@@ -94,8 +95,8 @@
                                 <th data-field="Status">{{ __('Status') }}</th>
                                 <th data-field="Location">{{ __('Location') }}</th>
                                 <th data-field="SuburbID">{{ __('Suburb') }}</th>
-                                <th data-field="User">{{ __('User') }}</th>
-                                <th data-field="Actions" style="text-align: right;">{{ __('Actions') }}</th>
+                                {{--<th data-field="User">{{ __('User') }}</th>--}}
+                                <th data-field="Actions" class="text-center">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -109,8 +110,19 @@
                                 <td>{{ $incident->status->id }}</td>
                                 <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
                                 <td>{{ $incident->suburb_id }}</td>
-                                <td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>
-                                <td></td>
+                                {{--<td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>--}}
+                                <td>
+                                    @if(!count($incident->assignments))
+                                    <a class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" href="/engineers/{{$incident->id}}/list"  data-toggle="tooltip" data-placement="top" title="Assign Engineer"><i class="fa 	fa-wrench"></i></a>
+                                    @endif
+                                    <a class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" href="/group/{{$incident->id}}/list"  data-toggle="tooltip" data-placement="top" title="Assign Working Group"><i class="flaticon-network"></i></a>
+                                    <a class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" href="/incidents/{{$incident->id}}/edit" data-toggle="tooltip" data-placement="top"  title="Edit Details"><i class="la la-edit"></i></a>
+                                    <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="tooltip" data-placement="top" title="Close Incident">
+                                        <i class="flaticon-interface-5"></i>
+                                    </a>
+
+
+                                </td>
                                 {{-- <td></td> --}}
                             </tr>
                             @endforeach
@@ -184,6 +196,7 @@
                                 $('select[name="type_id"]').empty();
                                 $.each(data.data, function(key, value){
                                     $('select[name="type_id"]').append('<option value="'+ key +'">' + value + '</option>');
+
                                 });
                             },
                             complete: function(){
@@ -358,30 +371,12 @@
             },
             {
                 field: "Actions",
-                width: 110,
+                width: 160,
                 title: "Actions",
-                textAlign: 'center',
+                textAlign: 'left',
                 sortable: false,
                 locked: {right: 'lg'},
-                overflow: 'visible',
-                template: function(row, index, datatable) {
-                    var dropup = (datatable.getPageSize() - index) <= 4 ? 'dropup' : '';
-                    return '\
-                                    <div class="dropdown ' + dropup + '">\
-                                        <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">\
-                                            <i class="la la-ellipsis-h"></i>\
-                                        </a>\
-                                        <div class="dropdown-menu dropdown-menu-right">\
-                                            <a class="dropdown-item" href="/incidents/' + row.id + '/edit"><i class="la la-edit"></i> Edit Details</a>\
-                                            <a class="dropdown-item" href="/engineers/' + row.id + '/list"><i class="flaticon-cogwheel-1"></i> Assign Engineer</a>\
-                                            <a class="dropdown-item" href="#"><i class="flaticon-network"></i> Assign Working Group</a>\
-                                        </div>\
-                                    </div>\
-                                    <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Close Incident">\
-                                        <i class="flaticon-interface-5"></i>\
-                                    </a>\
-                                ';
-                }
+                overflow: 'visible'
             }
         ];
         jQuery(document).ready(function() {
@@ -389,6 +384,12 @@
             statusChart();
             typeChart();
             TableElement.init($('#incidents'), columns);
+            $('#type_id').select2({
+                placeholder: {
+                    id: '-1', // the value of the option
+                    text: 'Select a category from the list above first...'
+                }
+            });
         });
     </script>
     <script src="{{ asset('js/google-maps.js') }}"></script>

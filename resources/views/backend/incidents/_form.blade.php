@@ -34,14 +34,14 @@
 </div>
 <div class="form-group m-form__group">
     {!! Form::label('category_id', 'Category:') !!}
-    {!! Form::select('category_id', \App\Category::pluck('name', 'id'), 1, ['class'=>'form-control m-input']) !!}
+    {!! Form::select('category_id', \App\Category::pluck('name', 'id'), null, ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker', 'placeholder'=>'Select a Category...']) !!}
 
 </div>
 <div class="form-group m-form__group">
     {!! Form::label('type_id', 'Type:') !!}
-    {!! Form::select('type_id', [], null, ['class'=>'form-control m-input']) !!}
+    {!! Form::select('type_id', [], null, ['class'=>'m-select2 form-control', 'style' => 'width: 100%']) !!}
 </div>
 <div class="form-group m-form__group">
     {!! Form::label('status_id', 'Status:') !!}
-    {!! Form::select('status_id', \App\Status::pluck('name', 'id'), 6, ['class'=>'form-control m-input']) !!}
+    {!! Form::select('status_id', \App\Status::pluck('name', 'id'), 6, ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) !!}
 </div>

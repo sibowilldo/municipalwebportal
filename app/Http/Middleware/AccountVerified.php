@@ -18,11 +18,11 @@ class AccountVerified
     {
         $user = Auth::user();
 
-        // if ($user->email_verified_at == null) {
-        //     return response()->json([
-        //         'message' => 'Account not verified'
-        //     ], 403);
-        // }
+         if ($user->email_verified_at == null) {
+             return response()->json([
+                 'message' => 'Account not verified'
+             ], 403);
+         }
 
         return $next($request);
     }

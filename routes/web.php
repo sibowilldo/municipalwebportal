@@ -11,43 +11,48 @@
 |
 */
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 //
+Route::group(['middleware' => ['verified']], function () {
+    Route::get('/', 'HomeController@index')->name('dashboard')->middleware('verified');
+    Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
-Route::get('/', 'HomeController@index')->name('dashboard');
-Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+    /**
+     * Permissions and Roles Routes
+     */
+    Route::resource('manage/permissions', 'PermissionController');
+    Route::resource('manage/roles', 'RoleController');
 
-/**
- * Permissions and Roles Routes
- */
-Route::resource('manage/permissions', 'PermissionController');
-Route::resource('manage/roles', 'RoleController');
+    /**
+     * Profile, Users, Engineers and WorkingGroup Routes
+     */
 
-/**
- * Users, Engineers and WorkingGroup Routes
- */
-Route::resource('users', 'UserController');
-Route::post('users/{user}/restore', 'UserController@restore')->name('users.restore');
+    Route::resource('profile', 'ProfileController')->except(['index', 'show', 'create', 'store']);
 
-Route::resource('/engineers', 'AssignEngineerController');
-Route::post('/engineers/{incident}/assign', 'AssignEngineerController@assign')->name('engineers.assign');
-Route::get('/engineers/{incident}/list', 'AssignEngineerController@list')->name('engineers.list');
+    Route::resource('users', 'UserController');
+    Route::post('users/{user}/restore', 'UserController@restore')->name('users.restore');
 
-
-Route::resource('/working-group', 'AssignGroupController');
-Route::post('/working-group/{user}/{incident}/assign', 'AssignGroupController@assign');
+    Route::resource('/engineers', 'AssignEngineerController');
+    Route::post('/engineers/{incident}/assign', 'AssignEngineerController@assign')->name('engineers.assign');
+    Route::get('/engineers/{incident}/list', 'AssignEngineerController@list')->name('engineers.list');
 
 
-Route::resource('incidents', 'IncidentController');
-Route::get('/api/incidents', 'IncidentController@jsonIndex');
+    Route::resource('/working-group', 'AssignGroupController');
+    Route::post('/working-group/{user}/{incident}/assign', 'AssignGroupController@assign');
 
-Route::resource('types', 'TypeController');
-Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
 
-Route::resource('categories', 'CategoryController');
-Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
+    Route::resource('incidents', 'IncidentController');
+    Route::get('/api/incidents', 'IncidentController@jsonIndex');
 
-Route::resource('manage/departments', 'DepartmentController');
+    Route::resource('types', 'TypeController');
+    Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
+
+    Route::resource('categories', 'CategoryController');
+    Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
+
+    Route::resource('manage/departments', 'DepartmentController');
+});
+
 
 //
 //Route::get('/{vue?}', function () {

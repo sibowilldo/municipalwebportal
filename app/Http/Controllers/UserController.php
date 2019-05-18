@@ -55,29 +55,40 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //Validate name, email and password fields
-        $this->validate(
-            $request,
+
+        //Validate fields
+        $request->validate(
             [
-                'name'=>'required|max:120',
+                'firstname'=>'required|max:120',
+                'lastname'=>'required|max:120',
+                'contactnumber'=>'required|max:20',
                 'email'=>'required|email|unique:users',
-                'password'=>'required|min:6|confirmed'
+                'roles' => 'required'
             ]
         );
 
-            $user = User::create($request->only('email', 'name', 'password')); //Retrieving only the email and password data
+        //Randomly generate a password and hash it immediately
+        $request['password'] = bcrypt(str_random(10));
+        $request['activation_token'] = str_random(25);
 
-            $roles = $request['roles']; //Retrieving the roles field
+        $user = User::create($request->only('firstname', 'lastname', 'email', 'contactnumber', 'status_is', 'password', 'activation_token')); //Retrieving only the email and password data
+
+        //Todo remove email verification bypass
+        $user->email_verified_at = null;
+        $user->save();
+
+        //Todo: Notify user via email that user account created, must be verified and password changed!
+
+        $roles = $request['roles']; //Retrieving the roles field
         //Checking if a role was selected
         if (isset($roles)) {
-
             foreach ($roles as $role) {
                 $role_r = Role::where('id', '=', $role)->firstOrFail();
                 $user->assignRole($role_r); //Assigning role to user
             }
         }
         //Redirect to the users.index view and display message
-        flash('User successfully added.')->success();
+        flash('User added and notified.')->success();
 
         return redirect()->route('users.index');
     }
@@ -120,13 +131,13 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id); //Get role specified by id
         //Validate name, email and password fields
-        $this->validate(
-            $request,
+        $request->validate(
             [
                 'firstname'=>'required|max:120',
                 'lastname'=>'required|max:120',
                 'contactnumber'=>'required|max:20',
                 'email'=>'required|email|unique:users,email,'.$id,
+                'roles' => 'required'
                 // 'password'=>'required|min:6|confirmed'
             ]
         );

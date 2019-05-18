@@ -53,7 +53,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="m-grid__item">
                 <div class="m-login__logo m--img-centered">
                     <a href="#">
-                        <img src="assets/img/ethekwini-logo.jpg" width="250px">
+                        <img src="/assets/img/ethekwini-logo.jpg" width="250px">
                     </a>
                 </div>
             </div>

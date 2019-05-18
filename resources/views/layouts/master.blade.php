@@ -31,7 +31,7 @@
 
 
 <!-- begin::Body -->
-<body class="m-page--fluid m--skin-light m-page--loading-enabled  m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+<body class="m-page--fluid m--skin-light  m-page--loading m-page--loading-enabled  m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 
 <!-- begin::Page loader -->
 <div class="m-page-loader m-page-loader--base">
@@ -88,7 +88,7 @@
 <!-- end:: Page -->
 
 <!-- begin::Quick Sidebar -->
-    @include('layouts.sections.quick-sidebar')
+    {{--@include('layouts.sections.quick-sidebar')--}}
 <!-- end::Quick Sidebar -->
 
 <!-- begin::Scroll Top -->
@@ -111,6 +111,9 @@
 <script>
     $(window).on('load', function() {
         $('body').removeClass('m-page--loading');
+    });
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
 

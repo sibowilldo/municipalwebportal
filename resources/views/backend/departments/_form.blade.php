@@ -47,7 +47,7 @@
     <div class="form-group m-form__group row">
         <label for="status_is" class="col-3 col-form-label{{ $errors->has('status_is') ? ' has-danger' : '' }}">Status</label>
         <div class="col-9">
-            {!! Form::select('status_is', $statuses, null, ['class'=>'form-control m-input']) !!}
+            {!! Form::select('status_is', $statuses, null, ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) !!}
         </div>
     </div>
 </div>

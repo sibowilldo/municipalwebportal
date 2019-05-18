@@ -63,16 +63,19 @@ class IncidentController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
-
         $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
             'location_description' => 'required|string',
             'latitude' => 'required|string',
             'longitude' => 'required|string',
+            'category_id' => 'required',
+            'type_id' => 'required',
             'suburb_id' => 'required',
         ]);
+
+        $user = Auth::user();
+
 
         $incident = new Incident([
             'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
@@ -89,6 +92,8 @@ class IncidentController extends Controller
         $incident->save();
         $user->incidents()->attach($incident, ['has_location' => true, 'has_attachment' => false, 'source_id' => 0]);
 
+        flash('Incident Logged Successfully')->success();
+
         return  redirect()->back(201);
     }
 
@@ -100,7 +105,7 @@ class IncidentController extends Controller
      */
     public function show($id)
     {
-        //
+        $incident = Incident::findOrFail($id);
     }
 
     /**
@@ -111,7 +116,7 @@ class IncidentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $incident = Incident::findOrFail($id);
     }
 
     /**
@@ -123,7 +128,19 @@ class IncidentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'location_description' => 'required|string',
+            'latitude' => 'required|string',
+            'longitude' => 'required|string',
+            'category_id' => 'required',
+            'type_id' => 'required',
+            'suburb_id' => 'required',
+        ]);
+
+        $incident = Incident::findOrFail($id);
+
     }
 
     /**
@@ -134,7 +151,7 @@ class IncidentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $incident = Incident::findOrFail($id);
     }
 
 }

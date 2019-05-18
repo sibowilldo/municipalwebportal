@@ -53,8 +53,7 @@
                                 m-dropdown-toggle="click">
                                 <a href="#" class="m-nav__link m-dropdown__toggle">
                                     <span class="m-topbar__userpic">
-                                        <i data-v-cbab4ce0="" class="flaticon-avatar"></i>
-                                        {{--<img src="assets/app/media/img/users/user4.jpg" class="m--img-rounded m--marginless" alt="" />--}}
+                                       <img src="{{ Avatar::create(Auth::user()->email)->toGravatar(['d' => 'mp', 'r' => 'pg', 's' => 50])}}" class="m--img-rounded m--marginless" />
                                     </span>
                                     <span class="m-topbar__username m--hide">{{ Auth::user()->fullname }}</span>
                                 </a>
@@ -64,7 +63,7 @@
                                         <div class="m-dropdown__header m--align-center" style="background-color: #7948e1; background-size: cover;">
                                             <div class="m-card-user m-card-user--skin-dark">
                                                 <div class="m-card-user__pic">
-                                                    <img src="assets/app/media/img/users/user4.jpg" class="m--img-rounded m--marginless" alt="" />
+                                                    <img src="{{ Avatar::create(Auth::user()->email)->toGravatar(['d' => 'mp', 'r' => 'pg', 's' => 50])}}" class="m--img-rounded m--marginless" />
 
                                                     <!--
             <span class="m-type m-type--lg m--bg-danger"><span class="m--font-light">S<span><span>
@@ -83,7 +82,7 @@
                                                         <span class="m-nav__section-text">Section</span>
                                                     </li>
                                                     <li class="m-nav__item">
-                                                        <a href="{{ route('users.show', Auth::id()) }}" class="m-nav__link">
+                                                        <a href="{{ route('profile.edit', Auth::id()) }}" class="m-nav__link">
                                                             <i class="m-nav__link-icon flaticon-profile-1"></i>
                                                             <span class="m-nav__link-title">
                                                                 <span class="m-nav__link-wrap">
