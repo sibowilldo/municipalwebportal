@@ -71,9 +71,8 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="user_profile_tab">
                     <div class="form-group m-form__group row">
-                        <div class="col-7 offset-2">
+                        <div class="col-9 offset-1">
                             <div class="m-form__seperator m-form__seperator--solid m-form__seperator--space-2x"></div>
-
                             <div class="row m-row--col-separator-lg m-row--no-padding">
                                 <div class="col">
                                     <label class="m-option border-0">

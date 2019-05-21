@@ -90,6 +90,19 @@ class AssignGroupController extends Controller
     }
 
     /**
+     * List Available Engineers.
+     *
+     *
+     * @param  \App\Incident  $incident
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list(Incident $incident)
+    {
+
+    }
+
+    /**
      * Assign Working Group to Incident.
      *
      * @param  \App\User  $user
@@ -97,7 +110,7 @@ class AssignGroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function assign(User $user, Incident $incident)
+    public function assign(Request $request, Incident $incident)
     {
         //
     }

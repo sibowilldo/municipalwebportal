@@ -112,15 +112,15 @@
                                 <td>{{ $incident->suburb_id }}</td>
                                 {{--<td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>--}}
                                 <td>
-                                    @if(!count($incident->assignments))
-                                    <a class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" href="/engineers/{{$incident->id}}/list"  data-toggle="tooltip" data-placement="top" title="Assign Engineer"><i class="fa 	fa-wrench"></i></a>
-                                    @endif
-                                    <a class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" href="/group/{{$incident->id}}/list"  data-toggle="tooltip" data-placement="top" title="Assign Working Group"><i class="flaticon-network"></i></a>
-                                    <a class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" href="/incidents/{{$incident->id}}/edit" data-toggle="tooltip" data-placement="top"  title="Edit Details"><i class="la la-edit"></i></a>
-                                    <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="tooltip" data-placement="top" title="Close Incident">
-                                        <i class="flaticon-interface-5"></i>
-                                    </a>
-
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="m-btn-group m-btn-group--pill btn-group m-btn-group m-btn-group--pill btn-group-sm" role="group" aria-label="...">
+                                            @if(!count($incident->assignments))
+                                            <a data-toggle="tooltip" title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="fa fa-wrench"></i></a> @endif
+                                            <a data-toggle="tooltip" title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="flaticon-network"></i></a>
+                                            <a data-toggle="tooltip" title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="flaticon-edit"></i></a>
+                                            @if(strtolower($incident->status->name) !== 'closed')<a data-toggle="tooltip" title="Close Incident" href="#" class="m-btn btn btn-xs btn-secondary"><i class="la la-check-circle"></i></a>@endif
+                                        </div>
+                                    </div>
 
                                 </td>
                                 {{-- <td></td> --}}
@@ -262,9 +262,9 @@
                         radius: 1,
                         label: {
                             show: true,
-                            radius: 1,
+                            radius: 3/4,
                             formatter: function(label, series) {
-                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + Math.round(series.percent) + '%</div>';
                             },
                             background: {
                                 opacity: 0.8
@@ -273,7 +273,10 @@
                     }
                 },
                 legend: {
-                    show: false
+                    show: true
+                },
+                grid: {
+                    clickable: true
                 }
             });
         }
@@ -303,9 +306,9 @@
                         radius: 1,
                         label: {
                             show: true,
-                            radius: 1,
+                            radius: 3/4,
                             formatter: function(label, series) {
-                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + Math.round(series.percent) + '%</div>';
                             },
                             background: {
                                 opacity: 0.8
@@ -314,7 +317,7 @@
                     }
                 },
                 legend: {
-                    show: false
+                    show: true
                 }
             });
         }
@@ -333,7 +336,7 @@
             },
             {
                 field: 'Location',
-                width: 180,
+                width: 200,
             },
             {
                 field: 'Status',

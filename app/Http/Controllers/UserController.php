@@ -30,7 +30,9 @@ class UserController extends Controller
         //
         $users = User::withTrashed()->get();
         $statuses = User::$statuses;
-        return view('backend.users.index', compact('users', 'statuses'));
+        $roles = Role::all();
+
+        return view('backend.users.index', compact('users', 'statuses', 'roles'));
     }
 
     /**
@@ -167,7 +169,8 @@ class UserController extends Controller
         //Find a user with a given id and delete
             $user = User::findOrFail($id);
             $user->delete();
-
+            $user->status_is = 'Trashed';
+            $user->save();
             return response()->json([
                 "message"=> $user->fullname . ' was deleted successfully',
                 "url" => route('users.index')

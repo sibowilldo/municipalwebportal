@@ -107,5 +107,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'inactive' => 'inactive',
         'active' => 'active',
         'blocked' => 'blocked',
+        'assigned' => 'assigned',
+        'trashed' => 'trashed'
     ];
 }

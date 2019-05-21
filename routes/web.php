@@ -38,7 +38,8 @@ Route::group(['middleware' => ['verified']], function () {
 
 
     Route::resource('/working-group', 'AssignGroupController');
-    Route::post('/working-group/{user}/{incident}/assign', 'AssignGroupController@assign');
+    Route::post('/working-group/{incident}/assign', 'AssignGroupController@assign')->name('working-group.assign');
+    Route::post('/working-group/{incident}/list', 'AssignGroupController@list')->name('working-group.list');
 
 
     Route::resource('incidents', 'IncidentController');

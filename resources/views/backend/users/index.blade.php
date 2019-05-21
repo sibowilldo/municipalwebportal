@@ -68,9 +68,9 @@
                                                 <div class="m-form__control">
                                                     <select class="form-control m-bootstrap-select" id="m_form_status">
                                                         <option value="">{{ __('All') }}</option>
-                                                        {{-- @foreach($statuses as $status)
-                                                        <option value="{{ $status->id }}">{{ $status->name }}</option>
-                                                        @endforeach --}}
+                                                         @foreach($statuses as $status)
+                                                            <option value="{{ $status }}">{{ ucfirst($status) }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -79,14 +79,14 @@
                                         <div class="col-md-4">
                                             <div class="m-form__group m-form__group--inline">
                                                 <div class="m-form__label">
-                                                    <label class="m-label m-label--single">{{ __('Type:') }}</label>
+                                                    <label class="m-label m-label--single">{{ __('Roles:') }}</label>
                                                 </div>
                                                 <div class="m-form__control">
                                                     <select class="form-control m-bootstrap-select" id="m_form_type">
                                                         <option value="">{{ __('All') }}</option>
-                                                        {{-- @foreach($types as $type)
-                                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                                        @endforeach --}}
+                                                         @foreach($roles as $role)
+                                                            <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -136,7 +136,7 @@
                                 <td>{{ $user->contactnumber }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->created_at }}</td>
-                                <td>{{ $user->status_is }}</td>
+                                <td>{{ ucfirst($user->status_is) }}</td>
                                 <td>
                                    {{ ucwords($user->roles()->pluck('name')->implode(', ')) }}</td>
                                 <td>
@@ -211,12 +211,92 @@
                     ],
                 });
 
+                datatable.on('click', '.btn-delete', function(e){
+                    e.preventDefault();
+                    var id = $(this).data("id");
+                    var url = $(this).data("url");
+                    var token = $("meta[name='csrf-token']").attr("content");
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You may not be able to undo this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                        preConfirm: function() {
+                            return new Promise(function(resolve) {
+                                $.ajax({
+                                    url: url,
+                                    type: 'delete',
+                                    data: {
+                                        "id": id,
+                                        "_token": token
+                                    }
+                                })
+                                    .done(function(response){
+                                        Swal.fire({
+                                            title: 'Deleted!',
+                                            text: response.message,
+                                            onClose: function() {
+                                                window.location.href = response.url;
+                                            }
+                                        })
+                                    })
+                                    .fail(function(){
+                                        swal('Oops...', 'Something went wrong with ajax !', 'error');
+                                    });
+                            });
+                        },
+                        allowOutsideClick: false
+                    })
+                });
+                datatable.on('click', '.btn-restore', function(e){
+                    e.preventDefault();
+                    var id = $(this).data("id");
+                    var url = $(this).data("url");
+                    var token = $("meta[name='csrf-token']").attr("content");
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, restore entry!',
+                        preConfirm: function() {
+                            return new Promise(function(resolve) {
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    data: {
+                                        "id": id,
+                                        "_token": token
+                                    }
+                                })
+                                    .done(function(response){
+                                        Swal.fire({
+                                            title: 'Restored!',
+                                            text: response.message,
+                                            onClose: function() {
+                                                window.location.href = response.url;
+                                            }
+                                        })
+                                    })
+                                    .fail(function(){
+                                        swal('Oops...', 'Something went wrong with ajax !', 'error');
+                                    });
+                            });
+                        },
+                        allowOutsideClick: false
+                    })
+                });
+
                 $('#m_form_status').on('change', function() {
                     datatable.search($(this).val().toLowerCase(), 'Status');
                 });
 
                 $('#m_form_type').on('change', function() {
-                    datatable.search($(this).val().toLowerCase(), 'Type');
+                    datatable.search($(this).val().toLowerCase(), 'Role');
                 });
 
                 $('#m_form_status, #m_form_type').selectpicker();
@@ -263,109 +343,10 @@
                 }
             }
         }();
-        const LoadDeleteFx = function(){
-            var deleteFx = function(){
-                jQuery('.btn-delete').on('click', function(e){
-                    e.preventDefault();
-                    var id = $(this).data("id");
-                    var url = $(this).data("url");
-                    var token = $("meta[name='csrf-token']").attr("content");
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You may not be able to undo this!",
-                        type: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!',
-                        preConfirm: function() {
-                            return new Promise(function(resolve) {
-                                $.ajax({
-                                    url: url,
-                                    type: 'delete',
-                                    data: {
-                                        "id": id,
-                                        "_token": token
-                                    }
-                                })
-                                .done(function(response){
-                                    Swal.fire({
-                                        title: 'Deleted!',
-                                        text: response.message,
-                                        onClose: function() {
-                                            window.location.href = response.url;
-                                        }
-                                    })
-                                })
-                                .fail(function(){
-                                    swal('Oops...', 'Something went wrong with ajax !', 'error');
-                                });
-                            });
-                        },
-                        allowOutsideClick: false
-                    })
-                });
-            }
-            return {
-                init: function(){
-                    deleteFx();
-                }
-            }
-        }();
-        const LoadRestoreFx = function(){
-            var restoreFx = function(){
-                jQuery('.btn-restore').on('click', function(e){
-                    e.preventDefault();
-                    var id = $(this).data("id");
-                    var url = $(this).data("url");
-                    var token = $("meta[name='csrf-token']").attr("content");
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        type: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, restore entry!',
-                        preConfirm: function() {
-                            return new Promise(function(resolve) {
-                                $.ajax({
-                                    url: url,
-                                    type: 'POST',
-                                    data: {
-                                        "id": id,
-                                        "_token": token
-                                    }
-                                })
-                                .done(function(response){
-                                    Swal.fire({
-                                        title: 'Restored!',
-                                        text: response.message,
-                                        onClose: function() {
-                                            window.location.href = response.url;
-                                        }
-                                    })
-                                })
-                                .fail(function(){
-                                    swal('Oops...', 'Something went wrong with ajax !', 'error');
-                                });
-                            });
-                        },
-                        allowOutsideClick: false
-                    })
-                });
-            }
-            return {
-                init: function(){
-                    restoreFx();
-                }
-            }
-        }();
 
         jQuery(document).ready(function() {
             LoadTypes.init();
             UsersTable.init();
-            LoadDeleteFx.init();
-            LoadRestoreFx.init();
         });
 
     </script>

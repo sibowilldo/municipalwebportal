@@ -29,9 +29,11 @@ class GenerateMenus
 
 
             $menu->add('Users',  ['route' => 'users.index', ])
-                ->data('icon', 'flaticon-users');
-            ;
+                ->data('icon', 'flaticon-users')
+                ->active('/users/*');
+
             $menu->users->add('All Users', ['route' => 'users.index',]);
+            $menu->users->add('Add New User', ['route' => 'users.create',]);
 
             $menu->add('Manage', [])->active('manage/*')
                 ->data('icon', 'flaticon-interface-8');
