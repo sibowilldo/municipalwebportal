@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use EloquentBuilder;
 use App\Attachment;
 use App\Incident;
 use App\Meta;
@@ -10,8 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Incident as IncidentResource;
-use App\Http\Resources\IncidentCollection;
-use App\Http\Resources\UserCollection;
 
 class IncidentController extends Controller
 {
@@ -25,9 +24,10 @@ class IncidentController extends Controller
      *
      * @return \App\Http\Resources\IncidentCollection
      */
-    public function index()
+    public function index(Request $request)
     {
-        $incidents = Incident::with('users')->get()->sortBy('created_at');
+
+        $incidents = EloquentBuilder::to(Incident::class, $request->all())->with('users')->get()->sortBy('created_at');
 
         if (!count($incidents)) {
             return response()->json(

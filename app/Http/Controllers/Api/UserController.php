@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Incident;
+
 use App\Http\Resources\Incident as IncidentResource;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
