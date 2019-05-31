@@ -106,12 +106,13 @@ class AssignEngineerController extends Controller
      */
     public function list(Incident $incident)
     {
-        if(strtolower($incident->status->name) === "assigned"){
-            flash()->warning('Someone is already assigned, please use the <strong>Edit Details</strong> option.');
-            return redirect()->action('HomeController@index');
-        }
+//        if(strtolower($incident->status->name) === "assigned"){
+//            flash()->warning('Someone is already assigned, please use the <strong>Edit Details</strong> option.');
+//            return redirect()->action('HomeController@index');
+//        }
+//      whereIn('status_is', ['available', 'active'])->
 
-        $engineers = User::whereIn('status_is', ['available', 'active'])->role('engineer')->get(); //todo: Add where Department is relative to incident
+        $engineers = User::role('engineer')->get(); //todo: Add where Department is relative to incident
 
         return view('backend.engineers.list', compact('engineers', 'incident'));
     }
@@ -127,9 +128,7 @@ class AssignEngineerController extends Controller
     public function assign(Incident $incident, Request $request)
     {
 
-        $request['assigned_engineers'] = explode(',', $request->assigned_engineers);
-
-        $engineers = User::whereIn('id', $request->assigned_engineers)->get();
+        $engineers = User::whereIn('id', $request->list_select)->get();
         $engineer_count = count($engineers);
 
         //Avoid performing any further actions without assigning at least 1 person

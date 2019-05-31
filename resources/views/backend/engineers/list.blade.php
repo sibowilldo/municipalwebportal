@@ -59,11 +59,16 @@
                                                     <td>{{ $engineer->id }}</td>
                                                     <td>{{ $engineer->fullname }}</td>
                                                     <td>{{ $engineer->contactnumber }}</td>
-                                                    <td>{{ $engineer->email }}</td>
+                                                    <td>{{ $engineer->email }}
+                                                    </td>
                                                     <td>
                                                 <span class="m-switch m-switch--outline m-switch--icon m-switch--info">
                                                     <label>
-                                                        <input type="checkbox"  class="assigned-engineer" data-id="{{ $engineer->id }}" data-name="{{ $engineer->fullname }}">
+                                                        <input type="checkbox"  class="assigned-engineer"
+                                                               data-id="{{ $engineer->id }}"
+                                                               data-name="{{ $engineer->fullname }}"
+                                                                {{ $incident->assignments()->where('user_id', $engineer->id)->first() ? 'checked' : '' }}
+                                                        >
                                                         <span></span>
                                                     </label>
                                                 </span>
@@ -169,11 +174,8 @@
                                                 Assigned Engineers
                                             </label>
                                              <span class="m-widget4__sub">
-                                                 {{ Form::text('assigned_engineers', null,
-                                                    ["id" => "engineers-list",
-                                                    "data-role"=>"tagsinput",
-                                                    "class"=>"form-control m-input",
-                                                    "multiple"=>"multiple"]) }}
+                                                 <select class="form-control m-select2" multiple="multiple" name="list_select[]" id="list_select">
+                                                 </select>
                                             </span>
                                         </div>
                                     </div><div class="m-widget1__item">
@@ -224,20 +226,10 @@
     <script type="text/javascript">
 
         //Global Declaration and Initialization
-        let EngineerSelection = JSON.parse(localStorage.getItem('EngineerSelection')) || {},
-            elt = $('#engineers-list');
+        let EngineerSelection = JSON.parse(localStorage.getItem('EngineerSelection')) || {}, engineerSelect = $('.m-select2').select2();
         if (performance.navigation.type !== 1) {
             EngineerSelection = {};
         }
-
-        elt.tagsinput({
-            itemValue: function(item) {
-                return item.id;
-            },
-            itemText: function(item) {
-                return item.name;
-            }
-        });
 
         const EngineersTable = function()
         {
@@ -276,6 +268,7 @@
                             width: 150
                         }
                     ],
+
                 });
                 // DataTable Events
                 datatable.on("m-datatable--on-layout-updated", function () {
@@ -290,7 +283,17 @@
                     let item = $(this),
                         tag = { 'id': item.data('id'), 'name': item.data('name')};
                     if(item.is(':checked')){
-                        elt.tagsinput('add', tag);
+                        // Set the value, creating a new option if necessary
+                        if (engineerSelect.find("option[value='" + item.data('id')+ "']").length) {
+                            let list2 = engineerSelect.val();
+                            list2.push(item.data('id')+"");
+                            engineerSelect.val(list2).trigger('change');
+                        } else {
+                            // Create a DOM Option and pre-select by default
+                            var newOption = new Option(item.data('name'), item.data('id'), false, true);
+                            // Append it to the select
+                            engineerSelect.append(newOption).trigger('change');
+                        }
                         jQuery.notify({
                             message: item.data('name') + " was assigned. <br>Click <strong>Save Changes</strong> to commit.",
                             icon: "icon la la-check-circle"
@@ -299,7 +302,15 @@
                         });
 
                     }else {
-                        elt.tagsinput('remove', tag);
+
+                        var values = engineerSelect.val();
+                        if (values) {
+                            var i = values.indexOf(item.data('id')+ '');
+                            if (i >= 0) {
+                                values.splice(i, 1);
+                                engineerSelect.val(values).trigger('change');
+                            }
+                        }
                         jQuery.notify({
                             message: item.data('name') + " was unassigned. <br>Click <strong>Save Changes</strong> to commit.",
                             icon: "icon la la-info-circle"
@@ -310,6 +321,7 @@
                     EngineerSelection[item.data('id')] = { id:item.data('id'), name:item.data('name'), state: this.checked  };
                     localStorage.setItem("EngineerSelection", JSON.stringify(EngineerSelection));
                 });
+
             };
             return {
                 //== Public functions
@@ -325,12 +337,19 @@
             let updateFx = function () {
                 // On page load
                 $.each(EngineerSelection, function(key, value) {
-                    let elem = $('.assigned-engineer[data-id="'+key+'"]' );
-                    elem.prop('checked', value.state);
-                    if(elem.is(":checked")){
-                        let tag = { 'id': elem.data('id'), 'name': elem.data('name')};
-                        elt.tagsinput('add', tag);
+                    let item = $('.assigned-engineer[data-id="'+key+'"]' );
+                    item.prop('checked', value.state);
+                    if(item.is(":checked")){
+                        let tag = { 'id': item.data('id'), 'name': item.data('name')};
+                        // Set the value, creating a new option if necessary
+                        if (!engineerSelect.find("option[value='" + item.data('id')+ "']").length) {
+                            // Create a DOM Option and pre-select by default
+                            var newOption = new Option(item.data('name'), item.data('id'), false, true);
+                            // Append it to the select
+                            engineerSelect.append(newOption).trigger('change');
+                        }
                     }
+
                 });
             }
 
@@ -341,15 +360,33 @@
             }
         }();
 
+        $(document).on("m-datatable--on-init", function () {
+            let checkboxes = $('.assigned-engineer:checked');
+            $.each(checkboxes, function (k, v) {
+                v = $(v);
+                EngineerSelection[v.data('id')] = { id:v.data('id'), name:v.data('name'), state: this.checked  };
+                localStorage.setItem("EngineerSelection", JSON.stringify(EngineerSelection));
+            })
+
+        });
+
         $(document).ready(function() {
-            $('#engineers-list').on('itemRemoved', function(event) {
-                console.log(event.item);
+            engineerSelect.on('select2:unselect', function (e) {
+                var data = e.params.data;
+                let item = $('.assigned-engineer[data-id="'+data.id+'"]' );
+                item.prop('checked', false);
+            });
+            engineerSelect.on('select2:select', function (e) {
+                var data = e.params.data;
+                let item = $('.assigned-engineer[data-id="'+data.id+'"]' );
+                item.prop('checked', true);
             });
 
             EngineersTable.init();
             UpdateElems.init();
 
         });
+
 
     </script>
     <script src="{{ asset('js/google-maps.js') }}"></script>
