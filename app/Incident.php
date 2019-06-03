@@ -40,8 +40,8 @@ class Incident extends Model
     }
 
     //An Incident has one Type
-    public function type()
+    public function category()
     {
-        return $this->belongsTo(Type::class);
+        return $this->belongsTo(Category::class);
     }
 }

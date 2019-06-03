@@ -27,9 +27,9 @@ class HomeController extends Controller
     {
         $incidents = Incident::with('users')->get()->sortByDesc('created_at');
         $statues = Status::all('id', 'name');
-        $types = Type::all('id', 'name');
+        $categories = Type::all('id', 'name');
 
-        return view('dashboard', compact('incidents', 'statues', 'types'));
+        return view('dashboard', compact('incidents', 'statues', 'categories'));
     }
 
 }
