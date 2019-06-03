@@ -49,8 +49,8 @@
                                                 <div class="m-form__control">
                                                     <select class="form-control m-bootstrap-select" id="m_form_type">
                                                         <option value="">{{ __('All') }}</option>
-                                                        @foreach($types as $type)
-                                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                                        @foreach($categories as $category)
+                                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -87,7 +87,7 @@
                                 <th data-field="Reference">{{ __('Reference') }}</th>
                                 <th data-field="Name">{{ __('Name') }}</th>
                                 <th data-field="LoggedAt">{{ __('Logged At') }}</th>
-                                <th data-field="Type">{{ __('Type') }}</th>
+                                <th data-field="Category">{{ __('Category') }}</th>
                                 <th data-field="Status">{{ __('Status') }}</th>
                                 <th data-field="Location">{{ __('Location') }}</th>
                                 <th data-field="User">{{ __('User') }}</th>
@@ -101,7 +101,7 @@
                                     <td>{{ $incident->reference }}</td>
                                     <td>{{ $incident->name }}</td>
                                     <td>{{ $incident->created_at }}</td>
-                                    <td>{{ $incident->type->id }}</td>
+                                    <td>{{ $incident->category->id }}</td>
                                     <td>{{ $incident->status->id }}</td>
                                     <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
                                     <td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>
@@ -249,8 +249,8 @@
                 },
             },
             {
-                field: 'Type',
-                title: 'Type',
+                field: 'Category',
+                title: 'Category',
                 width: 150,
                 // callback function support for column rendering
                 template: function(row) {
@@ -261,9 +261,9 @@
                         4: {'title': 'Electricity Outage', 'state': 'success'},
                         5: {'title': 'Faulty Meter', 'state': 'danger'},
                     };
-                    return '<span class="m-badge m-badge--' + status[row.Type].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' +
-                        status[row.Type].state + '">' +
-                        status[row.Type].title + '</span>';
+                    return '<span class="m-badge m-badge--' + status[row.Category].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' +
+                        status[row.Category].state + '">' +
+                        status[row.Category].title + '</span>';
                 },
             },
             {

@@ -151,10 +151,10 @@
                                     <div class="m-widget1__item">
                                         <div class="m-widget4__info">
                                         <span class="m-widget4__title m--font-boldest">
-                                            Type
+                                            Category
                                         </span><br>
                                             <span class="m-widget4__sub">
-                                            {{ $incident->type->name }}
+                                            {{ $incident->category->name }}
                                         </span>
                                         </div>
                                     </div>
