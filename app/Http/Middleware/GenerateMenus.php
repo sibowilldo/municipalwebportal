@@ -44,6 +44,8 @@ class GenerateMenus
 
             $menu->add('System', [])
                 ->data('icon', 'flaticon-cogwheel-2');
+            $menu->system->add('Types', ['route' => 'types.index']);
+            $menu->system->add('Categories', ['route' => 'categories.index']);
 
 
         });

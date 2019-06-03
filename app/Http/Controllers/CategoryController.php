@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Type;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoriesFormRequest;
 
 class CategoryController extends Controller
 {
@@ -19,7 +21,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('backend.categories.index', compact('categories'));
     }
 
     /**
@@ -29,18 +32,24 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $types = Type::pluck('name', 'id');
+        return view('backend.categories.create', compact('types'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CategoriesFormRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoriesFormRequest $request)
     {
-        //
+        $request['is_active'] = $request->is_active ? true : false;
+        $category = Category::create($request->only(['name', 'description', 'is_active']));
+        $category->types()->attach($request->types);
+
+        flash($category->name . ' Category <strong>saved</strong> successfully')->success();
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -51,7 +60,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('backend.categories.show', compact('category'));
     }
 
     public function jsonShowByType(Type $type)
@@ -70,19 +80,27 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::with('types')->findOrFail($id);
+        $types = Type::pluck('name', 'id');
+
+        return view('backend.categories.edit', compact('category', 'types'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\CategoriesFormRequest  $request
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoriesFormRequest $request, Category $category)
     {
-        //
+        $request['is_active'] = $request->is_active ? true : false;
+        $category->update($request->only(['name', 'description', 'is_active']));
+        $category->types()->sync($request->types);
+
+        flash($category->name . ' <strong>updated</strong> successfully')->success();
+        return redirect()->route('categories.show', $category->id);
     }
 
     /**
@@ -93,6 +111,9 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->destroy();
+
+        return view('backend.categories.index');
     }
 }

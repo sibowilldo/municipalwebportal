@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Type;
 use App\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\TypesFormRequest;
 
 class TypeController extends Controller
 {
@@ -19,7 +21,8 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        $types = Type::all();
+        return view('backend.types.index', compact('types'));
     }
 
     /**
@@ -29,18 +32,24 @@ class TypeController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::pluck('name', 'id');
+        return view('backend.types.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\TypesFormRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TypesFormRequest $request)
     {
-        //
+        $request['is_active'] = $request->is_active ? true : false;
+        $type = Type::create($request->only(['name', 'description', 'is_active']));
+        $type->categories()->attach($request->categories);
+
+        flash($type->name . ' Type <strong>saved</strong> successfully')->success();
+        return redirect()->route('types.index');
     }
 
     /**
@@ -51,9 +60,9 @@ class TypeController extends Controller
      */
     public function show($id)
     {
-        //
+        $type = Type::findOrFail($id);
+        return view('backend.types.show', compact('type'));
     }
-
 
     public function jsonShowByCategory(Category $category)
     {
@@ -73,7 +82,10 @@ class TypeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $type = Type::with('categories')->findOrFail($id);
+        $categories = Category::pluck('name', 'id');
+
+        return view('backend.types.edit', compact('categories', 'type'));
     }
 
     /**
@@ -83,9 +95,14 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TypesFormRequest $request, Type $type)
     {
-        //
+        $request['is_active'] = $request->is_active ? true : false;
+        $type->update($request->only(['name', 'description', 'is_active']));
+        $type->categories()->sync($request->categories);
+
+        flash($type->name . ' <strong>updated</strong> successfully')->success();
+        return redirect()->route('types.show', $type->id);
     }
 
     /**
