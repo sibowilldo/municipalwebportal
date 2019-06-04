@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Auth;
 use App\Status;
 use App\Type;
@@ -27,7 +28,7 @@ class HomeController extends Controller
     {
         $incidents = Incident::with('users')->get()->sortByDesc('created_at');
         $statues = Status::all('id', 'name');
-        $categories = Type::all('id', 'name');
+        $categories = Category::all('id', 'name');
 
         return view('dashboard', compact('incidents', 'statues', 'categories'));
     }

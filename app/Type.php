@@ -24,13 +24,8 @@ class Type extends Model
         'is_active' => 'boolean',
     ];
 
-    //A Type has one Incident
-    public function incident()
-    {
-        return $this->hasOne(Incident::class);
-    }
 
-    //A Type belongs to and has many Categories
+    //A Type belongs to Many Categories
     public function categories()
     {
         return $this->belongsToMany(Category::class);

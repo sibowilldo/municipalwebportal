@@ -120,7 +120,11 @@
                                         <a href="{{ route('categories.edit', $category->id) }}">Edit</a>
                                     </td>
                                     <td>{{ $category->description }}</td>
-                                    <td></td>
+                                    <td>
+                                        @foreach($category->types as $type)
+                                            <a href="{{ route('types.show', $type->id) }}" class="m-badge m-badge--brand m-badge--wide mb-2">{{ ucwords($type->name ) }}</a>
+                                        @endforeach
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -176,6 +180,12 @@
                 sortable: false,
                 width: 150,
                 overflow: 'visible'
+            },
+            {
+                field: 'Associated Types',
+                title: 'Associated Types',
+                sortable: false,
+                width: 350
             }
         ];
         jQuery(document).ready(function() {

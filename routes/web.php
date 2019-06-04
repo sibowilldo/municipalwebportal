@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Http\Resources\CategoryResource;
+use App\Category;
 
 Auth::routes(['verify' => true]);
 //
@@ -50,6 +52,10 @@ Route::group(['middleware' => ['verified']], function () {
 
     Route::resource('categories', 'CategoryController');
     Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
+    //Get Categories in JSON format
+    Route::get('backend/categories', function (){
+        return CategoryResource::collection(Category::all('id', 'name', 'is_active'));
+    })->middleware(['auth:web']);
 
     Route::resource('manage/departments', 'DepartmentController');
 });

@@ -22,6 +22,7 @@ Route::group(['prefix' => 'auth'], function () {
         return response(['authenticated' => false]);
     });
 
+
     Route::group(['middleware' => ['auth:api', 'accountVerified']], function() {
 
         // Auth, Roles and Permissions Routes

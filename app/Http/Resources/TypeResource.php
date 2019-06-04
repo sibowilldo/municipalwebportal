@@ -20,6 +20,7 @@ class TypeResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'is_active' => $this->is_active,
+            'category' => $this->categories,
             'created_at' => $this->created_at
         ];
     }

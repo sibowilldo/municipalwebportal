@@ -29,4 +29,10 @@ class Category extends Model
     {
         return $this->belongsToMany(Type::class);
     }
+
+    //A Type has one Incident
+    public function incidents()
+    {
+        return $this->belongsToMany(Incident::class);
+    }
 }

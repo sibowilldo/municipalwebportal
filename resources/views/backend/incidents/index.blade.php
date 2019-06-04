@@ -105,7 +105,17 @@
                                     <td>{{ $incident->status->id }}</td>
                                     <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
                                     <td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>
-                                    <td></td>
+                                    <td>
+                                        <div class="btn-toolbar" role="toolbar">
+                                            <div class="m-btn-group m-btn-group--pill btn-group m-btn-group m-btn-group--pill btn-group-sm" role="group" aria-label="...">
+                                                @if(!count($incident->assignments))
+                                                    <a data-toggle="tooltip" title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="fa fa-wrench"></i></a> @endif
+                                                <a data-toggle="tooltip" title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="flaticon-network"></i></a>
+                                                <a data-toggle="tooltip" title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="flaticon-edit"></i></a>
+                                                @if(strtolower($incident->status->name) !== 'closed')<a data-toggle="tooltip" title="Close Incident" href="#" class="m-btn btn btn-xs btn-secondary"><i class="la la-check-circle"></i></a>@endif
+                                            </div>
+                                        </div>
+                                    </td>
                                     {{-- <td></td> --}}
                                 </tr>
                             @endforeach
@@ -163,6 +173,34 @@
 
     {{ Html::script('js/project-mdatatable.js') }}
     <script>
+        let Categories = {};
+        var LoadCategories = function(){
+            var categories = function(){
+                let colorCodes = [];
+                $.ajax({
+                    url: '/backend/categories',
+                    type:"GET",
+                    dataType:"json",
+                    success:function(data) {
+                        $.each(data.data, function(key, value){
+                            Categories[value.id] = {'title': value.name}
+                        });
+                    },
+                    complete: function(){
+                        // Call datatable init function, once everything has loaded
+                        TableElement.init($('#incidents'), columns);
+                    }
+                });
+            }
+
+            return {
+                init: function(){
+                    categories()
+                }
+            }
+        }();
+        LoadCategories.init();//Load these first!
+
         var LoadTypes = function(){
             var types = function(){
                 $('select[name="category_id"]').on('change', function() {
@@ -179,6 +217,7 @@
                                 $('select[name="type_id"]').empty();
                                 $.each(data.data, function(key, value){
                                     $('select[name="type_id"]').append('<option value="'+ key +'">' + value + '</option>');
+
                                 });
                             },
                             complete: function(){
@@ -209,13 +248,101 @@
                         datatable.search($(this).val().toLowerCase(), 'Status');
                     });
                     $('#m_form_type').on('change', function() {
-                        datatable.search($(this).val().toLowerCase(), 'Type');
+                        datatable.search($(this).val().toLowerCase(), 'Category');
                     });
                     $('#m_form_status, #m_form_type').selectpicker();
 
                 }
             }
         }();
+
+
+        var statusChart = function() {
+            var data = [];
+            var series = ['Open', 'Closed', 'Assigned', 'Cancelled', 'Rejected', 'Overdue'];
+            var color = [
+                mApp.getColor('accent'),
+                mApp.getColor('metal'),
+                mApp.getColor('success'),
+                mApp.getColor('warning'),
+                mApp.getColor('info'),
+                mApp.getColor('danger')]
+
+            for (var i = 0; i < series.length; i++) {
+                data[i] = {
+                    label: series[i],
+                    color: color[i],
+                    data: Math.floor(Math.random() * 100) + 1
+                };
+            }
+
+            $.plot($("#status_chart"), data, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 3/4,
+                            formatter: function(label, series) {
+                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + Math.round(series.percent) + '%</div>';
+                            },
+                            background: {
+                                opacity: 0.8
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    show: true
+                },
+                grid: {
+                    clickable: true
+                }
+            });
+        }
+
+        var typeChart = function() {
+            var data = [];
+            var series = ['Illegal Dumping', 'Faulty Meter', 'Bin not collected', 'Electricity Outage', 'Animal Carcass'];
+            var color = [
+                mApp.getColor('accent'),
+                mApp.getColor('success'),
+                mApp.getColor('warning'),
+                mApp.getColor('info'),
+                mApp.getColor('danger')]
+
+            for (var i = 0; i < series.length; i++) {
+                data[i] = {
+                    label: series[i],
+                    color: color[i],
+                    data: Math.floor(Math.random() * 100) + 1
+                };
+            }
+
+            $.plot($("#types_chart"), data, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 3/4,
+                            formatter: function(label, series) {
+                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + Math.round(series.percent) + '%</div>';
+                            },
+                            background: {
+                                opacity: 0.8
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    show: true
+                }
+            });
+        }
+
         const columns = [
             {
                 field: 'id',
@@ -230,7 +357,7 @@
             },
             {
                 field: 'Location',
-                width: 180,
+                width: 200,
             },
             {
                 field: 'Status',
@@ -243,7 +370,7 @@
                         3: {'title': 'Overdue', 'class': ' m-badge--danger'},
                         4: {'title': 'Rejected', 'class': ' m-badge--info'},
                         5: {'title': 'Cancelled', 'class': ' m-badge--warning'},
-                        6: {'title': 'Open', 'class': ' m-badge--warning'},
+                        6: {'title': 'Open', 'class': ' m-badge--accent'},
                     };
                     return '<span class="m-badge ' + status[row.Status].class + ' m-badge--wide">' + status[row.Status].title + '</span>';
                 },
@@ -254,50 +381,34 @@
                 width: 150,
                 // callback function support for column rendering
                 template: function(row) {
-                    var status = {
-                        1: {'title': 'Animal Carcass', 'state': 'warning'},
-                        2: {'title': 'Bin not Collected', 'state': 'primary'},
-                        3: {'title': 'Illegal Dumping', 'state': 'accent'},
-                        4: {'title': 'Electricity Outage', 'state': 'success'},
-                        5: {'title': 'Faulty Meter', 'state': 'danger'},
-                    };
-                    return '<span class="m-badge m-badge--' + status[row.Category].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' +
-                        status[row.Category].state + '">' +
-                        status[row.Category].title + '</span>';
+                    return '<span class="m-badge m-badge--accent m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-accent">' +
+                        Categories[row.Category].title+ '</span>';
                 },
             },
             {
                 field: "Actions",
-                width: 110,
+                width: 160,
                 title: "Actions",
-                textAlign: 'center',
+                textAlign: 'left',
                 sortable: false,
                 locked: {right: 'lg'},
-                overflow: 'visible',
-                template: function(row, index, datatable) {
-                    var dropup = (datatable.getPageSize() - index) <= 4 ? 'dropup' : '';
-                    return '\
-                                    <div class="dropdown ' + dropup + '">\
-                                        <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">\
-                                            <i class="la la-ellipsis-h"></i>\
-                                        </a>\
-                                        <div class="dropdown-menu dropdown-menu-right">\
-                                            <a class="dropdown-item" href="/incidents/' + row.id + '/edit"><i class="la la-edit"></i> Edit Details</a>\
-                                            <a class="dropdown-item" href="/engineers/' + row.id + '/list"><i class="flaticon-cogwheel-1"></i> Assign Engineer</a>\
-                                            <a class="dropdown-item" href="#"><i class="flaticon-network"></i> Assign Working Group</a>\
-                                        </div>\
-                                    </div>\
-                                    <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Close Incident">\
-                                        <i class="flaticon-interface-5"></i>\
-                                    </a>\
-                                ';
-                }
+                overflow: 'visible'
             }
         ];
+
+
         jQuery(document).ready(function() {
             LoadTypes.init();
-            TableElement.init($('#incidents'), columns);
+            statusChart();
+            typeChart();
+            $('#type_id').select2({
+                placeholder: {
+                    id: '-1', // the value of the option
+                    text: 'Select a category from the list above first...'
+                }
+            });
         });
+
     </script>
     <script src="{{ asset('js/google-maps.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>

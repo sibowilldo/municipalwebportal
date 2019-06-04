@@ -180,6 +180,34 @@
 
     {{ Html::script('js/project-mdatatable.js') }}
     <script>
+        let Categories = {};
+        var LoadCategories = function(){
+            var categories = function(){
+                    let colorCodes = [];
+                    $.ajax({
+                        url: '/backend/categories',
+                        type:"GET",
+                        dataType:"json",
+                        success:function(data) {
+                            $.each(data.data, function(key, value){
+                                Categories[value.id] = {'title': value.name}
+                            });
+                        },
+                        complete: function(){
+                            // Call datatable init function, once everything has loaded
+                            TableElement.init($('#incidents'), columns);
+                        }
+                    });
+                }
+
+            return {
+                init: function(){
+                    categories()
+                }
+            }
+        }();
+        LoadCategories.init();//Load these first!
+
         var LoadTypes = function(){
             var types = function(){
                 $('select[name="category_id"]').on('change', function() {
@@ -227,7 +255,7 @@
                         datatable.search($(this).val().toLowerCase(), 'Status');
                     });
                     $('#m_form_type').on('change', function() {
-                        datatable.search($(this).val().toLowerCase(), 'Type');
+                        datatable.search($(this).val().toLowerCase(), 'Category');
                     });
                     $('#m_form_status, #m_form_type').selectpicker();
 
@@ -349,7 +377,7 @@
                         3: {'title': 'Overdue', 'class': ' m-badge--danger'},
                         4: {'title': 'Rejected', 'class': ' m-badge--info'},
                         5: {'title': 'Cancelled', 'class': ' m-badge--warning'},
-                        6: {'title': 'Open', 'class': ' m-badge--warning'},
+                        6: {'title': 'Open', 'class': ' m-badge--accent'},
                     };
                     return '<span class="m-badge ' + status[row.Status].class + ' m-badge--wide">' + status[row.Status].title + '</span>';
                 },
@@ -360,16 +388,8 @@
                 width: 150,
                 // callback function support for column rendering
                 template: function(row) {
-                    var status = {
-                        1: {'title': 'Animal Carcass', 'state': 'warning'},
-                        2: {'title': 'Bin not Collected', 'state': 'primary'},
-                        3: {'title': 'Illegal Dumping', 'state': 'accent'},
-                        4: {'title': 'Electricity Outage', 'state': 'success'},
-                        5: {'title': 'Faulty Meter', 'state': 'danger'},
-                    };
-                    return '<span class="m-badge m-badge--' + status[row.Category].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' +
-                        status[row.Category].state + '">' +
-                        status[row.Category].title + '</span>';
+                    return '<span class="m-badge m-badge--accent m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-accent">' +
+                        Categories[row.Category].title+ '</span>';
                 },
             },
             {
@@ -382,11 +402,12 @@
                 overflow: 'visible'
             }
         ];
+
+
         jQuery(document).ready(function() {
             LoadTypes.init();
             statusChart();
             typeChart();
-            TableElement.init($('#incidents'), columns);
             $('#type_id').select2({
                 placeholder: {
                     id: '-1', // the value of the option
@@ -394,6 +415,7 @@
                 }
             });
         });
+
     </script>
     <script src="{{ asset('js/google-maps.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>

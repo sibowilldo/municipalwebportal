@@ -25,7 +25,7 @@ class Incident extends JsonResource
             'suburb_id' => $this->suburb_id,
             'is_public' => $this->is_public,
             'created' => $this->created_at->format('d M Y h:i:s A'),
-            'type' => $this->type,
+            'category' => $this->category,
             'status' => $this->status,
             'users' => $this->users,
             'images' => $this->attachments,
