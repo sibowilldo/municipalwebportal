@@ -75,7 +75,7 @@ class IncidentController extends Controller
                 'longitude' => $request->longitude,
                 'suburb_id' => $request->suburb_id,
                 'is_public' => $request->is_public,
-                'type_id' => $request->type_id,
+                'category_id' => $request->category_id,
                 'status_id' => $request->status_id
             ]
         );
