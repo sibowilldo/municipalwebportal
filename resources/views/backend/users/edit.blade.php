@@ -1,5 +1,8 @@
 @extends('layouts.master')
 
+@section('title', 'Users')
+@section('breadcrumbs', Breadcrumbs::render('users.edit', $user))
+
 @section('content')
 <div class="row">
     <div class="col-xl-6 col-md-12">

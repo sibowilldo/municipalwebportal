@@ -14,8 +14,18 @@ use App\Http\Resources\CategoryResource;
 use App\Category;
 
 Auth::routes(['verify' => true]);
+Route::get('/register', function (){abort(403, 'Unauthorized action.');});
+Route::post('/register', function (){abort(403, 'Unauthorized action.');});
+
+
 //
 Route::group(['middleware' => ['verified']], function () {
+
+    Route::get('push', function () {
+        event(new App\Events\IncidentCreated(\App\Incident::first()));
+        return redirect()->route('dashboard');
+    });
+
     Route::get('/', 'HomeController@index')->name('dashboard')->middleware('verified');
     Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
@@ -58,6 +68,9 @@ Route::group(['middleware' => ['verified']], function () {
     })->middleware(['auth:web']);
 
     Route::resource('manage/departments', 'DepartmentController');
+
+
+    Route::get('dashboard/charts/types', 'HomeController@chart_types');
 });
 
 

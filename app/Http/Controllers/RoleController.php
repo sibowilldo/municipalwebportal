@@ -67,7 +67,7 @@ class RoleController extends Controller
             $role = Role::where('name', '=', $name)->first();
             $role->givePermissionTo($p);
         }
-        flash('Permission <strong>' . $role->name . '</strong> updated!')->success();
+        flash('Permission <strong>' . $role->name . '</strong> added!')->success();
         return redirect()->route('roles.index');
     }
 

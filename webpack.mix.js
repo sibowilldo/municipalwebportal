@@ -1,41 +1,21 @@
 const mix = require('laravel-mix');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 
+/*
+ |--------------------------------------------------------------------------
+ | Mix Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Mix provides a clean, fluent API for defining some Webpack build steps
+ | for your Laravel application. By default, we are compiling the Sass
+ | file for the application as well as bundling up all the JS files.
+ |
+ */
+
 var vendors = 'resources/assets/vendors/';
+
 mix
-    .styles([
-        vendors + 'perfect-scrollbar/css/perfect-scrollbar.css',
-        vendors + 'tether/dist/css/tether.css',
-        vendors + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
-        vendors + 'bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css',
-        vendors + 'bootstrap-timepicker/css/bootstrap-timepicker.min.css',
-        vendors + 'bootstrap-daterangepicker/daterangepicker.css',
-        vendors + 'bootstrap-touchspin/dist/jquery.bootstrap-touchspin.css',
-        vendors + 'bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
-        vendors + 'bootstrap-select/dist/css/bootstrap-select.css',
-        vendors + 'bootstrap-tagsinput/tagsinput.css',
-        vendors + 'select2/dist/css/select2.css',
-        vendors + 'nouislider/distribute/nouislider.css',
-        vendors + 'owl.carousel/dist/assets/owl.carousel.css',
-        vendors + 'owl.carousel/dist/assets/owl.theme.default.css',
-        vendors + 'ion-rangeslider/css/ion.rangeSlider.css',
-        vendors + 'ion-rangeslider/css/ion.rangeSlider.skinFlat.css',
-        vendors + 'dropzone/dist/dropzone.css',
-        vendors + 'summernote/dist/summernote.css',
-        vendors + 'bootstrap-markdown/css/bootstrap-markdown.min.css',
-        vendors + 'animate.css/animate.css',
-        vendors + 'toastr/build/toastr.css',
-        vendors + 'jstree/dist/themes/default/style.css',
-        vendors + 'morris.js/morris.css',
-        vendors + 'chartist/dist/chartist.min.css',
-        vendors + 'sweetalert2/dist/sweetalert2.min.css',
-        vendors + 'socicon/css/socicon.css',
-        vendors + 'line-awesome/css/line-awesome.css',
-        vendors + 'flaticon/css/flaticon.css',
-        vendors + 'metronic/css/styles.css',
-        vendors + 'datatables/datatables.bundle.css',
-        vendors + 'fontawesome5/css/all.min.css'
-    ], 'public/css/vendors.css')
+    .sass('resources/sass/app.scss', 'public/css')
     .copyDirectory(vendors + 'socicon/font', 'public/font')
     .copyDirectory(vendors + 'line-awesome/fonts', 'public/fonts')
     .copyDirectory(vendors + 'flaticon/fonts', 'public/fonts')
@@ -43,12 +23,12 @@ mix
     .copyDirectory(vendors + 'fontawesome5/webfonts', 'public/webfonts')
     .styles([
         'resources/assets/css/style.bundle.css'
-    ], 'public/css/styles.css')
+    ], 'public/css/styles.bundle.css')
     .combine([
         // <!--begin:: Global Mandatory Vendors -->
-        vendors + 'jquery/dist/jquery.js',
-        vendors + 'popper.js/dist/umd/popper.js',
-        vendors + 'bootstrap/dist/js/bootstrap.min.js',
+        // vendors + 'jquery/dist/jquery.js',
+        // vendors + 'popper.js/dist/umd/popper.js',
+        // vendors + 'bootstrap/dist/js/bootstrap.min.js',
         vendors + 'js-cookie/src/js.cookie.js',
         vendors + 'moment/min/moment.min.js',
         vendors + 'tooltip.js/dist/umd/tooltip.min.js',
@@ -120,8 +100,42 @@ mix
     .scripts(['resources/assets/js/dashboard.js'], 'public/js/dashboard.js')
     .scripts(['resources/assets/js/google-maps.js'], 'public/js/google-maps.js')
     .scripts(['resources/assets/js/project-mdatatable.js'], 'public/js/project-mdatatable.js')
+    .js('resources/js/app.js', 'public/js')
+    // .extract(['vue'])
     .sourceMaps()
     .browserSync('http://municipalwebportal.test');
+
+
+// module.exports = {
+//     module: {
+//         rules: [
+//             // ... other rules
+//             {
+//                 test: /\.vue$/,
+//                 loader: 'vue-loader'
+//             },
+//             // this will apply to both plain `.js` files
+//             // AND `<script>` blocks in `.vue` files
+//             {
+//                 test: /\.js$/,
+//                 loader: 'babel-loader'
+//             },
+//             // this will apply to both plain `.css` files
+//             // AND `<style>` blocks in `.vue` files
+//             {
+//                 test: /\.css$/,
+//                 use: [
+//                     'vue-style-loader',
+//                     'css-loader'
+//                 ]
+//             }
+//         ]
+//     },
+//     plugins: [
+//         // make sure to include the plugin!
+//         new VueLoaderPlugin()
+//     ]
+// }
 
 if (mix.inProduction()) {
     mix.version();

@@ -1,7 +1,8 @@
 @extends('layouts.master')
 
 
-@section('title', 'Departments ')
+@section('title', 'Departments')
+@section('breadcrumbs', Breadcrumbs::render('departments.index'))
 
 @section('content')
 

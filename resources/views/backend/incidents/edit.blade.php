@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-
-@section('title', 'Edit ' . $category->name .' Category')
+@section('title', 'Incidents')
+@section('breadcrumbs', Breadcrumbs::render('incidents.edit', $incident))
 
 @section('content')
 
@@ -12,7 +12,7 @@
 					<div class="m-portlet__head-caption">
 						<div class="m-portlet__head-title">
 							<h3 class="m-portlet__head-text">
-								{{ __('Category Details') }}
+								{{ __('Incident Details') }}
 							</h3>
 						</div>
 					</div>
@@ -33,17 +33,17 @@
 															<span class="m-nav__section-text">Useful Links</span>
 														</li>
 														<li class="m-nav__item">
-															<a href="{{ route('users.index') }}" class="m-nav__link">
-																<i class="m-nav__link-icon la la-users"></i>
-																<span class="m-nav__link-text">Users</span>
+															<a href="{{ route('incidents.show', $incident->id) }}" class="m-nav__link">
+																<i class="m-nav__link-icon la la-list"></i>
+																<span class="m-nav__link-text">View Details</span>
 															</a>
 														</li>
-														<li class="m-nav__item">
-															<a href="{{ route('roles.index') }}" class="m-nav__link">
-																<i class="m-nav__link-icon flaticon-users-1"></i>
-																<span class="m-nav__link-text">Available Roles</span>
-															</a>
-														</li>
+														{{--<li class="m-nav__item">--}}
+															{{--<a href="{{ route('roles.index') }}" class="m-nav__link">--}}
+																{{--<i class="m-nav__link-icon flaticon-users-1"></i>--}}
+																{{--<span class="m-nav__link-text">Available Roles</span>--}}
+															{{--</a>--}}
+														{{--</li>--}}
 													</ul>
 												</div>
 											</div>
@@ -54,17 +54,23 @@
 						</ul>
 					</div>
 				</div>
-
-				{!! Form::model($category, ['route'=> ['categories.update', $category->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
-				@include('backend.categories._form')
-
+                {!! Form::model($incident, ['route'=> ['incidents.update', $incident->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
+                <div class="m-portlet__body">
+                    @include('layouts.form-errors')
+				    @include('backend.incidents._form')
+                </div>
 				<div class="m-portlet__foot m-portlet__foot--fit">
 					<div class="m-form__actions m-form__actions--solid">
 						<div class="row">
-							<div class="col-2">
-							</div>
-							<div class="col-10">
-								<button type="submit" class="btn btn-success">Update</button>
+							<div class="col">
+								<button type="submit" class="btn btn-success m-btn--pill">Update Details</button>
+                                <button class="btn m-btn--pill btn-outline btn-outline-danger  m-btn m-btn--icon"
+                                        type="button" data-toggle="modal" data-target="#delete_modal">
+                                    <span>
+                                        <i class="la la-trash"></i>
+                                        <span>Trash </span>
+                                    </span>
+                                </button>
 							</div>
 						</div>
 					</div>
@@ -74,8 +80,90 @@
 		</div>
 	</div>
 
+    @include('modals._delete-with-reason', ['id' => $incident->id, 'url' => route('incidents.destroy', $incident->id)])
 @endsection
 
 @section('js')
+	<script>
+        var LoadTypes = function(){
+            var types = function(){
+                $('select[name="category_id"]').on('change', function() {
+                    var categoryId = $(this).val();
+                    if(categoryId) {
+                        $.ajax({
+                            url: '/json/types/'+categoryId,
+                            type:"GET",
+                            dataType:"json",
+                            beforeSend: function(){
+                                $('#loader').css("visibility", "visible");
+                            },
+                            success:function(data) {
+                                $('select[name="type_id"]').empty();
+                                $.each(data.data, function(key, value){
+                                    $('select[name="type_id"]').append('<option value="'+ key +'">' + value + '</option>');
+
+                                });
+                            },
+                            complete: function(){
+                                $('#loader').css("visibility", "hidden");
+                            }
+                        });
+                    } else {
+                        $('select[name="type_id"]').empty();
+                    }
+                })
+            }
+
+            return {
+                init: function(){
+                    types()
+                }
+            }
+        }();
+        jQuery(document).ready(function() {
+            $('.btn-delete').on('click' , function(ev){
+                var el = $(this);
+                LoadDeleteFx.init(ev, el);
+            });
+
+            $('.delete-modal').on('click' , function(ev){
+                ev.preventDefault();
+                var el = $(this);
+                var id = el.data('id');
+                var url = el.data('url');
+                var token = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    url: url,
+                    type: 'delete',
+                    data: {
+                        'id': id,
+                        '_token': token
+                    }
+                })
+                .done(function(response){
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: response.message,
+                        onClose: function() {
+                            window.location.href = response.url;
+                        }
+                    });
+                })
+                .fail(function(){
+                    swal('Oops...', 'Something went wrong with ajax !', 'error');
+                });
+            });
+            LoadTypes.init();
+            $('#type_id').select2({
+                placeholder: {
+                    id: '-1', // the value of the option
+                    text: 'Select a category from the list above first...'
+                }
+            });
+        });
+	</script>
+	<script src="{{ asset('js/google-maps.js') }}"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>
 
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\System;
 use App\Type;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoriesFormRequest;
@@ -33,7 +34,8 @@ class CategoryController extends Controller
     public function create()
     {
         $types = Type::pluck('name', 'id');
-        return view('backend.categories.create', compact('types'));
+        $state_colors = System::$state_colors;
+        return view('backend.categories.create', compact('types', 'state_colors'));
     }
 
     /**
@@ -55,12 +57,11 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        $category = Category::findOrFail($id);
         return view('backend.categories.show', compact('category'));
     }
 
@@ -82,8 +83,9 @@ class CategoryController extends Controller
     {
         $category = Category::with('types')->findOrFail($id);
         $types = Type::pluck('name', 'id');
+        $state_colors = System::$state_colors;
 
-        return view('backend.categories.edit', compact('category', 'types'));
+        return view('backend.categories.edit', compact('category', 'types', 'state_colors'));
     }
 
     /**
@@ -96,7 +98,7 @@ class CategoryController extends Controller
     public function update(CategoriesFormRequest $request, Category $category)
     {
         $request['is_active'] = $request->is_active ? true : false;
-        $category->update($request->only(['name', 'description', 'is_active']));
+        $category->update($request->only(['name', 'description', 'is_active', 'state_color']));
         $category->types()->sync($request->types);
 
         flash($category->name . ' <strong>updated</strong> successfully')->success();
@@ -106,14 +108,17 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        $category = Category::findOrFail($id);
-        $category->destroy();
 
-        return view('backend.categories.index');
+        $category->delete();
+
+        return response()->json([
+            "message"=> $category->name . ' was deleted successfully',
+            "url" => route('categories.index')
+        ], 200);
     }
 }

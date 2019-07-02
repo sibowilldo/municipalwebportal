@@ -20,11 +20,9 @@
 
     <!--end::Web font -->
 
-
-    <link href=" {{ mix('css/vendors.css') }}" rel="stylesheet">
-    <link href=" {{ mix('css/styles.css') }}" rel="stylesheet">
+    <link href=" {{ mix('css/app.css') }}" rel="stylesheet">
+    <link href=" {{ mix('css/styles.bundle.css') }}" rel="stylesheet">
     <link href=" {{ asset('assets/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet">
-
 
     @yield('css')
 </head>
@@ -43,9 +41,8 @@
     </div>
 </div>
 
-
 <!-- begin:: Page -->
-<div class="m-grid m-grid--hor m-grid--root m-page">
+<div class="m-grid m-grid--hor m-grid--root m-page" id="app">
 
     <!-- begin::Header -->
     @include('layouts.sections.header')
@@ -67,7 +64,15 @@
             <div class="m-subheader ">
                 <div class="d-flex align-items-center">
                     <div class="mr-auto">
-                        <h3 class="m-subheader__title ">@yield('title')</h3>
+                        <h3 class="m-subheader__title m-subheader__title--separator">@yield('title')</h3>
+                        <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                            <li class="m-nav__item m-nav__item--home">
+                                <a href="#" class="m-nav__link m-nav__link--icon">
+                                    <i class="m-nav__link-icon la la-home"></i>
+                                </a>
+                            </li>
+                            @yield('breadcrumbs')
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -100,13 +105,19 @@
 <!-- begin::Quick Nav -->
 {{--@include('layouts.sections.quick-nav')--}}
 
+<script type="text/javascript" src="/js/manifest.js"></script>
+<script type="text/javascript" src="/js/vendor.js"></script>
+<script type="text/javascript" src="/js/app.js"></script>
+
 <script type="text/javascript" src="/js/mandatory.js"></script>
 <script type="text/javascript" src="/js/vendors.js"></script>
 <script type="text/javascript" src="/js/scripts.bundle.js"></script>
 <script type="text/javascript" src="/assets/fullcalendar/fullcalendar.js"></script>
 <script type="text/javascript" src="/js/dashboard.js"></script>
 
+
 @yield('js')
+
 <!-- begin::Page Loader -->
 <script>
     $(window).on('load', function() {

@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('title', 'Dashboard')
+@section('breadcrumbs', Breadcrumbs::render('dashboard'))
 
 @section('content')
 
@@ -96,7 +97,7 @@
                                 <th data-field="Location">{{ __('Location') }}</th>
                                 <th data-field="SuburbID">{{ __('Suburb') }}</th>
                                 {{--<th data-field="User">{{ __('User') }}</th>--}}
-                                <th data-field="Actions" class="text-center">{{ __('Actions') }}</th>
+                                <th data-field="Actions">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -106,21 +107,18 @@
                                 <td>{{ $incident->reference }}</td>
                                 <td>{{ $incident->name }}</td>
                                 <td>{{ $incident->created_at }}</td>
-                                <td>{{ $incident->category->id }}</td>
+                                <td>{{ $incident->type->categories()->first()->id }}</td>
                                 <td>{{ $incident->status->id }}</td>
                                 <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
                                 <td>{{ $incident->suburb_id }}</td>
                                 {{--<td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>--}}
                                 <td>
-                                    <div class="btn-toolbar" role="toolbar">
-                                        <div class="m-btn-group m-btn-group--pill btn-group m-btn-group m-btn-group--pill btn-group-sm" role="group" aria-label="...">
+                                        <div role="group">
                                             @if(!count($incident->assignments))
-                                            <a data-toggle="tooltip" title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="fa fa-wrench"></i></a> @endif
-                                            <a data-toggle="tooltip" title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="flaticon-network"></i></a>
-                                            <a data-toggle="tooltip" title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="flaticon-edit"></i></a>
-                                            @if(strtolower($incident->status->name) !== 'closed')<a data-toggle="tooltip" title="Close Incident" href="#" class="m-btn btn btn-xs btn-secondary"><i class="la la-check-circle"></i></a>@endif
+                                            <a data-toggle="tooltip" title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-user-plus"></i></a> @endif
+                                            <a data-toggle="tooltip" title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-users"></i></a>
+                                            <a data-toggle="tooltip" title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
                                         </div>
-                                    </div>
 
                                 </td>
                                 {{-- <td></td> --}}
@@ -403,11 +401,10 @@
             }
         ];
 
-
         jQuery(document).ready(function() {
             LoadTypes.init();
             statusChart();
-            typeChart();
+            // typeChart();
             $('#type_id').select2({
                 placeholder: {
                     id: '-1', // the value of the option

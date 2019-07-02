@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
-@section('title', 'Manage Roles')
+@section('title', 'Roles')
+@section('breadcrumbs', Breadcrumbs::render('roles.index'))
 
 @section('content')
 

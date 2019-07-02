@@ -12,7 +12,7 @@ class Incident extends Model
      * @var array
      */
     protected $fillable = [
-        'reference','name', 'description', 'location_description', 'latitude', 'longitude','suburb_id','is_public' , 'category_id', 'status_id'
+        'reference','name', 'description', 'location_description', 'latitude', 'longitude','suburb_id','is_public' , 'type_id', 'status_id'
     ];
 
     //An Incident belongs to many users through pivot (incident_user)
@@ -40,8 +40,8 @@ class Incident extends Model
     }
 
     //An Incident has one Type
-    public function category()
+    public function type()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Type::class);
     }
 }

@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
-@section('title', 'Manage Roles')
+@section('title', 'Permissions')
+@section('breadcrumbs', Breadcrumbs::render('permissions.edit', $permission))
 
 @section('content')
 

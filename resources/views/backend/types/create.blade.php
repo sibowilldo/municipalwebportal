@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-
-@section('title', 'Add New Types')
+@section('title', 'Types')
+@section('breadcrumbs', Breadcrumbs::render('types.create'))
 
 @section('content')
 
@@ -63,8 +63,8 @@
 							<div class="col-2">
 							</div>
 							<div class="col-10">
-								<button type="submit" class="btn btn-success">Add</button>
-								<button type="reset" class="btn btn-secondary">Reset Form</button>
+								<button type="submit" class="btn btn-success m-btn--pill">Add Type</button>
+								<button type="reset" class="btn btn-secondary m-btn--pill">Reset Form</button>
 							</div>
 						</div>
 					</div>

@@ -1,6 +1,7 @@
 {
-    "/css/vendors.css": "/css/vendors.css",
-    "/css/styles.css": "/css/styles.css",
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/css/styles.bundle.css": "/css/styles.bundle.css",
     "/js/mandatory.js": "/js/mandatory.js",
     "/js/vendors.js": "/js/vendors.js",
     "/js/scripts.bundle.js": "/js/scripts.bundle.js",

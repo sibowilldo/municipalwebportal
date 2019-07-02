@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-
-@section('title', 'Add New Category')
+@section('title', 'Categories')
+@section('breadcrumbs', Breadcrumbs::render('categories.create'))
 
 @section('content')
 
@@ -54,17 +54,17 @@
 						</ul>
 					</div>
 				</div>
+
 				{!! Form::open(['route'=> 'categories.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
+
 				@include('backend.categories._form')
 
 				<div class="m-portlet__foot m-portlet__foot--fit">
-					<div class="m-form__actions">
+					<div class="m-form__actions m-form__actions--solid">
 						<div class="row">
-							<div class="col-2">
-							</div>
 							<div class="col-10">
-								<button type="submit" class="btn btn-success">Add</button>
-								<button type="reset" class="btn btn-secondary">Reset Form</button>
+								<button type="submit" class="btn btn-success m-btn--pill">Add Category</button>
+								<button type="reset" class="btn btn-secondary m-btn--pill">Reset Form</button>
 							</div>
 						</div>
 					</div>

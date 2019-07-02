@@ -44,8 +44,31 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|max:40',
+                'roles' => 'required'
+            ]
+        );
 
-        $permission = Permission::findOrCreate($request->name);
+        $name = $request['name'];
+        $permission = new Permission();
+        $permission->name = $name;
+        $permission->guard_name = 'api';
+
+        $roles = $request['roles'];
+        $permission->save();
+
+        if (!empty($request['roles'])) { //If one or more role is selected
+            foreach ($roles as $role) {
+                $r = Role::where('id', '=', $role)->firstOrFail(); //Match input role to db record
+
+                $permission = Permission::where('name', '=', $name)->first(); //Match input //permission to db record
+                $r->givePermissionTo($permission);
+            }
+        }
+
 
         return response()->json(['message' => 'success', 'data' => 'Permission `' . $permission->name . '` was created.'], 201);
     }

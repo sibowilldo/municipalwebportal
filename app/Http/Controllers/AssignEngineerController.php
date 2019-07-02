@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Assignment;
 use App\Incident;
 use App\IncidentHistory;
 use App\Status;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use Auth;
+use Validator;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
@@ -112,7 +114,7 @@ class AssignEngineerController extends Controller
 //        }
 //      whereIn('status_is', ['available', 'active'])->
 
-        $engineers = User::role('engineer')->get(); //todo: Add where Department is relative to incident
+        $engineers = User::role(['engineer', 'specialist'])->get(); //todo: Add where Department is relative to incident
 
         return view('backend.engineers.list', compact('engineers', 'incident'));
     }
@@ -127,36 +129,40 @@ class AssignEngineerController extends Controller
      */
     public function assign(Incident $incident, Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'instructions' => 'required|string|max:255',
+            'assigned_id' => 'required',
+            ],
+            [
+               'instructions.required' => 'The Instructions Field is required.',
+               'assigned_id.required' => 'Please select an Engineer, Repairman or Specialist from the list.',
+            ]);
 
-        $engineers = User::whereIn('id', $request->list_select)->get();
-        $engineer_count = count($engineers);
-
-        //Avoid performing any further actions without assigning at least 1 person
-        if($engineer_count < 1){
-            flash()->warning('Please assign at least <strong>One</strong> Engineer');
-            return back();
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
+        $engineer = User::findOrFail($request->assigned_id);
 
         $assigner = Auth::user();
         $status = Status::where('name', 'Assigned')->first();
 
         //Incident to Assignments table
-        foreach($engineers as $engineer){
-            $assignment = new Assignment();
+        $assignment = new Assignment();
 
-            $assignment->user_id = $engineer->id;
-            $assignment->assigner_id = $assigner->id;
-            $assignment->incident_id = $incident->id;
-            $assignment->instructions = $request->instructions;
-            $assignment->executed_at = Carbon::now();
-            $assignment->due_at = Carbon::now()->addHours(2);
+        $assignment->user_id = $engineer->id;
+        $assignment->assigner_id = $assigner->id;
+        $assignment->incident_id = $incident->id;
+        $assignment->instructions = $request->instructions;
+        $assignment->executed_at = Carbon::now();
+        $assignment->due_at = Carbon::now()->addHours(2); //ToDo: time to be determined by settings
 
-            $assignment->saveOrFail();
+        $assignment->saveOrFail();
 
-            // update user status
-            $engineer->status_is = $status->name;
-            $engineer->saveOrFail();
-        }
+        // update user status
+        $engineer->status_is = $status->name;
+        $engineer->saveOrFail();
 
         //Add Incident to IncidentHistory table
         $incident_history = new IncidentHistory();
@@ -172,7 +178,7 @@ class AssignEngineerController extends Controller
         $incident->status_id = $status->id;
         $incident->saveOrFail();
 
-        flash()->success( $engineer_count == 1 ? 'One engineer has been assigned' : $engineer_count. ' Engineers have been assigned');
+        flash($engineer->fullname.' was assigned.')->success();
 
         return redirect()->action('HomeController@index');
     }

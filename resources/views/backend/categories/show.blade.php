@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-
-@section('title', $category->name)
+@section('title', 'Categories')
+@section('breadcrumbs', Breadcrumbs::render('categories.show', $category))
 
 @section('content')
 
@@ -104,9 +104,17 @@
                             @endforeach
                             </span>
                         </div>
+                        <div class="m-widget13__item">
+                            <span class="m-widget13__desc m--align-right">
+                                State Color:
+                            </span>
+                            <span class="m-widget13__text">
+                            <span class="m-badge m-badge--{{ $category->state_color }}"></span>  {{ title_case($category->state_color) }}
+                            </span>
+                        </div>
                         <div class="m-widget13__action m--align-right">
                             <a href="{{ route('categories.edit', $category->id) }}" class="m-widget__details  btn m-btn--pill  btn-accent">Edit Detalis</a>
-                            <button type="button" class="btn m-btn--pill    btn-danger" disabled>Remove</button>
+                            <button type="button" class="btn m-btn--pill btn-danger btn-delete"  data-id="{{ $category->id }}" data-url="{{ route('categories.destroy', $category->id) }}">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -119,30 +127,47 @@
 @section('js')
     {{ Html::script('js/project-mdatatable.js') }}
     <script>
-        const TableMethods = function(){
-            return{
-                init:function(datatable){
-
-                }
-            }
-        }();
-        const columns = [
-            {
-                field: 'id',
-                title: '#',
-                type: 'number',
-                width: 25
-            },
-            {
-                field: 'Actions',
-                title: 'Actions',
-                width: 150
-            }
-        ];
         jQuery(document).ready(function() {
-
-            TableElement.init($('#engineers'), columns);
+            $('.btn-delete').on('click', function(e){
+                e.preventDefault();
+                var id = $(this).data("id");
+                var url = $(this).data("url");
+                var token = $("meta[name='csrf-token']").attr("content");
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You may not be able to undo this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    preConfirm: function() {
+                        return new Promise(function(resolve) {
+                            $.ajax({
+                                url: url,
+                                type: 'delete',
+                                data: {
+                                    "id": id,
+                                    "_token": token
+                                }
+                            })
+                                .done(function(response){
+                                    Swal.fire({
+                                        title: 'Deleted!',
+                                        text: response.message,
+                                        onClose: function() {
+                                            window.location.href = response.url;
+                                        }
+                                    })
+                                })
+                                .fail(function(){
+                                    swal('Oops...', 'Something went wrong with ajax !', 'error');
+                                });
+                        });
+                    },
+                    allowOutsideClick: false
+                })
+            });
         });
-
     </script>
 @endsection

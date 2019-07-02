@@ -2,6 +2,7 @@
 
 
 @section('title', 'Types')
+@section('breadcrumbs', Breadcrumbs::render('types.index'))
 
 @section('content')
 
@@ -86,6 +87,7 @@
                                 <th data-field="id">{{ __('#') }}</th>
                                 <th data-field="Name">{{ __('Name') }}</th>
                                 <th data-field="Active">{{ __('Active') }}</th>
+                                <th data-field="State Color">{{ __('State Color') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
                                 <th data-field="Description">{{ __('Description') }}</th>
                                 <th data-field="Associated Types">{{ __('Associated Types') }}</th>
@@ -102,6 +104,12 @@
                                                 <input type="checkbox" disabled name="" {{ $type->is_active ? 'checked' : '' }}>
                                                 <span></span>
                                             </label>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+
+                                        <span class="m-badge m-badge--{{ $type->state_color }}"></span>  {{ title_case($type->state_color) }}
                                         </span>
                                     </td>
                                     <td>

@@ -34,10 +34,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <!--end::Web font -->
 
-
-
-    <link href=" {{ mix('css/vendors.css') }}" rel="stylesheet">
-    <link href=" {{ mix('css/styles.css') }}" rel="stylesheet">
+    <link href=" {{ mix('css/app.css') }}" rel="stylesheet">
+    <link href=" {{ mix('css/styles.bundle.css') }}" rel="stylesheet">
 
 </head>
 
@@ -47,7 +45,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 
 <!-- begin:: Page -->
-<div class="m-grid m-grid--hor m-grid--root m-page">
+<div class="m-grid m-grid--hor m-grid--root m-page" id="app">
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--desktop m-grid--ver-desktop m-grid--hor-tablet-and-mobile m-login m-login--6" id="m_login">
         <div class="m-grid__item   m-grid__item--order-tablet-and-mobile-2  m-grid m-grid--hor m-login__aside " style="background-color: #33338B;">
             <div class="m-grid__item">

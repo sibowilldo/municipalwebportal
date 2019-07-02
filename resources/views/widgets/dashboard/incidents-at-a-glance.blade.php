@@ -36,8 +36,7 @@
                     </div>
                     <div class="row  align-items-center">
                         <div class="col">
-                            <div id="types_chart" class="m-widget14__chart" style="height: 260px; width: 100%">
-                            </div>
+                            <types-chart></types-chart>
                         </div>
                     </div>
                 </div>
@@ -58,8 +57,7 @@
                     </div>
                     <div class="row  align-items-center">
                         <div class="col">
-                            <div id="status_chart" class="m-widget14__chart" style="height: 260px; width: 100%">
-                            </div>
+                            <types-chart></types-chart>
                         </div>
                     </div>
                 </div>

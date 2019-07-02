@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\System;
 use App\Type;
 use App\Category;
 use Illuminate\Http\Request;
@@ -33,7 +34,8 @@ class TypeController extends Controller
     public function create()
     {
         $categories = Category::pluck('name', 'id');
-        return view('backend.types.create', compact('categories'));
+        $state_colors = System::$state_colors;
+        return view('backend.types.create', compact('categories', 'state_colors'));
     }
 
     /**
@@ -84,8 +86,9 @@ class TypeController extends Controller
     {
         $type = Type::with('categories')->findOrFail($id);
         $categories = Category::pluck('name', 'id');
+        $state_colors = System::$state_colors;
 
-        return view('backend.types.edit', compact('categories', 'type'));
+        return view('backend.types.edit', compact('categories', 'type', 'state_colors'));
     }
 
     /**
@@ -98,7 +101,7 @@ class TypeController extends Controller
     public function update(TypesFormRequest $request, Type $type)
     {
         $request['is_active'] = $request->is_active ? true : false;
-        $type->update($request->only(['name', 'description', 'is_active']));
+        $type->update($request->only(['name', 'description', 'is_active', 'state_color']));
         $type->categories()->sync($request->categories);
 
         flash($type->name . ' <strong>updated</strong> successfully')->success();
@@ -111,8 +114,13 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Type $type)
     {
-        //
+        $type->delete();
+
+        return response()->json([
+            "message"=> $type->name . ' was deleted successfully',
+            "url" => route('types.index')
+        ], 200);
     }
 }

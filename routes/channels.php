@@ -1,5 +1,6 @@
 <?php
 
+use App\Incident;
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -13,4 +14,8 @@
 
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
+});
+
+Broadcast::channel('incident.{id}', function ($user, $id) {
+    return $user->id === Incident::findOrNew($id)->user_id;
 });

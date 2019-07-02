@@ -1,132 +1,72 @@
 @extends('layouts.master')
 
 @section('title', 'Incidents')
+@section('breadcrumbs', Breadcrumbs::render('incidents.index'))
 
 @section('content')
     <!--Begin::Section-->
     <div class="row">
-        <div class="col-xl-12">
-            <div class="m-portlet m-portlet--mobile">
-                <div class="m-portlet__head">
-                    <div class="m-portlet__head-caption">
-                        <div class="m-portlet__head-title">
-                            <h3 class="m-portlet__head-text">
-                                {{ __('Incidents') }}
-                            </h3>
+        @foreach($incidents as $incident)
+
+            <div class="col-xl-4">
+                <!--begin:: Widgets/Finance Summary-->
+                <div class="m-portlet m-portlet--full-height ">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    # {{ $incident->id }} - {{ $incident->reference }}
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                            <ul class="m-portlet__nav">
+                                <li class="m-portlet__nav-item">
+                                    <a href="" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-edit"></i></a>
+                                </li>
+                                <li class="m-portlet__nav-item">
+                                    <a href="" m-portlet-tool="reload" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-circle"></i></a>
+                                </li>
+                                <li class="m-portlet__nav-item">
+                                    <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-expand"></i></a>
+                                </li>
+                                <li class="m-portlet__nav-item">
+                                    <a href="#" m-portlet-tool="remove" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-power-off"></i></a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-                <div class="m-portlet__body">
-
-                    <!--begin: Datatable -->
-                    <div class="m_datatable">
-                        <!--begin: Search Form -->
-                        <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
-                            <div class="row align-items-center">
-                                <div class="col-xl-8 order-2 order-xl-1">
-                                    <div class="form-group m-form__group row align-items-center">
-                                        <div class="col-md-4">
-                                            <div class="m-form__group m-form__group--inline">
-                                                <div class="m-form__label">
-                                                    <label>{{ __('Status:') }}</label>
-                                                </div>
-                                                <div class="m-form__control">
-                                                    <select class="form-control m-bootstrap-select" id="m_form_status">
-                                                        <option value="">{{ __('All') }}</option>
-                                                        @foreach($statues as $status)
-                                                            <option value="{{ $status->id }}">{{ $status->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="d-md-none m--margin-bottom-10"></div>
+                    <div class="m-portlet__body">
+                        <div class="m-widget12">
+                            <div class="m-widget12__item">
+                                <span class="m-widget12__text1">Name<br><span>{{ $incident->name }}</span></span>
+                            </div>
+                            <div class="m-widget12__item">
+                                <span class="m-widget12__text1">Type<br><span>{{ $incident->type->categories->first()->name }}</span></span>
+                                <span class="m-widget12__text2">Category<br><span>{{ $incident->type->name }}</span></span>
+                            </div>
+                            <div class="m-widget12__item">
+                                <span class="m-widget12__text1">Avarage Product Price<br><span>$60,70</span></span>
+                                <div class="m-widget12__text2">
+                                    <div class="m-widget12__desc">Satisfication Rate</div>
+                                    <br>
+                                    <div class="m-widget12__progress">
+                                        <div class="m-widget12__progress-sm progress m-progress--sm">
+                                            <div class="m-widget12__progress-bar progress-bar bg-brand" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="m-form__group m-form__group--inline">
-                                                <div class="m-form__label">
-                                                    <label class="m-label m-label--single">{{ __('Type:') }}</label>
-                                                </div>
-                                                <div class="m-form__control">
-                                                    <select class="form-control m-bootstrap-select" id="m_form_type">
-                                                        <option value="">{{ __('All') }}</option>
-                                                        @foreach($categories as $category)
-                                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="d-md-none m--margin-bottom-10"></div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="m-input-icon m-input-icon--left">
-                                                <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
-                                                <span class="m-input-icon__icon m-input-icon__icon--left">
-                                                <span><i class="la la-search"></i></span>
-                                            </span>
-                                            </div>
-                                        </div>
+                                        <span class="m-widget12__stats">
+															63%
+														</span>
                                     </div>
-                                </div>
-                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <button type="button" data-toggle="modal" data-target="#log_incident_modal" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-                                    <span>
-                                        <i class="la la-plus"></i>
-                                        <span>{{ __('Log Incident') }}</span>
-                                    </span>
-                                    </button>
-                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
                                 </div>
                             </div>
                         </div>
-
-                        <!--end: Search Form -->
-                        <table class="m_datatable" id="incidents">
-                            <thead>
-                            <tr>
-                                <th data-field="id">{{ __('#') }}</th>
-                                <th data-field="Reference">{{ __('Reference') }}</th>
-                                <th data-field="Name">{{ __('Name') }}</th>
-                                <th data-field="LoggedAt">{{ __('Logged At') }}</th>
-                                <th data-field="Category">{{ __('Category') }}</th>
-                                <th data-field="Status">{{ __('Status') }}</th>
-                                <th data-field="Location">{{ __('Location') }}</th>
-                                <th data-field="User">{{ __('User') }}</th>
-                                <th data-field="Actions" style="text-align: right;">{{ __('Actions') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($incidents as $incident)
-                                <tr>
-                                    <td>{{ $incident->id }}</td>
-                                    <td>{{ $incident->reference }}</td>
-                                    <td>{{ $incident->name }}</td>
-                                    <td>{{ $incident->created_at }}</td>
-                                    <td>{{ $incident->category->id }}</td>
-                                    <td>{{ $incident->status->id }}</td>
-                                    <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
-                                    <td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>
-                                    <td>
-                                        <div class="btn-toolbar" role="toolbar">
-                                            <div class="m-btn-group m-btn-group--pill btn-group m-btn-group m-btn-group--pill btn-group-sm" role="group" aria-label="...">
-                                                @if(!count($incident->assignments))
-                                                    <a data-toggle="tooltip" title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="fa fa-wrench"></i></a> @endif
-                                                <a data-toggle="tooltip" title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="flaticon-network"></i></a>
-                                                <a data-toggle="tooltip" title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-btn btn btn-xs btn-secondary"><i class="flaticon-edit"></i></a>
-                                                @if(strtolower($incident->status->name) !== 'closed')<a data-toggle="tooltip" title="Close Incident" href="#" class="m-btn btn btn-xs btn-secondary"><i class="la la-check-circle"></i></a>@endif
-                                            </div>
-                                        </div>
-                                    </td>
-                                    {{-- <td></td> --}}
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
                     </div>
-
-                    <!--end: Datatable -->
                 </div>
+
+                <!--end:: Widgets/Finance Summary-->
             </div>
-        </div>
+        @endforeach
     </div>
 @endsection
 

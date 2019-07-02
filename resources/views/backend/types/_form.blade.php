@@ -32,4 +32,21 @@
             {!! Form::select('categories[]', $categories, null, ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker', 'multiple']) !!}
         </div>
     </div>
+
+    <div class="form-group m-form__group row">
+        <label for="state_color" class="col-3 col-form-label{{ $errors->has('state_color') ? ' has-danger' : '' }}">State Color</label>
+        <div class="col-9">
+            <select name="state_color" id="state_color" class="form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker">
+                @foreach($state_colors as $state_color)
+                    <option value="{{$state_color}}"
+                            data-content="<span class='m-badge m-badge--{{$state_color}} m-badge--dot'></span> {{ title_case($state_color) }}"
+                    @isset($type)
+                        {{$state_color === $type->state_color ? 'selected' : '' }}
+                            @endisset>
+                        {{ title_case($state_color) }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
 </div>

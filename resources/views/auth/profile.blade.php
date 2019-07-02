@@ -1,7 +1,8 @@
 @extends('layouts.master')
 
+@section('title', 'Profile')
+@section('breadcrumbs', Breadcrumbs::render('profile.edit', $user))
 
-@section('title', 'My Profile')
 @section('content')
 <div class="row">
     <div class="col-xl-3 col-lg-4">
@@ -185,8 +186,7 @@
                                     <div class="col-2">
                                     </div>
                                     <div class="col-7">
-                                        <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">Save changes</button>&nbsp;&nbsp;
-                                        <button type="reset" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancel</button>
+                                        <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom m-btn--pill">Save changes</button>&nbsp;&nbsp;
                                     </div>
                                 </div>
                             </div>

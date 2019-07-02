@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\IncidentFormRequest;
 use App\Status;
 use App\Type;
 use Illuminate\Http\Request;
@@ -62,18 +63,8 @@ class IncidentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(IncidentFormRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'location_description' => 'required|string',
-            'latitude' => 'required|string',
-            'longitude' => 'required|string',
-            'category_id' => 'required',
-            'type_id' => 'required',
-            'suburb_id' => 'required',
-        ]);
 
         $user = Auth::user();
 
@@ -86,14 +77,14 @@ class IncidentController extends Controller
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'suburb_id' => $request->suburb_id,
-            'category_id' => $request->category_id,
+            'type_id' => $request->type_id,
             'status_id' => $request->status_id
 
         ]);
         $incident->save();
         $user->incidents()->attach($incident, ['has_location' => true, 'has_attachment' => false, 'source_id' => 0]);
+        flash($incident->name . ' <b>Logged</b> Successfully')->success();
 
-        flash('Incident Logged Successfully')->success();
 
         return  redirect()->back(201);
     }
@@ -107,6 +98,7 @@ class IncidentController extends Controller
     public function show($id)
     {
         $incident = Incident::findOrFail($id);
+        return view('backend.incidents.show')->with('incident',$incident);
     }
 
     /**
@@ -118,6 +110,10 @@ class IncidentController extends Controller
     public function edit($id)
     {
         $incident = Incident::findOrFail($id);
+        $categories = Category::pluck('name', 'id');
+        $types = Type::pluck('name', 'id');
+
+        return view('backend.incidents.edit', compact('incident','categories', 'types'));
     }
 
     /**
@@ -127,21 +123,13 @@ class IncidentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(IncidentFormRequest $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'location_description' => 'required|string',
-            'latitude' => 'required|string',
-            'longitude' => 'required|string',
-            'category_id' => 'required',
-            'type_id' => 'required',
-            'suburb_id' => 'required',
-        ]);
-
         $incident = Incident::findOrFail($id);
+        $incident->update($request->only(['name', 'description', 'location_description', 'latitude', 'longitude', 'suburb_id', 'type_id', 'status_id']));
 
+        flash($incident->name . ' <b>Updated</b> Successfully')->success();
+        return  redirect()->back(201);
     }
 
     /**
@@ -153,6 +141,12 @@ class IncidentController extends Controller
     public function destroy($id)
     {
         $incident = Incident::findOrFail($id);
+//        $incident->delete();
+
+        return response()->json([
+            "message"=> $incident->name . ' was sent to trash.',
+            "url" => route('dashboard')
+        ], 200);
     }
 
 }

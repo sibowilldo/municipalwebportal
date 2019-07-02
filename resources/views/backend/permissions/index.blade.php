@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-
-@section('title', 'Manage Permissions')
+@section('title', 'Permissions')
+@section('breadcrumbs', Breadcrumbs::render('permissions.index'))
 
 @section('content')
 

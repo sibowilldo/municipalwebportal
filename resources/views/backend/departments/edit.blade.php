@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-
-@section('title', 'Edit ' . $department->name .' Department')
+@section('title', 'Departments')
+@section('breadcrumbs', Breadcrumbs::render('departments.edit', $department))
 
 @section('content')
 

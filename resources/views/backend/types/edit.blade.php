@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-
-@section('title', 'Edit ' . $type->name .' Type')
+@section('title', 'Types')
+@section('breadcrumbs', Breadcrumbs::render('types.edit', $type))
 
 @section('content')
 
@@ -70,7 +70,7 @@
 							<div class="col-2">
 							</div>
 							<div class="col-10">
-								<button type="submit" class="btn btn-success">Update</button>
+								<button type="submit" class="btn btn-success m-btn--pill">Update Details</button>
 							</div>
 						</div>
 					</div>

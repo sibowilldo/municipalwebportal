@@ -27,7 +27,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        if(Auth::user()->cant('list users')){
+            abort(403, 'Unauthorized Action.');
+        }
+
         $users = User::withTrashed()->get();
         $statuses = User::$statuses;
         $roles = Role::all();

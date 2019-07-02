@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-
-@section('title', 'Assign Engineer')
+@section('title', 'Engineers')
+@section('breadcrumbs', Breadcrumbs::render('engineers.list', $incident))
 
 @section('content')
 
@@ -24,16 +24,29 @@
                             <div class="m_datatable">
                                 <!--begin: Search Form -->
                                 <div class="m-form m-form--label-align-right m--margin-bottom-30">
-                                    <div class="row align-items-end">
-                                        <div class="col-xl-12 order-2 order-xl-1">
+                                    <div class="row align-items-start">
+                                        <div class="col-md-4 offset-md-4">
+                                            <div class="m-form__group m-form__group--inline">
+                                                <div class="m-form__label">
+                                                    <label class="m-label m-label--single" for="m_user_type">{{ __('Type:') }}</label>
+                                                </div>
+                                                <div class="m-form__control">
+                                                    <select class="form-control m-bootstrap-select m_selectpicker" id="m_user_type" name="m_user_type">
+                                                        <option value="">{{ __('All') }}</option>
+                                                        <option value="engineer">Engineer</option>
+                                                        <option value="specialist">Specialist</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-none m--margin-bottom-10"></div>
+                                        </div>
+                                        <div class="col-md-4 order-2 order-xl-1">
                                             <div class="form-group m-form__group row align-items-center">
-                                                <div class="col-md-4">
-                                                    <div class="m-input-icon m-input-icon--left">
-                                                        <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
-                                                        <span class="m-input-icon__icon m-input-icon__icon--left">
-                                                <span><i class="la la-search"></i></span>
-                                            </span>
-                                                    </div>
+                                                <div class="m-input-icon m-input-icon--left">
+                                                    <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
+                                                    <span class="m-input-icon__icon m-input-icon__icon--left">
+                                            <span><i class="la la-search"></i></span>
+                                        </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -50,6 +63,7 @@
                                                 <th data-field="FullName">{{ __('Full Name') }}</th>
                                                 <th data-field="ContactNumber">{{ __('Contact Number') }}</th>
                                                 <th data-field="Email">{{ __('Email') }}</th>
+                                                <th data-field="Role">{{ __('Role') }}</th>
                                                 <th data-field="Assign">{{ __('Assign') }}</th>
                                             </tr>
                                             </thead>
@@ -60,11 +74,12 @@
                                                     <td>{{ $engineer->fullname }}</td>
                                                     <td>{{ $engineer->contactnumber }}</td>
                                                     <td>{{ $engineer->email }}
+                                                    <td>{{ title_case(implode(' | ', $engineer->getRoleNames()->toArray())) }}
                                                     </td>
                                                     <td>
                                                 <span class="m-switch m-switch--outline m-switch--icon m-switch--info">
                                                     <label>
-                                                        <input type="checkbox"  class="assigned-engineer"
+                                                        <input type="radio" name="radio_engineers"  class="assigned-engineer"
                                                                data-id="{{ $engineer->id }}"
                                                                data-name="{{ $engineer->fullname }}"
                                                                 {{ $incident->assignments()->where('user_id', $engineer->id)->first() ? 'checked' : '' }}
@@ -111,6 +126,7 @@
                         </ul>
                     </div>
                 </div>
+                @include('layouts.form-errors')
                 <div class="m-portlet__body">
                     {{--<div class="m-widget14">--}}
                         {{--<div class="m-widget14__items">--}}
@@ -154,7 +170,7 @@
                                             Category
                                         </span><br>
                                             <span class="m-widget4__sub">
-                                            {{ $incident->category->name }}
+                                            {{ $incident->type->name }}
                                         </span>
                                         </div>
                                     </div>
@@ -174,8 +190,9 @@
                                                 Assigned Engineers
                                             </label>
                                              <span class="m-widget4__sub">
-                                                 <select class="form-control m-select2" multiple="multiple" name="list_select[]" id="list_select">
-                                                 </select>
+                                                {{ Form::text('assigned', null,
+                                                    ["id" => "assigned","class"=>"form-control m-input", "data-id" => ""]) }}
+                                                {{ Form::hidden('assigned_id') }}
                                             </span>
                                         </div>
                                     </div><div class="m-widget1__item">
@@ -185,7 +202,7 @@
                                             </label>
                                             <div class="mb-5">
                                                  <span class="m-widget4__sub">
-                                                     {{ Form::textarea('instructions', null,
+                                                     {{ Form::textarea('instructions', old('instructions'),
                                                         ["id" => "instructions","class"=>"form-control m-input"]) }}
                                                     <br>
                                                     <button class="btn btn-success m--margin-top-20 m-btn--pill" type="submit">Save Changes</button>
@@ -272,28 +289,18 @@
                 });
                 // DataTable Events
                 datatable.on("m-datatable--on-layout-updated", function () {
-                    //Remember which check boxes where checked, when the table gets re-rendered
-                    $.each(EngineerSelection, function(key, value) {
-                        let elem = $('.assigned-engineer[data-id="'+key+'"]' );
-                        elem.prop('checked', value.state);
-                    });
+                    //Remember which radio was checked, when the table gets re-rendered
+
+                    let elem = $('.assigned-engineer[data-id="'+EngineerSelection.id+'"]' );
+                    elem.prop('checked', EngineerSelection.state);
 
                 });
                 datatable.on("change", ".assigned-engineer", function () {
-                    let item = $(this),
-                        tag = { 'id': item.data('id'), 'name': item.data('name')};
+                    let item = $(this),elAssigned = $('input[name=assigned]');
                     if(item.is(':checked')){
-                        // Set the value, creating a new option if necessary
-                        if (engineerSelect.find("option[value='" + item.data('id')+ "']").length) {
-                            let list2 = engineerSelect.val();
-                            list2.push(item.data('id')+"");
-                            engineerSelect.val(list2).trigger('change');
-                        } else {
-                            // Create a DOM Option and pre-select by default
-                            var newOption = new Option(item.data('name'), item.data('id'), false, true);
-                            // Append it to the select
-                            engineerSelect.append(newOption).trigger('change');
-                        }
+                        elAssigned.val(item.data('name'));
+                        $('input[name=assigned_id]').val(item.data('id'));
+
                         jQuery.notify({
                             message: item.data('name') + " was assigned. <br>Click <strong>Save Changes</strong> to commit.",
                             icon: "icon la la-check-circle"
@@ -301,24 +308,8 @@
                             type: "success"
                         });
 
-                    }else {
-
-                        var values = engineerSelect.val();
-                        if (values) {
-                            var i = values.indexOf(item.data('id')+ '');
-                            if (i >= 0) {
-                                values.splice(i, 1);
-                                engineerSelect.val(values).trigger('change');
-                            }
-                        }
-                        jQuery.notify({
-                            message: item.data('name') + " was unassigned. <br>Click <strong>Save Changes</strong> to commit.",
-                            icon: "icon la la-info-circle"
-                        }, {
-                            type: "info"
-                        });
                     }
-                    EngineerSelection[item.data('id')] = { id:item.data('id'), name:item.data('name'), state: this.checked  };
+                    EngineerSelection = { id:item.data('id'), name:item.data('name'), state: this.checked};
                     localStorage.setItem("EngineerSelection", JSON.stringify(EngineerSelection));
                 });
 
@@ -332,25 +323,15 @@
             };
         }();
 
-        const UpdateElems = function()
+        const UpdateElemsOnLoad = function()
         {
             let updateFx = function () {
-                // On page load
-                $.each(EngineerSelection, function(key, value) {
-                    let item = $('.assigned-engineer[data-id="'+key+'"]' );
-                    item.prop('checked', value.state);
-                    if(item.is(":checked")){
-                        let tag = { 'id': item.data('id'), 'name': item.data('name')};
-                        // Set the value, creating a new option if necessary
-                        if (!engineerSelect.find("option[value='" + item.data('id')+ "']").length) {
-                            // Create a DOM Option and pre-select by default
-                            var newOption = new Option(item.data('name'), item.data('id'), false, true);
-                            // Append it to the select
-                            engineerSelect.append(newOption).trigger('change');
-                        }
-                    }
+                // On page load remember the state
+                let item = $('.assigned-engineer[data-id="'+EngineerSelection.id+'"]' ),elAssigned = $('input[name=assigned]');
+                elAssigned.val(EngineerSelection.name);
+                $('input[name=assigned_id]').val(EngineerSelection.id);
 
-                });
+                item.prop('checked', EngineerSelection.state);
             }
 
             return {
@@ -364,26 +345,16 @@
             let checkboxes = $('.assigned-engineer:checked');
             $.each(checkboxes, function (k, v) {
                 v = $(v);
-                EngineerSelection[v.data('id')] = { id:v.data('id'), name:v.data('name'), state: this.checked  };
+                EngineerSelection = { id:v.data('id'), name:v.data('name'), state: this.checked };
                 localStorage.setItem("EngineerSelection", JSON.stringify(EngineerSelection));
             })
 
         });
 
         $(document).ready(function() {
-            engineerSelect.on('select2:unselect', function (e) {
-                var data = e.params.data;
-                let item = $('.assigned-engineer[data-id="'+data.id+'"]' );
-                item.prop('checked', false);
-            });
-            engineerSelect.on('select2:select', function (e) {
-                var data = e.params.data;
-                let item = $('.assigned-engineer[data-id="'+data.id+'"]' );
-                item.prop('checked', true);
-            });
-
+            $('.m_selectpicker').selectpicker();
             EngineersTable.init();
-            UpdateElems.init();
+            UpdateElemsOnLoad.init();
 
         });
 

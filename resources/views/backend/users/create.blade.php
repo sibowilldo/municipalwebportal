@@ -1,5 +1,8 @@
 @extends('layouts.master')
-@section('title', 'User Management')
+
+@section('title', 'Users')
+@section('breadcrumbs', Breadcrumbs::render('users.create'))
+
 @section('content')
     <!--Begin::Section-->
     <div class="row">
