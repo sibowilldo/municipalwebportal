@@ -354,31 +354,3 @@
     </script>
 @endsection
 
-@section('modals')
-
-    <!--begin::Modal-->
-    <div class="modal fade" id="log_incident_modal" tabindex="-1" role="dialog" aria-labelledby="logincident" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Log Incident</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="log-incident" method="POST" action="{{ route('incidents.store') }}">
-                        {{ csrf_field() }}
-                        @include('backend.incidents._form')
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="event.preventDefault(); document.getElementById('log-incident').submit();">Confirm</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--end::Modal-->
-
-@stop
