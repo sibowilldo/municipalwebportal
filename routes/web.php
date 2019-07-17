@@ -62,9 +62,16 @@ Route::group(['middleware' => ['verified']], function () {
 
     Route::resource('categories', 'CategoryController');
     Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
+
+    Route::resource('system/state_colors', 'StateColorController');
+
+    Route::resource('system/statuses', 'StatusController');
+    Route::get('api/system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
+
+
     //Get Categories in JSON format
     Route::get('backend/categories', function (){
-        return CategoryResource::collection(Category::all('id', 'name', 'is_active'));
+        return CategoryResource::collection(Category::all('id', 'name', 'is_active', 'state_color'));
     })->middleware(['auth:web']);
 
     Route::resource('manage/departments', 'DepartmentController');

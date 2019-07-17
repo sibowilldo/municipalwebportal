@@ -15,7 +15,7 @@ class CreateAttachmentsTable extends Migration
     {
         Schema::create('attachments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('meta_id')->unsigned();
+            $table->unsignedInteger('meta_id');
             $table->string('path');
             $table->string('filename');
             $table->boolean('is_active')->default(false);
@@ -25,8 +25,8 @@ class CreateAttachmentsTable extends Migration
         });
 
         Schema::create('attachment_incident', function (Blueprint $table) {
-            $table->integer('incident_id')->unsigned();
-            $table->integer('attachment_id')->unsigned();
+            $table->unsignedInteger('incident_id');
+            $table->unsignedInteger('attachment_id');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
 

@@ -49,7 +49,7 @@
                                         <div class="col-md-4">
                                             <div class="m-form__group m-form__group--inline">
                                                 <div class="m-form__label">
-                                                    <label class="m-label m-label--single">{{ __('Type:') }}</label>
+                                                    <label class="m-label m-label--single">{{ __('Categories:') }}</label>
                                                 </div>
                                                 <div class="m-form__control">
                                                     <select class="form-control m-bootstrap-select" id="m_form_type">
@@ -115,9 +115,9 @@
                                 <td>
                                         <div role="group">
                                             @if(!count($incident->assignments))
-                                            <a data-toggle="tooltip" title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-user-plus"></i></a> @endif
-                                            <a data-toggle="tooltip" title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-users"></i></a>
-                                            <a data-toggle="tooltip" title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
+                                            <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-user-plus"></i></a> @endif
+                                            <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-users"></i></a>
+                                            <a data-toggle="m-tooltip" data-placement="top" data-original-title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
                                         </div>
 
                                 </td>
@@ -178,6 +178,28 @@
 
     {{ Html::script('js/project-mdatatable.js') }}
     <script>
+
+        let status = [];
+        var getStatuses = function() {
+            var statuses = function(){
+                $.ajax({
+                    url: 'api/system/statuses',
+                    type:"GET",
+                    dataType:"json",
+                    success:function(data) {
+                        status = data;
+                    }
+                });
+            }
+            return {
+                init: function(){
+                    statuses()
+                }
+            }
+        }();
+        //Get Statuses for the Status Column
+        getStatuses.init();
+
         let Categories = {};
         var LoadCategories = function(){
             var categories = function(){
@@ -188,7 +210,7 @@
                         dataType:"json",
                         success:function(data) {
                             $.each(data.data, function(key, value){
-                                Categories[value.id] = {'title': value.name}
+                                Categories[value.id] = {'title': value.name, 'class': value.state_color}
                             });
                         },
                         complete: function(){
@@ -204,7 +226,7 @@
                 }
             }
         }();
-        LoadCategories.init();//Load these first!
+        LoadCategories.init();//Load these first! Before TableMethods
 
         var LoadTypes = function(){
             var types = function(){
@@ -241,6 +263,7 @@
                 }
             }
         }();
+
         /**
          * Function REQUIRED!
          *
@@ -256,97 +279,9 @@
                         datatable.search($(this).val().toLowerCase(), 'Category');
                     });
                     $('#m_form_status, #m_form_type').selectpicker();
-
                 }
             }
         }();
-
-
-        var statusChart = function() {
-            var data = [];
-            var series = ['Open', 'Closed', 'Assigned', 'Cancelled', 'Rejected', 'Overdue'];
-            var color = [
-                mApp.getColor('accent'),
-                mApp.getColor('metal'),
-                mApp.getColor('success'),
-                mApp.getColor('warning'),
-                mApp.getColor('info'),
-                mApp.getColor('danger')]
-
-            for (var i = 0; i < series.length; i++) {
-                data[i] = {
-                    label: series[i],
-                    color: color[i],
-                    data: Math.floor(Math.random() * 100) + 1
-                };
-            }
-
-            $.plot($("#status_chart"), data, {
-                series: {
-                    pie: {
-                        show: true,
-                        radius: 1,
-                        label: {
-                            show: true,
-                            radius: 3/4,
-                            formatter: function(label, series) {
-                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + Math.round(series.percent) + '%</div>';
-                            },
-                            background: {
-                                opacity: 0.8
-                            }
-                        }
-                    }
-                },
-                legend: {
-                    show: true
-                },
-                grid: {
-                    clickable: true
-                }
-            });
-        }
-
-        var typeChart = function() {
-            var data = [];
-            var series = ['Illegal Dumping', 'Faulty Meter', 'Bin not collected', 'Electricity Outage', 'Animal Carcass'];
-            var color = [
-                mApp.getColor('accent'),
-                mApp.getColor('success'),
-                mApp.getColor('warning'),
-                mApp.getColor('info'),
-                mApp.getColor('danger')]
-
-            for (var i = 0; i < series.length; i++) {
-                data[i] = {
-                    label: series[i],
-                    color: color[i],
-                    data: Math.floor(Math.random() * 100) + 1
-                };
-            }
-
-            $.plot($("#types_chart"), data, {
-                series: {
-                    pie: {
-                        show: true,
-                        radius: 1,
-                        label: {
-                            show: true,
-                            radius: 3/4,
-                            formatter: function(label, series) {
-                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + Math.round(series.percent) + '%</div>';
-                            },
-                            background: {
-                                opacity: 0.8
-                            }
-                        }
-                    }
-                },
-                legend: {
-                    show: true
-                }
-            });
-        }
 
         const columns = [
             {
@@ -369,15 +304,7 @@
                 title: 'Status',
                 // callback function support for column rendering
                 template: function(row) {
-                    var status = {
-                        1: {'title': 'Closed', 'class': 'm-badge--metal'},
-                        2: {'title': 'Assigned', 'class': ' m-badge--success'},
-                        3: {'title': 'Overdue', 'class': ' m-badge--danger'},
-                        4: {'title': 'Rejected', 'class': ' m-badge--info'},
-                        5: {'title': 'Cancelled', 'class': ' m-badge--warning'},
-                        6: {'title': 'Open', 'class': ' m-badge--accent'},
-                    };
-                    return '<span class="m-badge ' + status[row.Status].class + ' m-badge--wide">' + status[row.Status].title + '</span>';
+                    return '<span class="m-badge m-badge--' + status[row.Status].class + ' m-badge--wide">' + status[row.Status].title + '</span>';
                 },
             },
             {
@@ -386,7 +313,7 @@
                 width: 150,
                 // callback function support for column rendering
                 template: function(row) {
-                    return '<span class="m-badge m-badge--accent m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-accent">' +
+                    return '<span class="m-badge m-badge--dot m-badge--' + Categories[row.Category].class + '"></span>&nbsp;<span class="m--font-bold m--font-'+ Categories[row.Category].class +'">' +
                         Categories[row.Category].title+ '</span>';
                 },
             },
@@ -403,8 +330,6 @@
 
         jQuery(document).ready(function() {
             LoadTypes.init();
-            statusChart();
-            // typeChart();
             $('#type_id').select2({
                 placeholder: {
                     id: '-1', // the value of the option

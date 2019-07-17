@@ -16,8 +16,7 @@ class ProfileController extends Controller
      */
     public function edit($id)
     {
-        $user=User::findOrFail($id);
-
+        $user=User::whereUuid($id)->first();
         return view('auth.profile', compact('user'));
     }
 
@@ -30,7 +29,23 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::whereUuid($id)->first();
+        //Validate name, email and password fields
+        $request->validate(
+            [
+                'firstname'=>'required|max:120',
+                'lastname'=>'required|max:120',
+                'contactnumber'=>'required|max:20',
+            ]
+        );
+
+        $input = $request->only(['firstname', 'lastname', 'contactnumber', 'status_is']); //Retreive the name, email and password fields
+
+        $user->fill($input)->save();
+
+
+        flash('Profile successfully updated.')->success();
+        return redirect()->route('profile.edit', $user->uuid);
     }
 
     /**

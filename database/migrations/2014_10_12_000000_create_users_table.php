@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->uuid('uuid')->index();
             $table->string('firstname');
             $table->string('lastname');
             $table->string('contactnumber');
@@ -26,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamp('last_loggedin_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

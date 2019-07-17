@@ -27,9 +27,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->cant('list users')){
+        if(!Auth::user()->hasPermissionTo('list users', 'web')){
             abort(403, 'Unauthorized Action.');
         }
+
 
         $users = User::withTrashed()->get();
         $statuses = User::$statuses;
@@ -104,7 +105,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($user)
     {
         return redirect('users');
     }
@@ -115,12 +116,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($user)
     {
-        $user = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
         $statuses = User::$statuses; //Get all statuses
-
         return view('backend.users.edit', compact('user', 'roles', 'statuses')); //pass user roles and statuses data to view
 
     }
@@ -132,21 +131,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $user)
     {
-        $user = User::findOrFail($id); //Get role specified by id
+
         //Validate name, email and password fields
         $request->validate(
             [
                 'firstname'=>'required|max:120',
                 'lastname'=>'required|max:120',
                 'contactnumber'=>'required|max:20',
-                'email'=>'required|email|unique:users,email,'.$id,
                 'roles' => 'required'
-                // 'password'=>'required|min:6|confirmed'
             ]
         );
-        $input = $request->only(['firstname', 'lastname', 'contactnumber', 'status_is', 'email']); //Retreive the name, email and password fields
+
+        $input = $request->only(['firstname', 'lastname', 'contactnumber', 'status_is']); //Retreive the name, email and password fields
 
         $roles = $request['roles']; //Retreive all roles
         $user->fill($input)->save();
@@ -167,10 +165,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user)
     {
+
         //Find a user with a given id and delete
-            $user = User::findOrFail($id);
+//            $user = User::whereUuid($id)->first();
             $user->delete();
             $user->status_is = 'Trashed';
             $user->save();
@@ -186,10 +185,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function restore($id)
+    public function restore(Request $request)
     {
         //Find a user with a given id and restore
-            $user = User::withTrashed()->findOrFail($id);
+            $user = User::withTrashed()->whereUuid($request->id)->first();
             $user->restore();
             return response()->json([
                 "message"=> $user->fullname . ' was restored successfully',

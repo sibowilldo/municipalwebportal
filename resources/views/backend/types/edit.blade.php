@@ -67,10 +67,8 @@
 				<div class="m-portlet__foot m-portlet__foot--fit">
 					<div class="m-form__actions m-form__actions--solid">
 						<div class="row">
-							<div class="col-2">
-							</div>
-							<div class="col-10">
-								<button type="submit" class="btn btn-success m-btn--pill">Update Details</button>
+							<div class="col-md-10 offset-md-2">
+								<button type="submit" class="btn btn-success m-btn--pill m-btn--air">Update Details</button>
 							</div>
 						</div>
 					</div>

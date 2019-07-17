@@ -60,18 +60,27 @@
                         </ul>
                     </div>
                 </div>
+                {{ Form::model($permission, array('route' => array('permissions.update', $permission->id), 'method' => 'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state')) }}
                 <div class="m-portlet__body">
-                    {{ Form::model($permission, array('route' => array('permissions.update', $permission->id), 'method' => 'PUT')) }}
-
-                    <div class="form-group">
-                        {{ Form::label('name', 'Permission Name') }}
-                        {{ Form::text('name', null, array('class' => 'form-control m-input')) }}
+                    <div class="form-group m-form__group row {{ $errors->has('name') ? ' has-danger' : '' }}">
+                        {{ Form::label('name', 'Permission Name', ['class' => 'col-3 col-form-label']) }}
+                        <div class="col-9">
+                            {{ Form::text('name', null, array('class' => 'form-control m-input')) }}
+                        </div>
                     </div>
-
-                    {{ Form::submit('Save Changes', array('class' => 'btn btn-primary m-btn m-btn--air')) }}
-
-                    {{ Form::close() }}
                 </div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col-md-10 offset-md-2">
+                                <button type="submit" class="btn btn-success m-btn--pill m-btn--air">Update Details</button>
+                                <button type="reset" class="btn btn-secondary m-btn--pill m-btn--air">Reset Form</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{ Form::close() }}
             </div>
         </div>
     </div>

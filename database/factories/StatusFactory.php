@@ -5,7 +5,7 @@ use Carbon\Carbon;
 
 $factory->define(App\Status::class, function (Faker $faker) {
     return [
-        'name' => $faker->randomElement($array = array ('Active','In Progress','Completed')),
+        'name' => $faker->randomElement($array = array ('Active','In Progress','Completed', 'Escalated', 'Assigned', 'Cancelled')),
         'description' => $faker->text,
         'is_active' => $faker->boolean,
         'created_at' => Carbon::now(),

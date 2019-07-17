@@ -37,8 +37,6 @@ class RolesPermissionsSeeder extends Seeder
         Permission::create(['guard_name' => 'web', 'name' => 'delete fault']);
         Permission::create(['guard_name' => 'web', 'name' => 'list faults']);
 
-        // create roles and assign created permissions
-
         $role = Role::create(['guard_name' => 'web', 'name' => 'user']);
         $role->givePermissionTo(['create fault', 'edit fault', 'list faults']);
 
@@ -47,5 +45,24 @@ class RolesPermissionsSeeder extends Seeder
 
         $role = Role::create(['guard_name' => 'web', 'name' => 'super-administrator']);
         $role->givePermissionTo(Permission::all());
+
+
+        //users with API Guard
+        Permission::create(['guard_name' => 'api', 'name' => 'create user']);
+        Permission::create(['guard_name' => 'api', 'name' => 'edit user']);
+        Permission::create(['guard_name' => 'api', 'name' => 'list users']);
+        //faults with API Guard
+        Permission::create(['guard_name' => 'api', 'name' => 'create fault']);
+        Permission::create(['guard_name' => 'api', 'name' => 'edit fault']);
+        Permission::create(['guard_name' => 'api', 'name' => 'delete fault']);
+        Permission::create(['guard_name' => 'api', 'name' => 'list faults']);
+
+        // create roles and assign created permissions
+
+        $role = Role::create(['guard_name' => 'api', 'name' => 'user']);
+        $role->givePermissionTo(['create fault', 'edit fault', 'list faults']);
+
+        $role = Role::create(['guard_name' => 'api', 'name' => 'administrator']);
+        $role->givePermissionTo(['create user', 'create fault', 'edit user', 'edit fault', 'delete fault', 'list users', 'list faults']);
     }
 }

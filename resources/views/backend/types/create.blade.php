@@ -54,17 +54,16 @@
 						</ul>
 					</div>
 				</div>
-				{!! Form::open(['route'=> 'types.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
+				@include('layouts.form-errors')
+				{!! Form::open(['route'=> 'types.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
 				@include('backend.types._form')
 
 				<div class="m-portlet__foot m-portlet__foot--fit">
 					<div class="m-form__actions m-form__actions--solid">
 						<div class="row">
-							<div class="col-2">
-							</div>
-							<div class="col-10">
-								<button type="submit" class="btn btn-success m-btn--pill">Add Type</button>
-								<button type="reset" class="btn btn-secondary m-btn--pill">Reset Form</button>
+							<div class="col-md-10 offset-md-2">
+								<button type="submit" class="btn btn-success m-btn--pill m-btn--air">Add Type</button>
+								<button type="reset" class="btn btn-secondary m-btn--pill m-btn--air">Reset Form</button>
 							</div>
 						</div>
 					</div>

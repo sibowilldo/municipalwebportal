@@ -42,10 +42,15 @@ class GenerateMenus
             $menu->manage->add('Permissions', ['route' => 'permissions.index',])->data('permission', 'list permissions');
             $menu->manage->add('Departments', ['route' => 'departments.index',])->data('permission', 'list departments');
 
-            $menu->add('System', [])
+            $menu->add('System', [])->active('system/*')
                 ->data('icon', 'flaticon-cogwheel-2');
             $menu->system->add('Types', ['route' => 'types.index']);
             $menu->system->add('Categories', ['route' => 'categories.index']);
+            $menu->system->add('State Colors', ['route' => 'state_colors.index']);
+            $menu->system->add('Statuses', ['route' => 'statuses.index']);
+
+            $menu->add('Reports', [])
+                ->data('icon', 'flaticon-graph');
 
 
         });

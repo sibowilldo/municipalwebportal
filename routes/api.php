@@ -18,9 +18,9 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'Api\AuthController@login');
     Route::post('signup', 'Api\AuthController@signup');
     Route::get('account/activate/{token}', 'Api\AuthController@AccountActivate');
-    Route::post('check', function (){
-        return response(['authenticated' => false]);
-    });
+//    Route::post('check', function (){
+////        return response(['authenticated' => false]);
+//    });
 
 
     Route::group(['middleware' => ['auth:api', 'accountVerified']], function() {

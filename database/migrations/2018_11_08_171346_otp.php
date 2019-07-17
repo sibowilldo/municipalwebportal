@@ -15,7 +15,7 @@ class Otp extends Migration
     {
         Schema::create('otp', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->unsignedInteger('user_id');
             $table->string('pin_code');
             $table->timestamp('expires_at')->nullable()->default(null);
             $table->boolean('is_active')->default(false);

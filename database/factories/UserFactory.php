@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
-
+use Ramsey\Uuid;
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -14,7 +14,9 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+
     return [
+        'uuid' => $faker->uuid,
         'firstname' => $faker->firstName,
         'lastname' => $faker->lastName,
         'contactnumber' => $faker->phoneNumber,
@@ -22,11 +24,11 @@ $factory->define(App\User::class, function (Faker $faker) {
         'email_verified_at' => \Carbon\Carbon::now(),
         'activation_token' => '',
         'last_loggedin_at' => null,
-        'password' => bcrypt('secret'), // secret
+        'password' => bcrypt('secret admin'), // secret
         'remember_token' => str_random(10),
-        'status_is' => 'active',
+        'status_is' => $faker->randomElement($array = array ('active', 'assigned', 'available', 'blocked', 'inactive','trashed', 'unverified')),
         'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
         'updated_at' => null,
-        'deleted_at' => \Carbon\Carbon::now()->subDays(random_int(1,5)),
+        'deleted_at' => null,
     ];
 });

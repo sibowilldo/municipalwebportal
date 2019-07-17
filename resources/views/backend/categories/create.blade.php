@@ -55,7 +55,7 @@
 					</div>
 				</div>
 
-				{!! Form::open(['route'=> 'categories.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
+				{!! Form::open(['route'=> 'categories.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
 
 				@include('backend.categories._form')
 

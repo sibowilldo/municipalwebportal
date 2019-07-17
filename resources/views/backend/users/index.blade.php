@@ -120,37 +120,55 @@
                         <table class="m_datatable" id="users">
                             <thead>
                             <tr>
-                                <th data-field="id">{{ __('#') }}</th>
                                 <th data-field="FullName">{{ __('Full Name') }}</th>
                                 <th data-field="ContactNumber">{{ __('Contact Number') }}</th>
                                 <th data-field="Email">{{ __('Email') }}</th>
-                                <th data-field="JoinedAt">{{ __('Joined At') }}</th>
                                 <th data-field="Status">{{ __('Status') }}</th>
                                 <th data-field="Role">{{ __('Role') }}</th>
-                                <th data-field="Actions" style="text-align: right;">{{ __('Actions') }}</th>
+                                <th data-field="Actions">{{ __('Actions') }}</th>
+                                <th data-field="JoinedAt">{{ __('Joined At') }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($users as $user)
                             <tr>
-                                <td>{{ $user->id }}</td>
                                 <td>{{ $user->fullname }}</td>
                                 <td>{{ $user->contactnumber }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->created_at }}</td>
                                 <td>{{ ucfirst($user->status_is) }}</td>
                                 <td>
                                    {{ ucwords($user->roles()->pluck('name')->implode(', ')) }}</td>
                                 <td>
-                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-secondary m-btn " style="margin-right: 3px;">{{ __('Edit') }}</a>
+                                    <a href="{{ route('users.edit', $user->uuid) }}"  data-toggle="m-tooltip" title="Edit User" data-placement="left" data-original-title="Edit User" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
                                     @if ($user->deleted_at)
-                                        <button class="btn btn-secondary m-btn m-btn--custom btn-sm btn-restore" type="button" data-id="{{ $user->id }}" data-url="{{ route('users.restore', $user->id) }}">Restore</button>
+                                        <button
+                                                type="button"
+                                                data-id="{{ $user->uuid }}"
+                                                data-url="{{ route('users.restore', $user->uuid) }}"
+                                                data-toggle="m-tooltip"
+                                                title="Edit Status"
+                                                data-placement="left"
+                                                data-original-title="Edit Status"
+                                                class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon btn-sm m-btn--sm m-btn--pill btn-restore">
+                                            <i class="la la-recycle"></i> Restore
+                                        </button>
                                     @else
-                                        @if(Auth::id() !== $user->id)
-                                        <button class="btn btn-sm btn-danger m-btn m-btn--custom btn-delete" type="button" data-id="{{ $user->id }}" data-url="{{ route('users.destroy', $user->id) }}">{{ __('Delete') }}</button>
+                                        @if(Auth::user()->uuid !== $user->uuid)
+                                        <button
+                                                type="button"
+                                                data-id="{{ $user->uuid }}"
+                                                data-url="{{ route('users.destroy', $user->uuid) }}"
+                                                data-toggle="m-tooltip"
+                                                title="Edit Status"
+                                                data-placement="left"
+                                                data-original-title="Edit Status"
+                                                class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon btn-sm m-btn--sm m-btn--pill btn-delete">
+                                            <i class="la la-trash"></i> Delete
+                                        </button>
                                         @endif
                                     @endif
                                 </td>
+                                <td>{{ $user->created_at }}</td>
                             </tr>
                             @endforeach
                             </tbody>
@@ -209,6 +227,10 @@
                             field: 'JoinedAt',
                             type: 'date',
                             format: 'YYYY-MM-DD',
+                        },
+                        {
+                            field: 'Actions',
+                            width: 200
                         }
                     ],
                 });
@@ -257,6 +279,7 @@
                     e.preventDefault();
                     var id = $(this).data("id");
                     var url = $(this).data("url");
+                    console.log('uuid',url);
                     var token = $("meta[name='csrf-token']").attr("content");
                     Swal.fire({
                         title: 'Are you sure?',

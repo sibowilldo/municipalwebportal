@@ -25,7 +25,7 @@ class SystemSettingsTables extends Migration
 
         Schema::create('application_settings', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('configuration_id')->unsigned();
+            $table->unsignedInteger('configuration_id');
             $table->string('key');
             $table->longText('value');
             $table->longText('display');

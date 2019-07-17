@@ -28,8 +28,8 @@ class CreateDepartmentsTable extends Migration
         });
 
         Schema::create('department_user', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            $table->integer('department_id')->unsigned();
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('department_id');
 
             $table->timestamps();
 

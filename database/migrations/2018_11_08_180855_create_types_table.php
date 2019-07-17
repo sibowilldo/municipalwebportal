@@ -17,13 +17,14 @@ class CreateTypesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->string('state_color')->default('primary');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
 
         Schema::create('category_type', function (Blueprint $table) {
-            $table->integer('type_id')->unsigned();
-            $table->integer('category_id')->unsigned();
+            $table->unsignedInteger('type_id');
+            $table->unsignedInteger('category_id');
             $table->boolean('is_active')->default(false);
 
             $table->primary(['type_id', 'category_id']);

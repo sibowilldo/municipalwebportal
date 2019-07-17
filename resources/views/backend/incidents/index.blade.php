@@ -8,9 +8,8 @@
     <div class="row">
         @foreach($incidents as $incident)
 
-            <div class="col-xl-4">
-                <!--begin:: Widgets/Finance Summary-->
-                <div class="m-portlet m-portlet--full-height ">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="m-portlet m-portlet--full-height">
                     <div class="m-portlet__head">
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
@@ -18,53 +17,82 @@
                                     # {{ $incident->id }} - {{ $incident->reference }}
                                 </h3>
                             </div>
-                        </div>
-                        <div class="m-portlet__head-tools">
+                        </div><div class="m-portlet__head-tools">
                             <ul class="m-portlet__nav">
+                                @if(!count($incident->assignments))
                                 <li class="m-portlet__nav-item">
-                                    <a href="" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-edit"></i></a>
+                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill">
+                                        <i class="la la-user-plus"></i>
+                                    </a>
+                                </li> @endif
+                                <li class="m-portlet__nav-item">
+                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--pill">
+                                        <i class="la la-users"></i>
+                                    </a>
                                 </li>
                                 <li class="m-portlet__nav-item">
-                                    <a href="" m-portlet-tool="reload" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-circle"></i></a>
-                                </li>
-                                <li class="m-portlet__nav-item">
-                                    <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-expand"></i></a>
-                                </li>
-                                <li class="m-portlet__nav-item">
-                                    <a href="#" m-portlet-tool="remove" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-power-off"></i></a>
+                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill">
+                                        <i class="la la-edit"></i>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="m-portlet__body">
-                        <div class="m-widget12">
-                            <div class="m-widget12__item">
-                                <span class="m-widget12__text1">Name<br><span>{{ $incident->name }}</span></span>
+                        <div class="m-widget13">
+                            <div class="m-widget13__item">
+												<span class="m-widget13__desc m--align-right">
+                                                    Name
+												</span>
+                                <span class="m-widget13__text m-widget13__text-bolder">
+													{{ $incident->name }}
+												</span>
                             </div>
-                            <div class="m-widget12__item">
-                                <span class="m-widget12__text1">Type<br><span>{{ $incident->type->categories->first()->name }}</span></span>
-                                <span class="m-widget12__text2">Category<br><span>{{ $incident->type->name }}</span></span>
+                            <div class="m-widget13__item">
+												<span class="m-widget13__desc m--align-right">
+													Status:
+												</span>
+                                <span class="m-widget13__text m-widget13__number-bolder m--font-{{ $incident->status->state_color }}">
+													{{ $incident->status->name }}
+												</span>
                             </div>
-                            <div class="m-widget12__item">
-                                <span class="m-widget12__text1">Avarage Product Price<br><span>$60,70</span></span>
-                                <div class="m-widget12__text2">
-                                    <div class="m-widget12__desc">Satisfication Rate</div>
-                                    <br>
-                                    <div class="m-widget12__progress">
-                                        <div class="m-widget12__progress-sm progress m-progress--sm">
-                                            <div class="m-widget12__progress-bar progress-bar bg-brand" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <span class="m-widget12__stats">
-															63%
-														</span>
-                                    </div>
-                                </div>
+                            <div class="m-widget13__item">
+												<span class="m-widget13__desc m--align-right">
+													Category:
+												</span>
+                                <span class="m-widget13__text m-widget13__text-bolder">
+													{{ $incident->type->categories->first()->name }}
+												</span>
+                            </div>
+                            <div class="m-widget13__item">
+												<span class="m-widget13__desc m--align-right">
+													Type:
+												</span>
+                                <span class="m-widget13__text">
+													{{ $incident->type->name }}
+												</span>
+                            </div>
+                            <div class="m-widget13__item">
+												<span class="m-widget13__desc m--align-right">
+													Logged:
+												</span>
+                                <span class="m-widget13__text m-widget13">
+													{{ $incident->created_at->diffForHumans() }}. {{ $incident->created_at->format('M, d Y @ h:m:s') }}
+												</span>
+                            </div>
+                            <div class="m-widget13__item">
+												<span class="m-widget13__desc m--align-right">
+													Location:
+												</span>
+                                <span class="m-widget13__text">
+                                    <span class="m--font-bold m--font-brand">{{ $incident->longitude }}, {{ $incident->latitude }} </span>
+													<br>
+                                                    {{ $incident->location_description }}
+												</span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!--end:: Widgets/Finance Summary-->
             </div>
         @endforeach
     </div>

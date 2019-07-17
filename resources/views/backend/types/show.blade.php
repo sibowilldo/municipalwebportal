@@ -114,7 +114,7 @@
                             </span>
                         </div>
                         <div class="m-widget13__action m--align-right">
-                            <a href="{{ route('types.edit', $type->id) }}" class="m-widget__details  btn m-btn--pill  btn-accent">Edit Detalis</a>
+                            <a href="{{ route('types.edit', $type->id) }}" class="m-widget__details  btn m-btn--pill  btn-accent">Edit Details</a>
                             <button type="button" class="btn m-btn--pill btn-danger btn-delete"  data-id="{{ $type->id }}" data-url="{{ route('types.destroy', $type->id) }}">Remove</button>
                         </div>
                     </div>

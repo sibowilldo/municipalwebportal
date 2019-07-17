@@ -8,14 +8,17 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\GeneratesUuid;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, Notifiable, HasRoles;
+    use HasApiTokens, Notifiable, HasRoles, GeneratesUuid;
 
-    protected $guard_name = 'api';
+//    protected $guard_name = 'api';
 
     use SoftDeletes;
+
+    protected $casts = ['uuid' => 'uuid'];
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'firstname','lastname', 'contactnumber', 'email', 'email_verified_at', 'activation_token','password', 'status_is', 'last_loggedin_at'
+        'uuid','firstname','lastname', 'contactnumber', 'email', 'email_verified_at', 'activation_token','password', 'status_is', 'last_loggedin_at'
     ];
 
     /**
@@ -39,7 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'activation_token'
+        'id', 'password', 'remember_token', 'activation_token'
     ];
 
     /**
@@ -110,4 +113,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'assigned' => 'assigned',
         'trashed' => 'trashed'
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 }

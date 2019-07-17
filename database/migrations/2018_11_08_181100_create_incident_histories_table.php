@@ -15,14 +15,15 @@ class CreateIncidentHistoriesTable extends Migration
     {
         Schema::create('incident_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('incident_id')->unsigned();
-            $table->integer('previous_status')->unsigned();
-            $table->integer('status_id')->unsigned();
+            $table->unsignedInteger('incident_id');
+            $table->unsignedInteger('previous_status');
+            $table->unsignedInteger('status_id');
             $table->string('account_number');
             $table->mediumText('update_reason')->nullable();
 
             $table->timestamps();
 
+            $table->foreign('incident_id')->references('id')->on('incidents');
             $table->foreign('previous_status')->references('id')->on('statuses');
             $table->foreign('status_id')->references('id')->on('statuses');
 

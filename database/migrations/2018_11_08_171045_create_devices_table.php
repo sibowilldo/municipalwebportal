@@ -23,8 +23,8 @@ class CreateDevicesTable extends Migration
         });
 
         Schema::create('device_user', function(Blueprint $table){
-            $table->integer('user_id')->unsigned();
-            $table->integer('device_id')->unsigned();
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('device_id');
             $table->boolean('is_verified')->default(false);
             $table->boolean('is_active')->default(false);
 

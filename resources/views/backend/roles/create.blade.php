@@ -6,7 +6,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-xl-6 offset-3">
+        <div class="col-xl-8 offset-xl-2">
             <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
@@ -60,32 +60,34 @@
                         </ul>
                     </div>
                 </div>
+                @include('layouts.form-errors')
+                {{ Form::open(array('route' => 'roles.store', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state')) }}
                 <div class="m-portlet__body">
-                    @include('layouts.form-errors')
-                    {{ Form::open(array('route' => 'roles.store')) }}
-
-                    <div class="form-group">
-                        {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', null, array('class' => 'form-control')) }}
-                    </div>
-
-                    <h5><b>Assign Permissions</b></h5>
-
-                    <div class="m-scrollable" data-scrollable="true" style="height: 320px; margin: 30px 0;">
-                        <div class="m-form__group form-group">
-                            <div class='m-checkbox-list'>
-                                @foreach ($permissions as $permission)
-                                    <label class="m-checkbox m-checkbox--primary">{{ Form::checkbox('permissions[]',  $permission->id) }}{{ ucfirst($permission->name) }} <span></span></label>
-
-                                @endforeach
-                            </div>
+                    <div class="form-group m-form__group row {{ $errors->has("name") ? " has-danger" : ""  }}">
+                        {{ Form::label('name', 'Name', ['class' => 'col-3 col-form-label']) }}
+                        <div class="col-9">
+                            {{ Form::text('name', null, array('class' => 'form-control m-input')) }}
                         </div>
                     </div>
-
-                    {{ Form::submit('Save Role', array('class' => 'btn btn-primary m-btn m-btn--air')) }}
-
-                    {{ Form::close() }}
+                    <div class="form-group m-form__group row {{ $errors->has("permissions") ? " has-danger" : ""}}">
+                        {{ Form::label('permissions', 'Assign Permissions', ['class' => 'col-3 col-form-label']) }}
+                        <div class="col-9">
+                            {{ Form::select('permissions[]', $permissions->pluck('name', 'id'), '', ['class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker', 'multiple' => 'multiple']) }}
+                        </div>
+                    </div>
                 </div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                    <div class="row">
+                        <div class="col-md-10 offset-md-2">
+                            <button type="submit" class="btn btn-success m-btn--pill m-btn--air">Add Role</button>
+                            <button type="reset" class="btn btn-secondary m-btn--pill m-btn--air">Reset Form</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                {{ Form::close() }}
             </div>
         </div>
     </div>

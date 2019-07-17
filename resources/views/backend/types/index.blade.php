@@ -79,7 +79,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!--end: Search Form -->
                         <table class="m_datatable" id="types">
                             <thead>
@@ -108,12 +107,12 @@
                                     </td>
                                     <td>
                                         <span>
-
-                                        <span class="m-badge m-badge--{{ $type->state_color }}"></span>  {{ title_case($type->state_color) }}
+                                            <span class="m-badge m-badge--{{ $type->state_color }}"></span>
+                                            {{ title_case($type->state_color) }}
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="{{ route('types.edit', $type->id) }}">Edit</a>
+                                        <a href="{{ route('types.edit', $type->id) }}" data-toggle="m-tooltip" title="Edit Type" data-placement="left" data-original-title="Edit Type" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
                                     </td>
                                     <td>{{ $type->description }}</td>
                                     <td></td>

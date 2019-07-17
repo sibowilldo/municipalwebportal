@@ -55,7 +55,7 @@ class RoleController extends Controller
         $role = new Role();
         //        $role = Role::create(['guard_name' => 'web', 'name' => 'administrator']);
         $role->name = $name;
-        $role->guard_name = 'api';
+        $role->guard_name = 'web';
 
         $permissions = $request['permissions'];
 

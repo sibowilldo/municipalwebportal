@@ -12,9 +12,6 @@ class StatusTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('statuses')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        factory(App\Status::class, 5)->create();
+        factory(App\Status::class, 6)->create();
     }
 }

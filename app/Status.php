@@ -12,7 +12,7 @@ class Status extends Model
      * @var array
      */
     protected $fillable = [
-        'name','description', 'is_active'
+        'name','description', 'is_active', 'state_color'
     ];
 
     /**
@@ -29,4 +29,17 @@ class Status extends Model
     {
         return $this->hasOne(Incident::class);
     }
+    /**
+     * The array of $state_colors.
+     *
+     * @var array
+     */
+    public static $statuses = [
+        'available' => 'available',
+        'inactive' => 'inactive',
+        'active' => 'active',
+        'blocked' => 'blocked',
+        'assigned' => 'assigned',
+        'trashed' => 'trashed'
+    ];
 }

@@ -54,7 +54,7 @@
 						</ul>
 					</div>
 				</div>
-                {!! Form::model($incident, ['route'=> ['incidents.update', $incident->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
+                {!! Form::model($incident, ['route'=> ['incidents.update', $incident->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--states']) !!}
                 <div class="m-portlet__body">
                     @include('layouts.form-errors')
 				    @include('backend.incidents._form')
@@ -62,7 +62,7 @@
 				<div class="m-portlet__foot m-portlet__foot--fit">
 					<div class="m-form__actions m-form__actions--solid">
 						<div class="row">
-							<div class="col">
+							<div class="col-md-10">
 								<button type="submit" class="btn btn-success m-btn--pill">Update Details</button>
                                 <button class="btn m-btn--pill btn-outline btn-outline-danger  m-btn m-btn--icon"
                                         type="button" data-toggle="modal" data-target="#delete_modal">

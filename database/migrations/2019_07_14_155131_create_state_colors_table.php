@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class EnableSoftDeleteOnUsersTable extends Migration
+class CreateStateColorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class EnableSoftDeleteOnUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->softDeletes();
+        Schema::create('state_colors', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('css_class');
+            $table->string('css_color');
+            $table->timestamps();
         });
     }
 
@@ -26,9 +29,6 @@ class EnableSoftDeleteOnUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->dropColumn('deleted_at');
-        });
+        Schema::dropIfExists('state_colors');
     }
 }

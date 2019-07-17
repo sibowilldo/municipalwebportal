@@ -97,11 +97,11 @@
                                                            Last Updated
                                                         </span>
                                                         <span class="m-option__focus">
-                                                            {{$user->updated_at->diffForHumans()}}
+                                                            {{$user->updated_at ? $user->updated_at->diffForHumans() : 'Never'}}
                                                         </span>
                                                     </span>
                                                     <span class="m-option__body">
-                                                         {{ $user->updated_at->format('d M Y j:s') }}
+                                                         {{ $user->updated_at ? $user->updated_at->format('d M Y j:s') : '' }}
                                                     </span>
                                                 </span>
                                     </label>
@@ -124,7 +124,8 @@
                         </div>
                     </div>
                     <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
-                    <form class="m-form m-form--fit m-form--label-align-right">
+                    {{ Form::model($user, array('route' => array('profile.update', $user->uuid), 'method' => 'PUT', 'class'=>'m-form m-form--fit m-form--label-align-right')) }}
+                    @include('layouts.form-errors')
                         <div class="m-portlet__body">
                             <div class="form-group m-form__group row">
                                 <div class="col-10 ml-auto">
@@ -132,27 +133,27 @@
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
-                                <label for="example-text-input" class="col-2 col-form-label">First Name</label>
+                                <label for="firstname" class="col-2 col-form-label">First Name</label>
                                 <div class="col-7">
-                                    <input class="form-control m-input" type="text" value="{{ $user->firstname }}">
+                                    <input class="form-control m-input" name="firstname" type="text" value="{{ $user->firstname }}">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
-                                <label for="example-text-input" class="col-2 col-form-label">Last Name</label>
+                                <label for="lastname" class="col-2 col-form-label">Last Name</label>
                                 <div class="col-7">
-                                    <input class="form-control m-input" type="text" value="{{ $user->lastname }}">
+                                    <input class="form-control m-input" name="lastname" type="text" value="{{ $user->lastname }}">
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
-                                <label for="example-text-input" class="col-2 col-form-label">Email</label>
+                                <label for="email" class="col-2 col-form-label">Email</label>
                                 <div class="col-7">
-                                    <input class="form-control m-input" type="text" value="{{ $user->email }}" disabled>
+                                    <input class="form-control m-input" name="email" type="text" value="{{ $user->email }}" disabled>
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
-                                <label for="example-text-input" class="col-2 col-form-label">Contact Number</label>
+                                <label for="contactnumber" class="col-2 col-form-label">Contact Number</label>
                                 <div class="col-7">
-                                    <input class="form-control m-input" type="text" value="{{ $user->contactnumber }}">
+                                    <input class="form-control m-input" name="contactnumber" type="text" value="{{ $user->contactnumber }}">
                                 </div>
                             </div>
                             <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
@@ -181,17 +182,17 @@
                             </div>
                         </div>
                         <div class="m-portlet__foot m-portlet__foot--fit">
-                            <div class="m-form__actions">
+                            <div class="m-form__actions m-form__actions--solid">
                                 <div class="row">
                                     <div class="col-2">
                                     </div>
                                     <div class="col-7">
-                                        <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom m-btn--pill">Save changes</button>&nbsp;&nbsp;
+                                        <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom m-btn--pill">Save changes</button>&nbsp;&nbsp;
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    {{ Form::close() }}
                 </div>
                 <div class="tab-pane " id="activity_tab">
                 </div>

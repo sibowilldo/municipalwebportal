@@ -55,7 +55,7 @@
 					</div>
 				</div>
 
-				{!! Form::model($category, ['route'=> ['categories.update', $category->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
+				{!! Form::model($category, ['route'=> ['categories.update', $category->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
 				@include('backend.categories._form')
 
 				<div class="m-portlet__foot m-portlet__foot--fit">

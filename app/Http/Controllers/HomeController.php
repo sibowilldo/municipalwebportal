@@ -60,3 +60,4 @@ class Series{
         $this->data = $data;
     }
 }
+

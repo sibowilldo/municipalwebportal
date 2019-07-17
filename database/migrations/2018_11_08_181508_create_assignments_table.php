@@ -15,16 +15,24 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('incident_id')->unsigned();
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('assigner_id');
+            $table->unsignedInteger('incident_id');
             $table->longText('instructions')->nullable();
-            $table->date('executed_at')->nullable();
-            $table->date('due_at')->nullable();
+            $table->dateTime('executed_at')->nullable();
+            $table->dateTime('due_at')->nullable();
 
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
-            $table->foreign('incident_id')->references('id')->on('incidents')->onUpdate('cascade');
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onUpdate('cascade');
+            $table->foreign('assigner_id')
+                ->references('id')->on('users')
+                ->onUpdate('cascade');
+            $table->foreign('incident_id')
+                ->references('id')->on('incidents')
+                ->onUpdate('cascade');
         });
     }
 

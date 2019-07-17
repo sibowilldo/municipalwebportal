@@ -54,7 +54,7 @@
 						</ul>
 					</div>
 				</div>
-				{!! Form::open(['route'=> 'departments.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
+				{!! Form::open(['route'=> 'departments.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
 				@include('backend.departments._form')
 
 				<div class="m-portlet__foot m-portlet__foot--fit">

@@ -2,18 +2,31 @@
 
 namespace App;
 
+use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Incident extends Model
 {
+    use SoftDeletes, GeneratesUuid;
+
+    protected $casts = ['uuid' => 'uuid'];
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'reference','name', 'description', 'location_description', 'latitude', 'longitude','suburb_id','is_public' , 'type_id', 'status_id'
+        'uuid', 'reference','name', 'description', 'location_description', 'latitude', 'longitude','suburb_id','is_public' , 'type_id', 'status_id'
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
 
     //An Incident belongs to many users through pivot (incident_user)
     public function users()

@@ -55,7 +55,7 @@
 					</div>
 				</div>
 
-				{!! Form::model($department, ['route'=> ['departments.update', $department->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
+				{!! Form::model($department, ['route'=> ['departments.update', $department->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
 				@include('backend.departments._form')
 
 				<div class="m-portlet__foot m-portlet__foot--fit">
