@@ -16,6 +16,7 @@ import 'chart.js';
  */
 import ExampleComponent from './components/ExampleComponent'
 import TypesChart from './components/dashboard/TypesChart'
+import StatusesChart from './components/dashboard/StatusesChart'
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -28,6 +29,7 @@ const app = new Vue({
     el: '#app',
     components: {
         ExampleComponent,
-        TypesChart
+        TypesChart,
+        StatusesChart
     }
 });

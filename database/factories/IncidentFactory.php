@@ -11,7 +11,7 @@ $factory->define(App\Incident::class, function (Faker $faker) {
     return [
         'uuid' => $faker->uuid,
         'reference' => Carbon::now()->timestamp,
-        'name' => $faker->randomElement($array = array ('Burst Water Pipe','Sinkhole','Electric Wire on the road', 'Smoke Coming from Substation', 'Open Manhole', 'Collapse Street Pole')),
+        'name' => $faker->randomElement($array = array ('Burst Water Pipe','Sinkhole','Electric Wire on the road', 'Smoke Coming from Substation', 'Uncovered Manhole', 'Collapse Street Pole')),
         'description' => $faker->text,
         'location_description' => $faker->text,
         'latitude' => $faker->latitude($min = -90, $max = 90),

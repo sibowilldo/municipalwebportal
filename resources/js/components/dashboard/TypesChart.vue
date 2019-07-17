@@ -1,5 +1,5 @@
 <template>
-    <div class="small" style="position: relative;width:350px">
+    <div class="small" style="position: relative;">
         <pie-chart :chartdata="chartData" :options="chartOptions"/>
     </div>
 </template>
@@ -14,9 +14,9 @@
         data () {
             return {
                 chartData: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: ['Power Outage', 'Blown Substation', 'Broken Street Light', 'Faulty Traffic Lights', 'Live wire on street', 'Other'],
                     datasets: [{
-                        label: '# of Votes',
+                        label: '# of Types',
                         data: [12, 19, 3, 5, 2, 3],
                         backgroundColor: [
                             'rgba(255, 99, 132, 1)',
@@ -33,11 +33,11 @@
                 },
                 chartOptions : {
                     maintainAspectRatio: true,
-                    aspectRatio: 10,
+                    aspectRatio: 3,
                     legend:{
-                        position: 'right',
+                        position: 'bottom',
                         labels :{
-                            boxWidth: 12
+                            boxWidth: 10,
                         }
                     }
                 }

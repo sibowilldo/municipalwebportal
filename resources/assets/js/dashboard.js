@@ -1206,9 +1206,9 @@ var Dashboard = function() {
         var config = {
             type: 'line',
             data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October"],
+                labels: ["July 14, 2019", "July 15, 2019", "July 16, 2019", "July 17, 2019", "July 18, 2019", "July 19, 2019"],
                 datasets: [{
-                    label: "AdWords Views",
+                    label: "Total",
 
                     backgroundColor: mApp.getColor('accent'),
                     borderColor: mApp.getColor('accent'),
@@ -1218,7 +1218,7 @@ var Dashboard = function() {
                     pointHoverBackgroundColor: mApp.getColor('danger'),
                     pointHoverBorderColor: Chart.helpers.color('#000000').alpha(0.1).rgbString(),
                     data: [
-                        10, 14, 12, 16, 9, 11, 13, 9, 13, 15
+                        76, 53, 97, 106, 131, 101
                     ]
                 }]
             },

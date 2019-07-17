@@ -165,19 +165,19 @@
                             <div class="form-group m-form__group row">
                                 <div class="col-7 offset-2">
                                     <h6>Assigned Roles</h6>
-                                    <ul>
+                                    <div class="m-row--no-padding row">
                                     @foreach($user->roles as $role)
-                                        <li>{{  ucwords(str_replace('-', ' ', $role->name)) }}</li>
+                                        <div class="col-lg-3 col-md-4 col-sm-6 mb-3">{{  ucwords(str_replace('-', ' ', $role->name)) }}</div>
                                     @endforeach
-                                    </ul>
+                                    </div>
                                 </div>
                                 <div class="col-7 offset-2">
                                     <h6>Permissions</h6>
-                                    <ul>
+                                    <div class="m-row--no-padding row">
                                     @foreach($user->getAllPermissions() as $permission)
-                                        <li>{{  ucwords(str_replace('-', ' ', $permission->name)) }}</li>
+                                        <div class="col-lg-3 col-md-4 col-sm-6 mb-3">{{  ucwords(str_replace('-', ' ', $permission->name)) }}</div>
                                     @endforeach
-                                    </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

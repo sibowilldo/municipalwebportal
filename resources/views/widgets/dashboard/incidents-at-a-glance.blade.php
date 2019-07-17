@@ -15,8 +15,14 @@
 
 												</span>
                     </div>
-                    <div class="m-widget14__chart" style="height:260px;">
-                        <canvas id="m_chart_daily_sales"></canvas>
+                    <div class="m-widget12 m-widget12--chart-bottom m--margin-top-10" style="min-height: 300px">
+                        <div class="m-widget12__item">
+                            <span class="m-widget12__text1">Logged<br><span>520</span></span>
+                            <span class="m-widget12__text2">Completed<br><span>340</span></span>
+                        </div>
+                        <div class="m-widget12__chart m-portlet-fit--sides" style="height:290px;">
+                            <canvas id="m_chart_finance_summary"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -57,7 +63,7 @@
                     </div>
                     <div class="row  align-items-center">
                         <div class="col">
-                            <types-chart></types-chart>
+                            <statuses-chart></statuses-chart>
                         </div>
                     </div>
                 </div>
@@ -67,4 +73,3 @@
         </div>
     </div>
 </div>
-
