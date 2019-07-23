@@ -27,9 +27,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(!Auth::user()->hasPermissionTo('list users', 'web')){
-            abort(403, 'Unauthorized Action.');
-        }
+//        if(!Auth::user()->hasPermissionTo('list users', 'web')){
+//            abort(403, 'Unauthorized Action.');
+//        }
 
 
         $users = User::withTrashed()->get();
