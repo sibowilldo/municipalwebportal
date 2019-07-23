@@ -25,7 +25,7 @@ class AdminSeeder extends Seeder
             'remember_token' => str_random(10),
             'status_is' => $faker->randomElement($array = array ('active', 'assigned', 'available', 'blocked', 'inactive','trashed', 'unverified')),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
-            'updated_at' => null,
+            'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
 
         $user->roles()->attach([3]);
