@@ -53,6 +53,29 @@
                 </div>
             </form>
             <!--end::Form-->
+            <div class="m-login__divider">
+                <div class="m-divider">
+                    <span></span>
+                    <span>OR</span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="m-login__options mt-5">
+                <a href="{{route('social.redirect', 'facebook')}}" class="btn btn-primary m-btn m-btn--icon">
+                    <i class="la la-facebook"></i>
+                    Facebook
+                </a>
+
+                <a href="{{route('social.redirect', 'github')}}" class="btn btn-info m-btn">
+                    <i class="la la-github"></i>
+                    Github
+                </a>
+
+                <a href="{{route('social.redirect', 'google')}}" class="btn btn-danger m-btn">
+                    <i class="la la-google"></i>
+                    Google
+                </a>
+            </div>
         </div>
 
         <!--end::Signin-->

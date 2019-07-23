@@ -61,8 +61,7 @@
 													Category:
 												</span>
                                 <span class="m-widget13__text m-widget13__text-bolder">
-													{{ $incident->type->categories()->first()->name }}
-                                                    {{ $incident->type->categories()->first() ? $incident->type->categories()->first()->id : '' }}
+													{{ $incident->type->categories()->first() ? $incident->type->categories()->first()->name : '' }}
 												</span>
                             </div>
                             <div class="m-widget13__item">
