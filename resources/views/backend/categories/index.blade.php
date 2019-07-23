@@ -123,8 +123,10 @@
                                         <span class="m-badge m-badge--{{ $category->state_color }}"></span>  {{ title_case($category->state_color) }}
                                         </span>
                                     </td>
+
                                     <td>
-                                        <a href="{{ route('categories.edit', $category->id) }}">Edit</a>
+                                        <a href="{{ route('categories.edit', $category->id) }}" data-toggle="m-tooltip" title="Edit Category" data-placement="left" data-original-title="Edit Category" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
+                                        <a href="{{ route('categories.show', $category->id) }}" data-toggle="m-tooltip" title="View Category" data-placement="left" data-original-title="View Category" class="m-portlet__nav-link btn m-btn m-btn--hover-primary m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-eye"></i></a>
                                     </td>
                                     <td>{{ $category->description }}</td>
                                     <td>

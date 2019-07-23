@@ -17,6 +17,8 @@ Auth::routes(['verify' => true]);
 Route::get('/register', function (){abort(403, 'Unauthorized action.');});
 Route::post('/register', function (){abort(403, 'Unauthorized action.');});
 
+Route::get('/auth/social/{social}', 'SocialLoginController@redirectToSocial')->name('social.redirect');
+Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallback')->name('social.callback');
 
 //
 Route::group(['middleware' => ['verified']], function () {

@@ -89,7 +89,7 @@
                                 <th data-field="State Color">{{ __('State Color') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
                                 <th data-field="Description">{{ __('Description') }}</th>
-                                <th data-field="Associated Types">{{ __('Associated Types') }}</th>
+                                <th data-field="Associated Categories">{{ __('Associated Categories') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -113,9 +113,14 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('types.edit', $type->id) }}" data-toggle="m-tooltip" title="Edit Type" data-placement="left" data-original-title="Edit Type" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
+                                        <a href="{{ route('types.show', $type->id) }}" data-toggle="m-tooltip" title="View Type" data-placement="left" data-original-title="View Type" class="m-portlet__nav-link btn m-btn m-btn--hover-primary m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-eye"></i></a>
                                     </td>
                                     <td>{{ $type->description }}</td>
-                                    <td></td>
+                                    <td>
+                                        @foreach($type->categories as $category)
+                                            <a href="{{ route('categories.show', $category->id) }}" class="m-badge m-badge--brand m-badge--wide mb-2">{{ ucwords($category->name ) }}</a>
+                                        @endforeach
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>

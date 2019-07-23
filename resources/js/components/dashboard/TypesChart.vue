@@ -50,20 +50,20 @@
                     let labelsData = [],
                         datasetsData = [],
                         colors = [
-                            '#4db6ac',
-                            '#140078',
-                            '#00867d',
-                            '#ffa726',
-                            '#795548',
-                            '#8559da',
-                            '#2196f3',
-                            '#e91e63',
-                            '#6ec6ff',
-                            '#ff6090',
-                            '#0069c0',
-                            '#b0003a',
-                            '#512da8',
-                            '#5e92f3'
+                            '#34BFA3',
+                            '#FFB822',
+                            '#36A3F7',
+                            '#F4516C',
+                            '#5767DD',
+                            '#EAEAEA',
+                            '#716ACA',
+                            '#00C5DC',
+                            '#9819F4',
+                            '#FFB822',
+                            '#F4516C',
+                            '#5767DD',
+                            '#716ACA',
+                            '#34BFA3'
                         ];
                     let data = response.data.data, start = response.data.start, end = response.data.end;
                     data.forEach(function(i,v){

@@ -84,10 +84,22 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      *
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function otp()
     {
         return $this->hasMany(OTP::class);
+    }
+
+    /**
+     * A user has one Social Account Profile
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function profile()
+    {
+        return $this->hasOne(SocialAccount::class);
     }
 
     /**

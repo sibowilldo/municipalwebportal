@@ -13,7 +13,7 @@ class CategoryAndTypeSeeder extends Seeder
     {
         // Create 7 records of categories
         factory(App\Category::class, 7)->create()->each(function ($category) {
-            $types = factory(App\Type::class, 2)->make();
+            $types = factory(App\Type::class, 1)->make();
             $category->types()->saveMany($types);
         });
     }

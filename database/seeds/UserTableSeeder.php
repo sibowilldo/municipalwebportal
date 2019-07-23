@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Faker\Factory as Faker;
 class UserTableSeeder extends Seeder
 {
     /**
@@ -11,7 +12,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $roles = Role::pluck('id');
+        $roles = Role::where('name', '!=', 'super-administrator')->pluck('id');
 
         factory(App\User::class,50)->create()->each(function ($user){
             // Seed the relation with 5 purchases
@@ -19,9 +20,8 @@ class UserTableSeeder extends Seeder
             $user->incidents()->saveMany($incidents);
         });
 
-
         App\User::All()->each(function ($user) use ($roles){
-            $user->roles()->attach(random_int(1, count($roles)));
+            $user->roles()->attach(Faker::create()->randomElement($array = $roles));
         });
     }
 }
