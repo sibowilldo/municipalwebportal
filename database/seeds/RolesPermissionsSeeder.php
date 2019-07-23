@@ -15,6 +15,7 @@ class RolesPermissionsSeeder extends Seeder
     {
         // Reset cached roles and permissions
         app()['cache']->forget('spatie.permission.cache');
+        app()['cache']->forget('spatie.role.cache');
 
         // create roles
         Permission::create(['guard_name' => 'web', 'name' => 'create role']);

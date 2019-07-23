@@ -313,7 +313,6 @@
                 width: 150,
                 // callback function support for column rendering
                 template: function(row) {
-                    console.log(row.Category > 0 ? row.Category:'less or eq');
                     return '<span class="m-badge m-badge--dot m-badge--' + (row.Category > 0 ? Categories[row.Category].class : 'metal') + '"></span>&nbsp;<span class="m--font-bold m--font-'+ (row.Category > 0 ? Categories[row.Category].class : 'metal')+'">' +
                         (row.Category > 0 ? Categories[row.Category].title:'Not assigned')+ '</span>';
                 },

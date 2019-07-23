@@ -49,7 +49,6 @@
                 .listen('IncidentStatusUpdated', (e) => {
                     console.log(e);
                 });
-            console.log('Component Mounted')
 
         },
         methods: {

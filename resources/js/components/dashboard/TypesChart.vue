@@ -82,7 +82,6 @@
                         ]
                     }
                     this.dataFilled = !!this.chartData.datasets[0].data.length;
-                    console.log(this.dataFilled)
                 });
             }
         }
