@@ -21,6 +21,7 @@ Route::post('/register', function (){abort(403, 'Unauthorized action.');});
 //
 Route::group(['middleware' => ['verified']], function () {
 
+    Route::get('api/types/chart', 'Api\TypeController@chart_types')->name('types.chart');
     Route::get('push', function () {
         event(new App\Events\IncidentCreated(\App\Incident::first()));
         return redirect()->route('dashboard');

@@ -185,7 +185,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function restore(Request $request)
+    public function restore(Request $request, User $user)
     {
         //Find a user with a given id and restore
             $user = User::withTrashed()->whereUuid($request->id)->first();

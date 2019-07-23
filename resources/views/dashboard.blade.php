@@ -362,8 +362,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="event.preventDefault(); document.getElementById('log-incident').submit();">Confirm</button>
+                    <button type="button" class="btn btn-secondary m-btn--pill m-btn--air" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success  m-btn--pill m-btn--air" onclick="event.preventDefault(); document.getElementById('log-incident').submit();">Confirm</button>
                 </div>
             </div>
         </div>

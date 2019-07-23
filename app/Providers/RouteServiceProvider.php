@@ -27,7 +27,8 @@ class RouteServiceProvider extends ServiceProvider
 
         parent::boot();
         Route::bind('user', function ($value) {
-            return \App\User::whereUuid($value)->first() ?? abort(404);
+            $user = \App\User::withTrashed()->whereUuid($value)->first();
+            return $user ?? abort(404);
         });
     }
 

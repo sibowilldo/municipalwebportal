@@ -37,12 +37,12 @@
 </div>
 <div class="form-group m-form__group{{ $errors->has('') ? ' has-danger' : '' }}">
     {!! Form::label('category_id', 'Category:') !!}
-    {!! Form::select('category_id',$categories->pluck('name', 'id'), null, ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker', 'placeholder'=>'Select a Category...']) !!}
+    {!! Form::select('category_id',$categories->pluck('name', 'id'), isset($incident)?($incident->type->categories->first()->id ?? null):null, ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker', 'placeholder'=>'Select a Category...']) !!}
 
 </div>
 <div class="form-group m-form__group{{ $errors->has('') ? ' has-danger' : '' }}">
     {!! Form::label('type_id', 'Type:') !!}
-    {!! Form::select('type_id', [], null, ['class'=>'m-select2 form-control', 'style' => 'width: 100%']) !!}
+    {!! Form::select('type_id',  isset($incident)?$incident->type()->get()->pluck('name', 'id'):[], null, ['class'=>'m-select2 form-control', 'style' => 'width: 100%']) !!}
 </div>
 <div class="form-group m-form__group{{ $errors->has('') ? ' has-danger' : '' }}">
     {!! Form::label('status_id', 'Status:') !!}

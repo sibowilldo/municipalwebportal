@@ -110,8 +110,10 @@ class IncidentController extends Controller
     public function edit($id)
     {
         $incident = Incident::findOrFail($id);
-        $categories = Category::pluck('name', 'id');
+        $categories = Category::all('id', 'name');
         $types = Type::pluck('name', 'id');
+
+//        dd($incident->type()->get()->pluck('name', 'id'));
 
         return view('backend.incidents.edit', compact('incident','categories', 'types'));
     }
