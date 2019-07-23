@@ -1,6 +1,6 @@
 <template>
     <div class="small" style="position: relative;">
-        <pie-chart :chartdata="chartData" :options="chartOptions"/>
+        <pie-chart :chart-data="chartData" :options="chartOptions"/>
     </div>
 </template>
 
