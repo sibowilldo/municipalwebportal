@@ -23,7 +23,7 @@
                 <div class="m-portlet__body">
 
                 @include('layouts.form-errors')
-                    <!--begin: Datatable -->
+                <!--begin: Datatable -->
                     <div class="m_datatable">
                         <!--begin: Search Form -->
                         <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
@@ -39,7 +39,7 @@
                                                     <select class="form-control m-bootstrap-select" id="m_form_status">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach($statues as $status)
-                                                        <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                                            <option value="{{ $status->id }}">{{ $status->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -64,7 +64,8 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="m-input-icon m-input-icon--left">
-                                                <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
+                                                <input type="text" class="form-control m-input" placeholder="Search..."
+                                                       id="generalSearch">
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
                                                 <span><i class="la la-search"></i></span>
                                             </span>
@@ -73,7 +74,8 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <button type="button" data-toggle="modal" data-target="#log_incident_modal" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                    <button type="button" data-toggle="modal" data-target="#log_incident_modal"
+                                            class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                                     <span>
                                         <i class="la la-plus"></i>
                                         <span>{{ __('Log Incident') }}</span>
@@ -102,27 +104,40 @@
                             </thead>
                             <tbody>
                             @foreach($incidents as $incident)
-                            <tr>
-                                <td>{{ $incident->id }}</td>
-                                <td>{{ $incident->reference }}</td>
-                                <td>{{ $incident->name }}</td>
-                                <td>{{ $incident->created_at }}</td>
-                                <td>{{ $incident->type->categories()->first()?$incident->type->categories()->first()->id:0 }}</td>
-                                <td>{{ $incident->status->id }}</td>
-                                <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
-                                <td>{{ $incident->suburb_id }}</td>
-                                {{--<td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>--}}
-                                <td>
+                                <tr>
+                                    <td>{{ $incident->id }}</td>
+                                    <td><a href="{{ route('incidents.show', $incident->id) }}"
+                                           class="font-weight-bold">{{ $incident->reference }}</a></td>
+                                    <td>{{ $incident->name }}</td>
+                                    <td>{{ $incident->created_at }}</td>
+                                    <td>{{ $incident->type->categories()->first()?$incident->type->categories()->first()->id:0 }}</td>
+                                    <td>{{ $incident->status->id }}</td>
+                                    <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
+                                    <td>{{ $incident->suburb_id }}</td>
+                                    {{--<td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>--}}
+                                    <td>
                                         <div role="group">
                                             @if(!count($incident->assignments))
-                                            <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-user-plus"></i></a> @endif
-                                            <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-users"></i></a>
-                                            <a data-toggle="m-tooltip" data-placement="top" data-original-title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
+                                                <a data-toggle="m-tooltip" data-placement="top"
+                                                   data-original-title="Assign Engineer"
+                                                   href="{{ route('engineers.list',$incident->id) }}"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                            class="la la-user-plus"></i></a> @endif
+                                            <a data-toggle="m-tooltip" data-placement="top"
+                                               data-original-title="Assign Working Group"
+                                               href="{{ route('engineers.list',$incident->id) }}"
+                                               class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                        class="la la-users"></i></a>
+                                            <a data-toggle="m-tooltip" data-placement="top"
+                                               data-original-title="Edit Details"
+                                               href="{{ route('incidents.edit', $incident->id) }}"
+                                               class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                        class="la la-edit"></i></a>
                                         </div>
 
-                                </td>
-                                {{-- <td></td> --}}
-                            </tr>
+                                    </td>
+                                    {{-- <td></td> --}}
+                                </tr>
                             @endforeach
                             </tbody>
                         </table>
@@ -137,13 +152,15 @@
 
 @section('css')
     <style>
-        .m-datatable__lock--right{
+        .m-datatable__lock--right {
             overflow: visible !important;
         }
+
         #map {
             width: 100%;
             height: 400px;
         }
+
         .mapControls {
             margin-top: 10px;
             border: 1px solid transparent;
@@ -154,6 +171,7 @@
             outline: none;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
+
         #searchMapInput {
             background-color: #fff;
             font-family: Roboto;
@@ -165,11 +183,14 @@
             width: 50%;
             top: 10px !important;
         }
+
         #searchMapInput:focus {
             border-color: #4d90fe;
         }
-        .pac-container{
-            z-index: 9999;}
+
+        .pac-container {
+            z-index: 9999;
+        }
     </style>
 @stop
 
@@ -179,109 +200,6 @@
     {{ Html::script('js/project-mdatatable.js') }}
     <script>
 
-        let status = [];
-        var getStatuses = function() {
-            var statuses = function(){
-                $.ajax({
-                    url: 'api/system/statuses',
-                    type:"GET",
-                    dataType:"json",
-                    success:function(data) {
-                        status = data;
-                    }
-                });
-            }
-            return {
-                init: function(){
-                    statuses()
-                }
-            }
-        }();
-        //Get Statuses for the Status Column
-        getStatuses.init();
-
-        let Categories = {};
-        var LoadCategories = function(){
-            var categories = function(){
-                    let colorCodes = [];
-                    $.ajax({
-                        url: '/backend/categories',
-                        type:"GET",
-                        dataType:"json",
-                        success:function(data) {
-                            $.each(data.data, function(key, value){
-                                Categories[value.id] = {'title': value.name, 'class': value.state_color}
-                            });
-                        },
-                        complete: function(){
-                            // Call datatable init function, once everything has loaded
-                            TableElement.init($('#incidents'), columns);
-                        }
-                    });
-                }
-
-            return {
-                init: function(){
-                    categories()
-                }
-            }
-        }();
-        LoadCategories.init();//Load these first! Before TableMethods
-
-        var LoadTypes = function(){
-            var types = function(){
-                $('select[name="category_id"]').on('change', function() {
-                    var categoryId = $(this).val();
-                    if(categoryId) {
-                        $.ajax({
-                            url: '/json/types/'+categoryId,
-                            type:"GET",
-                            dataType:"json",
-                            beforeSend: function(){
-                                $('#loader').css("visibility", "visible");
-                            },
-                            success:function(data) {
-                                $('select[name="type_id"]').empty();
-                                $.each(data.data, function(key, value){
-                                    $('select[name="type_id"]').append('<option value="'+ key +'">' + value + '</option>');
-
-                                });
-                            },
-                            complete: function(){
-                                $('#loader').css("visibility", "hidden");
-                            }
-                        });
-                    } else {
-                        $('select[name="type_id"]').empty();
-                    }
-                })
-            }
-
-            return {
-                init: function(){
-                    types()
-                }
-            }
-        }();
-
-        /**
-         * Function REQUIRED!
-         *
-         *
-        */
-        const TableMethods = function(){
-            return{
-                init:function(datatable){
-                    $('#m_form_status').on('change', function() {
-                        datatable.search($(this).val().toLowerCase(), 'Status');
-                    });
-                    $('#m_form_type').on('change', function() {
-                        datatable.search($(this).val().toLowerCase(), 'Category');
-                    });
-                    $('#m_form_status, #m_form_type').selectpicker();
-                }
-            }
-        }();
 
         const columns = [
             {
@@ -303,7 +221,7 @@
                 field: 'Status',
                 title: 'Status',
                 // callback function support for column rendering
-                template: function(row) {
+                template: function (row) {
                     return '<span class="m-badge m-badge--' + status[row.Status].class + ' m-badge--wide">' + status[row.Status].title + '</span>';
                 },
             },
@@ -312,9 +230,9 @@
                 title: 'Category',
                 width: 150,
                 // callback function support for column rendering
-                template: function(row) {
-                    return '<span class="m-badge m-badge--dot m-badge--' + (row.Category > 0 ? Categories[row.Category].class : 'metal') + '"></span>&nbsp;<span class="m--font-bold m--font-'+ (row.Category > 0 ? Categories[row.Category].class : 'metal')+'">' +
-                        (row.Category > 0 ? Categories[row.Category].title:'Not assigned')+ '</span>';
+                template: function (row) {
+                    return '<span class="m-badge m-badge--dot m-badge--' + (row.Category > 0 ? Categories[row.Category].class : 'metal') + '"></span>&nbsp;<span class="m--font-bold m--font-' + (row.Category > 0 ? Categories[row.Category].class : 'metal') + '">' +
+                        (row.Category > 0 ? Categories[row.Category].title : 'Not assigned') + '</span>';
                 },
             },
             {
@@ -328,25 +246,151 @@
             }
         ];
 
-        jQuery(document).ready(function() {
+        /**
+         * Function REQUIRED!
+         *
+         *
+         */
+        const TableMethods = function () {
+            return {
+                init: function (datatable) {
+                    $('#m_form_status').on('change', function () {
+                        datatable.search($(this).val().toLowerCase(), 'Status');
+                    });
+                    $('#m_form_type').on('change', function () {
+                        datatable.search($(this).val().toLowerCase(), 'Category');
+                    });
+                    $('#m_form_status, #m_form_type').selectpicker();
+                }
+            }
+        }();
+
+        let status = [];
+        var getStatuses = function () {
+            var statuses = function () {
+                if (typeof (Storage) !== "undefined") {
+
+                    if (localStorage.dashboardStatuses) {
+                        status = JSON.parse(localStorage.dashboardStatuses);
+                    } else {
+                        $.ajax({
+                            url: 'api/system/statuses',
+                            type: "GET",
+                            dataType: "json",
+                            success: function (data) {
+                                status = data.data;
+                                localStorage.dashboardStatuses = JSON.stringify(status);
+                            }
+                        });
+                    }
+                } else {
+                    console.log("Performance Degraded", "Sorry, your browser does not support web storage...");
+                }
+
+            };
+            return {
+                init: function () {
+                    statuses()
+                }
+            }
+        }();
+        //Get Statuses for the Status Column
+        getStatuses.init();
+
+        let Categories = {};
+        var LoadCategories = function () {
+            var categories = function () {
+                if (typeof (Storage) !== "undefined") {
+                    if (localStorage.dashboardCategories) {
+                        Categories = JSON.parse(localStorage.dashboardCategories);
+                        TableElement.init($('#incidents'), columns);
+                    } else {
+                        $.ajax({
+                            url: '/api/categories',
+                            type: "GET",
+                            dataType: "json",
+                            success: function (data) {
+                                $.each(data.data, function (key, value) {
+                                    Categories[value.id] = {'title': value.name, 'class': value.state_color}
+                                });
+                                localStorage.dashboardCategories = JSON.stringify(Categories);
+                            },
+                            complete: function () {
+                                // Call datatable init function, once everything has loaded
+                                TableElement.init($('#incidents'), columns);
+                            }
+                        });
+                    }
+                } else {
+                    console.log("Performance Degraded", "Sorry, your browser does not support web storage...");
+                }
+            }
+
+            return {
+                init: function () {
+                    categories()
+                }
+            }
+        }();
+        LoadCategories.init();//Load these first! Before TableMethods
+
+        var LoadTypes = function () {
+            var types = function () {
+                $('select[name="category_id"]').on('change', function () {
+                    var categoryId = $(this).val();
+                    if (categoryId) {
+                        $.ajax({
+                            url: '/json/types/' + categoryId,
+                            type: "GET",
+                            dataType: "json",
+                            beforeSend: function () {
+                                $('#loader').css("visibility", "visible");
+                            },
+                            success: function (data) {
+                                $('select[name="type_id"]').empty();
+                                $.each(data.data, function (key, value) {
+                                    $('select[name="type_id"]').append('<option value="' + key + '">' + value + '</option>');
+
+                                });
+                            },
+                            complete: function () {
+                                $('#loader').css("visibility", "hidden");
+                            }
+                        });
+                    } else {
+                        $('select[name="type_id"]').empty();
+                    }
+                })
+            }
+
+            return {
+                init: function () {
+                    types()
+                }
+            }
+        }();
+
+        jQuery(document).ready(function () {
             LoadTypes.init();
             $('#type_id').select2({
                 placeholder: {
                     id: '-1', // the value of the option
-                    text: 'Select a category from the list above first...'
+                    text: 'Choose a category from the list above first...'
                 }
             });
         });
 
     </script>
     <script src="{{ asset('js/google-maps.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap"
+            async defer></script>
 @endsection
 
 @section('modals')
 
     <!--begin:: Log Incident Modal-->
-    <div class="modal fade" id="log_incident_modal" tabindex="-1" role="dialog" aria-labelledby="logincident" aria-hidden="true">
+    <div class="modal fade" id="log_incident_modal" tabindex="-1" role="dialog" aria-labelledby="logincident"
+         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -362,8 +406,11 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary m-btn--pill m-btn--air" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success  m-btn--pill m-btn--air" onclick="event.preventDefault(); document.getElementById('log-incident').submit();">Confirm</button>
+                    <button type="button" class="btn btn-secondary m-btn--pill m-btn--air" data-dismiss="modal">Cancel
+                    </button>
+                    <button type="button" class="btn btn-success  m-btn--pill m-btn--air"
+                            onclick="event.preventDefault(); document.getElementById('log-incident').submit();">Confirm
+                    </button>
                 </div>
             </div>
         </div>

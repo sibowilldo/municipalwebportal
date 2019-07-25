@@ -73,9 +73,7 @@ Route::group(['middleware' => ['verified']], function () {
 
 
     //Get Categories in JSON format
-    Route::get('backend/categories', function (){
-        return CategoryResource::collection(Category::all('id', 'name', 'is_active', 'state_color'));
-    })->middleware(['auth:web']);
+    Route::get('api/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
 
     Route::resource('manage/departments', 'DepartmentController');
 

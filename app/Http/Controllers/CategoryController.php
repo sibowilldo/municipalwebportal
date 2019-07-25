@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Resources\CategoryResource;
 use App\System;
 use App\Type;
 use Illuminate\Http\Request;
@@ -120,5 +121,10 @@ class CategoryController extends Controller
             "message"=> $category->name . ' was deleted successfully',
             "url" => route('categories.index')
         ], 200);
+    }
+
+    public function jsonIndex()
+    {
+        return response()->json(['data' => Category::all('id', 'name', 'is_active', 'state_color')]);
     }
 }

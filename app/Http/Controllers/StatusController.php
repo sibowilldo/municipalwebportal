@@ -105,7 +105,7 @@ class StatusController extends Controller
             $newStatus = new JsonStatuses(ucfirst($status->name), $status->state_color);
             $data[$status->id]=$newStatus;
         }
-        return response()->json($data);
+        return response()->json(['data' => $data]);
     }
 }
 

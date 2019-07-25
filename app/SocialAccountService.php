@@ -1,5 +1,6 @@
 <?php
 namespace App;
+use Carbon\Carbon;
 use Laravel\Socialite\Contracts\Provider;
 class SocialAccountService
 {
@@ -17,14 +18,21 @@ class SocialAccountService
                 'provider_user_id' => $providerUser->getId(),
                 'provider' => $providerName
             ]);
-            dd($providerUser->getName());
+
             $user = User::whereEmail($providerUser->getEmail())->first();
             if (!$user) {
                 $user = User::create([
-                    'email' => $providerUser->getEmail(),
-                    'name' => $providerUser->getName(),
-//                    'username' => strtolower(preg_replace('/\s+/', '_', $providerUser->name) . mt_rand(10, 100))
-                ]);
+                            'firstname' => $providerUser->getName(),
+                            'lastname' => $providerUser->getNickName(),
+                            'contactnumber' => '',
+                            'activation_token' => '', // ToDo set to str_random(60) later
+                            'email_verified_at' => Carbon::now(),
+                            'email' => $providerUser->getEmail(),
+                            'password' => bcrypt($providerUser->getId()),
+                            'status_is' => 'active' //ToDo set to inactive later
+                        ]
+                    );
+                $user->assignRole(['user']);
             }
             $account->user()->associate($user);
             $account->save();

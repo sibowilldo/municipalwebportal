@@ -39,7 +39,13 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'http://mwp.dedicated.co.za/auth/google/callback',
+        'redirect' => env(' APP_URL').'/auth/google/callback',
+    ],
+
+    'twitter' => [
+        'client_id' => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
+        'redirect' => env(' APP_URL').'/auth/twitter/callback',
     ],
 
     'facebook' => [

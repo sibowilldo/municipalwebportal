@@ -1,6 +1,14 @@
 <template>
     <div class="small" style="position: relative;">
-        <pie-chart :chart-data="chartData" :options="chartOptions"/>
+        <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline m-alert--air alert alert-danger alert-dismissible fade show" role="alert" v-if="!dataFilled">
+            <div class="m-alert__icon">
+                <i class="flaticon-exclamation-1"></i>
+            </div>
+            <div class="m-alert__text">
+                <strong>No data to display!</strong><br> Once the data is available it will be displayed here.
+            </div>
+        </div>
+        <pie-chart :chart-data="chartData" :options="chartOptions"  v-if="dataFilled"/>
     </div>
 </template>
 
@@ -13,31 +21,15 @@
         },
         data () {
             return {
-                chartData: {
-                    labels: ['In Progress', 'Completed', 'Cancelled', 'Escalated', 'Assigned', 'Other'],
-                    datasets: [{
-                        label: '# of Types',
-                        data: [40, 19, 38, 15, 22, 18],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderColor: [ '#fff'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
+                dataFilled: false,
+                chartData:{},
                 chartOptions : {
                     maintainAspectRatio: true,
                     aspectRatio: 3,
                     legend:{
                         position: 'bottom',
                         labels :{
-                            boxWidth: 10
+                            boxWidth: 10,
                         }
                     }
                 }
@@ -45,16 +37,52 @@
         },
         mounted () {
             // Echo.private(`incident.${id}`)
-            Echo.private(`incident.50`)
-                .listen('IncidentStatusUpdated', (e) => {
-                    console.log(e);
-                });
+            // Echo.private(`incident.50`)
+            //     .listen('IncidentStatusUpdated', (e) => {
+            //         console.log(e);
+            //     });
+            this.fillData();
 
         },
         methods: {
+            fillData () {
+                Vue.axios.get('/api/types/chart').then((response) => {
+                    let labelsData = [],
+                        datasetsData = [],
+                        colors = [
+                            '#34BFA3',
+                            '#FFB822',
+                            '#36A3F7',
+                            '#F4516C',
+                            '#5767DD',
+                            '#EAEAEA',
+                            '#716ACA',
+                            '#00C5DC',
+                            '#9819F4',
+                            '#FFB822',
+                            '#F4516C',
+                            '#5767DD',
+                            '#716ACA',
+                            '#34BFA3'
+                        ];
+                    let data = response.data.data, start = response.data.start, end = response.data.end;
+                    data.forEach(function(i,v){
+                        i.data > 0 ? labelsData.push(i.label):'';
+                        i.data > 0 ? datasetsData.push(i.data):'';
+                    });
 
-            getRandomInt () {
-                return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+                    this.chartData = {
+                        labels: labelsData,
+                        datasets: [
+                            {
+                                backgroundColor: colors,
+                                data: datasetsData,
+                                borderWidth: 1
+                            }
+                        ]
+                    }
+                    this.dataFilled = !!this.chartData.datasets[0].data.length;
+                });
             }
         }
     }
