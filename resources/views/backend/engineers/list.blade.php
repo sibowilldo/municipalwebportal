@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title', 'Engineers')
-@section('breadcrumbs', Breadcrumbs::render('engineers.list', $incident))
+@section('breadcrumbs', Breadcrumbs::render('incidents.engineers', $incident))
 
 @section('content')
 
@@ -28,10 +28,10 @@
                                         <div class="col-md-4 offset-md-4">
                                             <div class="m-form__group m-form__group--inline">
                                                 <div class="m-form__label">
-                                                    <label class="m-label m-label--single" for="m_user_type">{{ __('Type:') }}</label>
+                                                    <label class="m-label m-label--single" for="m_user_role">{{ __('Role:') }}</label>
                                                 </div>
                                                 <div class="m-form__control">
-                                                    <select class="form-control m-bootstrap-select m_selectpicker" id="m_user_type" name="m_user_type">
+                                                    <select class="form-control m-bootstrap-select m_selectpicker" id="m_user_role" name="m_user_role">
                                                         <option value="">{{ __('All') }}</option>
                                                         <option value="engineer">Engineer</option>
                                                         <option value="specialist">Specialist</option>
@@ -127,20 +127,11 @@
                     </div>
                 </div>
                 @include('layouts.form-errors')
-                <div class="m-portlet__body">
-                    {{--<div class="m-widget14">--}}
-                        {{--<div class="m-widget14__items">--}}
-                            {{--<div class="row">--}}
-                                {{--<div class="col-lg-12">--}}
-                                    {{--<h3 class="display-1 m--font-info m--align-center">{{ $incident->created_at->format('H:i:s') }}</h3>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
+                <div class="m-portlet__body m-portlet__body--no-padding position-relative">
                     <div class="tab-content">
                         <div id="event-details" class="tab-pane active show">
                             <div class="m-widget1">
-                                {!! Form::open(array('route' => array('engineers.assign', $incident->id), 'method' => 'POST')) !!}
+                                {!! Form::open(array('route' => array('incidents.assign', $incident->id), 'method' => 'POST')) !!}
                                     {{ csrf_field() }}
                                     {{ Form::hidden('user_id', $engineer->id) }}
                                     {{ Form::hidden('incident_id', $incident->id) }}
@@ -190,8 +181,11 @@
                                                 Assigned Engineers
                                             </label>
                                              <span class="m-widget4__sub">
-                                                {{ Form::text('assigned', null,
-                                                    ["id" => "assigned","class"=>"form-control m-input", "data-id" => ""]) }}
+                                                {{ Form::text('assigned', null, [
+                                                    "id" => "assigned",
+                                                    "class"=>"form-control m-input",
+                                                    "data-id" => "",
+                                                    "disabled"=>"disabled"]) }}
                                                 {{ Form::hidden('assigned_id') }}
                                             </span>
                                         </div>
@@ -216,8 +210,12 @@
                         <div id="event-location" class="tab-pane">
                             <div class="m-widget15">
                                 <div class="m-widget15__map m-portlet__pull-sides">
-                                    <input id="searchMapInput" class="form-control m-input" type="text" placeholder="Enter a location">
-                                    <div id="map" style="height: 340px; position: relative; overflow: hidden;">
+                                    <input id="searchMapInput" class="form-control m-input" type="hidden" placeholder="Enter a location">
+                                    <div id="map"
+                                         data-latitude="{{ $incident->latitude }}"
+                                         data-longitude="{{ $incident->longitude }}"
+                                         data-location-description="{{ $incident->location_description }}"
+                                         style="top:0;bottom: 8px;left:0;right:0; position: absolute; overflow: hidden;">
                                         <div style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223);">
                                             <div class="gm-err-container"><div class="gm-err-content">
                                                     <div class="gm-err-icon">
@@ -228,6 +226,10 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <input type="hidden" id="latitude" value="{{ $incident->latitude }}">
+                                    <input type="hidden" id="longitude" value="{{ $incident->longitude }}">
+                                    <input type="hidden" id="longitude" value="{{ $incident->longitude }}">
                                 </div>
                             </div>
                         </div>
@@ -240,20 +242,45 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript">
+{{--    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>--}}
+    <script>
+        // Initialize and add the map
+        function initMap() {
+            // Get The location
+            let lat = $('#map').data('latitude'), long = $('#map').data('longitude'), loc_desc=$('#map').data('location-description');
+            let loc = {lat: parseFloat(lat), lng: parseFloat(long)};
 
+
+            console.log(loc_desc);
+            // The map, centered at the Location
+            let map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 15, center: loc,
+                    disableDefaultUI: true,
+                    gestureHandling: 'cooperative'});
+            // The marker, positioned at the Location
+            let marker = new google.maps.Marker({position: loc, map: map});
+
+            let infowindow = new google.maps.InfoWindow();
+
+            infowindow.setContent(
+                '<div>'+loc_desc+'</div><br>'+
+                '<strong>Lat: </strong>' + lat +
+                ', <strong>Long: </strong>'+ long);
+            infowindow.open(map, marker);
+        }
+    </script>
+    <script type="text/javascript">
         //Global Declaration and Initialization
         let EngineerSelection = JSON.parse(localStorage.getItem('EngineerSelection')) || {}, engineerSelect = $('.m-select2').select2();
         if (performance.navigation.type !== 1) {
             EngineerSelection = {};
         }
-
         const EngineersTable = function()
         {
             var engineers = function() {
                 var datatable = $('#engineers').mDatatable({
                     data: {
-                        saveState: {cookie: false}
+                        saveState: {cookie: true}
                     },
                     layout: {
                         theme: 'default',
@@ -266,8 +293,8 @@
                         // auto hide columns, if rows overflow
                         autoHide: false,
                     },
-                    sortable: false,
-                    filterable: false,
+                    sortable: true,
+                    filterable: true,
                     pagination: false,
                     search: {
                         input: $('#generalSearch')
@@ -290,7 +317,6 @@
                 // DataTable Events
                 datatable.on("m-datatable--on-layout-updated", function () {
                     //Remember which radio was checked, when the table gets re-rendered
-
                     let elem = $('.assigned-engineer[data-id="'+EngineerSelection.id+'"]' );
                     elem.prop('checked', EngineerSelection.state);
 
@@ -300,17 +326,22 @@
                     if(item.is(':checked')){
                         elAssigned.val(item.data('name'));
                         $('input[name=assigned_id]').val(item.data('id'));
-
                         jQuery.notify({
                             message: item.data('name') + " was assigned. <br>Click <strong>Save Changes</strong> to commit.",
                             icon: "icon la la-check-circle"
                             }, {
-                            type: "success"
+                            type: "success",
+                            animate: {
+                                enter: 'animated slideInRight',
+                                exit: 'animated slideOutRight'
+                            }
                         });
-
                     }
                     EngineerSelection = { id:item.data('id'), name:item.data('name'), state: this.checked};
                     localStorage.setItem("EngineerSelection", JSON.stringify(EngineerSelection));
+                });
+                $('#m_user_role').on('change', function () {
+                    datatable.search($(this).val().toLowerCase(), 'Role');
                 });
 
             };
@@ -322,7 +353,6 @@
                 }
             };
         }();
-
         const UpdateElemsOnLoad = function()
         {
             let updateFx = function () {
@@ -340,7 +370,6 @@
                 }
             }
         }();
-
         $(document).on("m-datatable--on-init", function () {
             let checkboxes = $('.assigned-engineer:checked');
             $.each(checkboxes, function (k, v) {
@@ -348,18 +377,11 @@
                 EngineerSelection = { id:v.data('id'), name:v.data('name'), state: this.checked };
                 localStorage.setItem("EngineerSelection", JSON.stringify(EngineerSelection));
             })
-
         });
-
         $(document).ready(function() {
             $('.m_selectpicker').selectpicker();
             EngineersTable.init();
             UpdateElemsOnLoad.init();
-
         });
-
-
     </script>
-    <script src="{{ asset('js/google-maps.js') }}"></script>
-    {{--<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>--}}
 @endsection
