@@ -120,22 +120,23 @@
                         <table class="m_datatable" id="users">
                             <thead>
                             <tr>
+{{--                                <th data-field="uuid">{{ __('id') }}</th>--}}
                                 <th data-field="FullName">{{ __('Full Name') }}</th>
                                 <th data-field="ContactNumber">{{ __('Contact Number') }}</th>
                                 <th data-field="Email">{{ __('Email') }}</th>
-                                <th data-field="Status">{{ __('Status') }}</th>
                                 <th data-field="Role">{{ __('Role') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
+                                <th data-field="Status">{{ __('Status') }}</th>
                                 <th data-field="JoinedAt">{{ __('Joined At') }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($users as $user)
                             <tr>
+{{--                                <td>{{ $user->uuid }}</td>--}}
                                 <td>{{ $user->fullname }}</td>
                                 <td>{{ $user->contactnumber }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ ucfirst($user->status_is) }}</td>
                                 <td>
                                    {{ ucwords($user->roles()->pluck('name')->implode(', ')) }}</td>
                                 <td>
@@ -168,6 +169,7 @@
                                         @endif
                                     @endif
                                 </td>
+                                <td><span><span class="m-badge m-badge--wide" style="background-color: {{ $user->status->state_color->css_color }}; color:{{ $user->status->state_color->css_font_color }};">{{ ucfirst($user->status->name) }}</span></span></td>
                                 <td>{{ $user->created_at }}</td>
                             </tr>
                             @endforeach
@@ -197,7 +199,7 @@
 
                 var datatable = $('#users').mDatatable({
                     data: {
-                        saveState: {cookie: false}
+                        saveState: {cookie: true}
                     },
                     layout: {
                         theme: 'default',
@@ -211,17 +213,19 @@
                         autoHide: true,
                     },
                     sortable: true,
-                    filterable: false,
+                    filterable: true,
                     pagination: true,
                     search: {
                         input: $('#generalSearch')
                     },
                     columns: [
                         {
-                            field: 'id',
+                            field: 'uuid',
                             title: '#',
-                            type: 'number',
-                            width: 25
+                            width: 25,
+                            selector: {
+                                class: "m-checkbox--solid m-checkbox--brand"
+                            }
                         },
                         {
                             field: 'JoinedAt',
@@ -230,7 +234,8 @@
                         },
                         {
                             field: 'Actions',
-                            width: 200
+                            width: 160,
+                            locked:{right:'lg'}
                         }
                     ],
                 });
@@ -279,7 +284,6 @@
                     e.preventDefault();
                     var id = $(this).data("id");
                     var url = $(this).data("url");
-                    console.log('uuid',url);
                     var token = $("meta[name='csrf-token']").attr("content");
                     Swal.fire({
                         title: 'Are you sure?',
