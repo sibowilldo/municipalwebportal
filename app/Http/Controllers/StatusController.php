@@ -103,7 +103,7 @@ class StatusController extends Controller
         $data = [];
         $statuses = Status::all();
         foreach ($statuses as $status){
-            $newStatus = new JsonStatuses(ucfirst($status->name), $status->state_color->id);
+            $newStatus = new JsonStatuses(ucfirst($status->name), $status->state_color->css_class);
             $data[$status->id]=$newStatus;
         }
         return response()->json(['data' => $data]);
