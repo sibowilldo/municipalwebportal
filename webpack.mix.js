@@ -1,34 +1,21 @@
 const mix = require('laravel-mix');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel application. By default, we are compiling the Sass
- | file for the application as well as bundling up all the JS files.
- |
- */
-
 var vendors = 'resources/assets/vendors/';
 
 mix
     .sass('resources/sass/app.scss', 'public/css')
+
     .copyDirectory(vendors + 'socicon/font', 'public/font')
     .copyDirectory(vendors + 'line-awesome/fonts', 'public/fonts')
     .copyDirectory(vendors + 'flaticon/fonts', 'public/fonts')
     .copyDirectory(vendors + 'metronic/fonts', 'public/fonts')
     .copyDirectory(vendors + 'fontawesome5/webfonts', 'public/webfonts')
-    .styles([
-        'resources/assets/css/style.bundle.css'
-    ], 'public/css/styles.bundle.css')
+
+    .styles(['resources/assets/css/style.bundle.css'], 'public/css/styles.bundle.css')
+    .styles(['resources/assets/css/custom/users/create.css'], 'public/css/custom/users/create.css')
+
     .combine([
-        // <!--begin:: Global Mandatory Vendors -->
-        // vendors + 'jquery/dist/jquery.js',
-        // vendors + 'popper.js/dist/umd/popper.js',
-        // vendors + 'bootstrap/dist/js/bootstrap.min.js',
         vendors + 'js-cookie/src/js.cookie.js',
         vendors + 'moment/min/moment.min.js',
         vendors + 'tooltip.js/dist/umd/tooltip.min.js',
@@ -96,46 +83,17 @@ mix
         vendors + 'js/framework/components/plugins/base/sweetalert2.init.js',
         'resources/assets/js/bootstrap-notify.init.js',
     ], 'public/js/vendors.js')
+
     .scripts(['resources/assets/js/scripts.bundle.js'], 'public/js/scripts.bundle.js')
     .scripts(['resources/assets/js/dashboard.js'], 'public/js/dashboard.js')
     .scripts(['resources/assets/js/google-maps.js'], 'public/js/google-maps.js')
     .scripts(['resources/assets/js/project-mdatatable.js'], 'public/js/project-mdatatable.js')
+
     .js('resources/js/app.js', 'public/js')
-    // .extract(['vue'])
+
     .sourceMaps()
+
     .browserSync('http://municipalwebportal.test');
-
-
-// module.exports = {
-//     module: {
-//         rules: [
-//             // ... other rules
-//             {
-//                 test: /\.vue$/,
-//                 loader: 'vue-loader'
-//             },
-//             // this will apply to both plain `.js` files
-//             // AND `<script>` blocks in `.vue` files
-//             {
-//                 test: /\.js$/,
-//                 loader: 'babel-loader'
-//             },
-//             // this will apply to both plain `.css` files
-//             // AND `<style>` blocks in `.vue` files
-//             {
-//                 test: /\.css$/,
-//                 use: [
-//                     'vue-style-loader',
-//                     'css-loader'
-//                 ]
-//             }
-//         ]
-//     },
-//     plugins: [
-//         // make sure to include the plugin!
-//         new VueLoaderPlugin()
-//     ]
-// }
 
 if (mix.inProduction()) {
     mix.version();

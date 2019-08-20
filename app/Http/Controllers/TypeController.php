@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\StateColor;
 use App\System;
 use App\Type;
 use App\Category;
@@ -34,7 +35,7 @@ class TypeController extends Controller
     public function create()
     {
         $categories = Category::pluck('name', 'id');
-        $state_colors = System::$state_colors;
+        $state_colors = StateColor::all();
         return view('backend.types.create', compact('categories', 'state_colors'));
     }
 
@@ -47,7 +48,7 @@ class TypeController extends Controller
     public function store(TypesFormRequest $request)
     {
         $request['is_active'] = $request->is_active ? true : false;
-        $type = Type::create($request->only(['name', 'description', 'is_active']));
+        $type = Type::create($request->only(['name', 'description', 'is_active', 'state_color_id']));
         $type->categories()->attach($request->categories);
 
         flash($type->name . ' Type <strong>saved</strong> successfully')->success();
@@ -86,7 +87,7 @@ class TypeController extends Controller
     {
         $type = Type::with('categories')->findOrFail($id);
         $categories = Category::pluck('name', 'id');
-        $state_colors = System::$state_colors;
+        $state_colors = StateColor::all();
 
         return view('backend.types.edit', compact('categories', 'type', 'state_colors'));
     }
@@ -101,7 +102,7 @@ class TypeController extends Controller
     public function update(TypesFormRequest $request, Type $type)
     {
         $request['is_active'] = $request->is_active ? true : false;
-        $type->update($request->only(['name', 'description', 'is_active', 'state_color']));
+        $type->update($request->only(['name', 'description', 'is_active', 'state_color_id']));
         $type->categories()->sync($request->categories);
 
         flash($type->name . ' <strong>updated</strong> successfully')->success();

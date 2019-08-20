@@ -87,35 +87,4 @@ class TypeController extends Controller
     {
         //
     }
-
-
-    public function chart_types()
-    {
-        $data = [];
-        $today = Carbon::now();
-        $types = Type::all('id', 'name', 'state_color');//whereDate('created_at','2019-07-18')->get();//
-        $incidents = Incident::whereBetween('created_at', [$today->startOfWeek()->format('Y-m-d H:i'), $today->endOfWeek()->format('Y-m-d H:i')])->get();
-        foreach ($types as $type){
-            $series = new Series($type->name, $type->state_color, count($incidents->where('type_id', $type->id)));
-            array_push($data, $series);
-        }
-        return response()
-            ->json([
-                'start' => $today->startOfWeek()->format('Y-m-d H:i'),
-                'end' => $today->endOfWeek()->format('Y-m-d H:i'),
-                'data' => $data]);
-    }
-}
-
-class Series{
-    public $label;
-    public $color;
-    public $data;
-
-    public function __construct($label, $color, $data)
-    {
-        $this->label = $label;
-        $this->color = $color;
-        $this->data = $data;
-    }
 }

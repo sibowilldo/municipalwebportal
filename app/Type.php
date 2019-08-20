@@ -12,7 +12,7 @@ class Type extends Model
      * @var array
      */
     protected $fillable = [
-        'name','description', 'is_active', 'state_color'
+        'name','description', 'is_active', 'state_color_id'
     ];
 
     /**
@@ -24,10 +24,15 @@ class Type extends Model
         'is_active' => 'boolean',
     ];
 
-
     //A Type belongs to Many Categories
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    //A Type has One State Color
+    public function state_color()
+    {
+        return $this->belongsTo(StateColor::class);
     }
 }

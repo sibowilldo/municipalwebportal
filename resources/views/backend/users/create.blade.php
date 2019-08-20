@@ -25,42 +25,57 @@
                             <div class="form-group m-form__group row{{ $errors->has('firstname') ? ' has-danger' : '' }}">
                                     {{ Form::label('firstname', 'First Name', ['class'=> 'col-3']) }}
                                 <div class="col-9">
-                                    {{ Form::text('firstname', '', ['class' => 'form-control m-input m-input--square']) }}
+                                    {{ Form::text('firstname', '', [
+                                        'class' => 'form-control m-input m-input--square',
+                                        'data-validation'=>'required']) }}
 
                                 </div>
                             </div>
                             <div class="form-group m-form__group row{{ $errors->has('lastname') ? ' has-danger' : '' }}">
                                     {{ Form::label('lastname', 'Last Name', ['class'=> 'col-3']) }}
                                 <div class="col-9">
-                                    {{ Form::text('lastname', '', ['class' => 'form-control m-input m-input--square']) }}
+                                    {{ Form::text('lastname', '', [
+                                        'class' => 'form-control m-input m-input--square',
+                                        'data-validation'=>'length,required',
+                                        'data-validation-length' => 'min2']) }}
 
                                 </div>
                             </div>
                             <div class="form-group m-form__group row{{ $errors->has('contactnumber') ? ' has-danger' : '' }}">
                                     {{ Form::label('contactnumber', 'Contact Number', ['class'=> 'col-3']) }}
                                 <div class="col-9">
-                                    {{ Form::tel('contactnumber', '', ['class' => 'form-control m-input m-input--square']) }}
+                                    {{ Form::tel('contactnumber', '', [
+                                        'class' => 'form-control m-input m-input--square',
+                                        'data-validation'=>'custom',
+                                        'data-validation-error-msg'=>'You have not given a correct phone number',
+                                        'data-validation-regexp' => '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$']) }}
 
                                 </div>
                             </div>
                             <div class="form-group m-form__group row{{ $errors->has('email') ? ' has-danger' : '' }}">
                                     {{ Form::label('email', 'Email', ['class'=> 'col-3']) }}
                                 <div class="col-9">
-                                    {{ Form::email('email', '', ['class' => 'form-control m-input m-input--square']) }}
+                                    {{ Form::email('email', '', [
+                                        'class' => 'form-control m-input m-input--square',
+                                        'data-validation'=>'email,required']) }}
 
                                 </div>
                             </div>
-                            <div class="form-group m-form__group row{{ $errors->has('status_is') ? ' has-danger' : '' }}">
-                                    {{ Form::label('status_is', 'Status', ['class'=> 'col-3']) }}
+                            <div class="form-group m-form__group row{{ $errors->has('status_id') ? ' has-danger' : '' }}">
+                                    {{ Form::label('status_id', 'Status', ['class'=> 'col-3']) }}
                                 <div class="col-9">
-                                    {{ Form::select('status_is', $statuses, '', ['class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) }}
+                                    {{ Form::select('status_id', $statuses, '', ['class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) }}
 
                                 </div>
                             </div>
                             <div class="m-form__group m-form__group--last form-group row {{ $errors->has('roles') ? ' has-danger' : '' }}">
                                     {{ Form::label('rolea', 'Roles', ['class'=> 'col-3']) }}
                                     <div class="col-9">
-                                        {{ Form::select('roles[]', $roles->pluck('name', 'id'), '', ['class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker', 'multiple' => 'multiple']) }}
+                                        {{ Form::select('roles[]', $roles->pluck('name', 'id'), '', [
+                                            'class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker',
+                                            'multiple' => 'multiple',
+                                            'data-validation'=>'checkbox_group',
+                                            'data-validation-qty'=>'min2']) }}
                                     </div>
                             </div>
                         </div>
@@ -80,4 +95,19 @@
         </div>
     </div>
     <!--End::Section-->
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('/css/custom/users/create.css') }}">
+@stop
+
+@section('js')
+    <script>
+        $(document).ready(function(){
+            //Handle Form Validation
+            $.validate({
+                modules : 'security'
+            });
+        });
+    </script>
 @stop

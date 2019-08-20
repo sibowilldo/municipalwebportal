@@ -6,7 +6,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-xl-6 offset-3">
+        <div class="col-xl-8 offset-2">
             <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
@@ -65,18 +65,30 @@
                     @include('layouts.form-errors')
                     {{ Form::model($role, array('route' => array('roles.update', $role->id), 'method' => 'PUT')) }}
 
-                    <div class="form-group">
-                        {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', null, array('class' => 'form-control')) }}
+                    <div class="form-group m-form__group row {{ $errors->has('name') ? ' has-danger' : '' }}">
+                        {{ Form::label('name', 'Name', ['class'=> 'col-3 col-form-label']) }}
+                        <div class="col-9">
+                            {{ Form::text('name', null, array('class' => 'form-control')) }}
+
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row {{ $errors->has('guard_name') ? ' has-danger' : '' }}">
+                        {{ Form::label('guard_name', 'Guard', ['class' => 'col-3 col-form-label']) }}
+                        <div class="col-9">
+                            {{ Form::select('guard_name', ['web'=>'web','api'=>'api'] ,$role->guard_name, array('class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker')) }}
+                        </div>
                     </div>
 
                     <h5>Assign Permissions</h5>
                     <span class="text-muted">{{ ucfirst($role->name) }} has <strong>{{ $role->permissions->count() }} active </strong> {{ $role->permissions->count() == 1 ? 'Permission' : 'Permissions' }}.</span>
                     <div class="m-scrollable" data-scrollable="true" style="height: 320px; margin: 30px 0;">
                         <div class="m-form__group form-group">
-                            <div class='m-checkbox-list'>
+                            <div class='m-row--col-separator-lg row'>
                                 @foreach ($permissions as $permission)
-                                    <label class="m-checkbox m-checkbox--primary">{{ Form::checkbox('permissions[]',  $permission->id) }}{{ ucfirst($permission->name) }} <span></span></label>
+                                    <div class="col-4">
+                                        <label class="m-checkbox m-checkbox--primary">{{ Form::checkbox('permissions[]',  $permission->id) }}{{ ucfirst($permission->name) }} | {{ ucfirst($permission->guard_name) }}<span></span></label>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>

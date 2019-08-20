@@ -46,7 +46,7 @@
         },
         methods: {
             fillData () {
-                Vue.axios.get('/api/types/chart').then((response) => {
+                Vue.axios.get('charts/types').then((response) => {
                     let labelsData = [],
                         datasetsData = [],
                         colors = [

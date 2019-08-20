@@ -27,6 +27,9 @@ class SocialLoginController extends Controller
     {
         try {
             $user = $service->setOrGetUser(Socialite::driver($social));
+            if (!$user){
+                abort(404, 'Oops! Something went wrong while trying to log you in. Please contact system administrator');
+            }
             auth()->login($user);
             return redirect('/');
         } catch (\Exception $e) {

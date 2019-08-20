@@ -38,7 +38,8 @@ class StatusController extends Controller
      */
     public function store(Request $request)
     {
-        $status = Status::create($request->only('name', 'description', 'state_color', 'is_active'));
+        $request['is_active'] = $request->is_active === 'on' ? true:false;
+        $status = Status::create($request->only('name', 'description', 'state_color_id', 'is_active'));
         flash(ucfirst($status->name) . ' created successfully')->success();
         return redirect()->action('StatusController@index');
     }
@@ -75,10 +76,10 @@ class StatusController extends Controller
      */
     public function update(Request $request, Status $status)
     {
-        $state_color = StateColor::whereId($request->state_color)->first();
+        $state_color = StateColor::findOrFail($request->state_color_id);
         $status->name = $request->name;
         $status->description = $request->description;
-        $status->state_color = $state_color ? $state_color->css_class : 'primary';
+        $status->state_color_id = $state_color->id;
         $status->is_active = $request->is_active ? true : false;
         $status->update();
 
@@ -102,7 +103,7 @@ class StatusController extends Controller
         $data = [];
         $statuses = Status::all();
         foreach ($statuses as $status){
-            $newStatus = new JsonStatuses(ucfirst($status->name), $status->state_color);
+            $newStatus = new JsonStatuses(ucfirst($status->name), $status->state_color->id);
             $data[$status->id]=$newStatus;
         }
         return response()->json(['data' => $data]);

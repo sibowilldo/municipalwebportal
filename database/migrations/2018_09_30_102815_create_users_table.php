@@ -23,11 +23,13 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('activation_token');
             $table->string('password');
-            $table->string('status_is');
+            $table->unsignedInteger('status_id');
             $table->rememberToken();
             $table->timestamp('last_loggedin_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('status_id')->references('id')->on('statuses');
         });
     }
 

@@ -107,8 +107,8 @@
                                     </td>
                                     <td>
                                         <span>
-                                            <span class="m-badge m-badge--{{ $type->state_color }}"></span>
-                                            {{ title_case($type->state_color) }}
+                                            <span class="m-badge m-badge--{{ $type->state_color->css_class }}"></span>
+                                            {{ title_case($type->state_color->name) }}
                                         </span>
                                     </td>
                                     <td>

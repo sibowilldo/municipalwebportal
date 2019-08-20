@@ -8,20 +8,24 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <form id="deleteWithReason" method="post" action="{{ $url }}">
             <div class="modal-body">
-                <form>
                     <div class="form-group">
-                        <label for="update_reason" class="form-control-label">Type Reason Here:</label>
-                        <textarea class="form-control" id="update_reason" name="update_reason"></textarea>
+                        <label for="delete_reason" class="form-control-label">Type Reason Here:</label>
+                        {{ Form::hidden('id', $id) }}
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <textarea class="form-control" id="delete_reason" name="delete_reason" data-validation="required,length" data-validation-length="min100">These are my one hundred characters required to pass the minimum character test using jquery formvalidator.
+                        </textarea>
+                        <p class="text-right mt-1">
+                            <span class="m-badge m-badge--danger m-badge--wide"><span id="delete_reason-max-length">500</span> characters left</span></p>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary m-btn--pill" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger m-btn--pill delete-modal"
-                        data-id="{{ $id }}"
-                        data-url="{{ $url }}" >Confirm</button>
+                <button type="submit" class="btn btn-danger m-btn--pill">Confirm</button>
             </div>
+        </form>
         </div>
     </div>
 </div>

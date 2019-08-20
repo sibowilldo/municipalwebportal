@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-xl-6 col-md-12">
+    <div class="col-xl-6 col-md-12 offset-xl-3">
         <div class="m-portlet m-portlet--mobile  m-portlet--rounded">
             <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
@@ -53,8 +53,8 @@
                     </div>
 
                     <div class='form-group m-form__group'>
-                        {{ Form::label('status_is', 'Status') }}
-                        {{ Form::select('status_is', $statuses, $user->status_is, ['class' => 'form-control m-input m-input--square']) }}
+                        {{ Form::label('status_id', 'Status') }}
+                        {{ Form::select('status_id', $statuses, $user->status_id, ['class' => 'form-control m-input m-input--square']) }}
                     </div>
                     {{-- <div class="form-group m-form__group">
                         {{ Form::label('password', 'Password') }}<br>

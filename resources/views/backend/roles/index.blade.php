@@ -6,7 +6,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-xl-12">
+        <div class="col-xl-8 offset-xl-2">
             <div class="m-portlet m-portlet--mobile ">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
@@ -63,7 +63,7 @@
                             <div class="row align-items-center">
                                 <div class="col-xl-8 order-2 order-xl-1">
                                     <div class="form-group m-form__group row align-items-center">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="m-input-icon m-input-icon--left">
                                                 <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
@@ -91,8 +91,9 @@
                             <tr>
                                 <th data-field="id">{{ __('#') }}</th>
                                 <th data-field="Role">{{ __('Role') }}</th>
-                                <th data-field="Permissions">{{ __('Permissions') }}</th>
+                                <th data-field="Guard">{{ __('Guard') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
+                                <th data-field="Permissions">{{ __('Permissions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -100,11 +101,25 @@
                                 <tr>
                                     <td>{{ $role->id }}</td>
                                     <td>{{ $role->name }}</td>
-                                    <td>{{ str_replace(array('[',']','"'),'', $role->permissions()->pluck('name')) }}</td>
+                                    <td>{{ $role->guard_name }}</td>
                                     <td>
-                                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-sm btn-secondary m-btn pull-left " style="margin-right: 3px;">{{ __('Edit') }}</a>
-                                        <button class="btn btn-sm btn-danger m-btn m-btn--custom btn-delete" type="button" data-id="{{ $role->id }}" data-url="{{ route('roles.destroy', $role->id) }}">{{ __('Delete') }}</button>
+
+                                        <a data-toggle="m-tooltip" data-placement="top"
+                                           data-original-title="Edit Details"
+                                           href="{{ route('roles.edit', $role->id) }}"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        <button data-toggle="m-tooltip" data-placement="top"
+                                                data-original-title="Delete"
+                                                class="btn btn-danger m-btn--sm m-btn m-btn--icon m-btn--icon-only m-btn--pill btn-delete"
+                                                type="button"
+                                                data-id="{{ $role->id }}"
+                                                data-url="{{ route('roles.destroy', $role->id) }}">
+                                            <i class="la la-trash-o"></i>
+                                        </button>
                                     </td>
+                                    <td>{{ str_replace(array('[',']','"'),'', $role->permissions()->pluck('name')) }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -140,16 +155,25 @@
             },
             {
                 field: 'Role',
-                title: 'Role'
+                title: 'Role',
+                width: 250
+            },
+            {
+                field: 'Guard',
+                title: 'Guard',
+                width: 250
+            },
+            {
+                field: "Actions",
+                width: 160,
+                title: "Actions",
+                sortable: false,
+                overflow: 'visible'
             },
             {
                 field: 'Permissions',
-                title: 'Permissions'
-            },
-            {
-                field: 'Actions',
-                title: 'Actions',
-                width: 150
+                title: 'Permissions',
+                width: 350
             },
         ];
         jQuery(document).ready(function() {

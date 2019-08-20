@@ -19,22 +19,20 @@ import 'chart.js';
 /**
  * Load Components
  */
-import ExampleComponent from './components/ExampleComponent'
 import TypesChart from './components/dashboard/TypesChart'
 import StatusesChart from './components/dashboard/StatusesChart'
+import IncidentsChart from './components/dashboard/IncidentsChart'
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-// Vue.component('example-component', require('./components/ExampleComponent').default);
-// Vue.component('types-chart', require('./components/dashboard/TypesChart'));
 
 const app = new Vue({
     el: '#app',
     components: {
-        ExampleComponent,
         TypesChart,
-        StatusesChart
+        StatusesChart,
+        IncidentsChart
     }
 });

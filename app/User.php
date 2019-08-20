@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'uuid','firstname','lastname', 'contactnumber', 'email', 'email_verified_at', 'activation_token','password', 'status_is', 'last_loggedin_at'
+        'uuid','firstname','lastname', 'contactnumber', 'email', 'email_verified_at', 'activation_token','password', 'status_id', 'last_loggedin_at'
     ];
 
     /**
@@ -100,6 +100,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function profile()
     {
         return $this->hasOne(SocialAccount::class);
+    }
+
+    /**
+     * A user has one Status
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 
     /**

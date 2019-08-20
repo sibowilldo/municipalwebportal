@@ -105,18 +105,20 @@
 <!-- begin::Quick Nav -->
 {{--@include('layouts.sections.quick-nav')--}}
 
-<script type="text/javascript" src="/js/manifest.js"></script>
-<script type="text/javascript" src="/js/vendor.js"></script>
-<script type="text/javascript" src="/js/app.js"></script>
+{{ Html::script('js/manifest.js') }}
+{{ Html::script('js/vendor.js') }}
+{{ Html::script('js/app.js') }}
 
-<script type="text/javascript" src="/js/mandatory.js"></script>
-<script type="text/javascript" src="/js/vendors.js"></script>
-<script type="text/javascript" src="/js/scripts.bundle.js"></script>
-<script type="text/javascript" src="/assets/fullcalendar/fullcalendar.js"></script>
-<script type="text/javascript" src="/js/dashboard.js"></script>
+{{ Html::script('js/mandatory.js') }}
+{{ Html::script('js/vendors.js') }}
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+{{ Html::script('js/scripts.bundle.js') }}
+{{ Html::script('assets/fullcalendar/fullcalendar.js') }}
+{{ Html::script('js/dashboard.js') }}
 
-
+{{--begin::page scripts--}}
 @yield('js')
+{{--end::page scripts--}}
 
 <!-- begin::Page Loader -->
 <script>

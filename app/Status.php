@@ -12,7 +12,7 @@ class Status extends Model
      * @var array
      */
     protected $fillable = [
-        'name','description', 'is_active', 'state_color'
+        'name','description', 'is_active', 'state_color_id'
     ];
 
     /**
@@ -28,6 +28,16 @@ class Status extends Model
     public function incident()
     {
         return $this->hasOne(Incident::class);
+    }
+
+    public function status()
+    {
+        return $this->hasOne(Status::class);
+    }
+
+    public function state_color()
+    {
+        return $this->belongsTo(StateColor::class);
     }
     /**
      * The array of $state_colors.

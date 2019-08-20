@@ -16,6 +16,7 @@ class CreateIncidentHistoriesTable extends Migration
         Schema::create('incident_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('incident_id');
+            $table->unsignedInteger('user_id');
             $table->unsignedInteger('previous_status');
             $table->unsignedInteger('status_id');
             $table->string('account_number');
@@ -24,6 +25,7 @@ class CreateIncidentHistoriesTable extends Migration
             $table->timestamps();
 
             $table->foreign('incident_id')->references('id')->on('incidents');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('previous_status')->references('id')->on('statuses');
             $table->foreign('status_id')->references('id')->on('statuses');
 

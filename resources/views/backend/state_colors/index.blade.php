@@ -2,7 +2,7 @@
 
 
 @section('title', 'State Colors')
-@section('breadcrumbs', Breadcrumbs::render('state_colors.index'))
+@section('breadcrumbs', Breadcrumbs::render('state-colors.index'))
 
 @section('content')
 
@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a href="{{ route('state_colors.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                    <a href="{{ route('state-colors.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                                     <span>
                                         <i class="la la-plus"></i>
                                         <span>{{ __('Add State Color') }}</span>
@@ -65,10 +65,14 @@
                                     <td>{{ $state_color->id }}</td>
                                     <td>{{ $state_color->name }}</td>
                                     <td>{{ $state_color->css_class }}</td>
-                                    <td><span class="m-badge m-badge--{{ $state_color->css_class }}">{{ $state_color->css_color }}</span></td>
                                     <td>
-                                        <a href="{{ route('state_colors.edit', $state_color->id) }}" data-toggle="m-tooltip" title="Edit Color" data-placement="left" data-original-title="Edit Color" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
-                                        <a href="{{ route('state_colors.show', $state_color->id) }}" data-toggle="m-tooltip" title="View Color Details" data-placement="left" data-original-title="Edit Color Details" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-eye"></i></a>
+                                        <span>
+                                        <span class="m-badge m-badge--wide m-badge--{{ $state_color->css_class }}">{{ $state_color->css_color }}</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('state-colors.edit', $state_color->id) }}" data-toggle="m-tooltip" title="Edit Color" data-placement="left" data-original-title="Edit Color" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
+                                        <a href="{{ route('state-colors.show', $state_color->id) }}" data-toggle="m-tooltip" title="View Color Details" data-placement="left" data-original-title="Edit Color Details" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-eye"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

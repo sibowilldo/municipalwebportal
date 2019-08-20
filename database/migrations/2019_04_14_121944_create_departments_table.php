@@ -22,9 +22,10 @@ class CreateDepartmentsTable extends Migration
             $table->string('email')->default('');
             $table->string('alt_contact_number')->default('');
             $table->mediumText('address')->nullable();
-            $table->string('status_is')->default('active');
-
+            $table->unsignedInteger('status_id');
             $table->timestamps();
+
+            $table->foreign('status_id')->references('id')->on('statuses');
         });
 
         Schema::create('department_user', function (Blueprint $table) {

@@ -6,7 +6,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-xl-12">
+        <div class="col-xl-8 offset-xl-2">
             <div class="m-portlet m-portlet--mobile ">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
@@ -63,7 +63,7 @@
                             <div class="row align-items-center">
                                 <div class="col-xl-8 order-2 order-xl-1">
                                     <div class="form-group m-form__group row align-items-center">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="m-input-icon m-input-icon--left">
                                                 <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
@@ -91,6 +91,7 @@
                             <tr>
                                 <th data-field="id">{{ __('#') }}</th>
                                 <th data-field="Name">{{ __('Name') }}</th>
+                                <th data-field="Guard">{{ __('Guard') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
@@ -99,9 +100,22 @@
                                 <tr>
                                     <td>{{ $permission->id }}</td>
                                     <td>{{ $permission->name }}</td>
+                                    <td>{{ $permission->guard_name }}</td>
                                     <td>
-                                        <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-sm btn-secondary m-btn pull-left " style="margin-right: 3px;">{{ __('Edit') }}</a>
-                                        <button class="btn btn-sm btn-danger m-btn m-btn--custom btn-delete" type="button" data-id="{{ $permission->id }}" data-url="{{ route('permissions.destroy', $permission->id) }}">{{ __('Delete') }}</button>
+                                        <a data-toggle="m-tooltip" data-placement="top"
+                                           data-original-title="Edit Details"
+                                           href="{{ route('permissions.edit', $permission->id) }}"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        <button data-toggle="m-tooltip" data-placement="top"
+                                                data-original-title="Delete"
+                                                class="btn btn-danger m-btn--sm m-btn m-btn--icon m-btn--icon-only m-btn--pill btn-delete"
+                                                type="button"
+                                                data-id="{{ $permission->id }}"
+                                                data-url="{{ route('permissions.destroy', $permission->id) }}">
+                                                <i class="la la-trash-o"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach

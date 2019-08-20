@@ -38,12 +38,6 @@
 																<span class="m-nav__link-text">All Statuses</span>
 															</a>
 														</li>
-														<li class="m-nav__item">
-															<a href="{{ route('statuses.show') }}" class="m-nav__link">
-																{{--<i class="m-nav__link-icon flaticon-users-1"></i>--}}
-																<span class="m-nav__link-text">View Status Details</span>
-															</a>
-														</li>
 													</ul>
 												</div>
 											</div>
@@ -56,13 +50,13 @@
 				</div>
 				@include('layouts.form-errors')
 				{!! Form::open(['route'=> 'statuses.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
-				@include('backend.types._form')
+				@include('backend.statuses._form')
 
 				<div class="m-portlet__foot m-portlet__foot--fit">
 					<div class="m-form__actions m-form__actions--solid">
 						<div class="row">
 							<div class="col-md-10 offset-md-2">
-								<button type="submit" class="btn btn-success m-btn--pill m-btn--air">Add Type</button>
+								<button type="submit" class="btn btn-success m-btn--pill m-btn--air">Add Status</button>
 								<button type="reset" class="btn btn-secondary m-btn--pill m-btn--air">Reset Form</button>
 							</div>
 						</div>
@@ -76,7 +70,7 @@
 @endsection
 
 @section('js')
-	{{ Html::script('js/project-mdatatable.js') }}
+
 	<script>
 		jQuery(document).ready(function() {
 		});

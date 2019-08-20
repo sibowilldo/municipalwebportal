@@ -2,7 +2,7 @@
 
 
 @section('title', 'State Color')
-@section('breadcrumbs', Breadcrumbs::render('state_colors.show', $state_color))
+@section('breadcrumbs', Breadcrumbs::render('state-colors.show', $state_color))
 
 @section('content')
 
@@ -53,7 +53,7 @@
                             </span>
                         </div>
                         <div class="m-widget13__action m--align-right">
-                            <a href="{{ route('state_colors.edit', $state_color->id) }}" class="m-widget__details  btn m-btn--pill  btn-accent">Edit Color</a>
+                            <a href="{{ route('state-colors.edit', $state_color->id) }}" class="m-widget__details  btn m-btn--pill  btn-accent">Edit Color</a>
                         </div>
                     </div>
                 </div>

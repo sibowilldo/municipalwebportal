@@ -17,9 +17,11 @@ class CreateStatusesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('state_color')->default('metal');
+            $table->unsignedInteger('state_color_id');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
+
+            $table->foreign('state_color_id')->references('id')->on('state_colors');
         });
     }
 

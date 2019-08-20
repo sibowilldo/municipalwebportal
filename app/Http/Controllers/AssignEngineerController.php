@@ -10,6 +10,8 @@ use App\Status;
 use App\User;
 use Carbon\Carbon;
 use Auth;
+use EloquentBuilder;
+use Spatie\Permission\Exceptions\RoleDoesNotExist;
 use Validator;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -99,31 +101,10 @@ class AssignEngineerController extends Controller
     }
 
     /**
-     * List Available Engineers.
-     *
-     *
-     * @param  \App\Incident  $incident
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function list(Incident $incident)
-    {
-//        if(strtolower($incident->status->name) === "assigned"){
-//            flash()->warning('Someone is already assigned, please use the <strong>Edit Details</strong> option.');
-//            return redirect()->action('HomeController@index');
-//        }
-//      whereIn('status_is', ['available', 'active'])->
-
-        $engineers = User::role(['engineer', 'specialist'])->get(); //todo: Add where Department is relative to incident
-
-        return view('backend.engineers.list', compact('engineers', 'incident'));
-    }
-
-    /**
      * Assign Engineer to Incident.
      *
-     * @param  \App\User  $user
      * @param  \App\Incident  $incident
+     * @param  \Illuminate\Http\Request
      *
      * @return \Illuminate\Http\Response
      */

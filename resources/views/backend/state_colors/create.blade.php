@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title', 'State Colors')
-@section('breadcrumbs', Breadcrumbs::render('state_colors.create'))
+@section('breadcrumbs', Breadcrumbs::render('state-colors.create'))
 
 @section('content')
 
@@ -18,7 +18,7 @@
 					</div>
 				</div>
 				@include('layouts.form-errors')
-				{!! Form::open(['route'=> 'state_colors.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
+				{!! Form::open(['route'=> 'state-colors.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
 				@include('backend.state_colors._form')
 
 				<div class="m-portlet__foot m-portlet__foot--fit">

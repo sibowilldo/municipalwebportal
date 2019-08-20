@@ -12,6 +12,7 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
+        $statuses = \App\Status::pluck('id');
         $user = \App\User::create([
             'uuid' => $faker->uuid,
             'firstname' => 'Sandile',
@@ -23,7 +24,7 @@ class AdminSeeder extends Seeder
             'last_loggedin_at' => null,
             'password' => bcrypt('admin123'), // secret
             'remember_token' => str_random(10),
-            'status_is' => 'active',
+            'status_id' => $faker->randomElement($array = $statuses),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
@@ -41,7 +42,7 @@ class AdminSeeder extends Seeder
             'last_loggedin_at' => null,
             'password' => bcrypt('admin123'), // secret
             'remember_token' => str_random(10),
-            'status_is' => 'active',
+            'status_id' => $faker->randomElement($array = $statuses),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
@@ -59,7 +60,7 @@ class AdminSeeder extends Seeder
             'last_loggedin_at' => null,
             'password' => bcrypt('admin123'), // secret
             'remember_token' => str_random(10),
-            'status_is' => 'active',
+            'status_id' => $faker->randomElement($array = $statuses),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);

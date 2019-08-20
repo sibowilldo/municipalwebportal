@@ -20,7 +20,8 @@ class AssignGroupController extends Controller
      */
     public function index()
     {
-        //
+        $engineers = User::role(['engineer', 'specialist'])->get(); //todo: Add where Department is relative to incident
+
     }
 
     /**

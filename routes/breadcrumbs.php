@@ -176,33 +176,33 @@ Breadcrumbs::for('incidents.edit', function ($trail, $incident) {
 });
 
 // Incidents > [Incident Name]
-Breadcrumbs::for('engineers.list', function ($trail, $incident) {
+Breadcrumbs::for('incidents.engineers', function ($trail, $incident) {
     $trail->parent('incidents.show', $incident);
-    $trail->push('Assign to "'.$incident->name.'"', route('engineers.assign', $incident->id));
+    $trail->push('Assign to "'.$incident->name.'"', route('incidents.engineers', $incident->id));
 });
 
 // State Colors
-Breadcrumbs::for('state_colors.index', function ($trail) {
+Breadcrumbs::for('state-colors.index', function ($trail) {
     $trail->parent('dashboard');
-    $trail->push('State Colors', route('state_colors.index'));
+    $trail->push('State Colors', route('state-colors.index'));
 });
 
 // State Colors > Upload State Color
-Breadcrumbs::for('state_colors.create', function ($trail) {
-    $trail->parent('state_colors.index');
-    $trail->push('Add State Color', route('state_colors.create'));
+Breadcrumbs::for('state-colors.create', function ($trail) {
+    $trail->parent('state-colors.index');
+    $trail->push('Add State Color', route('state-colors.create'));
 });
 
 // State Colors > [State Color Name]
-Breadcrumbs::for('state_colors.show', function ($trail, $state_color) {
-    $trail->parent('state_colors.index');
-    $trail->push($state_color->name, route('state_colors.show', $state_color->id));
+Breadcrumbs::for('state-colors.show', function ($trail, $state_color) {
+    $trail->parent('state-colors.index');
+    $trail->push($state_color->name, route('state-colors.show', $state_color->id));
 });
 
 // State Colors > [State Color Name] > Edit State Color
-Breadcrumbs::for('state_colors.edit', function ($trail, $state_color) {
-    $trail->parent('state_colors.index', $state_color);
-    $trail->push('Edit State Color', route('state_colors.edit', $state_color->id));
+Breadcrumbs::for('state-colors.edit', function ($trail, $state_color) {
+    $trail->parent('state-colors.index', $state_color);
+    $trail->push('Edit State Color', route('state-colors.edit', $state_color->id));
 });
 
 // Statuses

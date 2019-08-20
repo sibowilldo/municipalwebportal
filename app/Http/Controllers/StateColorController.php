@@ -36,7 +36,7 @@ class StateColorController extends Controller
      */
     public function store(Request $request)
     {
-        $state_color = StateColor::create($request->only('name', 'css_class', 'css_color'));
+        $state_color = StateColor::create($request->only('name', 'css_class', 'css_color', 'css_font_color'));
         flash(ucfirst($state_color->name) . ' created successfully')->success();
         return redirect()->action('StateColorController@index');
     }
@@ -72,7 +72,7 @@ class StateColorController extends Controller
      */
     public function update(Request $request, StateColor $state_color)
     {
-        $state_color->update($request->only('name', 'css_class', 'css_color'));
+        $state_color->update($request->only('name', 'css_class', 'css_color', 'css_font_color'));
         flash(ucfirst($state_color->name) . ' updated successfully')->success();
         return redirect()->action('StateColorController@index');
     }

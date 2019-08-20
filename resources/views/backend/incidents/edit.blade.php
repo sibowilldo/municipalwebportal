@@ -54,7 +54,11 @@
 						</ul>
 					</div>
 				</div>
-                {!! Form::model($incident, ['route'=> ['incidents.update', $incident->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--states']) !!}
+                {!! Form::model($incident,
+                    ['route'=> ['incidents.update', $incident->id],
+                    'method'=>'PUT',
+                    'class' => 'm-form m-form--fit m-form--label-align-right m-form--states',
+                    'id' => 'editIncidentForm']) !!}
                 <div class="m-portlet__body">
                     @include('layouts.form-errors')
 				    @include('backend.incidents._form')
@@ -120,12 +124,14 @@
                 }
             }
         }();
+
         jQuery(document).ready(function() {
+            //Handle Button Delete Click
             $('.btn-delete').on('click' , function(ev){
                 var el = $(this);
                 LoadDeleteFx.init(ev, el);
             });
-
+            //Handle Delete Modal Actions
             $('.delete-modal').on('click' , function(ev){
                 ev.preventDefault();
                 var el = $(this);
@@ -146,7 +152,7 @@
                         title: 'Deleted!',
                         text: response.message,
                         onClose: function() {
-                            window.location.href = response.url;
+                            // window.location.href = response.url;
                         }
                     });
                 })
@@ -158,9 +164,16 @@
             $('#type_id').select2({
                 placeholder: {
                     id: '-1', // the value of the option
-                    text: 'Select a category from the list above first...'
+                    text: 'Choose a category from the list above first...'
                 }
             });
+
+            //Handle Form Validation
+            $.validate({
+                modules : 'location, security'
+            });
+            $('#description').restrictLength( $('#desc-max-length') );
+            $('#delete_reason').restrictLength( $('#delete_reason-max-length') );
         });
 	</script>
 	<script src="{{ asset('js/google-maps.js') }}"></script>

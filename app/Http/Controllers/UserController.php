@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Status;
 use Illuminate\Http\Request;
 use App\User;
 use Auth;
@@ -16,7 +17,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth']); //isAdmin middleware lets only users with a //specific permission permission to access these resources
+        $this->middleware(['auth', 'role:administrator|super-administrator']); //isAdmin middleware lets only users with a //specific permission permission to access these resources
     }
 
 
@@ -27,13 +28,8 @@ class UserController extends Controller
      */
     public function index()
     {
-//        if(!Auth::user()->hasPermissionTo('list users', 'web')){
-//            abort(403, 'Unauthorized Action.');
-//        }
-
-
         $users = User::withTrashed()->get();
-        $statuses = User::$statuses;
+        $statuses = Status::pluck('name', 'id');
         $roles = Role::all();
 
         return view('backend.users.index', compact('users', 'statuses', 'roles'));
@@ -48,8 +44,8 @@ class UserController extends Controller
     {
         //
         $roles = Role::get();
-        $statuses = User::$statuses;
-        return view('backend.users.create', ['roles'=>$roles, 'statuses' => $statuses]);
+        $statuses = Status::pluck('name', 'id');
+        return view('backend.users.create', compact('roles', 'statuses'));
     }
 
     /**
@@ -77,7 +73,7 @@ class UserController extends Controller
         $request['password'] = bcrypt(str_random(10));
         $request['activation_token'] = str_random(25);
 
-        $user = User::create($request->only('firstname', 'lastname', 'email', 'contactnumber', 'status_is', 'password', 'activation_token')); //Retrieving only the email and password data
+        $user = User::create($request->only('firstname', 'lastname', 'email', 'contactnumber', 'status_id', 'password', 'activation_token')); //Retrieving only the email and password data
 
         //Todo remove email verification bypass
         $user->email_verified_at = null;
@@ -118,8 +114,9 @@ class UserController extends Controller
      */
     public function edit($user)
     {
+
         $roles = Role::get(); //Get all roles
-        $statuses = User::$statuses; //Get all statuses
+        $statuses = Status::pluck('name', 'id');
         return view('backend.users.edit', compact('user', 'roles', 'statuses')); //pass user roles and statuses data to view
 
     }
@@ -144,7 +141,7 @@ class UserController extends Controller
             ]
         );
 
-        $input = $request->only(['firstname', 'lastname', 'contactnumber', 'status_is']); //Retreive the name, email and password fields
+        $input = $request->only(['firstname', 'lastname', 'contactnumber', 'status_id']); //Retreive the name, email and password fields
 
         $roles = $request['roles']; //Retreive all roles
         $user->fill($input)->save();
@@ -167,11 +164,10 @@ class UserController extends Controller
      */
     public function destroy($user)
     {
-
+        $status = Status::where('name', 'trashed')->firstOrFail();
         //Find a user with a given id and delete
-//            $user = User::whereUuid($id)->first();
             $user->delete();
-            $user->status_is = 'Trashed';
+            $user->status_id = $status->id;
             $user->save();
             return response()->json([
                 "message"=> $user->fullname . ' was deleted successfully',
@@ -189,6 +185,8 @@ class UserController extends Controller
     {
         //Find a user with a given id and restore
             $user = User::withTrashed()->whereUuid($request->id)->first();
+            $status = Status::where('name', 'active')->firstOrFail();
+            $user->status_id = $status->id;
             $user->restore();
             return response()->json([
                 "message"=> $user->fullname . ' was restored successfully',

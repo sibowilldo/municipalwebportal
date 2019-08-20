@@ -72,7 +72,14 @@
                     <div class="form-group m-form__group row {{ $errors->has("permissions") ? " has-danger" : ""}}">
                         {{ Form::label('permissions', 'Assign Permissions', ['class' => 'col-3 col-form-label']) }}
                         <div class="col-9">
-                            {{ Form::select('permissions[]', $permissions->pluck('name', 'id'), '', ['class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker', 'multiple' => 'multiple']) }}
+                            @if(count($permissions))
+                                <select name="permissions[]" id="permissions" multiple="multiple" class="form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker">
+                                @foreach($permissions as $permission)
+                                        <option value="{{ $permission->id }}">{{ $permission->name }} | {{ $permission->guard_name }}</option>
+                                @endforeach
+                                </select>
+                            @endif
+{{--                            {{ Form::select('permissions[]', $permissions->pluck('name', 'id'), '', ['class' => '', 'multiple' => 'multiple']) }}--}}
                         </div>
                     </div>
                 </div>

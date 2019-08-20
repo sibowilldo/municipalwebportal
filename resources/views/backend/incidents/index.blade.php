@@ -14,30 +14,30 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    # {{ $incident->id }} - {{ $incident->reference }}
+                                    <a href="{{ route('incidents.show', $incident->id) }}"># {{ $incident->id }} - {{ $incident->reference }}</a>
                                 </h3>
                             </div>
                         </div><div class="m-portlet__head-tools">
                             <ul class="m-portlet__nav">
                                 @if(!count($incident->assignments))
                                 <li class="m-portlet__nav-item">
-                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Engineer" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill">
-                                        <i class="la la-user-plus"></i>
+                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Engineer" href="{{ route('incidents.engineers',$incident->id) }}" class="m-portlet__nav-link btn btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill">
+                                        <i class="la la-user"></i>
                                     </a>
                                 </li> @endif
                                 <li class="m-portlet__nav-item">
-                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Working Group" href="{{ route('engineers.list',$incident->id) }}" class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--pill">
+                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Specialist" href="{{ route('incidents.specialists', $incident->id) }}" class="m-portlet__nav-link btn btn-dark m-btn m-btn--icon m-btn--icon-only m-btn--pill">
+                                        <i class="la la-user-secret"></i>
+                                    </a>
+                                </li>
+                                <li class="m-portlet__nav-item">
+                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Working Group" href="{{ route('incidents.engineers',$incident->id) }}" class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--pill">
                                         <i class="la la-users"></i>
                                     </a>
                                 </li>
                                 <li class="m-portlet__nav-item">
                                     <a data-toggle="m-tooltip" data-placement="top" data-original-title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill">
                                         <i class="la la-edit"></i>
-                                    </a>
-                                </li>
-                                <li class="m-portlet__nav-item">
-                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="View Details" href="{{ route('incidents.show', $incident->id) }}" class="m-portlet__nav-link btn btn-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill">
-                                        <i class="la la-eye"></i>
                                     </a>
                                 </li>
                             </ul>

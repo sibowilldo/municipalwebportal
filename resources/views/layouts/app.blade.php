@@ -12,6 +12,7 @@
 <body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default m-header--minimize-off">
     <div id="app" class="m-grid m-grid--hor m-grid--root m-page">
     </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
     <script src="/js/bundle.min.js"></script>
 </body>
 </html>

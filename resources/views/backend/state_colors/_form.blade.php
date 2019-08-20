@@ -19,4 +19,10 @@
             {!! Form::text('css_color', null, ['class'=>'form-control m-input']) !!}
         </div>
     </div>
+    <div class="form-group m-form__group row{{ $errors->has('css_font_color') ? ' has-danger' : '' }}">
+        <label for="css_font_color" class="col-3 col-form-label">CSS Font Color</label>
+        <div class="col-9">
+            {!! Form::text('css_font_color', null, ['class'=>'form-control m-input']) !!}
+        </div>
+    </div>
 </div>

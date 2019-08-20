@@ -68,6 +68,12 @@
                             {{ Form::text('name', null, array('class' => 'form-control m-input')) }}
                         </div>
                     </div>
+                    <div class="form-group m-form__group row {{ $errors->has('guard_name') ? ' has-danger' : '' }}">
+                        {{ Form::label('guard_name', 'Guard', ['class' => 'col-3 col-form-label']) }}
+                        <div class="col-9">
+                            {{ Form::select('guard_name', ['web'=>'web','api'=>'api'] ,$permission->guard_name, array('class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker')) }}
+                        </div>
+                    </div>
                 </div>
                 <div class="m-portlet__foot m-portlet__foot--fit">
                     <div class="m-form__actions m-form__actions--solid">

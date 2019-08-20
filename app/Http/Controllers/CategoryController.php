@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Resources\CategoryResource;
+use App\StateColor;
 use App\System;
 use App\Type;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class CategoryController extends Controller
     public function create()
     {
         $types = Type::pluck('name', 'id');
-        $state_colors = System::$state_colors;
+        $state_colors = StateColor::all();
         return view('backend.categories.create', compact('types', 'state_colors'));
     }
 
@@ -48,7 +49,7 @@ class CategoryController extends Controller
     public function store(CategoriesFormRequest $request)
     {
         $request['is_active'] = $request->is_active ? true : false;
-        $category = Category::create($request->only(['name', 'description', 'is_active']));
+        $category = Category::create($request->only(['name', 'description', 'is_active', 'state_color_id']));
         $category->types()->attach($request->types);
 
         flash($category->name . ' Category <strong>saved</strong> successfully')->success();
@@ -68,7 +69,7 @@ class CategoryController extends Controller
 
     public function jsonShowByType(Type $type)
     {
-//        $type = Type::where('id', $id)->gert();
+//        $type = Type::where('id', $id)->get();
 
         printf($type->categories()->pluck('name', 'id'));
 
@@ -84,7 +85,7 @@ class CategoryController extends Controller
     {
         $category = Category::with('types')->findOrFail($id);
         $types = Type::pluck('name', 'id');
-        $state_colors = System::$state_colors;
+        $state_colors = StateColor::all();
 
         return view('backend.categories.edit', compact('category', 'types', 'state_colors'));
     }
@@ -99,7 +100,7 @@ class CategoryController extends Controller
     public function update(CategoriesFormRequest $request, Category $category)
     {
         $request['is_active'] = $request->is_active ? true : false;
-        $category->update($request->only(['name', 'description', 'is_active', 'state_color']));
+        $category->update($request->only(['name', 'description', 'is_active', 'state_color_id']));
         $category->types()->sync($request->types);
 
         flash($category->name . ' <strong>updated</strong> successfully')->success();
@@ -125,6 +126,6 @@ class CategoryController extends Controller
 
     public function jsonIndex()
     {
-        return response()->json(['data' => Category::all('id', 'name', 'is_active', 'state_color')]);
+        return response()->json(['data' => Category::all('id', 'name', 'is_active', 'state_color_id')]);
     }
 }

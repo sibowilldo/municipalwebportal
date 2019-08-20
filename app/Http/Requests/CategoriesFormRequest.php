@@ -26,7 +26,7 @@ class CategoriesFormRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'description' => 'required',
-            'state_color' => 'required'
+            'state_color_id' => 'required'
         ];
     }
 }

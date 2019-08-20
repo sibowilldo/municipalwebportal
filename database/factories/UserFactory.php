@@ -14,7 +14,7 @@ use Ramsey\Uuid;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
-
+    $statuses = \App\Status::pluck('id');
     return [
         'uuid' => $faker->uuid,
         'firstname' => $faker->firstName,
@@ -26,7 +26,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'last_loggedin_at' => null,
         'password' => bcrypt('secret admin'), // secret
         'remember_token' => str_random(10),
-        'status_is' => $faker->randomElement($array = array ('active', 'assigned', 'available', 'blocked', 'inactive','trashed', 'unverified')),
+        'status_id' => $faker->randomElement($array = $statuses),
         'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
         'updated_at' => \Carbon\Carbon::now(),
         'deleted_at' => null,

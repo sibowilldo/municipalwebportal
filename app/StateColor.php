@@ -12,6 +12,6 @@ class StateColor extends Model
      * @var array
      */
     protected $fillable = [
-        'name','css_class', 'css_color'
+        'name','css_class', 'css_color', 'css_font_color'
     ];
 }

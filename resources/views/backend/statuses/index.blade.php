@@ -37,7 +37,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a href="{{ route('types.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                    <a href="{{ route('statuses.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                                     <span>
                                         <i class="la la-plus"></i>
                                         <span>{{ __('Add New Status') }}</span>
@@ -69,8 +69,8 @@
                                     </td>
                                     <td>
                                         <span>
-                                            <span class="m-badge m-badge--{{ $status->state_color }}"></span>
-                                            {{ title_case($status->state_color) }}
+                                            <span class="m-badge m-badge--{{ $status->state_color->css_class }}"></span>
+                                            {{ title_case($status->state_color->css_class) }}
                                         </span>
                                     </td>
                                     <td>

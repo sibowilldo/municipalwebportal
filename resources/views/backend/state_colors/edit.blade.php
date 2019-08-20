@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title', 'State Color')
-@section('breadcrumbs', Breadcrumbs::render('state_colors.edit', $state_color))
+@section('breadcrumbs', Breadcrumbs::render('state-colors.edit', $state_color))
 
 @section('content')
 
@@ -33,13 +33,13 @@
 															<span class="m-nav__section-text">Useful Links</span>
 														</li>
 														<li class="m-nav__item">
-															<a href="{{ route('state_colors.show', $state_color) }}" class="m-nav__link">
+															<a href="{{ route('state-colors.show', $state_color) }}" class="m-nav__link">
 																{{--<i class="m-nav__link-icon flaticon-users-1"></i>--}}
 																<span class="m-nav__link-text">View {{ $state_color->name }} details</span>
 															</a>
 														</li>
 														<li class="m-nav__item">
-															<a href="{{ route('state_colors.index') }}" class="m-nav__link">
+															<a href="{{ route('state-colors.index') }}" class="m-nav__link">
 																{{--<i class="m-nav__link-icon flaticon-users-1"></i>--}}
 																<span class="m-nav__link-text">All State Colors</span>
 															</a>
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 
-				{!! Form::model($state_color, ['route'=> ['state_colors.update', $state_color->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
+				{!! Form::model($state_color, ['route'=> ['state-colors.update', $state_color->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
 				@include('backend.state_colors._form')
 
 				<div class="m-portlet__foot m-portlet__foot--fit">

@@ -30,7 +30,11 @@
             }
             content.message = "{!!$message['message']  !!}";
             jQuery.notify(content, {
-                type: level
+                type: level,
+                animate: {
+                    enter: 'animated slideInRight',
+                    exit: 'animated slideOutRight'
+                }
             });
         </script>
     @endif

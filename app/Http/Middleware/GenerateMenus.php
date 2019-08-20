@@ -46,7 +46,7 @@ class GenerateMenus
                 ->data('icon', 'flaticon-cogwheel-2');
             $menu->system->add('Types', ['route' => 'types.index']);
             $menu->system->add('Categories', ['route' => 'categories.index']);
-            $menu->system->add('State Colors', ['route' => 'state_colors.index']);
+            $menu->system->add('State Colors', ['route' => 'state-colors.index']);
             $menu->system->add('Statuses', ['route' => 'statuses.index']);
 
             $menu->add('Reports', [])

@@ -18,6 +18,7 @@ class CreateStateColorsTable extends Migration
             $table->string('name');
             $table->string('css_class');
             $table->string('css_color');
+            $table->string('css_font_color')->default('#ffffff');
             $table->timestamps();
         });
     }

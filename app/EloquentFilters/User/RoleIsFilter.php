@@ -1,10 +1,11 @@
 <?php
-namespace App\EloquentFilters\Incident;
+namespace App\EloquentFilters\User;
 
-use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\Filter;
+use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\IFilter as Filter;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
-class EngineerIsFilter extends Filter
+class RoleIsFilter implements Filter
 {
     /**
      * Apply role name condition to the query.
@@ -16,6 +17,13 @@ class EngineerIsFilter extends Filter
      */
     public function apply(Builder $builder, $value): Builder
     {
-        return $builder->role($value)->get();
+        try {
+            // Validate the value...
+            $query = $builder->role($value);
+            return $query;
+        } catch (RoleDoesNotExist $e) {
+            report($e);
+            abort(404, 'Oops! We could not find the role you requested for.');
+        }
     }
 }

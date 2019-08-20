@@ -46,18 +46,18 @@
         },
         methods: {
             fillData () {
-                Vue.axios.get('/api/types/chart').then((response) => {
+                Vue.axios.get('charts/statuses').then((response) => {
                     let labelsData = [],
                         datasetsData = [],
                         colors = [
-                            '#34BFA3',
-                            '#FFB822',
-                            '#36A3F7',
-                            '#F4516C',
-                            '#5767DD',
-                            '#EAEAEA',
-                            '#716ACA',
-                            '#00C5DC',
+                            // '#34BFA3',
+                            // '#FFB822',
+                            // '#36A3F7',
+                            // '#F4516C',
+                            // '#5767DD',
+                            // '#EAEAEA',
+                            // '#716ACA',
+                            // '#00C5DC',
                             '#9819F4',
                             '#FFB822',
                             '#F4516C',

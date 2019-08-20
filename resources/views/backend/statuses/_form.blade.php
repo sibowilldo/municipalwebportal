@@ -24,15 +24,15 @@
             </span>
         </div>
     </div>
-    <div class="form-group m-form__group row{{ $errors->has('state_color') ? ' has-danger' : '' }}">
+    <div class="form-group m-form__group row{{ $errors->has('state_color_id') ? ' has-danger' : '' }}">
         <label for="state_color" class="col-3 col-form-label">State Color</label>
         <div class="col-9">
-            <select name="state_color" id="state_color" class="form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker">
+            <select name="state_color_id" id="state_color_id" class="form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker">
                 @foreach($state_colors as $state_color)
                     <option value="{{$state_color->id}}"
                             data-content="<span class='m-badge m-badge--{{$state_color->css_class}} m-badge--dot'></span> {{ title_case($state_color->name) }}"
-                    @isset($type)
-                        {{$state_color->id === $status->state_color ? 'selected' : '' }}
+                    @isset($status)
+                        {{$state_color->id === $status->state_color->id ? 'selected' : '' }}
                             @endisset>
                         {{ title_case($state_color->name) }}
                     </option>

@@ -34,21 +34,29 @@
                                                         <li class="m-nav__section m-nav__section--first">
                                                             <span class="m-nav__section-text">Quick Actions</span>
                                                         </li>
+                                                        @if(!count($incident->assignments))
                                                         <li class="m-nav__item">
-                                                            <a href="" class="m-nav__link">
-                                                                <i class="m-nav__link-icon flaticon-share"></i>
+                                                            <a href="{{ route('incidents.engineers', $incident->id) }}" class="m-nav__link">
+                                                                <i class="m-nav__link-icon la la-user"></i>
                                                                 <span class="m-nav__link-text">Assign Engineer</span>
+                                                            </a>
+                                                        </li>
+                                                        @endif
+                                                        <li class="m-nav__item">
+                                                            <a href="{{ route('incidents.specialists', $incident->id) }}" class="m-nav__link">
+                                                                <i class="m-nav__link-icon la la-user-secret"></i>
+                                                                <span class="m-nav__link-text">Assign Specialist</span>
                                                             </a>
                                                         </li>
                                                         <li class="m-nav__item">
                                                             <a href="" class="m-nav__link">
-                                                                <i class="m-nav__link-icon flaticon-chat-1"></i>
+                                                                <i class="m-nav__link-icon la la-users"></i>
                                                                 <span class="m-nav__link-text">Assign Working Group</span>
                                                             </a>
                                                         </li>
                                                         <li class="m-nav__item">
                                                             <a href="{{ route('incidents.edit', $incident->id) }}" class="m-nav__link">
-                                                                <i class="m-nav__link-icon flaticon-edit"></i>
+                                                                <i class="m-nav__link-icon la la-edit"></i>
                                                                 <span class="m-nav__link-text">Edit Details</span>
                                                             </a>
                                                         </li>
@@ -64,7 +72,7 @@
                     <div class="m-portlet__body">
                         <div class="m-widget17">
                             <div class="m-widget17__visual m-widget17__visual--chart m-portlet-fit--top m-portlet-fit--sides" style="margin-top: -70px;">
-                                <div class="" style="height:400px;">
+                                <div style="height:400px;" class="m--bg-success">
                                     <div id="gmap" style="height: 400px; width: 100%;"></div>
                                     <input type="hidden" id="latitude" value="{{ $incident->latitude }}">
                                     <input type="hidden" id="longitude" value="{{ $incident->longitude }}">
@@ -182,7 +190,7 @@
 @endsection
 
 @section('js')
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>
+{{--    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>--}}
     <script>
         // Initialize and add the map
         function initMap() {
@@ -199,6 +207,5 @@
             // The marker, positioned at the Location
             var marker = new google.maps.Marker({position: loc, map: map});
         }
-
     </script>
 @endsection

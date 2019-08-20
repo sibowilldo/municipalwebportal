@@ -23,62 +23,58 @@ Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallbac
 //
 Route::group(['middleware' => ['verified']], function () {
 
-    Route::get('api/types/chart', 'Api\TypeController@chart_types')->name('types.chart');
     Route::get('push', function () {
         event(new App\Events\IncidentCreated(\App\Incident::first()));
         return redirect()->route('dashboard');
     });
-
     Route::get('/', 'HomeController@index')->name('dashboard')->middleware('verified');
-    Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+    Route::get('dashboard', 'HomeController@index')->name('dashboard');
 
     /**
-     * Permissions and Roles Routes
+     * Resource Routes
      */
-    Route::resource('manage/permissions', 'PermissionController');
-    Route::resource('manage/roles', 'RoleController');
-
-    /**
-     * Profile, Users, Engineers and WorkingGroup Routes
-     */
-
-    Route::resource('profile', 'ProfileController')->except(['index', 'show', 'create', 'store']);
-
-    Route::resource('users', 'UserController');
-    Route::post('users/{user}/restore', 'UserController@restore')->name('users.restore');
-
-    Route::resource('/engineers', 'AssignEngineerController');
-    Route::post('/engineers/{incident}/assign', 'AssignEngineerController@assign')->name('engineers.assign');
-    Route::get('/engineers/{incident}/list', 'AssignEngineerController@list')->name('engineers.list');
-
-
-    Route::resource('/working-group', 'AssignGroupController');
-    Route::post('/working-group/{incident}/assign', 'AssignGroupController@assign')->name('working-group.assign');
-    Route::post('/working-group/{incident}/list', 'AssignGroupController@list')->name('working-group.list');
-
-
-    Route::resource('incidents', 'IncidentController');
-    Route::get('/api/incidents', 'IncidentController@jsonIndex');
-
-    Route::resource('types', 'TypeController');
-    Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
-
     Route::resource('categories', 'CategoryController');
-    Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
-
-    Route::resource('system/state_colors', 'StateColorController');
-
-    Route::resource('system/statuses', 'StatusController');
-    Route::get('api/system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
-
-
-    //Get Categories in JSON format
-    Route::get('api/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
+    Route::resource('engineers', 'AssignEngineerController');
+    Route::resource('incidents', 'IncidentController');
+    Route::resource('profile', 'ProfileController')->except(['index', 'show', 'create', 'store']);
+    Route::resource('types', 'TypeController');
+    Route::resource('users', 'UserController');
+    Route::resource('working-group', 'AssignGroupController');
 
     Route::resource('manage/departments', 'DepartmentController');
+    Route::resource('manage/permissions', 'PermissionController');
+    Route::resource('manage/roles', 'RoleController');
+    Route::resource('system/state-colors', 'StateColorController');
+    Route::resource('system/statuses', 'StatusController');
 
+    /**
+     * GET Routes
+     */
+    Route::get('incidents/{incident}/engineers/', 'IncidentController@engineers')->name('incidents.engineers');
+    Route::get('incidents/{incident}/specialists/', 'IncidentController@specialists')->name('incidents.specialists');
+    Route::get('working-group/{incident}/list', 'AssignGroupController@list')->name('working-group.list');
 
-    Route::get('dashboard/charts/types', 'HomeController@chart_types');
+    /**
+     * POST Routes
+     */
+    Route::post('incidents/{incident}/assign', 'IncidentController@assign')->name('incidents.assign');
+    Route::post('users/{user}/restore', 'UserController@restore')->name('users.restore');
+    Route::post('working-group/{incident}/assign', 'AssignGroupController@assign')->name('working-group.assign');
+
+    /**
+     * Custom JSON formatted output
+     */
+    Route::get('api/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
+    Route::get('api/incidents', 'IncidentController@jsonIndex');
+    Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
+    Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
+    Route::get('api/system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
+
+    /**
+     * Charts Controller
+     */
+    Route::get('charts/types', 'ChartController@types');
+    Route::get('charts/statuses', 'ChartController@statuses');
 });
 
 
@@ -86,3 +82,4 @@ Route::group(['middleware' => ['verified']], function () {
 //Route::get('/{vue?}', function () {
 //    return view('pages.dashboard');
 //})->where('vue', '[\/\w\.-]*')->name('home');
+

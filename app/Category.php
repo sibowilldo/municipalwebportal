@@ -12,7 +12,7 @@ class Category extends Model
      * @var array
      */
     protected $fillable = [
-        'name','description', 'is_active', 'state_color'
+        'name','description', 'is_active', 'state_color_id'
     ];
 
     /**
@@ -30,9 +30,15 @@ class Category extends Model
         return $this->belongsToMany(Type::class);
     }
 
-    //A Type has one Incident
+    //A Category has one Incident
     public function incidents()
     {
         return $this->belongsToMany(Incident::class);
+    }
+
+    //A Category has one State Color
+    public function state_color()
+    {
+        return $this->belongsTo(StateColor::class);
     }
 }
