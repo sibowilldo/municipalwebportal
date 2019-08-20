@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Resources\CategoryResource;
 use App\StateColor;
+use App\Status;
 use App\System;
 use App\Type;
 use Illuminate\Http\Request;
@@ -126,6 +127,14 @@ class CategoryController extends Controller
 
     public function jsonIndex()
     {
-        return response()->json(['data' => Category::all('id', 'name', 'is_active', 'state_color_id')]);
+        $data = [];
+        $categories = Category::all();
+        foreach ($categories as $category){
+            $newStatus = new JsonStatuses(ucfirst($category->name), $category->state_color->css_class);
+            $data[$category->id]=$newStatus;
+        }
+        return response()->json(['data' => $data]);
+
+//        return response()->json(['data' => Category::all('id', 'name', 'is_active', 'state_color_id')]);
     }
 }

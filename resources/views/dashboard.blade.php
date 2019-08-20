@@ -114,6 +114,7 @@
                             </thead>
                             <tbody>
                             @foreach($incidents as $incident)
+{{--                                <tr><td colspan="9">{{ $incident->type->categories()->first()?$incident->type->categories()->first()->id:0 }}</td></tr>--}}
                                 <tr>
                                     <td>{{ $incident->id }}</td>
                                     <td><a href="{{ route('incidents.show', $incident->id) }}"
@@ -281,25 +282,14 @@
         let status = [];
         var getStatuses = function () {
             var statuses = function () {
-                if (typeof (Storage) !== "undefined") {
-
-                    if (localStorage.dashboardStatuses) {
-                        status = JSON.parse(localStorage.dashboardStatuses);
-                    } else {
-                        $.ajax({
-                            url: 'api/system/statuses',
-                            type: "GET",
-                            dataType: "json",
-                            success: function (data) {
-                                status = data.data;
-                                localStorage.dashboardStatuses = JSON.stringify(status);
-                            }
-                        });
+                $.ajax({
+                    url: 'api/system/statuses',
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        status = data.data;
                     }
-                } else {
-                    console.log("Performance Degraded", "Sorry, your browser does not support web storage...");
-                }
-
+                });
             };
             return {
                 init: function () {
@@ -313,32 +303,19 @@
         let Categories = {};
         var LoadCategories = function () {
             var categories = function () {
-                if (typeof (Storage) !== "undefined") {
-                    if (localStorage.dashboardCategories) {
-                        Categories = JSON.parse(localStorage.dashboardCategories);
+                $.ajax({
+                    url: '/api/categories',
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        Categories = data.data
+                    },
+                    complete: function () {
+                        // Call datatable init function, once everything has loaded
                         TableElement.init($('#incidents'), columns);
-                    } else {
-                        $.ajax({
-                            url: '/api/categories',
-                            type: "GET",
-                            dataType: "json",
-                            success: function (data) {
-                                $.each(data.data, function (key, value) {
-                                    Categories[value.id] = {'title': value.name, 'class': value.state_color}
-                                });
-                                localStorage.dashboardCategories = JSON.stringify(Categories);
-                            },
-                            complete: function () {
-                                // Call datatable init function, once everything has loaded
-                                TableElement.init($('#incidents'), columns);
-                            }
-                        });
                     }
-                } else {
-                    console.log("Performance Degraded", "Sorry, your browser does not support web storage...");
-                }
+                });
             };
-
             return {
                 init: function () {
                     categories()
