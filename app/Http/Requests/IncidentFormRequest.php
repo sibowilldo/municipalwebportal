@@ -24,11 +24,11 @@ class IncidentFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'location_description' => 'required|string',
-            'latitude' => 'required|string',
-            'longitude' => 'required|string',
+            'name' => 'required|string|max:100',
+            'description' => 'required|string|max:500',
+            'location_description' => 'required|string|max:255',
+            'latitude' => 'required|string|max:20',
+            'longitude' => 'required|string|max:20',
             'category_id' => 'required',
             'type_id' => 'required',
             'suburb_id' => 'required'

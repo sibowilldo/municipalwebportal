@@ -10,14 +10,24 @@
     <!--Begin::Section-->
     <div class="row">
         <div class="col-xl-12">
-            <div class="m-portlet m-portlet--mobile">
+            <div  class="m-portlet m-portlet--head-sm" m-portlet="true" id="dashboard_incidents_table">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
+                            <span class="m-portlet__head-icon">
+                                <i class="flaticon-exclamation"></i>
+                            </span>
                             <h3 class="m-portlet__head-text">
                                 {{ __('Incidents') }}
                             </h3>
                         </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-angle-down"></i></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="m-portlet__body">
@@ -118,14 +128,20 @@
                                     <td>
                                         <div role="group">
                                             @if(!count($incident->assignments))
-                                                <a data-toggle="m-tooltip" data-placement="top"
-                                                   data-original-title="Assign Engineer"
-                                                   href="{{ route('engineers.list',$incident->id) }}"
-                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
-                                                            class="la la-user-plus"></i></a> @endif
+                                                <a  href="{{ route('incidents.engineers', $incident->id) }}"
+                                                    data-toggle="m-tooltip" data-placement="top"
+                                                    data-original-title="Assign Engineer"
+                                                    class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill assign-btn">
+                                                <i class="la la-user"></i></a>
+                                            @endif
+                                                <a  href="{{ route('incidents.specialists', $incident->id) }}"
+                                                    data-toggle="m-tooltip" data-placement="top"
+                                                    data-original-title="Assign Specialist"
+                                                    class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
+                                                <i class="la la-user-secret"></i></a>
                                             <a data-toggle="m-tooltip" data-placement="top"
                                                data-original-title="Assign Working Group"
-                                               href="{{ route('engineers.list',$incident->id) }}"
+                                               href="{{ route('incidents.engineers',['incident' => $incident->id,'role_is' => 'working-group']) }}"
                                                class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
                                                         class="la la-users"></i></a>
                                             <a data-toggle="m-tooltip" data-placement="top"
@@ -199,8 +215,7 @@
 
     {{ Html::script('js/project-mdatatable.js') }}
     <script>
-
-
+        //table column definitions
         const columns = [
             {
                 field: 'id',
@@ -248,8 +263,6 @@
 
         /**
          * Function REQUIRED!
-         *
-         *
          */
         const TableMethods = function () {
             return {
@@ -324,7 +337,7 @@
                 } else {
                     console.log("Performance Degraded", "Sorry, your browser does not support web storage...");
                 }
-            }
+            };
 
             return {
                 init: function () {
@@ -378,6 +391,11 @@
                     text: 'Choose a category from the list above first...'
                 }
             });
+            //Handle Form Validation
+            $.validate({
+                modules : 'location, security'
+            });
+            $('#description').restrictLength( $('#desc-max-length') );
         });
 
     </script>
@@ -399,19 +417,18 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <form id="log-incident" method="POST" action="{{ route('incidents.store') }}">
                 <div class="modal-body">
-                    <form id="log-incident" method="POST" action="{{ route('incidents.store') }}">
                         {{ csrf_field() }}
                         @include('backend.incidents._form')
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary m-btn--pill m-btn--air" data-dismiss="modal">Cancel
                     </button>
-                    <button type="button" class="btn btn-success  m-btn--pill m-btn--air"
-                            onclick="event.preventDefault(); document.getElementById('log-incident').submit();">Confirm
+                    <button type="submit" class="btn btn-success  m-btn--pill m-btn--air">Confirm
                     </button>
                 </div>
+            </form>
             </div>
         </div>
     </div>
