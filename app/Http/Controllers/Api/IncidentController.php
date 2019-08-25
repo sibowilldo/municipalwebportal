@@ -52,7 +52,7 @@ class IncidentController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::findOrFail($request->user_id);
+        $user = User::whereUuid($request->user_id)->firstOrFail();
 
         $request->validate(
             [
@@ -76,7 +76,7 @@ class IncidentController extends Controller
                 'longitude' => $request->longitude,
                 'suburb_id' => $request->suburb_id,
                 'is_public' => $request->is_public,
-                'category_id' => $request->category_id,
+                'type_id' => $request->type_id,
                 'status_id' => $request->status_id
             ]
         );

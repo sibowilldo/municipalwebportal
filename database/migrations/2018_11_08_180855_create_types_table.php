@@ -30,8 +30,8 @@ class CreateTypesTable extends Migration
             $table->boolean('is_active')->default(false);
 
             $table->primary(['type_id', 'category_id']);
-            $table->foreign('type_id')->references('id')->on('types')->onuUpdate('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onuUpdate('cascade');
+            $table->foreign('type_id')->references('id')->on('types')->onUpdate('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade');
         });
 
 
