@@ -104,28 +104,34 @@
                                 <th data-field="Reference">{{ __('Reference') }}</th>
                                 <th data-field="Name">{{ __('Name') }}</th>
                                 <th data-field="LoggedAt">{{ __('Logged At') }}</th>
-                                <th data-field="Category">{{ __('Category') }}</th>
                                 <th data-field="Status">{{ __('Status') }}</th>
+                                <th data-field="Category">{{ __('Category') }}</th>
                                 <th data-field="Location">{{ __('Location') }}</th>
                                 <th data-field="SuburbID">{{ __('Suburb') }}</th>
-                                {{--<th data-field="User">{{ __('User') }}</th>--}}
                                 <th data-field="Actions">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($incidents as $incident)
-{{--                                <tr><td colspan="9">{{ $incident->type->categories()->first()?$incident->type->categories()->first()->id:0 }}</td></tr>--}}
                                 <tr>
                                     <td>{{ $incident->id }}</td>
                                     <td><a href="{{ route('incidents.show', $incident->id) }}"
                                            class="font-weight-bold">{{ $incident->reference }}</a></td>
                                     <td>{{ $incident->name }}</td>
                                     <td>{{ $incident->created_at }}</td>
-                                    <td>{{ $incident->type->categories()->first()?$incident->type->categories()->first()->id:0 }}</td>
-                                    <td>{{ $incident->status->id }}</td>
+                                    <td>
+                                        <span>
+                                            <span class="m-badge m-badge--{{ $incident->status->state_color->css_class }} m-badge--wide">{{ $incident->status->name }}</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            <span class="m-badge m-badge--dot m-badge--{{ $incident->type->categories()->first()->state_color->css_class }}"></span>&nbsp;<span class="m--font-bold m--font-{{$incident->type->categories()->first()->state_color->css_class}}">
+                                            {{$incident->type->categories()->first()->name }}</span>
+                                        </span>
+                                    </td>
                                     <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
                                     <td>{{ $incident->suburb_id }}</td>
-                                    {{--<td>{{ count($incident->users) ? $incident->users[0]['firstname'] : '' }}</td>--}}
                                     <td>
                                         <div role="group">
                                             @if(!count($incident->assignments))
@@ -235,21 +241,12 @@
             },
             {
                 field: 'Status',
-                title: 'Status',
-                // callback function support for column rendering
-                template: function (row) {
-                    return '<span class="m-badge m-badge--' + status[row.Status].class + ' m-badge--wide">' + status[row.Status].title + '</span>';
-                },
+                title: 'Status'
             },
             {
                 field: 'Category',
                 title: 'Category',
-                width: 150,
-                // callback function support for column rendering
-                template: function (row) {
-                    return '<span class="m-badge m-badge--dot m-badge--' + (row.Category > 0 ? Categories[row.Category].class : 'metal') + '"></span>&nbsp;<span class="m--font-bold m--font-' + (row.Category > 0 ? Categories[row.Category].class : 'metal') + '">' +
-                        (row.Category > 0 ? Categories[row.Category].title : 'Not assigned') + '</span>';
-                },
+                width: 150
             },
             {
                 field: "Actions",
@@ -278,51 +275,7 @@
                 }
             }
         }();
-
-        let status = [];
-        var getStatuses = function () {
-            var statuses = function () {
-                $.ajax({
-                    url: 'api/system/statuses',
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        status = data.data;
-                    }
-                });
-            };
-            return {
-                init: function () {
-                    statuses()
-                }
-            }
-        }();
-        //Get Statuses for the Status Column
-        getStatuses.init();
-
-        let Categories = {};
-        var LoadCategories = function () {
-            var categories = function () {
-                $.ajax({
-                    url: '/api/categories',
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        Categories = data.data
-                    },
-                    complete: function () {
-                        // Call datatable init function, once everything has loaded
-                        TableElement.init($('#incidents'), columns);
-                    }
-                });
-            };
-            return {
-                init: function () {
-                    categories()
-                }
-            }
-        }();
-        LoadCategories.init();//Load these first! Before TableMethods
+        TableElement.init($('#incidents'), columns);
 
         var LoadTypes = function () {
             var types = function () {
