@@ -140,29 +140,29 @@
                                 <td>
                                    {{ ucwords($user->roles()->pluck('name')->implode(', ')) }}</td>
                                 <td>
+                                    @if(Auth::user()->uuid !== $user->uuid)
                                     <a href="{{ route('users.edit', $user->uuid) }}"  data-toggle="m-tooltip" title="Edit User" data-placement="left" data-original-title="Edit User" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
-                                    @if ($user->deleted_at)
+                                        @if ($user->deleted_at)
                                         <button
                                                 type="button"
                                                 data-id="{{ $user->uuid }}"
                                                 data-url="{{ route('users.restore', $user->uuid) }}"
                                                 data-toggle="m-tooltip"
-                                                title="Edit Status"
+                                                title="Edit User"
                                                 data-placement="left"
-                                                data-original-title="Edit Status"
+                                                data-original-title="Edit User"
                                                 class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon btn-sm m-btn--sm m-btn--pill btn-restore">
                                             <i class="la la-recycle"></i> Restore
                                         </button>
-                                    @else
-                                        @if(Auth::user()->uuid !== $user->uuid)
+                                        @else
                                         <button
                                                 type="button"
                                                 data-id="{{ $user->uuid }}"
                                                 data-url="{{ route('users.destroy', $user->uuid) }}"
                                                 data-toggle="m-tooltip"
-                                                title="Edit Status"
+                                                title="Delete User"
                                                 data-placement="left"
-                                                data-original-title="Edit Status"
+                                                data-original-title="Delete User"
                                                 class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon btn-sm m-btn--sm m-btn--pill btn-delete">
                                             <i class="la la-trash"></i> Delete
                                         </button>

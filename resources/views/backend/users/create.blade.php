@@ -74,8 +74,7 @@
                                         {{ Form::select('roles[]', $roles->pluck('name', 'id'), '', [
                                             'class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker',
                                             'multiple' => 'multiple',
-                                            'data-validation'=>'checkbox_group',
-                                            'data-validation-qty'=>'min2']) }}
+                                            'data-validation'=>'required']) }}
                                     </div>
                             </div>
                         </div>

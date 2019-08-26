@@ -38,7 +38,7 @@ Route::group(['middleware' => ['verified']], function () {
     Route::resource('incidents', 'IncidentController');
     Route::resource('profile', 'ProfileController')->except(['index', 'show', 'create', 'store']);
     Route::resource('types', 'TypeController');
-    Route::resource('users', 'UserController');
+    Route::resource('users', 'UserController')->except(['show']);
     Route::resource('working-group', 'AssignGroupController');
 
     Route::resource('manage/departments', 'DepartmentController');
@@ -50,6 +50,7 @@ Route::group(['middleware' => ['verified']], function () {
     /**
      * GET Routes
      */
+    Route::get('welcome', 'HomeController@welcome');
     Route::get('incidents/{incident}/engineers/', 'IncidentController@engineers')->name('incidents.engineers');
     Route::get('incidents/{incident}/specialists/', 'IncidentController@specialists')->name('incidents.specialists');
     Route::get('working-group/{incident}/list', 'AssignGroupController@list')->name('working-group.list');
@@ -64,10 +65,10 @@ Route::group(['middleware' => ['verified']], function () {
     /**
      * Custom JSON formatted output
      */
-    Route::get('api/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
     Route::get('api/incidents', 'IncidentController@jsonIndex');
     Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
     Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
+    Route::get('api/system/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
     Route::get('api/system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
 
     /**

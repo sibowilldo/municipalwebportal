@@ -96,24 +96,17 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($user)
-    {
-        return redirect('users');
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
     public function edit($user)
     {
+        //if the logged in user is the same as the user being updated then, they must use the update profile page.
+        if($user->id === Auth::id()){
+            return response()->redirectToRoute('profile.edit', $user->uuid);
+        }
 
         $roles = Role::pluck('name', 'id'); //Get all roles
         $statuses = Status::pluck('name', 'id');
@@ -124,13 +117,12 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param  User $user
+     * @return Response
      */
     public function update(Request $request, $user)
     {
-
         //Validate name, email and password fields
         $request->validate(
             [
@@ -159,8 +151,8 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return Response
      */
     public function destroy($user)
     {
@@ -178,8 +170,8 @@ class UserController extends Controller
     /**
      * Restores the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param   User $user
+     * @return Response
      */
     public function restore(Request $request, User $user)
     {
