@@ -115,7 +115,7 @@ class UserController extends Controller
     public function edit($user)
     {
 
-        $roles = Role::get(); //Get all roles
+        $roles = Role::pluck('name', 'id'); //Get all roles
         $statuses = Status::pluck('name', 'id');
         return view('backend.users.edit', compact('user', 'roles', 'statuses')); //pass user roles and statuses data to view
 

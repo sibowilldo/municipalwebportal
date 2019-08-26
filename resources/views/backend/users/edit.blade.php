@@ -21,17 +21,26 @@
                 <div class="m-portlet__body">
                     <div class="form-group m-form__group">
                         {{ Form::label('firstname', 'First Name') }}
-                        {{ Form::text('firstname', null, array('class' => 'form-control m-input m-input--square')) }}
+                        {{ Form::text('firstname', null, array('class' =>
+                                        'form-control m-input m-input--square',
+                                        'data-validation'=>'required')) }}
                     </div>
 
                     <div class="form-group m-form__group">
                         {{ Form::label('lastname', 'Last Name') }}
-                        {{ Form::text('lastname', null, array('class' => 'form-control m-input m-input--square')) }}
+                        {{ Form::text('lastname', null, array(
+                                        'class' => 'form-control m-input m-input--square',
+                                        'data-validation'=>'length,required',
+                                        'data-validation-length' => 'min2')) }}
                     </div>
 
                     <div class="form-group m-form__group">
                         {{ Form::label('contactnumber', 'Contact Number') }}
-                        {{ Form::tel('contactnumber', null, array('class' => 'form-control m-input m-input--square')) }}
+                        {{ Form::tel('contactnumber', null, array(
+                                        'class' => 'form-control m-input m-input--square',
+                                        'data-validation'=>'custom',
+                                        'data-validation-error-msg'=>'You have not given a correct phone number',
+                                        'data-validation-regexp' => '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')) }}
                     </div>
 
                     <div class="form-group m-form__group">
@@ -41,20 +50,12 @@
 
                     <div class='form-group m-form__group'>
                             <label>Roles</label>
-                            <div class="m-checkbox-list">
-                                @foreach ($roles as $role)
-                                    <label class="m-checkbox m-checkbox--primary">
-                                        {{ Form::checkbox('roles[]',  $role->id, $user->roles ) }}
-                                        {{ Form::label($role->name, ucfirst($role->name)) }}<br>
-                                        <span></span>
-                                    </label>
-                                @endforeach
-                            </div>
+                        {{ Form::select('roles[]', $roles,  $user->roles, ['class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker', 'multiple'=>'multiple']) }}
                     </div>
 
                     <div class='form-group m-form__group'>
                         {{ Form::label('status_id', 'Status') }}
-                        {{ Form::select('status_id', $statuses, $user->status_id, ['class' => 'form-control m-input m-input--square']) }}
+                        {{ Form::select('status_id', $statuses, $user->status_id, ['class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) }}
                     </div>
                     {{-- <div class="form-group m-form__group">
                         {{ Form::label('password', 'Password') }}<br>
@@ -72,7 +73,7 @@
                 <div class="m-portlet__foot m-portlet__foot--fit">
                     <div class="m-form__actions m-form__actions--solid">
                         <div class="row">
-                            <div class="col-md-10 offset-md-2">
+                            <div class="col-md-10">
                                 <button type="submit" class="btn btn-success m-btn--pill m-btn--air">Update Details</button>
                             </div>
                         </div>
@@ -83,4 +84,15 @@
     </div>
 </div>
 <!--End::Section-->
+@stop
+
+@section('js')
+    <script>
+        $(document).ready(function(){
+            //Handle Form Validation
+            $.validate({
+                modules : 'security'
+            });
+        });
+    </script>
 @stop
