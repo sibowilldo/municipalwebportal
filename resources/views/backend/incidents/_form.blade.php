@@ -2,7 +2,8 @@
     {!! Form::label('name', 'Name:') !!}
     {!! Form::text('name', null, [
         'class'=>'form-control m-input',
-        'data-validation'=>'required']) !!}
+        'data-validation'=>'required,length',
+        'data-validation-length' => 'max50']) !!}
 </div>
 <div class="form-group m-form__group{{ $errors->has('') ? ' has-danger' : '' }}">
     {!! Form::label('description', 'Description:') !!}
@@ -25,7 +26,7 @@
     {!! Form::text('location_description', null, [
         'class'=>'form-control m-input',
         'data-validation'=> 'length',
-        'data-validation-length' => '10-300']) !!}
+        'data-validation-length' => '10-100']) !!}
 </div>
 <div class="row">
     <div class="col-md-6">
