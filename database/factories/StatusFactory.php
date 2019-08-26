@@ -7,7 +7,7 @@ $factory->define(App\Status::class, function (Faker $faker) {
     static $status_count = 0;
 
     $colors = \App\StateColor::pluck('id');
-    $statuses = array ('Active','In Progress','Completed', 'Escalated', 'Assigned', 'Cancelled');
+    $statuses = array ('Active','In Progress','Completed', 'Escalated', 'Assigned', 'Cancelled', 'Trashed', 'Deleted');
     return [
         'name' => $statuses[$status_count++],
         'description' => $faker->realtext(50, 2),
