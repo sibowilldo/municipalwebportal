@@ -178,7 +178,7 @@
                                     <div class="m-widget1__item">
                                         <div class="m-widget4__info">
                                             <label for="engineers-list" class="m-widget4__title m--font-boldest">
-                                                Assigned Engineers
+                                                Assigned Personnel
                                             </label>
                                              <span class="m-widget4__sub">
                                                 {{ Form::text('assigned', null, [
