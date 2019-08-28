@@ -50,5 +50,8 @@ Route::group(['prefix' => 'auth'], function () {
 
         // Type Routes
         Route::resource('types', 'Api\TypeController');
+
+        // State Colors Routes
+        Route::resource('state-colors', 'Api\StateColorController')->except(['edit', 'update', 'destroy', 'create', 'store']);
     });
 });
