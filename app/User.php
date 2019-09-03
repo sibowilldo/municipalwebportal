@@ -78,7 +78,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function incidents()
     {
-        return $this->belongsToMany(Incident::class);
+        return $this->belongsToMany(Incident::class)
+            ->withTimestamps()
+            ->withPivot('is_leader', 'instructions', 'assigner_id');
     }
 
 
@@ -110,6 +112,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function status()
     {
         return $this->belongsTo(Status::class);
+    }
+
+    /**
+     *
+     *
+     */
+    public function working_groups()
+    {
+        return $this->belongsToMany(WorkingGroup::class)->withTimestamps();
     }
 
     /**

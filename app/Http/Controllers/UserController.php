@@ -29,7 +29,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::withTrashed()->get();
-        $statuses = Status::pluck('name', 'id');
+        $statuses = Status::where('group', 'users')->pluck('name', 'id');
         $roles = Role::all();
 
         return view('backend.users.index', compact('users', 'statuses', 'roles'));
@@ -44,7 +44,7 @@ class UserController extends Controller
     {
         //
         $roles = Role::get();
-        $statuses = Status::pluck('name', 'id');
+        $statuses = Status::where('group', 'users')->pluck('name', 'id');
         return view('backend.users.create', compact('roles', 'statuses'));
     }
 
@@ -109,7 +109,7 @@ class UserController extends Controller
         }
 
         $roles = Role::pluck('name', 'id'); //Get all roles
-        $statuses = Status::pluck('name', 'id');
+        $statuses = Status::where('group', 'users')->pluck('name', 'id');
         return view('backend.users.edit', compact('user', 'roles', 'statuses')); //pass user roles and statuses data to view
 
     }
@@ -141,7 +141,7 @@ class UserController extends Controller
         if (isset($roles)) {
             $user->roles()->sync($roles);  //If one or more role is selected associate user to roles
         } else {
-            $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
+            $user->roles()->detach(); //If no role is selected remove existing role associated to a user
         }
 
         flash('User successfully edited.')->success();
@@ -151,7 +151,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param User $user
+     * @param  $user
      * @return Response
      */
     public function destroy($user)

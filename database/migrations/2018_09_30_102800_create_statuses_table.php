@@ -17,6 +17,7 @@ class CreateStatusesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->string('group')->default('users');
             $table->unsignedInteger('state_color_id');
             $table->boolean('is_active')->default(false);
             $table->timestamps();

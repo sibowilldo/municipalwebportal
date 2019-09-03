@@ -6,6 +6,7 @@ use App\Assignment;
 use App\Category;
 use App\Http\Requests\IncidentFormRequest;
 use App\Http\Resources\Incident as IncidentResource;
+use App\Http\Resources\IncidentCollection;
 use App\Incident;
 use App\IncidentHistory;
 use App\Status;
@@ -14,6 +15,7 @@ use App\User;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 use Validator;
 
@@ -29,36 +31,53 @@ class IncidentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
 
-        $incidents = Incident::with('users')->with('status')->get()->sortByDesc('created_at');
-        $statues = Status::all('id', 'name');
+        $incidents = Incident::with('users', 'status')->orderByDesc('created_at')->paginate(12);
+        $statuses = Status::where('group', 'incidents')->all('id', 'name');
         $categories = Category::all('id', 'name');
-
-        return view('backend.incidents.index', compact('incidents', 'statues', 'categories'));
+        return view('backend.incidents.index', compact('incidents', 'statuses', 'categories'));
     }
 
-    public function jsonIndex()
+    public function jsonIndex(Request $request)
     {
+        $incidents = Incident::take(-1);
+        $total = count($incidents->get());
+        $query = $incidents
+            ->skip(((int)$request->pagination['page']?:0) * ((int)$request->pagination['pages']?:0))
+            ->take($request->pagination['perpage']?:10)
+            ->orderBy($request->sort['field']?:'name',$request->sort['sort']?:'desc')
+            ->get();
 
-        $incidents = Incident::get()->sortBy('created_at');
-
-        if (!count($incidents)) {
+        if (!count($incidents->get())) {
             return response()->json([
                 'data' => 'Nothing Found!',
                 'message' => 'OK'
             ], 404);
         }
-        return IncidentResource::collection($incidents);
+
+        return response()->json([
+            'meta' => [
+                'page' => $request->pagination['page'],
+                'pages' => $request->pagination['pages'],
+                'perpage' => $request->pagination['perpage'],
+                'total' => $total,
+                'sort' => 'asc',
+                'field' => 'id'
+            ],
+            'data' => new IncidentCollection($query)
+        ]);
+
+//        return new IncidentCollection($incidents);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -69,8 +88,9 @@ class IncidentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param IncidentFormRequest $request
+     * @throws null
+     * @return Response
      */
     public function store(IncidentFormRequest $request)
     {
@@ -101,8 +121,8 @@ class IncidentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Incident $incident
+     * @return Response
      */
     public function show(Incident $incident)
     {
@@ -112,24 +132,28 @@ class IncidentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Incident $incident
-     * @return \Illuminate\Http\Response
+     * @param Incident $incident
+     * @throws null
+     * @return Response
      */
     public function edit(Incident $incident)
     {
         $this->authorize('update', $incident);
         $categories = Category::all('id', 'name');
         $types = Type::pluck('name', 'id');
+        $statuses = Status::where('group', 'incidents')->select('name', 'id')->get();
 
-        return view('backend.incidents.edit', compact('incident', 'categories', 'types'));
+
+        return view('backend.incidents.edit', compact('incident', 'categories', 'types', 'statuses'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param IncidentFormRequest $request
+     * @param Incident $incident
+     * @throws null
+     * @return Response
      */
     public function update(IncidentFormRequest $request, Incident $incident)
     {
@@ -143,8 +167,9 @@ class IncidentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param $incident
+     * @throws null
+     * @return Response
      */
     public function destroy(Incident $incident, Request $request)
     {
@@ -166,9 +191,9 @@ class IncidentController extends Controller
      * List Available Engineers.
      *
      *
-     * @param \App\Incident $incident
+     * @param $incident
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function engineers(Incident $incident)
     {
@@ -186,9 +211,9 @@ class IncidentController extends Controller
      * List Available Specialist.
      *
      *
-     * @param \App\Incident $incident
+     * @param Incident $incident
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function specialists(Incident $incident)
     {
@@ -206,10 +231,10 @@ class IncidentController extends Controller
     /**
      * Assign Engineer to Incident.
      *
-     * @param \App\Incident $incident
-     * @param \Illuminate\Http\Request
-     *
-     * @return \Illuminate\Http\Response
+     * @param Incident $incident
+     * @param Request $request
+     * @throws null
+     * @return Response
      */
     public function assign(Incident $incident, Request $request)
     {
@@ -262,7 +287,7 @@ class IncidentController extends Controller
         return redirect()->action('HomeController@index');
     }
 
-    public function update_incident_history(Incident $incident, Status $status, User $user, $update_reason, $account_number='')
+    private function update_incident_history(Incident $incident, Status $status, User $user, $update_reason, $account_number='')
     {
         $incident_history = new IncidentHistory();
 

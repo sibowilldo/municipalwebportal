@@ -54,6 +54,7 @@
                                 <th data-field="id">{{ __('#') }}</th>
                                 <th data-field="Name">{{ __('Name') }}</th>
                                 <th data-field="Active">{{ __('Active') }}</th>
+                                <th data-field="Group">{{ __('Group') }}</th>
                                 <th data-field="State Color">{{ __('State Color') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
                                 <th data-field="Description">{{ __('Description') }}</th>
@@ -66,6 +67,9 @@
                                     <td>{{ $status->name }}</td>
                                     <td>
                                         <i class="fa fa-{{ $status->is_active ? 'check' : 'times' }}"></i>
+                                    </td>
+                                    <td>
+                                        {{$status->group}}
                                     </td>
                                     <td>
                                         <span>

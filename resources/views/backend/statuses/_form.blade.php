@@ -13,6 +13,12 @@
             {!! Form::textarea('description', null, ['class'=>'form-control m-input']) !!}
         </div>
     </div>
+    <div class="form-group m-form__group row{{ $errors->has('group') ? ' has-danger' : '' }}">
+        <label for="is_active" class="col-3 col-form-label">Group</label>
+        <div class="col-9">
+             {!! Form::select('group', $groups, null, ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) !!}
+        </div>
+    </div>
     <div class="form-group m-form__group row{{ $errors->has('is_active') ? ' has-danger' : '' }}">
         <label for="is_active" class="col-3 col-form-label">Active</label>
         <div class="col-9">

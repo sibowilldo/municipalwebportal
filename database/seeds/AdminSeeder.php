@@ -29,7 +29,7 @@ class AdminSeeder extends Seeder
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
 
-        $user->roles()->attach([3]);
+        $user->roles()->attach([4]);
 
         $user = \App\User::create([
             'uuid' => $faker->uuid,
@@ -47,7 +47,7 @@ class AdminSeeder extends Seeder
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
 
-        $user->roles()->attach([3]);
+        $user->roles()->attach([4]);
 
         $user = \App\User::create([
             'uuid' => $faker->uuid,
@@ -65,6 +65,6 @@ class AdminSeeder extends Seeder
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
 
-        $user->roles()->attach([3]);
+        $user->roles()->attach([4]);
     }
 }

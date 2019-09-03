@@ -100,7 +100,7 @@
                                 State Color:
                             </span>
                             <span class="m-widget13__text">
-                            <span class="m-badge m-badge--{{ $status->state_color }}"></span>  {{ title_case($status->state_color) }}
+                            <span class="m-badge m-badge--{{ $status->state_color->css_class }}"></span>  {{ title_case($status->state_color->css_color) }}
                             </span>
                         </div>
                         <div class="m-widget13__action m--align-right">
@@ -150,8 +150,8 @@
                                         }
                                     })
                                 })
-                                .fail(function(){
-                                    swal('Oops...', 'Something went wrong with ajax !', 'error');
+                                .fail(function(response){
+                                    swal(response.responseJSON.title ? response.responseJSON.title : 'Oops...', response.responseJSON.message ? response.responseJSON.message : 'Something went wrong with ajax !<br>', 'error');
                                 });
                         });
                     },

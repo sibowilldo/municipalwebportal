@@ -6,6 +6,7 @@ use App\Category;
 use App\Incident;
 use App\Status;
 use Auth;
+use App\Http\Resources\Incident as IncidentResource;
 
 class HomeController extends Controller
 {
@@ -27,8 +28,17 @@ class HomeController extends Controller
     public function index()
     {
         $incidents = Incident::with('users')->get()->sortByDesc('created_at');
-        $statues = Status::all('id', 'name');
+        $statuses = Status::where('group', 'incidents')->select('name', 'id')->get();
+
         $categories = Category::all('id', 'name');
-        return view('dashboard', compact('incidents', 'statues', 'categories'));
+        return view('dashboard', compact('incidents', 'statuses', 'categories'));
+    }
+
+    public function welcome()
+    {
+        if (!Auth::user()->fullname === 'Sibongiseni Msomi'){
+            abort(404);
+        }
+        return view('welcome');
     }
 }

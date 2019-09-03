@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\StateColor;
 use App\Status;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class StatusController extends Controller
@@ -27,7 +29,8 @@ class StatusController extends Controller
     public function create()
     {
         $state_colors = StateColor::all();
-        return view('backend.statuses.create', compact('state_colors'));
+        $groups = Status::$groups;
+        return view('backend.statuses.create', compact('state_colors', 'groups'));
     }
 
     /**
@@ -39,7 +42,7 @@ class StatusController extends Controller
     public function store(Request $request)
     {
         $request['is_active'] = $request->is_active === 'on' ? true:false;
-        $status = Status::create($request->only('name', 'description', 'state_color_id', 'is_active'));
+        $status = Status::create($request->only('name', 'description','group', 'state_color_id', 'is_active'));
         flash(ucfirst($status->name) . ' created successfully')->success();
         return redirect()->action('StatusController@index');
     }
@@ -64,7 +67,8 @@ class StatusController extends Controller
     public function edit(Status $status)
     {
         $state_colors = StateColor::all();
-        return view('backend.statuses.edit', compact('status', 'state_colors'));
+        $groups = Status::$groups;
+        return view('backend.statuses.edit', compact('status', 'state_colors', 'groups'));
     }
 
     /**
@@ -79,6 +83,7 @@ class StatusController extends Controller
         $state_color = StateColor::findOrFail($request->state_color_id);
         $status->name = $request->name;
         $status->description = $request->description;
+        $status->group = $request->group;
         $status->state_color_id = $state_color->id;
         $status->is_active = $request->is_active ? true : false;
         $status->update();
@@ -93,9 +98,20 @@ class StatusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Status $status)
     {
-        //
+        try{
+            $status->delete();
+        }catch(QueryException $e){
+            return response()->json([
+                "title"=>'Deleting this status is not allowed!',
+                "message"=>'CODE: ' .$e->getCode()
+            ], 500);
+        }
+        return response()->json([
+            "message"=> $status->name . ' was deleted successfully',
+            "url" => route('statuses.index')
+        ], 200);
     }
 
     public function jsonIndex()

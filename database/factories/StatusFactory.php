@@ -11,6 +11,7 @@ $factory->define(App\Status::class, function (Faker $faker) {
     return [
         'name' => $statuses[$status_count++],
         'description' => $faker->realtext(50, 2),
+        'group'=>$faker->randomElement(['users', 'incidents']),
         'is_active' => true,
         'state_color_id'=>$faker->randomElement($array = $colors),
         'created_at' => Carbon::now(),
