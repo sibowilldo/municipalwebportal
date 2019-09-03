@@ -37,7 +37,7 @@ class IncidentController extends Controller
     {
 
         $incidents = Incident::with('users', 'status')->orderByDesc('created_at')->paginate(12);
-        $statuses = Status::where('group', 'incidents')->all('id', 'name');
+        $statuses = Status::where('group', 'incidents')->select('id', 'name');
         $categories = Category::all('id', 'name');
         return view('backend.incidents.index', compact('incidents', 'statuses', 'categories'));
     }
