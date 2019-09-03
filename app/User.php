@@ -79,8 +79,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function incidents()
     {
         return $this->belongsToMany(Incident::class)
-            ->withTimestamps()
-            ->withPivot('is_leader', 'instructions', 'assigner_id');
+            ->withTimestamps();
     }
 
 
@@ -120,7 +119,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function working_groups()
     {
-        return $this->belongsToMany(WorkingGroup::class)->withTimestamps();
+        return $this->belongsToMany(WorkingGroup::class)->withTimestamps()
+            ->withPivot('is_leader', 'instructions', 'assigner_id');
     }
 
     /**
