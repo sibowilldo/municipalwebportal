@@ -7,7 +7,6 @@
     <!--Begin::Section-->
     <div class="row">
         @foreach($incidents as $incident)
-
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="m-portlet m-portlet--full-height">
                     <div class="m-portlet__head">
@@ -82,8 +81,8 @@
 													Logged:
 												</span>
                                 <span class="m-widget13__text m-widget13">
-													{{ $incident->created_at->diffForHumans() }}. {{ $incident->created_at->format('M, d Y @ h:m:s') }}
-												</span>
+                                        {{ $incident->created_at->diffForHumans() }}. {{ $incident->created_at->format('M, d Y @ h:m:s') }}
+                                    </span>
                             </div>
                             <div class="m-widget13__item">
 												<span class="m-widget13__desc m--align-right">
@@ -91,15 +90,20 @@
 												</span>
                                 <span class="m-widget13__text">
                                     <span class="m--font-bold m--font-brand">{{ $incident->longitude }}, {{ $incident->latitude }} </span>
-													<br>
-                                                    {{ $incident->location_description }}
-												</span>
+                                        <br>
+                                        {{ $incident->location_description }}
+                                    </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         @endforeach
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+                {{ $incidents->links() }}
+        </div>
     </div>
 @endsection
 

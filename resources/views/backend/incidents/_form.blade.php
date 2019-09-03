@@ -65,5 +65,6 @@
 </div>
 <div class="form-group m-form__group{{ $errors->has('') ? ' has-danger' : '' }}">
     {!! Form::label('status_id', 'Status:') !!}
-    {!! Form::select('status_id', \App\Status::pluck('name', 'id'), isset($incident) ? $incident->status->id : 1, ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) !!}
+    {!! Form::select('status_id', $statuses->pluck('name', 'id'), null , ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) !!}
 </div>
+{{--\App\Status::where('group', 'incidents')->pluck('name', 'id'), isset($incident) ? $incident->status->id : 1--}}
