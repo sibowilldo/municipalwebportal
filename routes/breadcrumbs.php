@@ -23,15 +23,9 @@ Breadcrumbs::for('users.create', function ($trail) {
     $trail->push('Add User', route('users.create'));
 });
 
-// Users > [User Name]
-Breadcrumbs::for('users.show', function ($trail, $user) {
-    $trail->parent('users.index');
-    $trail->push($user->fullname, route('users.show', $user->uuid));
-});
-
 // Users > [User Name] > Edit User
 Breadcrumbs::for('users.edit', function ($trail, $user) {
-    $trail->parent('users.show', $user);
+    $trail->parent('users.index', $user);
     $trail->push('Edit User', route('users.edit', $user->id));
 });
 // Departments
@@ -227,4 +221,28 @@ Breadcrumbs::for('statuses.show', function ($trail, $status) {
 Breadcrumbs::for('statuses.edit', function ($trail, $status) {
     $trail->parent('statuses.index', $status);
     $trail->push('Edit Status', route('statuses.edit', $status->id));
+});
+
+// Working Groups
+Breadcrumbs::for('working-groups.index', function ($trail) {
+    $trail->parent('dashboard');
+    $trail->push('Working Groups', route('working-groups.index'));
+});
+
+// Working Groups > Upload Working Group
+Breadcrumbs::for('working-groups.create', function ($trail) {
+    $trail->parent('working-groups.index');
+    $trail->push('Add Working Group', route('working-groups.create'));
+});
+
+// Working Groups > [Working Group Name]
+Breadcrumbs::for('working-groups.show', function ($trail, $working_group) {
+    $trail->parent('working-groups.index');
+    $trail->push($working_group->name, route('working-groups.show', $working_group->id));
+});
+
+// Working Groups > [Working Group Name] > Edit Working Group
+Breadcrumbs::for('working-groups.edit', function ($trail, $working_group) {
+    $trail->parent('working-groups.show', $working_group);
+    $trail->push('Edit Working Group', route('working-groups.edit', $working_group->id));
 });

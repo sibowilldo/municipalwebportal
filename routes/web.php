@@ -1,15 +1,4 @@
 <?php
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 use App\Http\Resources\CategoryResource;
 use App\Category;
 
@@ -19,7 +8,6 @@ Route::post('/register', function (){abort(403, 'Unauthorized action.');});
 
 Route::get('/auth/social/{social}', 'SocialLoginController@redirectToSocial')->name('social.redirect');
 Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallback')->name('social.callback');
-
 //
 Route::group(['middleware' => ['verified']], function () {
 
@@ -39,7 +27,7 @@ Route::group(['middleware' => ['verified']], function () {
     Route::resource('profile', 'ProfileController')->except(['index', 'show', 'create', 'store']);
     Route::resource('types', 'TypeController');
     Route::resource('users', 'UserController')->except(['show']);
-    Route::resource('working-group', 'AssignGroupController');
+    Route::resource('working-groups', 'WorkingGroupController');
 
     Route::resource('manage/departments', 'DepartmentController');
     Route::resource('manage/permissions', 'PermissionController');
@@ -76,6 +64,7 @@ Route::group(['middleware' => ['verified']], function () {
      */
     Route::get('charts/types', 'ChartController@types');
     Route::get('charts/statuses', 'ChartController@statuses');
+    Route::get('charts/incidents', 'ChartController@incidents');
 });
 
 

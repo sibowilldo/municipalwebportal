@@ -34,6 +34,7 @@ class GenerateMenus
 
             $menu->users->add('All Users', ['route' => 'users.index',]);
             $menu->users->add('Add New User', ['route' => 'users.create',]);
+            $menu->users->add('Working Groups', ['route' => 'working-groups.index',]);
 
             $menu->add('Manage', [])->active('manage/*')
                 ->data('icon', 'flaticon-interface-8');
