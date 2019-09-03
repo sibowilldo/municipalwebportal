@@ -1,7 +1,7 @@
 <template>
     <div class="m-widget12 m-widget12--chart-bottom m--margin-top-10" style="min-height: 300px">
         <div class="m-widget12__chart m-portlet-fit--sides" style="position: absolute; margin: 0;">
-            <line-chart :chart-data="datacollection" :options="options" style="height: 300px"></line-chart>
+            <line-chart :chart-data="chartData" :options="chartOptions" style="height: 300px"></line-chart>
         </div>
     </div>
 </template>
@@ -15,8 +15,9 @@
         },
         data() {
             return {
-                datacollection: {},
-                options: {
+                dataFilled: false,
+                chartData:{},
+                chartOptions: {
                     title: {
                         display: false,
                     },
@@ -74,16 +75,30 @@
         },
         methods: {
             fillData() {
-                this.datacollection = {
-                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                    datasets: [
-                        {
-                            label: 'Total',
-                            backgroundColor: 'rgb(0, 197, 220)',
-                            data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-                        }
-                    ]
-                }
+
+                Vue.axios.get('charts/incidents').then((response) => {
+                    let labelsData = [],
+                        datasetsData = [],
+                        colors = [];
+                    let data = response.data.data, start = response.data.start, end = response.data.end;
+                    data.forEach(function(i,v){
+                        i.data > 0 ? labelsData.push(i.label):'';
+                        i.data > 0 ? datasetsData.push(i.data):'';
+                        i.data > 0 ? colors.push(i.color):'';
+                    });
+
+                    this.chartData = {
+                        labels: labelsData,
+                        datasets: [
+                            {
+                                backgroundColor: 'rgb(0, 197, 220)',
+                                data: datasetsData,
+                                borderWidth: 1
+                            }
+                        ]
+                    }
+                    this.dataFilled = !!this.chartData.datasets[0].data.length;
+                });
             },
             getRandomInt() {
                 return Math.floor(Math.random() * (40 - 5 + 1)) + 5

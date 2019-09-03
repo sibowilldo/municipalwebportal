@@ -49,26 +49,12 @@
                 Vue.axios.get('charts/types').then((response) => {
                     let labelsData = [],
                         datasetsData = [],
-                        colors = [
-                            '#34BFA3',
-                            '#FFB822',
-                            '#36A3F7',
-                            '#F4516C',
-                            '#5767DD',
-                            '#EAEAEA',
-                            '#716ACA',
-                            '#00C5DC',
-                            '#9819F4',
-                            '#FFB822',
-                            '#F4516C',
-                            '#5767DD',
-                            '#716ACA',
-                            '#34BFA3'
-                        ];
+                        colors = [];
                     let data = response.data.data, start = response.data.start, end = response.data.end;
                     data.forEach(function(i,v){
                         i.data > 0 ? labelsData.push(i.label):'';
                         i.data > 0 ? datasetsData.push(i.data):'';
+                        i.data > 0 ? colors.push(i.color):'';
                     });
 
                     this.chartData = {
