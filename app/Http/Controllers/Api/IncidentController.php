@@ -123,7 +123,6 @@ class IncidentController extends Controller
     public function show($id)
     {
         $incident = Incident::findOrFail($id);
-
         return new IncidentResource($incident);
         //
     }

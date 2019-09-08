@@ -126,7 +126,8 @@ class IncidentController extends Controller
      */
     public function show(Incident $incident)
     {
-        return view('backend.incidents.show')->with('incident', $incident);
+        $histories = $incident->histories;
+        return view('backend.incidents.show', compact('incident', 'histories'));
     }
 
     /**
@@ -159,6 +160,7 @@ class IncidentController extends Controller
     {
         $this->authorize('update', $incident);
         $incident->update($request->only(['name', 'description', 'location_description', 'latitude', 'longitude', 'suburb_id', 'type_id', 'status_id']));
+        $this->update_incident_history($incident, $incident->status, Auth::user(), 'Details about this incident were changed');
 
         flash($incident->name . ' <b>Updated</b> Successfully')->success();
         return redirect()->action('IncidentController@show', $incident);

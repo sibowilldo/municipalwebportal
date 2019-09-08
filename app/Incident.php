@@ -57,4 +57,10 @@ class Incident extends Model
     {
         return $this->belongsTo(Type::class);
     }
+
+    //An Incident has many Incident Histories
+    public function histories()
+    {
+        return $this->hasMany(IncidentHistory::class);
+    }
 }

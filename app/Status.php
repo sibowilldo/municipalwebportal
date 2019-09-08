@@ -40,6 +40,11 @@ class Status extends Model
         return $this->belongsTo(StateColor::class);
     }
 
+    //A Status has many Incident Histories
+    public function histories()
+    {
+        return $this->hasMany(IncidentHistory::class);
+    }
     /**
      * The array of $state_colors.
      *

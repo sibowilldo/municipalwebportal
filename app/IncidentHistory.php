@@ -18,12 +18,26 @@ class IncidentHistory extends Model
     //
     public function previous_status()
     {
-        return $this->hasOne(Status::class, 'previous_status');
+        return $this->belongsTo(Status::class, 'previous_status');
     }
 
     //
     public function status()
     {
-        return $this->hasOne(Status::class, 'status_id');
+        return $this->belongsTo(Status::class, 'status_id');
     }
+
+    //
+    public function incident()
+    {
+        return $this->belongsTo(Incident::class);
+    }
+
+    //
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
 }

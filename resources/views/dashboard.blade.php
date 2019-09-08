@@ -24,8 +24,17 @@
                     </div>
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item mr-3">
+                                <button type="button" data-toggle="modal" data-target="#log_incident_modal"
+                                        class="btn btn-danger m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                    <span>
+                                        <i class="la la-plus"></i>
+                                        <span>{{ __('Log Incident') }}</span>
+                                    </span>
+                                </button>
+                            </li>
                             <li class="m-portlet__nav-item">
-                                <a href="" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon"><i class="la la-angle-down"></i></a>
+                                <a href="" m-portlet-tool="toggle" class="m-portlet__nav-link btn btn-sm btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-angle-down"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -83,16 +92,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <button type="button" data-toggle="modal" data-target="#log_incident_modal"
-                                            class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-                                    <span>
-                                        <i class="la la-plus"></i>
-                                        <span>{{ __('Log Incident') }}</span>
-                                    </span>
-                                    </button>
-                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
-                                </div>
+{{--                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">--}}
+{{--                                    <button type="button" data-toggle="modal" data-target="#log_incident_modal"--}}
+{{--                                            class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">--}}
+{{--                                    <span>--}}
+{{--                                        <i class="la la-plus"></i>--}}
+{{--                                        <span>{{ __('Log Incident') }}</span>--}}
+{{--                                    </span>--}}
+{{--                                    </button>--}}
+{{--                                    <div class="m-separator m-separator--dashed d-xl-none"></div>--}}
+{{--                                </div>--}}
                             </div>
                         </div>
 
