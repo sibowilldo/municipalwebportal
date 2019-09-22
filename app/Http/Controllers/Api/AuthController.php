@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Status;
 use App\User;
 use App\Http\Resources\User as UserResource;
 use Carbon\Carbon;
@@ -28,7 +29,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
-
+        $status = Status::where('name', 'active')->firstOrFail(); //ToDo set to inactive later
         $user = new User(
             [
                 'firstname' => $request->firstname,
@@ -38,10 +39,9 @@ class AuthController extends Controller
                 'email_verified_at' => Carbon::now(),
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'status_is' => 'active' //ToDo set to inactive later
+                'status_id' => $status->id
             ]
         );
-
         $user->save();
         $user->assignRole($request->roles); //assign role(s) to user
 
