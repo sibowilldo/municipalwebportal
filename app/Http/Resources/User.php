@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Incident as IncidentResource;
 
 class User extends JsonResource
 {
@@ -21,7 +22,7 @@ class User extends JsonResource
             'email' => $this->email,
             'contactnumber' => $this->contactnumber,
             'roles' => $this->getRoleNames(),
-            'incidents' => $this->incidents,
+            'incidents' => IncidentResource::collection($this->incidents),
             'departments' => $this->departments
         ];
     }
