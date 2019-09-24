@@ -57,7 +57,6 @@ class IncidentController extends Controller
     public function store(Request $request)
     {
         $user = User::whereUuid($request->user_id)->firstOrFail();
-
         $request->validate(
             [
                 'name' => 'required|string',
@@ -70,8 +69,7 @@ class IncidentController extends Controller
             ]
         );
 
-        $incident = new Incident(
-            [
+        $incident = new Incident([
                 'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
                 'name' => $request->name,
                 'description' => $request->description,
@@ -82,32 +80,20 @@ class IncidentController extends Controller
                 'is_public' => $request->is_public,
                 'type_id' => $request->type_id,
                 'status_id' => $request->status_id
-            ]
-        );
+            ]);
         $incident->save();
 
         $has_attachments = false;
         if(count($request->images)){
             $has_attachments = true;
-            foreach($request->images as $image){
-                //Save & Get Metas (metadata)
-                $meta = new Meta(['metadata' => 'Nothing Here']);
-                $meta->save();
-
-                //Save & GET Attachments (meta_id, path, filename, is_active)
-                $attachment = new Attachment([
-                    'meta_id' => $meta->id,
-                    'path' => $image,
-                    'filename' => substr($image, strrpos($image, '/')+1),
-                    'is_active' => true
-                ]);
-                $attachment->save();
-
-                //attach Attachment to Incident ([is_active])
-                $incident->attachments()->attach($attachment, ['is_active' => false]);
-            }
-
+            //generate path based on user uuid and incident id
+            $destinationPath = Auth::user()->uuid."/".$incident->id.'/';
+            
+            //Create the directory ToDo: Change this when we've moved to amazon s3
+            Storage::makeDirectory('public/attachments/'.$destinationPath);
+            $this->upload($request, $incident, $destinationPath);
         }
+
         $user->incidents()->attach(
             $incident,
             [
@@ -175,24 +161,40 @@ class IncidentController extends Controller
      *
      * @param Request $request
      * @param Incident $incident
-     *
-     * @return response
+     * @param string $destinationPath
      */
-    public function upload(Request $request, Incident $incident)
+    public function upload(Request $request, Incident $incident, $destinationPath)
     {
-        $paths=[];
-        $images =$request->file('images');
-        $destinationPath = Auth::user()->uuid."/".$incident->id.'/'; //'public/attachments/'.
-        Storage::makeDirectory('public/attachments/'.$destinationPath);
+        //get images from request
+        $images = $request->images;
+
         foreach($images as $image){
-            $imagename = time().str_random().".".$image->getClientOriginalExtension();
-            $origimage = Image::make($image->getRealPath());
+            //get image from json as base64
+            $origimage = Image::make($image['data']);
+            //generate random name, jpg because all images will be saved as jpg
+            $imageName = time().str_random().".jpg";
+
+            //resize the image if it's larger than 1920x1080 otherwise keep as is, set quality to about 75% and convert image to jpg
             $origimage->resize(1920, 1080, function($constr){
                 $constr->aspectRatio();
-            })->save(public_path('storage/attachments/'.$destinationPath).$imagename);
+                $constr->upsize();
+            })->save(public_path('storage/attachments/'.$destinationPath).$imageName, 75, 'jpg');
 
-            array_push($paths,asset('storage/attachments/'.$destinationPath.$imagename));
+            //Save & Get Metas (metadata)
+            $meta = new Meta(['metadata' => $image['meta']]);
+            $meta->save();
+
+            //Save & GET Attachments (meta_id, path, filename, is_active)
+            $attachment = new Attachment([
+                'meta_id' => $meta->id,
+                'path' => 'storage/attachments/'.$destinationPath,
+                'filename' => $imageName,
+                'is_active' => true
+            ]);
+            $attachment->save();
+
+            //attach Attachment to Incident ([is_active])
+            $incident->attachments()->attach($attachment, ['is_active' => true]);
         }
-        return response()->json(["data" => ["images"=>$paths]]);
     }
 }
