@@ -41,6 +41,7 @@ Route::group(['prefix' => 'auth'], function () {
 
         // Incident Routes
         Route::resource('incidents', 'Api\IncidentController');
+        Route::post('incidents/{incident}/upload', 'Api\IncidentController@upload')->name('incidents.upload'); //upload images
 
         // Status Routes
         Route::resource('statuses', 'Api\StatusController');

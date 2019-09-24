@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use Auth;
+use File;
 use EloquentBuilder;
 use App\Attachment;
 use App\Incident;
@@ -11,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Incident as IncidentResource;
+use Illuminate\Support\Facades\Storage;
+use Image;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
 class IncidentController extends Controller
@@ -164,5 +168,31 @@ class IncidentController extends Controller
     {
         $incident = Incident::findOrFail($id);
         //
+    }
+
+    /**
+     * Upload Incident Images and returns status code, image locations as array
+     *
+     * @param Request $request
+     * @param Incident $incident
+     *
+     * @return response
+     */
+    public function upload(Request $request, Incident $incident)
+    {
+        $paths=[];
+        $images =$request->file('images');
+        $destinationPath = Auth::user()->uuid."/".$incident->id.'/'; //'public/attachments/'.
+        Storage::makeDirectory('public/attachments/'.$destinationPath);
+        foreach($images as $image){
+            $imagename = time().str_random().".".$image->getClientOriginalExtension();
+            $origimage = Image::make($image->getRealPath());
+            $origimage->resize(1920, 1080, function($constr){
+                $constr->aspectRatio();
+            })->save(public_path('storage/attachments/'.$destinationPath).$imagename);
+
+            array_push($paths,asset('storage/attachments/'.$destinationPath.$imagename));
+        }
+        return response()->json(["data" => ["images"=>$paths]]);
     }
 }
