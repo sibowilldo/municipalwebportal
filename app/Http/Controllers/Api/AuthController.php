@@ -43,7 +43,13 @@ class AuthController extends Controller
             ]
         );
         $user->save();
-        $user->assignRole($request->roles); //assign role(s) to user
+        $roles = $request->roles;
+        foreach ($roles as $role){
+            $role = Role::findByName($role, 'api');
+            $user->assignRole($role); //assign role(s) to user
+        }
+
+        //ToDo Add Device Info to database
 
         //ToDo Enable later
 //        $user->notify(new AccountActivate($user)); //send account activation notification
