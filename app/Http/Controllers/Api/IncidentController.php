@@ -88,7 +88,7 @@ class IncidentController extends Controller
             $has_attachments = true;
             //generate path based on user uuid and incident id
             $destinationPath = Auth::user()->uuid."/".$incident->id.'/';
-            
+
             //Create the directory ToDo: Change this when we've moved to amazon s3
             Storage::makeDirectory('public/attachments/'.$destinationPath);
             $this->upload($request, $incident, $destinationPath);

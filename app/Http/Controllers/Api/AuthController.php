@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Device;
 use App\Status;
 use App\User;
 use App\Http\Resources\User as UserResource;
@@ -27,16 +28,20 @@ class AuthController extends Controller
             'lastname' => 'required|string',
             'contactnumber' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string|confirmed',
+            'device_id' => 'required|string',
+            'os' => 'required|string',
+            'token'=> 'required|string'
         ]);
-        $status = Status::where('name', 'active')->firstOrFail(); //ToDo set to inactive later
+        $status = Status::where('name', 'unverified')->firstOrFail(); //ToDo set to unverified later
+
         $user = new User(
             [
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
                 'contactnumber' => $request->contactnumber,
-                'activation_token' => '', // ToDo set to str_random(60) later
-                'email_verified_at' => Carbon::now(),
+                'activation_token' => str_random(60), // ToDo set to str_random(60) later
+                'email_verified_at' => null,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'status_id' => $status->id
@@ -50,9 +55,18 @@ class AuthController extends Controller
         }
 
         //ToDo Add Device Info to database
+        $device = new Device([
+            'device_id' => $request->device_id,
+            'os' => $request->os,
+            'token' => $request->token,
+            'is_active' => true
+        ]);
+        $device->save();
+
+        $user->devices()->attach($device, ['is_verified' =>true, 'is_active' => true, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
 
         //ToDo Enable later
-//        $user->notify(new AccountActivate($user)); //send account activation notification
+        $user->notify(new AccountActivate($user)); //send account activation notification
 
         return new UserResource($user);
     }
@@ -121,7 +135,8 @@ class AuthController extends Controller
                 'message' => 'This activation token is invalid.'
             ], 404);
         }
-        $user->status_is = 'active';
+        $status = Status::where(['name'=>'active', 'group'=>'both'])->firstOrFail();
+        $user->status_id = $status->id;
         $user->email_verified_at = Carbon::now();
         $user->activation_token = '';
         $user->save();

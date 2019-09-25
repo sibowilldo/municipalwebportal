@@ -53,5 +53,6 @@ class Status extends Model
     public static $groups = [
         'users' => 'Users',
         'incidents' => 'Incidents',
+        'both' => 'Both'
     ];
 }
