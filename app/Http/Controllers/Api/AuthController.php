@@ -31,7 +31,7 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed',
             'device_id' => 'required|string',
             'os' => 'required|string',
-            'token'=> 'required|string'
+            'token'=> 'string'
         ]);
         $status = Status::where('name', 'unverified')->firstOrFail(); //ToDo set to unverified later
 

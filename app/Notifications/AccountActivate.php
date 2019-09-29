@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\User;
 
-class AccountActivate extends Notification
+class AccountActivate extends Notification implements ShouldQueue
 {
     use Queueable;
     public $user;

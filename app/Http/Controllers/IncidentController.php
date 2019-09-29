@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assignment;
 use App\Category;
+use App\Events\IncidentCreated;
 use App\Http\Requests\IncidentFormRequest;
 use App\Http\Resources\Incident as IncidentResource;
 use App\Http\Resources\IncidentCollection;
@@ -12,6 +13,7 @@ use App\IncidentHistory;
 use App\Status;
 use App\Type;
 use App\User;
+use App\WorkingGroup;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -37,7 +39,7 @@ class IncidentController extends Controller
     {
 
         $incidents = Incident::with('users', 'status')->orderByDesc('created_at')->paginate(12);
-        $statuses = Status::where('group', 'incidents')->select('id', 'name');
+        $statuses = Status::whereIn('group', ['incidents', 'both'])->select('id', 'name');
         $categories = Category::all('id', 'name');
         return view('backend.incidents.index', compact('incidents', 'statuses', 'categories'));
     }
@@ -142,8 +144,7 @@ class IncidentController extends Controller
         $this->authorize('update', $incident);
         $categories = Category::all('id', 'name');
         $types = Type::pluck('name', 'id');
-        $statuses = Status::where('group', 'incidents')->select('name', 'id')->get();
-
+        $statuses = Status::whereIn('group', ['incidents', 'both'])->select('id', 'name');
 
         return view('backend.incidents.edit', compact('incident', 'categories', 'types', 'statuses'));
     }
@@ -160,10 +161,11 @@ class IncidentController extends Controller
     {
         $this->authorize('update', $incident);
         $incident->update($request->only(['name', 'description', 'location_description', 'latitude', 'longitude', 'suburb_id', 'type_id', 'status_id']));
-        $this->update_incident_history($incident, $incident->status, Auth::user(), 'Details about this incident were changed');
+//        $this->update_incident_history($incident, $incident->status, Auth::user(), 'Details about this incident were changed');
 
         flash($incident->name . ' <b>Updated</b> Successfully')->success();
-        return redirect()->action('IncidentController@show', $incident);
+        return back();
+//        return redirect()->action('IncidentController@show', $incident);
     }
 
     /**
@@ -205,7 +207,7 @@ class IncidentController extends Controller
             return view('backend.engineers.list', compact('engineers', 'incident'));
         } catch (RoleDoesNotExist $e) {
             report($e);
-            abort(404, 'Oops! We could not find the role you requested for.');
+            abort(404, 'Oops! We could not find the list of users you requested for.');
         }
     }
 
@@ -225,9 +227,24 @@ class IncidentController extends Controller
             return view('backend.engineers.list', compact('engineers', 'incident'));
         } catch (RoleDoesNotExist $e) {
             report($e);
-            abort(404, 'Oops! We could not find the role you requested for.');
+            abort(404, 'Oops! We could not find the list of users you requested for.');
         }
     }
+
+    /**
+     * List Available Working Groups.
+     *
+     *
+     * @param Incident $incident
+     *
+     * @return Response
+     */
+    public function groups(Incident $incident)
+    {
+        $groups = WorkingGroup::all(); //todo: Add where Department is relative to incident
+        return view('backend.incidents.groups', compact('groups', 'incident'));
+    }
+
 
 
     /**

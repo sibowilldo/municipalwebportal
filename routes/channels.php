@@ -19,3 +19,13 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 Broadcast::channel('incident.{id}', function ($user, $id) {
     return $user->id === Incident::findOrNew($id)->user_id;
 });
+
+// Add the messages public channel
+Broadcast::channel('newIncidentChannel', function() {
+    return true;
+});
+
+// Add the incidentMessages public channel
+Broadcast::channel('incidentUpdatedChannel', function() {
+    return true;
+});

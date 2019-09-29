@@ -160,20 +160,22 @@
                                             No Attachments Found!</p>
                                     </div>
                                     <div class="tab-pane" id="incident-log" role="tabpanel">
-                                        <div class="m-list-timeline">
-                                            <div class="m-list-timeline__items">
-                                                <div class="m-list-timeline__item">
-                                                    <span class="m-list-timeline__badge m-list-timeline__badge--success"></span>
-                                                    <span class="m-list-timeline__text">Incident logged</span>
-                                                    <span class="m-list-timeline__time">{{ $incident->created_at->diffForHumans() }}</span>
+                                        <div class="m-scrollable" data-scrollable="true" style="height: 500px">
+                                            <div class="m-list-timeline">
+                                                <div class="m-list-timeline__items">
+                                                    @foreach($histories as $history)
+                                                        <div class="m-list-timeline__item">
+                                                            <span class="m-list-timeline__badge m-list-timeline__badge--warning"></span>
+                                                            <span class="m-list-timeline__text"> {{ $history->update_reason }} by <span class="font-weight-bolder m--font-danger">{{ $history->user->fullname }}</span> </span>
+                                                            <span class="m-list-timeline__time">  {{ $history->created_at->diffForHumans() }}</span>
+                                                        </div>
+                                                    @endforeach
+                                                    <div class="m-list-timeline__item">
+                                                        <span class="m-list-timeline__badge m-list-timeline__badge--success"></span>
+                                                        <span class="m-list-timeline__text">Incident logged</span>
+                                                        <span class="m-list-timeline__time">{{ $incident->created_at->diffForHumans() }}</span>
+                                                    </div>
                                                 </div>
-                                                @foreach($histories as $history)
-                                                <div class="m-list-timeline__item">
-                                                    <span class="m-list-timeline__badge m-list-timeline__badge--warning"></span>
-                                                    <span class="m-list-timeline__text"> {{ $history->update_reason }} by <span class="font-weight-bolder m--font-danger">{{ $history->user->fullname }}</span> </span>
-                                                    <span class="m-list-timeline__time">  {{ $history->created_at->diffForHumans() }}</span>
-                                                </div>
-                                                @endforeach
                                             </div>
                                         </div>
                                     </div>

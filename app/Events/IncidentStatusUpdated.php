@@ -10,6 +10,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Facades\Log;
 
 class IncidentStatusUpdated implements ShouldBroadcast
 {
@@ -21,6 +22,7 @@ class IncidentStatusUpdated implements ShouldBroadcast
      * @var string
      */
     public $incident;
+    public $message;
 
     /**
      * Create a new event instance.
@@ -30,6 +32,12 @@ class IncidentStatusUpdated implements ShouldBroadcast
     public function __construct(Incident $incident)
     {
         $this->incident = $incident;
+        $this->message = $incident->name . " was updated!";
+    }
+
+    public function broadcastAs()
+    {
+        return 'incidentUpdatedEvent';
     }
 
     /**
@@ -39,6 +47,6 @@ class IncidentStatusUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('incident.'.$this->incident->id);
+        return new Channel('incidentUpdatedChannel');
     }
 }

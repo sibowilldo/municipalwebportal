@@ -1,6 +1,11 @@
 <?php
 use App\Http\Resources\CategoryResource;
 use App\Category;
+use App\Incident;
+use App\Notifications\AccountActivate;
+use App\Status;
+use App\User;
+use Illuminate\Support\Facades\Notification;
 
 Auth::routes(['verify' => true]);
 Route::get('/register', function (){abort(403, 'Unauthorized action.');});
@@ -12,8 +17,12 @@ Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallbac
 Route::group(['middleware' => ['verified']], function () {
 
     Route::get('push', function () {
-        event(new App\Events\IncidentCreated(\App\Incident::first()));
-        return redirect()->route('dashboard');
+        $incident = Incident::latest()->first();//Incident::all()->random();
+        $incident->status_id = Status::all()->random()->id;
+        $incident->save();
+//        $user = User::first();
+//        Notification::send($user, new AccountActivate($user));
+//        return redirect()->route('dashboard');
     });
     Route::get('/', 'HomeController@index')->name('dashboard')->middleware('verified');
     Route::get('dashboard', 'HomeController@index')->name('dashboard');
@@ -41,6 +50,7 @@ Route::group(['middleware' => ['verified']], function () {
     Route::get('welcome', 'HomeController@welcome');
     Route::get('incidents/{incident}/engineers/', 'IncidentController@engineers')->name('incidents.engineers');
     Route::get('incidents/{incident}/specialists/', 'IncidentController@specialists')->name('incidents.specialists');
+    Route::get('incidents/{incident}/groups/', 'IncidentController@groups')->name('incidents.groups');
     Route::get('working-group/{incident}/list', 'AssignGroupController@list')->name('working-group.list');
 
     /**

@@ -25,17 +25,16 @@ class IncidentCreated implements ShouldBroadcast
     public function __construct(Incident $incident)
     {
         $this->incident = $incident;
-        $this->message = $incident->name . " was Reported!";
+        $this->message = " was created!";
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
+    public function broadcastAs()
+    {
+        return 'newIncidentEvent';
+    }
+
     public function broadcastOn()
     {
-//        return ['incident-created'];
-        return new PrivateChannel('pvt-chl');
+        return new Channel('newIncidentChannel');
     }
 }

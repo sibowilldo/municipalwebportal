@@ -9,5 +9,6 @@
     "/js/dashboard.js": "/js/dashboard.js",
     "/js/google-maps.js": "/js/google-maps.js",
     "/js/project-mdatatable.js": "/js/project-mdatatable.js",
-    "/js/incidents-ajax.js": "/js/incidents-ajax.js"
+    "/js/incidents-ajax.js": "/js/incidents-ajax.js",
+    "/firebase-messaging-sw.js": "/firebase-messaging-sw.js"
 }

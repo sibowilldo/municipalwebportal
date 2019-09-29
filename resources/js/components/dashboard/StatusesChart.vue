@@ -8,13 +8,12 @@
                 <strong>No data to display!</strong><br> Once the data is available it will be displayed here.
             </div>
         </div>
-        <pie-chart :chart-data="chartData" :options="chartOptions"  v-if="dataFilled"/>
+        <pie-chart :chart-data="statuses" :options="chartOptions"  v-if="dataFilled"/>
     </div>
 </template>
 
 <script>
     import PieChart from '../../charts.js-lib/PieChart'
-
     export default {
         components: {
             PieChart
@@ -22,7 +21,7 @@
         data () {
             return {
                 dataFilled: false,
-                chartData:{},
+                statuses:{},
                 chartOptions : {
                     maintainAspectRatio: true,
                     aspectRatio: 3,
@@ -36,13 +35,15 @@
             }
         },
         mounted () {
-            // Echo.private(`incident.${id}`)
-            // Echo.private(`incident.50`)
-            //     .listen('IncidentStatusUpdated', (e) => {
-            //         console.log(e);
-            //     });
+            Echo.channel('incidentUpdatedChannel')
+                .listen('.incidentUpdatedEvent', (e) => {
+                    this.fillData()
+                });
+            Echo.channel('newIncidentChannel')
+                .listen('.newIncidentEvent', (e) => {
+                    this.fillData()
+                });
             this.fillData();
-
         },
         methods: {
             fillData () {
@@ -57,7 +58,7 @@
                         i.data > 0 ? colors.push(i.color):'';
                     });
 
-                    this.chartData = {
+                    this.statuses = {
                         labels: labelsData,
                         datasets: [
                             {
@@ -67,7 +68,7 @@
                             }
                         ]
                     }
-                    this.dataFilled = !!this.chartData.datasets[0].data.length;
+                    this.dataFilled = !!this.statuses.datasets[0].data.length;
                 });
             }
         }

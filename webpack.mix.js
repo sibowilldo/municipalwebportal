@@ -89,6 +89,7 @@ mix
     .scripts(['resources/assets/js/google-maps.js'], 'public/js/google-maps.js')
     .scripts(['resources/assets/js/project-mdatatable.js'], 'public/js/project-mdatatable.js')
     .scripts(['resources/assets/js/incidents-ajax.js'], 'public/js/incidents-ajax.js')
+    .scripts(['resources/assets/js/firebase-messaging-sw.js'], 'public/firebase-messaging-sw.js')
 
     .js('resources/js/app.js', 'public/js')
 

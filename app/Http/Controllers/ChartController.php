@@ -14,8 +14,8 @@ class ChartController extends Controller
     {
         $data = [];
         $today = Carbon::now();
-        $from = $today->startOfMonth()->format('Y-m-d H:i');
-        $to = $today->endOfMonth()->format('Y-m-d H:i');
+        $from = $today->startOfWeek()->format('Y-m-d H:i');
+        $to = $today->endOfWeek()->format('Y-m-d H:i');
 
         $incidents = Incident::select([
             DB::raw('DATE_FORMAT(created_at, \'%d %b %Y\') AS date'),

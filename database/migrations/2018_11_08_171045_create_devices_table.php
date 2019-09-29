@@ -17,7 +17,7 @@ class CreateDevicesTable extends Migration
             $table->increments('id');
             $table->string('device_id');
             $table->string('os');
-            $table->string('token');
+            $table->string('token')->nullable()->default(null);
             $table->boolean('is_active')->default(false);
             $table->timestamps();
         });

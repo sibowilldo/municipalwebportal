@@ -175,6 +175,12 @@ Breadcrumbs::for('incidents.engineers', function ($trail, $incident) {
     $trail->push('Assign to "'.$incident->name.'"', route('incidents.engineers', $incident->id));
 });
 
+// Incidents > [Incident Name]
+Breadcrumbs::for('incidents.groups', function ($trail, $incident) {
+    $trail->parent('incidents.show', $incident);
+    $trail->push('Assign Working Group to "'.$incident->name.'"', route('incidents.groups', $incident->id));
+});
+
 // State Colors
 Breadcrumbs::for('state-colors.index', function ($trail) {
     $trail->parent('dashboard');
