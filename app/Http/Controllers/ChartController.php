@@ -18,7 +18,7 @@ class ChartController extends Controller
         $to = $today->endOfWeek()->format('Y-m-d H:i');
 
         $incidents = Incident::select([
-            DB::raw('DATE_FORMAT(created_at, \'%d %b %Y\') AS date'),
+            DB::raw('created_at AS date'),//DATE_FORMAT(created_at, \'%d %b %Y\')
             DB::raw('COUNT(*) AS total'),
             ])
             ->whereBetween('created_at', [$from, $to])
@@ -26,7 +26,8 @@ class ChartController extends Controller
             ->orderBy('date', 'ASC')->get();
 
         foreach ($incidents as $incident){
-            $series = new ChartSeries($incident->date, '', $incident->total);
+            $dateFormat = new Carbon($incident->date);
+            $series = new ChartSeries($dateFormat->format('d M Y'), '', $incident->total);
             array_push($data, $series);
         }
 
@@ -42,7 +43,7 @@ class ChartController extends Controller
         $data = [];
         $today = Carbon::now();
         $statuses = Status::all();
-        $incidents = Incident::whereBetween('created_at', [$today->startOfWeek()->format('Y-m-d H:i'), $today->endOfWeek()->format('Y-m-d H:i')])->get();
+        $incidents = Incident::whereBetween('created_at', [$today->startOfWeek()->format('Y-m-d H:i'), $today->endOfWeek()->format('Y-m-d H:i')])->Orderby('created_at')->get();
         foreach ($statuses as $status){
             $series = new ChartSeries($status->name, $status->state_color->css_color, count($incidents->where('status_id', $status->id)));
             array_push($data, $series);

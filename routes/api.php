@@ -49,6 +49,10 @@ Route::group(['prefix' => 'auth'], function () {
         // Category Routes
         Route::resource('categories', 'Api\CategoryController');
 
+        // Device Routes
+        Route::resource('devices', 'Api\DeviceController');
+        Route::patch('devices/{device_id}/update-token', 'Api\DeviceController@updateToken');
+
         // Type Routes
         Route::resource('types', 'Api\TypeController');
 
