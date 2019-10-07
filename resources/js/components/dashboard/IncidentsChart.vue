@@ -1,17 +1,25 @@
 <template>
-    <div class="m-widget12 m-widget12--chart-bottom m--margin-top-10" style="min-height: 300px">
-        <div class="m-widget12__chart m-portlet-fit--sides" style="position: absolute; margin: 0;">
-            <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline m-alert--air alert alert-danger alert-dismissible fade show" role="alert" v-if="!dataFilled">
-                <div class="m-alert__icon">
-                    <i class="flaticon-exclamation-1"></i>
-                </div>
-                <div class="m-alert__text">
-                    <strong>No data to display!</strong><br> Once the data is available it will be displayed here.
+    <div>
+        <div class="row align-items-center"  v-if="!dataFilled">
+            <div class="col" style="padding: 2.2rem;font-size: .8rem;">
+                <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline m-alert--air alert alert-danger alert-dismissible fade show" role="alert">
+                    <div class="m-alert__icon">
+                        <i class="flaticon-exclamation-1"></i>
+                    </div>
+                    <div class="m-alert__text">
+                        <strong>No data to display!</strong><br> Once the data is available it will be displayed here.
+                    </div>
                 </div>
             </div>
-            <line-chart :chart-data="chartData" :options="chartOptions" style="height: 300px"></line-chart>
+        </div>
+
+        <div class="m-widget12 m-widget12--chart-bottom m--margin-top-10" style="min-height: 300px">
+            <div class="m-widget12__chart m-portlet-fit--sides" style="position: absolute; margin: 0;">
+                <line-chart :chart-data="chartData" :options="chartOptions" style="height: 300px"></line-chart>
+            </div>
         </div>
     </div>
+
 </template>
 
 <script>

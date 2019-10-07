@@ -128,7 +128,7 @@ class IncidentController extends Controller
      */
     public function show(Incident $incident)
     {
-        $histories = $incident->histories;
+        $histories = $incident->histories()->orderByDesc('created_at')->get();
         return view('backend.incidents.show', compact('incident', 'histories'));
     }
 
@@ -160,12 +160,14 @@ class IncidentController extends Controller
     public function update(IncidentFormRequest $request, Incident $incident)
     {
         $this->authorize('update', $incident);
+
+        $this->update_incident_history($incident, $incident->status, Auth::user(), ' Details about "'. $incident->name . '" were updated.');
+
         $incident->update($request->only(['name', 'description', 'location_description', 'latitude', 'longitude', 'suburb_id', 'type_id', 'status_id']));
-//        $this->update_incident_history($incident, $incident->status, Auth::user(), 'Details about this incident were changed');
+
 
         flash($incident->name . ' <b>Updated</b> Successfully')->success();
-        return back();
-//        return redirect()->action('IncidentController@show', $incident);
+//        return back();
     }
 
     /**
@@ -306,13 +308,22 @@ class IncidentController extends Controller
         return redirect()->action('HomeController@index');
     }
 
+    /**
+     * @param Incident $incident
+     * @param Status $status
+     * @param User $user
+     * @param $update_reason
+     * @param string $account_number
+     * @throws \Throwable
+     */
     private function update_incident_history(Incident $incident, Status $status, User $user, $update_reason, $account_number='')
     {
-        $incident_history = new IncidentHistory();
+        $current_status = $incident->histories()->latest('id')->first();
 
+        $incident_history = new IncidentHistory();
         $incident_history->incident_id = $incident->id;
-        $incident_history->previous_status = $incident->status_id;
-        $incident_history->status_id = $status->id;
+        $incident_history->previous_status = $current_status ? $current_status->status_id : $incident->status_id;
+        $incident_history->status_id = $incident->status_id;
         $incident_history->user_id = $user->id;
         $incident_history->account_number = $account_number;
         $incident_history->update_reason = $update_reason;

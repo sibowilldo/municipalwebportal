@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Device;
 use App\Http\Resources\DeviceResource;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -16,7 +18,7 @@ class DeviceController extends Controller
      */
     public function index()
     {
-        //
+        return DeviceResource::collection(Device::all());
     }
     /**
      * Store a newly created resource in storage.
@@ -26,7 +28,19 @@ class DeviceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::whereUuid($request->user)->firstOrFail();
+
+        $device = new Device([
+            'device_id' => $request->device_id,
+            'os' => $request->os,
+            'token' => $request->token,
+            'is_active' => true
+        ]);
+        $device->save();
+
+        $user->devices()->attach($device, ['is_verified' =>true, 'is_active' => true, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
+
+        return new DeviceResource($device);
     }
 
     /**
@@ -37,7 +51,7 @@ class DeviceController extends Controller
      */
     public function show(Device $device)
     {
-        //
+        return new DeviceResource($device);
     }
 
     /**
@@ -45,13 +59,19 @@ class DeviceController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return DeviceResource
      */
     public function update(Request $request, Device $device)
     {
-
+        $device->update($request->only(['device_id', 'os', 'token']));
+        return new DeviceResource($device);
     }
 
+    /**
+     * @param Request $request
+     * @param $device_id
+     * @return DeviceResource
+     */
     public function updateToken(Request $request, $device_id)
     {
         $device = Device::where('device_id', $device_id)->firstOrFail();
@@ -69,6 +89,8 @@ class DeviceController extends Controller
      */
     public function destroy(Device $device)
     {
-        //
+        $device->users()->detach();
+        $device->delete();
+        return response()->json(['message'=>'Device Deleted Successfully!'], 200);
     }
 }

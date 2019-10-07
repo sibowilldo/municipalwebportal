@@ -4,8 +4,12 @@ namespace App\Observers;
 
 use App\Events\IncidentCreated;
 use App\Events\IncidentStatusUpdated;
+use App\Events\IncidentUpdatedEvent;
+use App\FCMNotification;
 use App\Incident;
+use App\Status;
 use Illuminate\Support\Facades\Log;
+use Auth;
 
 class IncidentObserver
 {
@@ -29,7 +33,15 @@ class IncidentObserver
      */
     public function updated(Incident $incident)
     {
-        event(new IncidentStatusUpdated($incident));
+        $message = null;
+        //Check if the status was updated and send specific message to user
+        if($incident->isDirty('status_id')) {
+            $oldStatus = Status::where('id', $incident->getOriginal('status_id'))->firstOrFail();
+            $message = "The status of the incident that you reported was changed from " . $oldStatus->name . " to " . $incident->status->name;
+        }
+        event(new IncidentUpdatedEvent($incident, Auth::user(), $message));
+
+
     }
 
     /**

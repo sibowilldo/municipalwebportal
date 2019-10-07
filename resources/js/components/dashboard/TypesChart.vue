@@ -1,6 +1,6 @@
 <template>
     <div class="small" style="position: relative;">
-        <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline m-alert--air alert alert-danger alert-dismissible fade show" role="alert" v-if="!dataFilled">
+        <div style="margin-top: 4.4rem;" class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline m-alert--air alert alert-danger alert-dismissible fade show" role="alert" v-if="!dataFilled">
             <div class="m-alert__icon">
                 <i class="flaticon-exclamation-1"></i>
             </div>

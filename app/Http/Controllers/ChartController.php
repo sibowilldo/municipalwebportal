@@ -14,11 +14,12 @@ class ChartController extends Controller
     {
         $data = [];
         $today = Carbon::now();
-        $from = $today->startOfWeek()->format('Y-m-d H:i');
-        $to = $today->endOfWeek()->format('Y-m-d H:i');
+        $from = $today->startOfMonth()->format('Y-m-d H:i');
+        $to = $today->endOfMonth()->format('Y-m-d H:i');
 
         $incidents = Incident::select([
-            DB::raw('created_at AS date'),//DATE_FORMAT(created_at, \'%d %b %Y\')
+            DB::raw('DATE_FORMAT(created_at, \'%d %b %Y\') AS date'),
+//            DB::raw('created_at AS date'),//DATE_FORMAT(created_at, \'%d %b %Y\')
             DB::raw('COUNT(*) AS total'),
             ])
             ->whereBetween('created_at', [$from, $to])
