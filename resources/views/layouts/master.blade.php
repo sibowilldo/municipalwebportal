@@ -28,6 +28,11 @@
 
     {{ Html::script('js/manifest.js') }}
     {{ Html::script('js/vendor.js') }}
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-messaging.js"></script>
+
 </head>
 
 
@@ -104,24 +109,6 @@
     <i class="la la-arrow-up"></i>
 </div>
 
-<div id="token_div" style="display: none;">
-    <h4>Instance ID Token</h4>
-    <p id="token" style="word-break: break-all;"></p>
-    <button class="btn btn-danger btn-sm m-btn--pill m-btn m-btn--air"
-            onclick="deleteToken()">Delete Token</button>
-</div>
-<!-- div to display the UI to allow the request for permission to
-     notify the user. This is shown if the app has not yet been
-     granted permission to notify. -->
-<div id="permission_div" style="display: none;">
-    <h4>Needs Permission</h4>
-    <p id="token"></p>
-    <button class="btn btn-primary btn-sm m-btn--pill m-btn m-btn--air"
-            onclick="requestPermission()">Request Permission</button>
-</div>
-<!-- div to display messages received by this app. -->
-<div id="messages"></div>
-
 <!-- end::Scroll Top -->
 
 <!-- begin::Quick Nav -->
@@ -135,24 +122,6 @@
 {{ Html::script('js/scripts.bundle.js') }}
 {{ Html::script('assets/fullcalendar/fullcalendar.js') }}
 {{ Html::script('js/dashboard.js') }}
-
-{{--<script>--}}
-
-{{--    // Enable pusher logging - don't include this in production--}}
-{{--    Pusher.logToConsole = true;--}}
-
-{{--    var pusher = new Pusher('2de195b72f4553a64115', {--}}
-{{--        cluster: 'ap2',--}}
-{{--        forceTLS: false--}}
-{{--    });--}}
-
-{{--    var channel = pusher.subscribe('incidentMessages');--}}
-{{--    channel.bind('eIncidentMessages', function(data) {--}}
-{{--        toastr.info(JSON.stringify(data.incident.name));--}}
-{{--    }).bind('pusher:subscription_succeeded', function(data) {--}}
-{{--        console.log('successfully subscribed!');--}}
-{{--    });--}}
-{{--</script>--}}
 
 {{--begin::page scripts--}}
 @yield('js')
@@ -173,10 +142,6 @@
 {{--end::Modals--}}
 
 @include('flash::message')
-
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-messaging.js"></script>
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
