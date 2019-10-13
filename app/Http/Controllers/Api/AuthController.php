@@ -54,19 +54,16 @@ class AuthController extends Controller
             $user->assignRole($role); //assign role(s) to user
         }
 
-        //ToDo Add Device Info to database
+        //Add Device to database NB: Devices are attached using DeviceObserver
         $device = new Device([
             'device_id' => $request->device_id,
             'os' => $request->os,
-            'token' => $request->token,
-            'is_active' => true
+            'token' => $request->token
         ]);
         $device->save();
 
-        $user->devices()->attach($device, ['is_verified' =>true, 'is_active' => true, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
-
-        //ToDo Enable later
-        $user->notify(new AccountActivate($user)); //send account activation notification
+        //send account activation notification
+        $user->notify(new AccountActivate($user));
 
         return new UserResource($user);
     }
@@ -84,8 +81,8 @@ class AuthController extends Controller
             'password' => 'required|string',
             'remember_me' => 'boolean'
         ]);
-
         $credentials = request(['email', 'password']);
+
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
@@ -103,14 +100,23 @@ class AuthController extends Controller
 
         $token->save();
 
+        //if device with same device_id and os exists [update token], else [create new device]
+        //NB: Devices are attached using DeviceObserver
+        $device = Device::updateOrCreate([
+            'device_id' => $request->input('device.device_id'),
+            'os'=>$request->input('device.os')],
+            [
+            'token'=>$request->input('device.token')
+            ]);
+
         return response()->json([
-            'data' => new UserResource($user),
+            'message' => 'Signed in Successfully',
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString(),
-            'message' => 'Signed in Successfully'
+            'data' => new UserResource($user)
         ], 200);
     }
 

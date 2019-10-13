@@ -38,8 +38,6 @@ class DeviceController extends Controller
         ]);
         $device->save();
 
-        $user->devices()->attach($device, ['is_verified' =>true, 'is_active' => true, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
-
         return new DeviceResource($device);
     }
 
@@ -74,6 +72,7 @@ class DeviceController extends Controller
      */
     public function updateToken(Request $request, $device_id)
     {
+
         $device = Device::where('device_id', $device_id)->firstOrFail();
         $device->update(['token' => $request->token]);
         $device->save();
