@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
@@ -10,7 +11,7 @@ use FCM;
 
 class FCMNotification extends Model
 {
-    public function sendToDevice($token=null, $title=null, $body=null)
+    public function sendToDevice($token, $title, $body)
     {
         $optionBuilder = new OptionsBuilder();
         $optionBuilder->setTimeToLive(60*20);

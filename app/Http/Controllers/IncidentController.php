@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assignment;
 use App\Category;
-use App\Events\IncidentCreated;
 use App\Http\Requests\IncidentFormRequest;
-use App\Http\Resources\Incident as IncidentResource;
 use App\Http\Resources\IncidentCollection;
 use App\Incident;
 use App\IncidentHistory;
@@ -102,8 +100,8 @@ class IncidentController extends Controller
 
         $incident = new Incident([
             'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
-            'name' => $request->name,
-            'description' => $request->description,
+            'name' => app('profanityFilter')->filter($request->name),
+            'description' => app('profanityFilter')->filter($request->description),
             'location_description' => $request->location_description,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
@@ -163,6 +161,8 @@ class IncidentController extends Controller
 
         $this->update_incident_history($incident, $incident->status, Auth::user(), ' Details about "'. $incident->name . '" were updated.');
 
+        $request['name'] = app('profanityFilter')->filter($request->name);
+        $request['description'] = app('profanityFilter')->filter($request->description);
         $incident->update($request->only(['name', 'description', 'location_description', 'latitude', 'longitude', 'suburb_id', 'type_id', 'status_id']));
 
         flash($incident->name . ' <b>Updated</b> Successfully')->success();

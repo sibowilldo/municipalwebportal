@@ -71,8 +71,8 @@ class IncidentController extends Controller
 
         $incident = new Incident([
                 'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
-                'name' => $request->name,
-                'description' => $request->description,
+                'name' => app('profanityFilter')->filter($request->name),
+                'description' => app('profanityFilter')->filter($request->description),
                 'location_description' => $request->location_description,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,

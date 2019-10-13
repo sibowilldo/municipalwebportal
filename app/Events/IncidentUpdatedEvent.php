@@ -32,11 +32,11 @@ class IncidentUpdatedEvent implements ShouldBroadcast
      * @param User $user
      * @param null $message
      */
-    public function __construct(Incident $incident, User $user, $message=null)
+    public function __construct(Incident $incident, User $user, $message)
     {
         $this->user = $user;
         $this->incident = $incident;
-        $this->message = $message?:$incident->name . " was updated!";
+        $this->message = $message;
     }
 
     public function broadcastAs()
