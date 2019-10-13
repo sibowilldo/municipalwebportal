@@ -39,7 +39,7 @@ class IncidentObserver
             $oldStatus = Status::where('id', $incident->getOriginal('status_id'))->firstOrFail();
             $message = "The status of the incident that you reported was changed from " . $oldStatus->name . " to " . $incident->status->name;
         }
-        event(new IncidentUpdatedEvent($incident, Auth::user(), $message));
+        event(new IncidentUpdatedEvent($incident, $incident->users()->first(), $message));
 
 
     }

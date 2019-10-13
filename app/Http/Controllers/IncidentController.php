@@ -165,9 +165,8 @@ class IncidentController extends Controller
 
         $incident->update($request->only(['name', 'description', 'location_description', 'latitude', 'longitude', 'suburb_id', 'type_id', 'status_id']));
 
-
         flash($incident->name . ' <b>Updated</b> Successfully')->success();
-//        return back();
+        return back();
     }
 
     /**
