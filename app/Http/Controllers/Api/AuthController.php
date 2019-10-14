@@ -102,12 +102,10 @@ class AuthController extends Controller
 
         //if device with same device_id and os exists [update token], else [create new device]
         //NB: Devices are attached using DeviceObserver
-        $device = Device::updateOrCreate([
-            'device_id' => $request->input('device.device_id'),
-            'os'=>$request->input('device.os')],
-            [
-            'token'=>$request->input('device.token')
-            ]);
+        $device = Device::updateOrCreate(
+            ['device_id' => $request->input('device.device_id'), 'os'=>$request->input('device.os')],
+            ['token'=>$request->input('device.token')]
+        );
 
         return response()->json([
             'message' => 'Signed in Successfully',

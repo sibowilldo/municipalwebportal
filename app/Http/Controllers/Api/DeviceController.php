@@ -44,8 +44,8 @@ class DeviceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Device $device
+     * @return DeviceResource
      */
     public function show(Device $device)
     {
@@ -55,8 +55,8 @@ class DeviceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param Device $device
      * @return DeviceResource
      */
     public function update(Request $request, Device $device)
@@ -73,9 +73,12 @@ class DeviceController extends Controller
     public function updateToken(Request $request, $device_id)
     {
 
-        $device = Device::where('device_id', $device_id)->firstOrFail();
-        $device->update(['token' => $request->token]);
-        $device->save();
+        //if device with same device_id and os exists [update token], else [create new device]
+        //NB: Devices are attached using DeviceObserver
+        $device = Device::updateOrCreate(
+            ['device_id' => $request->device_id, 'os'=>$request->os],
+            ['token'=>$request->token]
+        );
 
         return new DeviceResource($device);
     }
@@ -83,8 +86,9 @@ class DeviceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Device $device
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Device $device)
     {
