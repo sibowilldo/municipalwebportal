@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\DeviceEvent;
 use App\Events\IncidentUpdatedEvent;
+use App\Listeners\DeviceCreatedListener;
 use App\Listeners\FCMSendToDeviceListener;
 use App\Listeners\UpdateIncidentMailListener;
 use Illuminate\Support\Facades\Event;
@@ -24,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
         IncidentUpdatedEvent::class => [
             FCMSendToDeviceListener::class,
             UpdateIncidentMailListener::class,
+        ],
+        DeviceEvent::class => [
+            DeviceCreatedListener::class
         ]
     ];
 

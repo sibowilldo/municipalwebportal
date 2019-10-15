@@ -10,16 +10,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class FCMSendToDeviceListener
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
      * @param  IncidentUpdatedEvent  $event

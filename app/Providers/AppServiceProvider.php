@@ -17,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Device::observe(DeviceObserver::class);
         Incident::observe(IncidentObserver::class);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Device;
+use App\Events\DeviceEvent;
 use App\Status;
 use App\User;
 use App\Http\Resources\User as UserResource;
@@ -54,13 +55,16 @@ class AuthController extends Controller
             $user->assignRole($role); //assign role(s) to user
         }
 
-        //Add Device to database NB: Devices are attached using DeviceObserver
+        //Add Device to database
         $device = new Device([
             'device_id' => $request->device_id,
             'os' => $request->os,
             'token' => $request->token
         ]);
         $device->save();
+
+        //NB: Devices are attached using DeviceEvent -> DeviceCreatedListener
+        event(new DeviceEvent($user, $device));
 
         //send account activation notification
         $user->notify(new AccountActivate($user));
@@ -91,6 +95,12 @@ class AuthController extends Controller
         }
 
         $user = $request->user();
+        //check if user is verified
+        if ($user->email_verified_at == null) {
+            return response()->json([
+                'message' => 'Account not verified'
+            ], 403);
+        }
 
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -101,11 +111,14 @@ class AuthController extends Controller
         $token->save();
 
         //if device with same device_id and os exists [update token], else [create new device]
-        //NB: Devices are attached using DeviceObserver
         $device = Device::updateOrCreate(
             ['device_id' => $request->input('device.device_id'), 'os'=>$request->input('device.os')],
             ['token'=>$request->input('device.token')]
         );
+        if($device->wasRecentlyCreated){
+            //NB: Devices are attached using DeviceEvent -> DeviceCreatedListener
+            event(new DeviceEvent($user, $device));
+        }
 
         return response()->json([
             'message' => 'Signed in Successfully',

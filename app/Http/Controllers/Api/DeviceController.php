@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Device;
+use App\Events\DeviceEvent;
 use App\Http\Resources\DeviceResource;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DeviceController extends Controller
 {
@@ -24,7 +26,7 @@ class DeviceController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return DeviceResource
      */
     public function store(Request $request)
     {
@@ -37,6 +39,9 @@ class DeviceController extends Controller
             'is_active' => true
         ]);
         $device->save();
+
+        //NB: Devices are attached using DeviceEvent -> DeviceCreatedListener
+        event(new DeviceEvent($user, $device));
 
         return new DeviceResource($device);
     }
@@ -74,11 +79,13 @@ class DeviceController extends Controller
     {
 
         //if device with same device_id and os exists [update token], else [create new device]
-        //NB: Devices are attached using DeviceObserver
         $device = Device::updateOrCreate(
             ['device_id' => $request->device_id, 'os'=>$request->os],
             ['token'=>$request->token]
         );
+
+        //NB: Devices are attached using DeviceEvent -> DeviceCreatedListener
+        event(new DeviceEvent(Auth::user(), $device));
 
         return new DeviceResource($device);
     }
