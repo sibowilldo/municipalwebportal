@@ -34,15 +34,15 @@ class AuthController extends Controller
             'os' => 'required|string',
             'token'=> 'string'
         ]);
-        $status = Status::where('name', 'unverified')->firstOrFail(); //ToDo set to unverified later
+        $status = Status::where('name', 'active')->firstOrFail(); //ToDo set to unverified later
 
         $user = new User(
             [
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
                 'contactnumber' => $request->contactnumber,
-                'activation_token' => str_random(60), // ToDo set to str_random(60) later
-                'email_verified_at' => null,
+                'activation_token' => '', //str_random(60), // ToDo set to str_random(60) later
+                'email_verified_at' => Carbon::now(), //null, ToDo: Set to Null
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'status_id' => $status->id
@@ -93,8 +93,8 @@ class AuthController extends Controller
                 'message' => 'Invalid Credentials'
             ], 401);
         }
-
         $user = $request->user();
+
         //check if user is verified
         if ($user->email_verified_at == null) {
             return response()->json([
