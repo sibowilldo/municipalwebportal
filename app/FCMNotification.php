@@ -11,7 +11,7 @@ use FCM;
 
 class FCMNotification extends Model
 {
-    public function sendToDevice($token, $title, $body)
+    public function sendToDevice($token, $title, $body, $param_data = [])
     {
         $optionBuilder = new OptionsBuilder();
         $optionBuilder->setTimeToLive(60*20);
@@ -21,6 +21,7 @@ class FCMNotification extends Model
                             ->setSound('default');
 
         $dataBuilder = new PayloadDataBuilder();
+        $dataBuilder->addData($param_data);
 
         $option = $optionBuilder->build();
         $notification = $notificationBuilder->build();

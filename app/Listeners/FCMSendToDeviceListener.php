@@ -21,7 +21,11 @@ class FCMSendToDeviceListener
         if(count($devices)){
             foreach ($devices as $device){
                 $fcm = new FCMNotification();
-                $fcm->sendToDevice($device->token, 'Your incident was updated', $event->message);
+                $fcm->sendToDevice(
+                            $device->token,
+                        'Incident Updated',
+                            $event->message,
+                            ['user_id' => $event->user->id, 'incident_id' => $event->incident->id]);
             }
         }
     }
