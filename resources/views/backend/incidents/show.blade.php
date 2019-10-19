@@ -100,6 +100,11 @@
 														</span>
                                         <span class="m-widget17__desc">
 															{{ $incident->status->name }}
+                                                            {{
+                                                                $incident->status->name == 'Assigned' ?
+                                                                ' to '. $incident->assignments()->latest('created_at')->first()->user->fullname :
+                                                                ''
+                                                            }}
 														</span>
                                     </div>
                                 </div>
