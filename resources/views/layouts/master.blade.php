@@ -118,7 +118,8 @@
 
 {{ Html::script('js/mandatory.js') }}
 {{ Html::script('js/vendors.js') }}
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+{{ Html::script('js/session-monitors.js') }}
+{{ Html::script('//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js') }}
 {{ Html::script('js/scripts.bundle.js') }}
 {{ Html::script('assets/fullcalendar/fullcalendar.js') }}
 {{ Html::script('js/dashboard.js') }}
@@ -129,10 +130,10 @@
 
 <!-- begin::Page Loader -->
 <script>
-    $(window).on('load', function() {
+    $(window).on('load', () => {
         $('body').removeClass('m-page--loading');
     });
-    $(document).ready(function(){
+    $(document).ready(() => {
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
@@ -140,44 +141,6 @@
 {{--begin::Modals--}}
 @yield('modals')
 {{--end::Modals--}}
-
 @include('flash::message')
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-
-<script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyBXdTNczFlvE1koz3HYZWSWDFyJU10vCFM",
-        authDomain: "nomasi-solutions-tp.firebaseapp.com",
-        databaseURL: "https://nomasi-solutions-tp.firebaseio.com",
-        projectId: "nomasi-solutions-tp",
-        storageBucket: "",
-        messagingSenderId: "296694516593",
-        appId: "1:296694516593:web:08611e56574d6cc6bc44d0"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    const messaging = firebase.messaging()
-    messaging.requestPermission()
-        .then(function(){
-            console.info('Notification Permissions','We have them');
-            return messaging.getToken()
-        })
-        .then(function(token){
-            console.log(token)
-        })
-        .catch(function (err) {
-            console.error('Notification Permission Error', err)
-        })
-
-    messaging.onMessage(function(payload){
-        console.info(payload);
-    });
-</script>
-
-
 </body>
 </html>
