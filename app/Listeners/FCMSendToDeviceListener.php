@@ -25,7 +25,7 @@ class FCMSendToDeviceListener
                             $device->token,
                         'Incident Updated',
                             $event->message,
-                            ['user_id' => $event->user->id, 'incident_id' => $event->incident->id]);
+                            ['user_id' => $event->user->uuid, 'incident_id' => $event->incident->id]);
             }
         }
     }
