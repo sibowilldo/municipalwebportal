@@ -1,11 +1,6 @@
 <?php
-use App\Http\Resources\CategoryResource;
-use App\Category;
 use App\Incident;
-use App\Notifications\AccountActivate;
 use App\Status;
-use App\User;
-use Illuminate\Support\Facades\Notification;
 
 Auth::routes(['verify' => true]);
 Route::get('/register', function (){abort(403, 'Unauthorized action.');});
@@ -20,9 +15,6 @@ Route::group(['middleware' => ['verified']], function () {
         $incident = Incident::latest()->first();//Incident::all()->random();
         $incident->status_id = Status::all()->random()->id;
         $incident->save();
-//        $user = User::first();
-//        Notification::send($user, new AccountActivate($user));
-//        return redirect()->route('dashboard');
     });
     Route::get('/', 'HomeController@index')->name('dashboard')->middleware('verified');
     Route::get('dashboard', 'HomeController@index')->name('dashboard');
