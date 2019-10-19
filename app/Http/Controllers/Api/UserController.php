@@ -33,12 +33,9 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function incidents(int $id)
+    public function incidents($user)
     {
-        $user = User::findOrFail($id);
-        $incidents = $user->incidents;
-
-        return IncidentResource::collection($incidents);
+        return IncidentResource::collection($user->incidents);
     }
 }
 

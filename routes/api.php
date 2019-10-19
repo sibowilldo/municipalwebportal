@@ -29,7 +29,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('logout', 'Api\AuthController@logout');
         Route::get('user', 'Api\UserController@profile');
         Route::get('users/{user}', 'Api\UserController@show');
-        Route::get('users/{id}/incidents', 'Api\UserController@incidents');
+        Route::get('users/{user}/incidents', 'Api\UserController@incidents');
 
         //permissions routes
         Route::resource('permissions', 'Api\PermissionController');
