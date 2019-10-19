@@ -101,7 +101,7 @@
                                         <span class="m-widget17__desc">
 															{{ $incident->status->name }}
                                                             {{
-                                                                $incident->status->name == 'Assigned' ?
+                                                                $incident->assignments()->latest('created_at')->first() ?
                                                                 ' to '. $incident->assignments()->latest('created_at')->first()->user->fullname :
                                                                 ''
                                                             }}
