@@ -143,28 +143,28 @@
                                     <td>{{ $incident->suburb_id }}</td>
                                     <td>
                                         <div role="group">
-                                            @if(!count($incident->assignments))
+{{--                                            @if(!in_array($incident->status->name, $statuses->whereIn('name', ['Deleted', 'Trashed', 'Completed', 'Cancelled'])->pluck('name')->toArray()))--}}
                                                 <a  href="{{ route('incidents.engineers', $incident->id) }}"
                                                     data-toggle="m-tooltip" data-placement="top"
                                                     data-original-title="Assign Engineer"
                                                     class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill assign-btn">
                                                 <i class="la la-user"></i></a>
-                                            @endif
                                                 <a  href="{{ route('incidents.specialists', $incident->id) }}"
                                                     data-toggle="m-tooltip" data-placement="top"
                                                     data-original-title="Assign Specialist"
                                                     class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
                                                 <i class="la la-user-secret"></i></a>
-                                            <a data-toggle="m-tooltip" data-placement="top"
-                                               data-original-title="Assign Working Group"
-                                               href="{{ route('incidents.groups',['incident' => $incident->id]) }}"
-                                               class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
-                                                        class="la la-users"></i></a>
-                                            <a data-toggle="m-tooltip" data-placement="top"
-                                               data-original-title="Edit Details"
-                                               href="{{ route('incidents.edit', $incident->id) }}"
-                                               class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
-                                                        class="la la-edit"></i></a>
+                                                <a data-toggle="m-tooltip" data-placement="top"
+                                                   data-original-title="Assign Working Group"
+                                                   href="{{ route('incidents.groups',['incident' => $incident->id]) }}"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                            class="la la-users"></i></a>
+{{--                                            @endif--}}
+                                                <a data-toggle="m-tooltip" data-placement="top"
+                                                   data-original-title="Edit Details"
+                                                   href="{{ route('incidents.edit', $incident->id) }}"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                            class="la la-edit"></i></a>
                                         </div>
 
                                     </td>
