@@ -108,7 +108,7 @@ class IncidentController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return IncidentResource
      */
     public function show($id)
     {
@@ -121,7 +121,7 @@ class IncidentController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return IncidentResource
      */
     public function edit($id)
     {
