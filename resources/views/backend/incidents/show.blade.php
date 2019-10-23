@@ -145,7 +145,7 @@
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane " id="incident-information" role="tabpanel">
+                                    <div class="tab-pane active" id="incident-information" role="tabpanel">
                                         <h6 class="font-weight-bold">Reference</h6>
                                         <p>{{ $incident->reference }}</p>
                                         <div class="m-separator--dashed m-separator"></div>
@@ -158,7 +158,7 @@
                                         <h6 class="font-weight-bold">Description</h6>
                                         <p>{{ $incident->description }}</p>
                                     </div>
-                                    <div class="tab-pane active" id="incident-attachments" role="tabpanel">
+                                    <div class="tab-pane" id="incident-attachments" role="tabpanel">
                                         @if($incident->attachments->first())
                                             <div class="incident-attachments">
                                                 @foreach($incident->attachments as $attachment)
