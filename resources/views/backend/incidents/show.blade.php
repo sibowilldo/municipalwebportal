@@ -88,7 +88,7 @@
 															Reported
 														</span>
                                         <span class="m-widget17__desc">
-															{{ $incident->created_at->diffForHumans() }}
+															{{ $incident->created_at->diffForHumans() }} by <strong>{{ $incident->users->first()->fullname }}</strong>
 														</span>
                                     </div>
                                     <div class="m-widget17__item">
@@ -99,37 +99,36 @@
 															Status
 														</span>
                                         <span class="m-widget17__desc">
-															{{ $incident->status->name }}
-                                                            {{
-                                                                $incident->assignments()->latest('created_at')->first() ?
-                                                                ' to '. $incident->assignments()->latest('created_at')->first()->user->fullname :
-                                                                ''
-                                                            }}
-														</span>
+                                            {{ $incident->status->name }}
+                                            {!!  $incident->assignments()->latest('created_at')->first() ?
+                                                ' to <strong>'. $incident->assignments()->latest('created_at')->first()->user->fullname . '</strong>' :
+                                                ''
+                                            !!}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="m-widget17__items m-widget17__items-col1">
                                     <div class="m-widget17__item">
-														<span class="m-widget17__icon">
-															<i class="flaticon-refresh m--font-success"></i>
-														</span>
+                                        <span class="m-widget17__icon">
+                                            <i class="flaticon-refresh m--font-success"></i>
+                                        </span>
                                         <span class="m-widget17__subtitle">
-															Last Updated
-														</span>
+                                            Last Updated
+                                        </span>
                                         <span class="m-widget17__desc">
-															{{ $incident->updated_at->diffForHumans() }}
-														</span>
+                                            {{ $incident->updated_at->diffForHumans() }}
+                                        </span>
                                     </div>
                                     <div class="m-widget17__item">
-														<span class="m-widget17__icon">
-															<i class="flaticon-folder-1 m--font-danger"></i>
-														</span>
+                                        <span class="m-widget17__icon">
+                                            <i class="flaticon-folder-1 m--font-danger"></i>
+                                        </span>
                                         <span class="m-widget17__subtitle">
-															Category
-														</span>
+                                            {{ __('Department') }}
+                                        </span>
                                         <span class="m-widget17__desc">
-															{{ $incident->type()->first()->categories()->first()->name}}
-														</span>
+                                            {{ $incident->type()->first()->categories()->first()->name}}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +145,7 @@
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="incident-information" role="tabpanel">
+                                    <div class="tab-pane " id="incident-information" role="tabpanel">
                                         <h6 class="font-weight-bold">Reference</h6>
                                         <p>{{ $incident->reference }}</p>
                                         <div class="m-separator--dashed m-separator"></div>
@@ -159,10 +158,21 @@
                                         <h6 class="font-weight-bold">Description</h6>
                                         <p>{{ $incident->description }}</p>
                                     </div>
-                                    <div class="tab-pane" id="incident-attachments" role="tabpanel">
-                                        <p class="text-center">
-                                            <i class="flaticon-attachment"></i> <br>
-                                            No Attachments Found!</p>
+                                    <div class="tab-pane active" id="incident-attachments" role="tabpanel">
+                                        @if($incident->attachments->first())
+                                            <div class="incident-attachments">
+                                                @foreach($incident->attachments as $attachment)
+                                                    <a href="{{ asset($attachment->path . $attachment->filename) }}">
+                                                        <img src="{{ asset($attachment->path . $attachment->filename) }}"
+                                                             class="img-fluid">
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <p class="text-center">
+                                                <i class="flaticon-attachment"></i> <br>
+                                                No Attachments Found!</p>
+                                        @endif
                                     </div>
                                     <div class="tab-pane" id="incident-log" role="tabpanel">
                                         <div class="m-scrollable" data-scrollable="true" style="height: 500px">
@@ -198,6 +208,7 @@
 
 @section('css')
     <style>
+        @import url('/css/simplelightbox.css');
         span.m-list-timeline__time{
             width: 100px !important;
         }
@@ -212,6 +223,9 @@
             background: linear-gradient(to bottom,  rgba(0,0,0,0.4) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
         }
+        .incident-attachments a img{
+            width: auto; height: 150px; margin-right: 5px; border-radius: 5px
+        }
     </style>
 @endsection
 
@@ -224,7 +238,6 @@
             var lat = $('#latitude').val(), long = $('#longitude').val();
             var loc = {lat: parseFloat(lat), lng: parseFloat(long)};
 
-            console.log(loc);
             // The map, centered at the Location
             var map = new google.maps.Map(
                 document.getElementById('gmap'), {zoom: 15, center: loc,
@@ -233,5 +246,6 @@
             // The marker, positioned at the Location
             var marker = new google.maps.Marker({position: loc, map: map});
         }
+        let lightbox = $('.incident-attachments a').simpleLightbox();
     </script>
 @endsection

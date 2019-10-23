@@ -5,6 +5,7 @@ var vendors = 'resources/assets/vendors/';
 
 mix
     .sass('resources/sass/app.scss', 'public/css')
+    .sass('node_modules/simplelightbox/dist/simplelightbox.scss', 'public/css')
 
     .copyDirectory(vendors + 'socicon/font', 'public/font')
     .copyDirectory(vendors + 'line-awesome/fonts', 'public/fonts')
@@ -74,8 +75,6 @@ mix
         vendors + 'chartist/dist/chartist.js',
         vendors + 'chart.js/dist/Chart.bundle.js',
         vendors + 'js/framework/components/plugins/charts/chart.init.js',
-        vendors + 'vendors/bootstrap-session-timeout/dist/bootstrap-session-timeout.min.js',
-        vendors + 'vendors/jquery-idletimer/idle-timer.min.js',
         vendors + 'waypoints/lib/jquery.waypoints.js',
         vendors + 'counterup/jquery.counterup.js',
         vendors + 'es6-promise-polyfill/promise.min.js',
@@ -89,7 +88,6 @@ mix
     .scripts(['resources/assets/js/google-maps.js'], 'public/js/google-maps.js')
     .scripts(['resources/assets/js/project-mdatatable.js'], 'public/js/project-mdatatable.js')
     .scripts(['resources/assets/js/incidents-ajax.js'], 'public/js/incidents-ajax.js')
-    .scripts(['resources/assets/js/firebase-messaging-sw.js'], 'public/firebase-messaging-sw.js')
 
     .js('resources/js/app.js', 'public/js')
 

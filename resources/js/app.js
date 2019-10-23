@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+require('simplelightbox')
 
 window.Vue = require('vue');
 
