@@ -11,22 +11,18 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:list roles');
-        $this->middleware('permission:create role', ['only' => ['create','store']]);
-        $this->middleware('permission:edit role', ['only' => ['edit','update']]);
+        $this->middleware('permission:create role', ['only' => ['store']]);
+        $this->middleware('permission:edit role', ['only' => ['update']]);
         $this->middleware('permission:delete role', ['only' => ['destroy']]);
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -40,22 +36,11 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        $permissions = Permission::all();
-        return response()->json(['success' => $permissions]) ;
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
@@ -88,22 +73,12 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id)
     {
@@ -145,9 +120,8 @@ class RoleController extends Controller
     /**
      * Assign Role to User
      *
-     * @param \App\User $user
-     * @param \Spatie\Permission\Models\Role $roles[]
-     *
+     * @param Request $request
+     * @param User $user
      * @return \Illuminate\Http\\Response
      */
     public function assign(Request $request, User $user)

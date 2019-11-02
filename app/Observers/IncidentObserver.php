@@ -13,19 +13,18 @@ class IncidentObserver
     /**
      * Handle the incident "created" event.
      *
-     * @param  \App\Incident  $incident
+     * @param Incident $incident
      * @return void
      */
     public function created(Incident $incident)
     {
-        //
-        event(new IncidentCreated($incident));
+        event(new IncidentCreated($incident->users()->first()?:Auth::user(), $incident));
     }
 
     /**
      * Handle the incident "updated" event.
      *
-     * @param  \App\Incident  $incident
+     * @param Incident $incident
      * @return void
      */
     public function updated(Incident $incident)
@@ -39,38 +38,5 @@ class IncidentObserver
             $message = "The status of the incident that you reported was changed from " . $oldStatus. " to " . $newStatus;
         }
         event(new IncidentUpdatedEvent($incident, $incident->users()->first(), $message));
-    }
-
-    /**
-     * Handle the incident "deleted" event.
-     *
-     * @param  \App\Incident  $incident
-     * @return void
-     */
-    public function deleted(Incident $incident)
-    {
-        //
-    }
-
-    /**
-     * Handle the incident "restored" event.
-     *
-     * @param  \App\Incident  $incident
-     * @return void
-     */
-    public function restored(Incident $incident)
-    {
-        //
-    }
-
-    /**
-     * Handle the incident "force deleted" event.
-     *
-     * @param  \App\Incident  $incident
-     * @return void
-     */
-    public function forceDeleted(Incident $incident)
-    {
-        //
     }
 }

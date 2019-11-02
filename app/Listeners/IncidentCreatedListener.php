@@ -2,11 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\IncidentUpdatedEvent;
+use App\Events\IncidentCreated;
+use App\Notifications\IncidentCreated as IncidentCreatedNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UpdateIncidentMailListener
+class IncidentCreatedListener
 {
     /**
      * Create the event listener.
@@ -21,12 +22,11 @@ class UpdateIncidentMailListener
     /**
      * Handle the event.
      *
-     * @param  IncidentUpdatedEvent  $event
+     * @param  IncidentCreated  $event
      * @return void
      */
-    public function handle(IncidentUpdatedEvent $event)
+    public function handle(IncidentCreated $event)
     {
-        //Todo: Send mail notification
-//        dump("Mail: " .$event->user .  ", ". $event->incident->name . ", ". $event->message);
+        $event->user->notify(new IncidentCreatedNotification($event->user, $event->incident));
     }
 }

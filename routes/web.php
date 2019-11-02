@@ -1,6 +1,8 @@
 <?php
 use App\Incident;
+use App\Notifications\AccountActivate;
 use App\Status;
+use Illuminate\Support\Facades\Auth;
 
 Auth::routes(['verify' => true]);
 Route::get('/register', function (){abort(403, 'Unauthorized action.');});
@@ -16,6 +18,14 @@ Route::group(['middleware' => ['verified']], function () {
         $incident->status_id = Status::all()->random()->id;
         $incident->save();
     });
+
+    Route::get('notify', function () {
+
+        //send account activation notification
+        Auth::user()->notify(new AccountActivate(Auth::user()));
+    });
+
+
     Route::get('/', 'HomeController@index')->name('dashboard')->middleware('verified');
     Route::get('dashboard', 'HomeController@index')->name('dashboard');
 

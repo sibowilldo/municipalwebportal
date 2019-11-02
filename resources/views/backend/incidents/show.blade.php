@@ -88,7 +88,7 @@
 															Reported
 														</span>
                                         <span class="m-widget17__desc">
-															{{ $incident->created_at->diffForHumans() }} by <strong>{{ $incident->users->first()->fullname }}</strong>
+															{{ $incident->created_at->diffForHumans() }}
 														</span>
                                     </div>
                                     <div class="m-widget17__item">
@@ -100,10 +100,10 @@
 														</span>
                                         <span class="m-widget17__desc">
                                             {{ $incident->status->name }}
-                                            {!!  $incident->assignments()->latest('created_at')->first() ?
-                                                ' to <strong>'. $incident->assignments()->latest('created_at')->first()->user->fullname . '</strong>' :
-                                                ''
-                                            !!}
+                                            @if($assigned_to)
+                                                to <strong> {!! $assigned_to->fullname !!} </strong>
+                                                <em> ({{ ucwords(implode(', ', $assigned_to->roles->pluck('name')->toArray())) }}) </em>
+                                            @endif
                                         </span>
                                     </div>
                                 </div>
@@ -160,12 +160,15 @@
                                     </div>
                                     <div class="tab-pane" id="incident-attachments" role="tabpanel">
                                         @if($incident->attachments->first())
-                                            <div class="incident-attachments">
+                                            <div class="row incident-attachments">
                                                 @foreach($incident->attachments as $attachment)
-                                                    <a href="{{ asset($attachment->path . $attachment->filename) }}">
-                                                        <img src="{{ asset($attachment->path . $attachment->filename) }}"
-                                                             class="img-fluid">
-                                                    </a>
+                                                    <div class="col">
+                                                        <a href="{{ asset($attachment->path . $attachment->filename) }}">
+                                                            <img src="{{ asset($attachment->path . $attachment->filename) }}"
+                                                                 class="img-fluid">
+                                                        </a>
+                                                    </div>
+
                                                 @endforeach
                                             </div>
                                         @else
@@ -224,7 +227,7 @@
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
         }
         .incident-attachments a img{
-            width: auto; height: 150px; margin-right: 5px; border-radius: 5px
+           margin-right: 5px; border-radius: 5px
         }
     </style>
 @endsection

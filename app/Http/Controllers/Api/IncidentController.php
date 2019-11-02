@@ -27,7 +27,7 @@ class IncidentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \App\Http\Resources\IncidentCollection
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -50,9 +50,9 @@ class IncidentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      *
-     * @return \App\Http\Resources\Incident
+     * @return IncidentResource
      */
     public function store(Request $request)
     {
@@ -118,23 +118,9 @@ class IncidentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return IncidentResource
-     */
-    public function edit($id)
-    {
-        $incident = Incident::findOrFail($id);
-
-        return new IncidentResource($incident);
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

@@ -81,8 +81,7 @@ class IncidentController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-//        dd($user->hasAnyRole(['administrator', 'super-administrator']));
+        return null;
     }
 
     /**
@@ -127,7 +126,10 @@ class IncidentController extends Controller
     public function show(Incident $incident)
     {
         $histories = $incident->histories()->orderByDesc('created_at')->get();
-        return view('backend.incidents.show', compact('incident', 'histories'));
+        $assigned_to = $incident->assignments()->latest('created_at')->first()?
+                        $incident->assignments()->latest('created_at')->first()->user:null;
+
+        return view('backend.incidents.show', compact('incident', 'histories', 'assigned_to'));
     }
 
     /**

@@ -13,32 +13,26 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('users/{user}', 'Api\UserController@show');
         Route::get('users/{user}/incidents', 'Api\UserController@incidents');
 
-        //permissions routes
-        Route::resource('permissions', 'Api\PermissionController');
+        //Resource Routes (Excluding Create & Edit)
+        Route::apiResources([
+            'permissions'   =>'Api\PermissionController',
+            'roles'         =>'Api\RoleController',
+            'incidents'     =>'Api\IncidentController',
+            'statuses'      =>'Api\StatusController',
+            'categories'    =>'Api\CategoryController',
+            'devices'       =>'Api\DeviceController',
+            'types'         =>'Api\TypeController',
+            'notifications' =>'Api\NotificationController'
 
-        //roles routes
-        Route::resource('roles', 'Api\RoleController');
-
+        ]);
         Route::post('roles/assign/{user}', 'Api\RoleController@assign');
 
-        // Incident Routes
-        Route::resource('incidents', 'Api\IncidentController');
         Route::post('incidents/{incident}/upload', 'Api\IncidentController@upload')->name('incidents.upload'); //upload images
 
-        // Status Routes
-        Route::resource('statuses', 'Api\StatusController');
-
-        // Category Routes
-        Route::resource('categories', 'Api\CategoryController');
-
         // Device Routes
-        Route::resource('devices', 'Api\DeviceController');
         Route::patch('devices/{device_id}/update-token', 'Api\DeviceController@updateToken');
 
-        // Type Routes
-        Route::resource('types', 'Api\TypeController');
-
         // State Colors Routes
-        Route::resource('state-colors', 'Api\StateColorController')->except(['edit', 'update', 'destroy', 'create', 'store']);
+        Route::resource( 'state-colors','Api\StateColorController')->except(['edit', 'update', 'destroy', 'create', 'store']);
     });
 });

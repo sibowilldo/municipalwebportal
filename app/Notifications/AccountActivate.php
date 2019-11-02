@@ -8,14 +8,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\User;
 
+
 class AccountActivate extends Notification implements ShouldQueue
 {
     use Queueable;
     public $user;
+
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param $user
      */
     public function __construct($user)
     {
@@ -31,14 +33,14 @@ class AccountActivate extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database', 'mail'];
     }
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
@@ -58,8 +60,22 @@ class AccountActivate extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
+        return [];
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toDatabase($notifiable)
+    {
         return [
-            //
-        ];
+            'type' => 'Notification',
+            'sender' => config('app.name'),
+            'subject'  => 'Confirm your account',
+            'message'=>'Thanks for signing up! Before we begin, please confirm your account.'
+            ];
     }
 }

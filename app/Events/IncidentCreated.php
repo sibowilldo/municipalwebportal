@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Incident;
+use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -15,15 +16,17 @@ class IncidentCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $incident;
-    public $message;
+    public $incident, $message, $user;
+
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param User $user
+     * @param Incident $incident
      */
-    public function __construct(Incident $incident)
+    public function __construct(User $user, Incident $incident)
     {
+        $this->user = $user;
         $this->incident = $incident;
         $this->message = " was created!";
     }
