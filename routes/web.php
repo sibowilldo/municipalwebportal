@@ -3,6 +3,7 @@ use App\Incident;
 use App\Notifications\AccountActivate;
 use App\Status;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\IncidentUpdated;
 
 Auth::routes(['verify' => true]);
 Route::get('/register', function (){abort(403, 'Unauthorized action.');});
@@ -14,9 +15,10 @@ Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallbac
 Route::group(['middleware' => ['verified']], function () {
 
     Route::get('push', function () {
-        $incident = Incident::latest()->first();//Incident::all()->random();
-        $incident->status_id = Status::all()->random()->id;
-        $incident->save();
+
+        $incident = App\Incident::first();
+        $user = $incident->user();
+        Notification::send($incident, new IncidentUpdated($user, $incident, 'Another Notification Sent to no one'));
     });
 
     Route::get('notify', function () {

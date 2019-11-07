@@ -4,11 +4,12 @@ namespace App;
 
 use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Incident extends Model
 {
-    use SoftDeletes, GeneratesUuid;
+    use SoftDeletes, Notifiable, GeneratesUuid;
 
     protected $casts = ['uuid' => 'uuid'];
     /**
@@ -27,6 +28,10 @@ class Incident extends Model
      */
     protected $dates = ['deleted_at'];
 
+    public function user()
+    {
+        return $this->users()->first();
+    }
 
     //An Incident belongs to many users through pivot (incident_user)
     public function users()
