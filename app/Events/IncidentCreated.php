@@ -28,7 +28,7 @@ class IncidentCreated implements ShouldBroadcast
     {
         $this->user = $user;
         $this->incident = $incident;
-        $this->message = " was created!";
+        $this->message = "You reported this incident: \"". $this->incident->name . "\"";
     }
 
     public function broadcastAs()

@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class IncidentUpdated extends Notification
+class IncidentUpdated extends Notification implements ShouldQueue
 {
     use Queueable;
     public $user, $incident, $message;
@@ -57,9 +57,9 @@ class IncidentUpdated extends Notification
     public function toArray($notifiable)
     {
         return [
+            'id' => $this->incident->id,
             'title' => 'Incident Updated | '. $this->incident->reference,
             'message'=> $this->message,
-            'id' => $this->incident->id,
             'name' => $this->incident->name,
             'created_at' => $this->incident->created_at,
             'updated_at' => $this->incident->updated_at

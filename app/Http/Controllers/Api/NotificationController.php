@@ -27,7 +27,6 @@ class NotificationController extends Controller
      */
     public function show($id)
     {
-
         $notification = Auth::user()->notifications->where('id', $id)->first();
         $notification->read_at?:$notification->markAsRead();//Mark notification as read
         return response()->json(['data' => $notification], 200);

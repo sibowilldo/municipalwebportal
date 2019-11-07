@@ -27,6 +27,6 @@ class IncidentCreatedListener
      */
     public function handle(IncidentCreated $event)
     {
-        $event->user->notify(new IncidentCreatedNotification($event->user, $event->incident));
+        $event->user->notify(new IncidentCreatedNotification($event->user, $event->incident, $event->message));
     }
 }

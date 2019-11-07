@@ -88,8 +88,9 @@
 															Reported
 														</span>
                                         <span class="m-widget17__desc">
-															{{ $incident->created_at->diffForHumans() }}
-														</span>
+                                            {{ $incident->created_at->diffForHumans() }} by
+                                            <strong>{{ $incident->user() ->fullname }}</strong>
+										</span>
                                     </div>
                                     <div class="m-widget17__item">
 														<span class="m-widget17__icon">

@@ -12,7 +12,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 class IncidentCreated extends Notification implements ShouldQueue
 {
     use Queueable;
-    public $user, $incident;
+    public $user, $incident, $message;
 
     /**
      * Create a new notification instance.
@@ -20,10 +20,11 @@ class IncidentCreated extends Notification implements ShouldQueue
      * @param User $user
      * @param Incident $incident
      */
-    public function __construct(User $user, Incident $incident)
+    public function __construct(User $user, Incident $incident, $message)
     {
         $this->user = $user;
         $this->incident = $incident;
+        $this->message = $message;
     }
 
     /**
@@ -60,6 +61,7 @@ class IncidentCreated extends Notification implements ShouldQueue
             'id' => $this->incident->id,
             'title' => 'Incident Created | '. $this->incident->reference,
             'name' => $this->incident->name,
+            'message'=> $this->message,
             'created_at' => $this->incident->created_at,
             'updated_at' => $this->incident->updated_at
         ];
