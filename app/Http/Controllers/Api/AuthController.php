@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Device;
 use App\Events\DeviceEvent;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\User as UserResource;
+use App\Notifications\AccountActivate;
 use App\Status;
 use App\User;
-use App\Http\Resources\User as UserResource;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Notifications\AccountActivate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
@@ -116,7 +116,10 @@ class AuthController extends Controller
             ['device_id' => $request->input('device.device_id'), 'os'=>$request->input('device.os')],
             ['token'=>$request->input('device.token')]
         );
-        Log::info('device_id: '. $request->input('device.device_id') . ' os: '.$request->input('device.os'));
+        Log::info(
+            'device_id: '. $request->input('device.device_id')
+            . ' os: '.$request->input('device.os')
+            . ' token '.$request->input('device.token'));
         $device->save();
 
         if($device->wasRecentlyCreated){
