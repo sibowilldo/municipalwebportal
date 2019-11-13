@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Notifications\AccountActivate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
@@ -118,6 +119,9 @@ class AuthController extends Controller
         if($device->wasRecentlyCreated){
             //NB: Devices are attached using DeviceEvent -> DeviceCreatedListener
             event(new DeviceEvent($user, $device));
+            Log::info($device->id . ' was created');
+        }else{
+            Log::info($device->id . ' was updated');
         }
 
         return response()->json([
