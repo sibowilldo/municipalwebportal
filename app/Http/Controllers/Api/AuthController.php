@@ -116,12 +116,14 @@ class AuthController extends Controller
             ['device_id' => $request->input('device.device_id'), 'os'=>$request->input('device.os')],
             ['token'=>$request->input('device.token')]
         );
+        $device->save();
+
         if($device->wasRecentlyCreated){
             //NB: Devices are attached using DeviceEvent -> DeviceCreatedListener
             event(new DeviceEvent($user, $device));
-            Log::info($device->id . ' was created');
+            Log::info('Device:'. $device->id . ' was created');
         }else{
-            Log::info($device->id . ' was updated');
+            Log::info('Device:'.$device->id . ' was updated');
         }
 
         return response()->json([
