@@ -116,10 +116,7 @@ class AuthController extends Controller
             ['device_id' => $request->input('device.device_id'), 'os'=>$request->input('device.os')],
             ['token'=>$request->input('device.token')]
         );
-        Log::info(
-            'device_id: '. $request->input('device.device_id')
-            . ' os: '.$request->input('device.os')
-            . ' token '.$request->input('device.token'));
+        Log::info( 'request ' . $request);
         $device->save();
 
         if($device->wasRecentlyCreated){
