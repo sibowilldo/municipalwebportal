@@ -17,8 +17,8 @@ class Incident extends JsonResource
         return [
             'id' => $this->id,
             'reference' => $this->reference,
-            'name' => $this->name,
-            'description' => $this->description,
+            'name' => app('profanityFilter')->filter($this->name),
+            'description' => app('profanityFilter')->filter($this->description),
             'location_description' => $this->location_description,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,

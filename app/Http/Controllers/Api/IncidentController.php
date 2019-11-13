@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use Auth;
-use File;
-use EloquentBuilder;
 use App\Attachment;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Incident as IncidentResource;
 use App\Incident;
 use App\Meta;
 use App\User;
+use Auth;
 use Carbon\Carbon;
+use EloquentBuilder;
+use File;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Incident as IncidentResource;
 use Illuminate\Support\Facades\Storage;
 use Image;
-use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
 class IncidentController extends Controller
 {
@@ -71,8 +70,8 @@ class IncidentController extends Controller
 
         $incident = new Incident([
                 'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
-                'name' => app('profanityFilter')->filter($request->name),
-                'description' => app('profanityFilter')->filter($request->description),
+                'name' => $request->name,
+                'description' => $request->description,
                 'location_description' => $request->location_description,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
@@ -110,11 +109,9 @@ class IncidentController extends Controller
      * @param  int  $id
      * @return IncidentResource
      */
-    public function show($id)
+    public function show(Incident $incident)
     {
-        $incident = Incident::findOrFail($id);
         return new IncidentResource($incident);
-        //
     }
 
     /**
