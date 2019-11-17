@@ -5,9 +5,9 @@ namespace App\Notifications;
 use App\Incident;
 use App\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class IncidentCreated extends Notification implements ShouldQueue
 {
@@ -35,7 +35,7 @@ class IncidentCreated extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['database'];
     }
 
     /**
