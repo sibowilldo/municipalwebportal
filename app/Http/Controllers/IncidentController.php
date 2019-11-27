@@ -99,8 +99,8 @@ class IncidentController extends Controller
 
         $incident = new Incident([
             'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
-            'name' => app('profanityFilter')->filter($request->name),
-            'description' => app('profanityFilter')->filter($request->description),
+            'name' => $request->name,
+            'description' => $request->description,
             'location_description' => $request->location_description,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
@@ -161,10 +161,9 @@ class IncidentController extends Controller
     {
         $this->authorize('update', $incident);
 
-        $this->update_incident_history($incident, $incident->status, Auth::user(), ' Details about "'. $incident->name . '" were updated.');
+        $date_now = Carbon::now();
+        $this->update_incident_history($incident, Auth::user(), "[Updated {$date_now}] Details about $incident->name were updated.");
 
-        $request['name'] = app('profanityFilter')->filter($request->name);
-        $request['description'] = app('profanityFilter')->filter($request->description);
         $incident->update($request->only(['name', 'description', 'location_description', 'latitude', 'longitude', 'suburb_id', 'type_id', 'status_id']));
 
         flash($incident->name . ' <b>Updated</b> Successfully')->success();
@@ -182,15 +181,15 @@ class IncidentController extends Controller
     {
         $this->authorize('delete', $incident);
 
-
         //Get status
         $status = Status::where('name', 'deleted')->firstOrFail();
 
+        $date_now = Carbon::now();
         //Add Incident to IncidentHistory table
-        $this->update_incident_history($incident, $status, Auth::user(), $request->delete_reason);
+        $this->update_incident_history($incident, Auth::user(), "[Deleted {$date_now}] $request->delete_reason");
 
         $incident->delete();
-        flash($incident->name . ' was sent to trash.')->success();
+        flash("$incident->name was sent to trash.")->success();
         return response()->redirectToRoute('dashboard');
     }
 
@@ -206,7 +205,8 @@ class IncidentController extends Controller
     {
         try {
             // Validate the value...
-            $engineers = User::role('engineer')->get();//todo: Add where Department is relative to incident
+            // whereNotIn = Engineer cannot assign him/herself
+            $engineers = User::role('engineer')->whereNotIn('id', [Auth::user()->id])->get();//todo: Add where Department is relative to incident
             return view('backend.engineers.list', compact('engineers', 'incident'));
         } catch (RoleDoesNotExist $e) {
             report($e);
@@ -226,7 +226,8 @@ class IncidentController extends Controller
     {
         try {
             // Validate the value...
-            $engineers = User::role('specialist')->get();//todo: Add where Department is relative to incident
+            // whereNotIn = Specialist cannot assign him/herself
+            $engineers = User::role('specialist')->whereNotIn('id', [Auth::user()->id])->get();//todo: Add where Department is relative to incident
             return view('backend.engineers.list', compact('engineers', 'incident'));
         } catch (RoleDoesNotExist $e) {
             report($e);
@@ -277,28 +278,25 @@ class IncidentController extends Controller
         }
 
         $engineer = User::findOrFail($request->assigned_id);
-
-        $assigner = Auth::user();
         $status = Status::where('name', 'Assigned')->firstOrFail();
+        $assigner = Auth::user();
+        $date_now = Carbon::now();
 
         //Incident to Assignments table
-        $assignment = new Assignment();
-
-        $assignment->user_id = $engineer->id;
-        $assignment->assigner_id = $assigner->id;
-        $assignment->incident_id = $incident->id;
-        $assignment->instructions = $request->instructions;
-        $assignment->executed_at = Carbon::now();
-        $assignment->due_at = Carbon::now()->addHours(2); //ToDo: time to be determined by settings
-
-        $assignment->saveOrFail();
+        $assignment = Assignment::create([
+            'user_id' => $engineer->id,
+            'assigner_id' => $assigner->id,
+            'incident_id' => $incident->id,
+            'instructions' => $request->instructions,
+            'executed_at' => null,
+            'due_at' => null]);
 
         // update user status
         $engineer->status_id = $status->id;
         $engineer->saveOrFail();
 
         //Add Incident to IncidentHistory table
-        $this->update_incident_history($incident, $status, Auth::user(), $engineer->fullname . ' was assigned.');
+        $this->update_incident_history($incident, Auth::user(), "[Assigned {$date_now}] $engineer->fullname was assigned.");
 
         // update incident status
         $incident->status_id = $status->id;
@@ -311,23 +309,23 @@ class IncidentController extends Controller
 
     /**
      * @param Incident $incident
-     * @param Status $status
      * @param User $user
      * @param $update_reason
      * @param string $account_number
-     * @throws \Throwable
+     * @return IncidentHistory
      */
-    private function update_incident_history(Incident $incident, Status $status, User $user, $update_reason, $account_number='')
+    private function update_incident_history(Incident $incident, User $user, $update_reason, $account_number='')
     {
         $current_status = $incident->histories()->latest('id')->first();
 
-        $incident_history = new IncidentHistory();
-        $incident_history->incident_id = $incident->id;
-        $incident_history->previous_status = $current_status ? $current_status->status_id : $incident->status_id;
-        $incident_history->status_id = $incident->status_id;
-        $incident_history->user_id = $user->id;
-        $incident_history->account_number = $account_number;
-        $incident_history->update_reason = $update_reason;
-        $incident_history->saveOrFail();
+        $incident_history = IncidentHistory::create([
+            'incident_id'  => $incident->id,
+            'previous_status'  => $current_status ? $current_status->status_id : $incident->status_id,
+            'status_id'  => $incident->status_id,
+            'user_id'  => $user->id,
+            'account_number'  => $account_number,
+            'update_reason'  => $update_reason]);
+
+        return $incident_history;
     }
 }

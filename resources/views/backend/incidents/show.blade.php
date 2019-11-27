@@ -34,7 +34,7 @@
                                                         <li class="m-nav__section m-nav__section--first">
                                                             <span class="m-nav__section-text">Quick Actions</span>
                                                         </li>
-                                                        @if(!count($incident->assignments))
+                                                        @if($incident->status->name != 'Assigned')
                                                         <li class="m-nav__item">
                                                             <a href="{{ route('incidents.engineers', $incident->id) }}" class="m-nav__link">
                                                                 <i class="m-nav__link-icon la la-user"></i>
@@ -89,7 +89,7 @@
 														</span>
                                         <span class="m-widget17__desc">
                                             {{ $incident->created_at->diffForHumans() }} by
-                                            <strong>{{ $incident->user() ->fullname }}</strong>
+                                            <strong>{{ $incident->user()->fullname }}</strong>
 										</span>
                                     </div>
                                     <div class="m-widget17__item">
@@ -165,8 +165,9 @@
                                                 @foreach($incident->attachments as $attachment)
                                                     <div class="col">
                                                         <a href="{{ asset($attachment->path . $attachment->filename) }}">
-                                                            <img src="{{ asset($attachment->path . $attachment->filename) }}"
-                                                                 class="img-fluid">
+                                                            {{ asset($attachment->path . $attachment->filename) }}
+{{--                                                            <img src="{{ asset($attachment->path . $attachment->filename) }}"--}}
+{{--                                                                 class="img-fluid hidden">--}}
                                                         </a>
                                                     </div>
 

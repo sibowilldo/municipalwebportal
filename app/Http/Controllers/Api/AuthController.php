@@ -151,6 +151,12 @@ class AuthController extends Controller
         ], 200);
     }
 
+    /**
+     * Activates user Account
+     *
+     * @param $token
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function AccountActivate($token)
     {
         $user = User::where('activation_token', $token)->first();

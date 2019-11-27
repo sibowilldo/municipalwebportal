@@ -29,7 +29,7 @@ class IncidentObserver
      */
     public function updated(Incident $incident)
     {
-        $message =  "You reported this incident: \"". $incident->name . "\"";
+        $message =  "You reported this incident: $incident->name";
 
         //Check if the status was updated and send specific message to user
         if($incident->isDirty('status_id')) {

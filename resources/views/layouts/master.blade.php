@@ -118,7 +118,6 @@
 
 {{ Html::script('js/mandatory.js') }}
 {{ Html::script('js/vendors.js') }}
-{{ Html::script('js/session-monitors.js') }}
 {{ Html::script('//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js') }}
 {{ Html::script('js/scripts.bundle.js') }}
 {{ Html::script('assets/fullcalendar/fullcalendar.js') }}

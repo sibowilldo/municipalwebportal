@@ -15,6 +15,7 @@
                         {{ Form::hidden('id', $id) }}
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
+{{--                        ToDo: Remove reason template --}}
                         <textarea class="form-control" id="delete_reason" name="delete_reason" data-validation="required,length" data-validation-length="min100">These are my one hundred characters required to pass the minimum character test using jquery formvalidator.
                         </textarea>
                         <p class="text-right mt-1">

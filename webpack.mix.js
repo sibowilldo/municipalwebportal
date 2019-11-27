@@ -4,6 +4,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 var vendors = 'resources/assets/vendors/';
 
 mix
+    .extract(['simplelightbox'])
     .sass('resources/sass/app.scss', 'public/css')
     .sass('node_modules/simplelightbox/dist/simplelightbox.scss', 'public/css')
 

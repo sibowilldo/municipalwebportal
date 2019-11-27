@@ -157,11 +157,11 @@
                                     <td>
                                         {{ ucwords($user->roles()->pluck('name')->implode(', ')) }}</td>
                                     <td>
-                                        @if(Auth::user()->uuid !== $user->uuid)
                                             <a href="{{ route('users.edit', $user->uuid) }}" data-toggle="m-tooltip"
                                                title="Edit User" data-placement="left" data-original-title="Edit User"
                                                class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
                                                     class="la la-edit"></i></a>
+                                            @if(Auth::user()->uuid !== $user->uuid)
                                             @if ($user->deleted_at)
                                                 <button
                                                     type="button"

@@ -109,9 +109,8 @@ class UserController extends Controller
         }
 
         $roles = Role::pluck('name', 'id'); //Get all roles
-        $statuses = Status::where('group', 'users')->pluck('name', 'id');
+        $statuses = Status::whereIn('group', ['users','both'])->pluck('name', 'id');
         return view('backend.users.edit', compact('user', 'roles', 'statuses')); //pass user roles and statuses data to view
-
     }
 
     /**

@@ -12,7 +12,8 @@ class Assignment extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id','incident_id', 'instructions', 'executed_at', 'due_at'
+        'user_id', 'assigner_id','incident_id', 'instructions', 'is_active',
+        'executed_at', 'declined_at', 'completed_at', 'due_at'
     ];
 
 
@@ -21,8 +22,20 @@ class Assignment extends Model
      *
      * @var array
      */
-    protected $dates = ['executed_at', 'due_at'];
+    protected $dates = ['executed_at', 'declined_at', 'completed_at', 'due_at'];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected  $casts = ['is_active' => 'boolean'];
+
+    //An Assignment belongs to one user
+    public function assigner()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     //An Assignment belongs to one user
     public function user()

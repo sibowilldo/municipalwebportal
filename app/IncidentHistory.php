@@ -12,7 +12,7 @@ class IncidentHistory extends Model
      * @var array
      */
     protected $fillable = [
-        'incident_id','previous_status', 'status_id', 'account_number', 'update_reason'
+        'incident_id','user_id','previous_status', 'status_id', 'account_number', 'update_reason'
     ];
 
     //

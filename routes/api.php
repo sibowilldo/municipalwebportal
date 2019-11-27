@@ -15,16 +15,23 @@ Route::group(['prefix' => 'auth'], function () {
 
         //Resource Routes (Excluding Create & Edit)
         Route::apiResources([
-            'permissions'   =>'Api\PermissionController',
-            'roles'         =>'Api\RoleController',
-            'incidents'     =>'Api\IncidentController',
-            'statuses'      =>'Api\StatusController',
+            'assignments'   =>'Api\AssignmentController',
             'categories'    =>'Api\CategoryController',
             'devices'       =>'Api\DeviceController',
-            'types'         =>'Api\TypeController',
-            'notifications' =>'Api\NotificationController'
+            'incidents'     =>'Api\IncidentController',
+            'notifications' =>'Api\NotificationController',
+            'permissions'   =>'Api\PermissionController',
+            'roles'         =>'Api\RoleController',
+            'statuses'      =>'Api\StatusController',
+            'types'         =>'Api\TypeController'
 
         ]);
+
+        // Assignment Routes
+        Route::post('assignments/accept/{assignment}','Api\AssignmentController@accept');
+        Route::post('assignments/decline/{assignment}','Api\AssignmentController@decline');
+        Route::post('assignments/escalate/{assignment}','Api\AssignmentController@escalate');
+
         Route::post('roles/assign/{user}', 'Api\RoleController@assign');
 
         Route::post('incidents/{incident}/upload', 'Api\IncidentController@upload')->name('incidents.upload'); //upload images

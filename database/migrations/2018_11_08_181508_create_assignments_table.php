@@ -19,8 +19,11 @@ class CreateAssignmentsTable extends Migration
             $table->unsignedInteger('assigner_id');
             $table->unsignedInteger('incident_id');
             $table->longText('instructions')->nullable();
-            $table->dateTime('executed_at')->nullable();
-            $table->dateTime('due_at')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->timestamp('executed_at')->nullable();
+            $table->timestamp('declined_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            $table->timestamp('due_at')->nullable();
 
             $table->timestamps();
 

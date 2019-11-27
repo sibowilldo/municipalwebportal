@@ -17,7 +17,8 @@ Route::group(['middleware' => ['verified']], function () {
     Route::get('push', function () {
 
         $incident = App\Incident::first();
-        $user = $incident->user();
+        $user = $incident->user()->fullname;
+        dd($user);
         Notification::send($incident, new IncidentUpdated($user, $incident, 'Another Notification Sent to no one'));
     });
 
