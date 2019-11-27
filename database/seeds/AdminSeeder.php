@@ -89,11 +89,27 @@ class AdminSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
+        $jev = \App\User::create([
+            'uuid' => $faker->uuid,
+            'firstname' => 'Jevon',
+            'lastname' => 'Bhagaloo',
+            'contactnumber' => '0831234567',
+            'email' => 'jevonbhagaloo09@gmail.com',
+            'email_verified_at' => \Carbon\Carbon::now(),
+            'activation_token' => '',
+            'last_loggedin_at' => null,
+            'password' => bcrypt('admin123'), // secret
+            'remember_token' => str_random(10),
+            'status_id' => $faker->randomElement($array = $statuses),
+            'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
+            'updated_at' => \Carbon\Carbon::now(),
+            'deleted_at' => null]);
 
         $sah->roles()->attach([4]);
         $luh->roles()->attach([4]);
         $sbo->roles()->attach([4]);
         $oye->roles()->attach([4]);
         $zeh->roles()->attach([4]);
+        $jev->roles()->attach([4]);
     }
 }
