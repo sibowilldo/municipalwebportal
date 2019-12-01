@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
+use App\Http\Resources\Incident as IncidentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AssignmentResource extends JsonResource
@@ -26,7 +26,7 @@ class AssignmentResource extends JsonResource
                 'created_at' => $this->created_at->format('Y-m-d h:s:j')?:null,
                 'updated_at' => $this->updated_at->format('Y-m-d h:s:j')?:null,
             ],
-            'incident' => $this->incident,
+            'incident' => new IncidentResource($this->incident),
             'assigned_to' => $this->user,
             'assigned_by' => \App\User::findOrFail($this->assigner_id)
         ];
