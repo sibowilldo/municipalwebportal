@@ -1,6 +1,9 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/manifest.js": "/js/manifest.js",
+    "/js/vendor.js": "/js/vendor.js",
+    "/css/simplelightbox.css": "/css/simplelightbox.css",
     "/css/styles.bundle.css": "/css/styles.bundle.css",
     "/css/custom/users/create.css": "/css/custom/users/create.css",
     "/js/mandatory.js": "/js/mandatory.js",
@@ -9,6 +12,5 @@
     "/js/dashboard.js": "/js/dashboard.js",
     "/js/google-maps.js": "/js/google-maps.js",
     "/js/project-mdatatable.js": "/js/project-mdatatable.js",
-    "/js/incidents-ajax.js": "/js/incidents-ajax.js",
-    "/firebase-messaging-sw.js": "/firebase-messaging-sw.js"
+    "/js/incidents-ajax.js": "/js/incidents-ajax.js"
 }

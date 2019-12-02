@@ -13,6 +13,8 @@ $factory->define(App\Status::class, function (Faker $faker) {
         array('name' => 'Completed', 'description'=>$faker->realtext(50, 2), 'group' => 'incidents'),
         array('name' => 'Escalated', 'description'=>$faker->realtext(50, 2), 'group' => 'incidents'),
         array('name' => 'Assigned', 'description'=>$faker->realtext(50, 2), 'group' => 'incidents'),
+        array('name' => 'Declined', 'description'=>$faker->realtext(50, 2), 'group' => 'incidents'),
+        array('name' => 'Review', 'description'=>$faker->realtext(50, 2), 'group' => 'incidents'),
         array('name' => 'Cancelled', 'description'=>$faker->realtext(50, 2), 'group' => 'incidents'),
         array('name' => 'Trashed', 'description'=>$faker->realtext(50, 2), 'group' => 'both'),
         array('name' => 'Deleted', 'description'=>$faker->realtext(50, 2), 'group' => 'both'),

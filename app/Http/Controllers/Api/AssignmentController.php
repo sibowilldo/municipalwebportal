@@ -157,14 +157,14 @@ class AssignmentController extends Controller
             'user_id'       => $user->id,
             'previous_id'   => $incident->status_id,
             'status_id'     => $status->id,
-            'update_reason' =>  $user->fullname .' has accepted the request.'
+            'update_reason' =>  "$user->fullname has escalated the request."
         ]);
 
         //Update incident status
         $incident->update(['status_id' => $status->id]);
         //ToDo: Notify user
         return response()->json([
-            'message' => $user->fullname .' has accepted the request.',
+            'message' => "$user->fullname has escalated the request.",
             'data'    => new AssignmentResource($assignment)], 200);
     }
 }
