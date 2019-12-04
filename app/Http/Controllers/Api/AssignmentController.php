@@ -61,7 +61,7 @@ class AssignmentController extends Controller
         $date_now = Carbon::now();
         //Update Assignment Executed and Due time
         //ToDo: time to be determined by settings
-        $assignment->update(['instructions' => "[Declined {$date_now}] {$user->fullname} has accepted the request \n{$assignment->instructions}",
+        $assignment->update(['instructions' => "[Accepted {$date_now}] {$user->fullname} has accepted the request \n{$assignment->instructions}",
                             'executed_at' => Carbon::now(),
                             'due_at' => Carbon::now()->addHours(2),
                             'declined_at' => null,
@@ -138,6 +138,8 @@ class AssignmentController extends Controller
      */
     public function escalate(Request $request, Assignment $assignment)
     {
+        //Specialists can't escalate
+
         $request->validate([
             'reason' => 'required|string'
         ]);
@@ -162,7 +164,9 @@ class AssignmentController extends Controller
 
         //Update incident status
         $incident->update(['status_id' => $status->id]);
-        //ToDo: Notify user
+        
+        //ToDo: Notify user, Reason to be included
+        //ToDo: System notification
         return response()->json([
             'message' => "$user->fullname has escalated the request.",
             'data'    => new AssignmentResource($assignment)], 200);

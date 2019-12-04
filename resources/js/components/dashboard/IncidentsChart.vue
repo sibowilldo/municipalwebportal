@@ -1,21 +1,40 @@
 <template>
-    <div>
-        <div class="row align-items-center"  v-if="!dataFilled">
-            <div class="col" style="padding: 2.2rem;font-size: .8rem;">
-                <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline m-alert--air alert alert-danger alert-dismissible fade show" role="alert">
-                    <div class="m-alert__icon">
-                        <i class="flaticon-exclamation-1"></i>
-                    </div>
-                    <div class="m-alert__text">
-                        <strong>No data to display!</strong><br> Once the data is available it will be displayed here.
-                    </div>
+
+    <div class="m-portlet m-portlet--full-height m-portlet--fit " m-portlet="true">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="flaticon-calendar-2"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                       Daily Reported Incidents<small>
+                    </small>
+                    </h3>
                 </div>
             </div>
         </div>
-
-        <div class="m-widget12 m-widget12--chart-bottom m--margin-top-10" style="min-height: 300px">
-            <div class="m-widget12__chart m-portlet-fit--sides" style="position: absolute; margin: 0;">
-                <line-chart :chart-data="chartData" :options="chartOptions" style="height: 300px"></line-chart>
+        <div class="m-portlet__body">
+            <div class="tab-content">
+                <div class="tab-pane active">
+                    <div class="m-widget12 m-widget12--chart-bottom m--margin-top-10" style="min-height: 430px">
+                        <div class="m-widget12__chart m-portlet-fit--sides" style="height:290px;">
+                            <div class="row align-items-center"  v-if="!dataFilled">
+                                <div class="col" style="padding: 2.2rem;font-size: .8rem;">
+                                    <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline m-alert--air alert alert-danger alert-dismissible fade show" role="alert">
+                                        <div class="m-alert__icon">
+                                            <i class="flaticon-exclamation-1"></i>
+                                        </div>
+                                        <div class="m-alert__text">
+                                            <strong>No data to display!</strong><br> Once the data is available it will be displayed here.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <line-chart :chart-data="chartData" :options="chartOptions" style="height: 290px"></line-chart>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
