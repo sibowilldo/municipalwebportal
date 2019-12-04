@@ -10,52 +10,52 @@
     <!--Begin::Section-->
     <div class="row">
         <div class="col-xl-12">
-            <div  class="m-portlet m-portlet--head-sm" m-portlet="true" id="dashboard_incidents_table">
-                <div class="m-portlet__head">
-                    <div class="m-portlet__head-caption">
-                        <div class="m-portlet__head-title">
-                            <span class="m-portlet__head-icon">
+            <div  class="kt-portlet kt-portlet--head-sm" kt-portlet="true" id="dashboard_incidents_table">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-caption">
+                        <div class="kt-portlet__head-title">
+                            <span class="kt-portlet__head-icon">
                                 <i class="flaticon-exclamation"></i>
                             </span>
-                            <h3 class="m-portlet__head-text">
+                            <h3 class="kt-portlet__head-text">
                                 {{ __('Incidents') }}
                             </h3>
                         </div>
                     </div>
-                    <div class="m-portlet__head-tools">
-                        <ul class="m-portlet__nav">
-                            <li class="m-portlet__nav-item mr-3">
+                    <div class="kt-portlet__head-tools">
+                        <ul class="kt-portlet__nav">
+                            <li class="kt-portlet__nav-item mr-3">
                                 <button type="button" data-toggle="modal" data-target="#log_incident_modal"
-                                        class="btn btn-danger m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                        class="btn btn-danger kt-btn kt-btn--custom kt-btn--icon kt-btn--air kt-btn--pill">
                                     <span>
                                         <i class="la la-plus"></i>
                                         <span>{{ __('Log Incident') }}</span>
                                     </span>
                                 </button>
                             </li>
-                            <li class="m-portlet__nav-item">
-                                <a href="" m-portlet-tool="toggle" class="m-portlet__nav-link btn btn-sm btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-angle-down"></i></a>
+                            <li class="kt-portlet__nav-item">
+                                <a href="" kt-portlet-tool="toggle" class="kt-portlet__nav-link btn btn-sm btn-secondary  kt-btn kt-btn--icon kt-btn--icon-only kt-btn--pill"><i class="la la-angle-down"></i></a>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div class="m-portlet__body">
+                <div class="kt-portlet__body">
 
                 @include('layouts.form-errors')
                 <!--begin: Datatable -->
-                    <div class="m_datatable">
+                    <div class="kt_datatable">
                         <!--begin: Search Form -->
-                        <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+                        <div class="kt-form kt-form--label-align-right kt--margin-top-20 kt--margin-bottom-30">
                             <div class="row align-items-center">
                                 <div class="col-xl-8 order-2 order-xl-1">
-                                    <div class="form-group m-form__group row align-items-center">
+                                    <div class="form-group kt-form__group row align-items-center">
                                         <div class="col-md-4">
-                                            <div class="m-form__group m-form__group--inline">
-                                                <div class="m-form__label">
+                                            <div class="kt-form__group kt-form__group--inline">
+                                                <div class="kt-form__label">
                                                     <label>{{ __('Status:') }}</label>
                                                 </div>
-                                                <div class="m-form__control">
-                                                    <select class="form-control m-bootstrap-select" id="m_form_status">
+                                                <div class="kt-form__control">
+                                                    <select class="form-control kt-bootstrap-select" id="kt_form_status">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach($statuses as $status)
                                                             <option value="{{ $status->name }}">{{ $status->name }}</option>
@@ -63,15 +63,15 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="d-md-none m--margin-bottom-10"></div>
+                                            <div class="d-md-none kt--margin-bottom-10"></div>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="m-form__group m-form__group--inline">
-                                                <div class="m-form__label">
-                                                    <label class="m-label m-label--single">{{ __('Categories:') }}</label>
+                                            <div class="kt-form__group kt-form__group--inline">
+                                                <div class="kt-form__label">
+                                                    <label class="kt-label kt-label--single">{{ __('Categories:') }}</label>
                                                 </div>
-                                                <div class="m-form__control">
-                                                    <select class="form-control m-bootstrap-select" id="m_form_type">
+                                                <div class="kt-form__control">
+                                                    <select class="form-control kt-bootstrap-select" id="kt_form_type">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach($categories as $category)
                                                             <option value="{{ $category->name }}">{{ $category->name }}</option>
@@ -79,34 +79,34 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="d-md-none m--margin-bottom-10"></div>
+                                            <div class="d-md-none kt--margin-bottom-10"></div>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="m-input-icon m-input-icon--left">
-                                                <input type="text" class="form-control m-input" placeholder="Search..."
+                                            <div class="kt-input-icon kt-input-icon--left">
+                                                <input type="text" class="form-control kt-input" placeholder="Search..."
                                                        id="generalSearch">
-                                                <span class="m-input-icon__icon m-input-icon__icon--left">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--left">
                                                 <span><i class="la la-search"></i></span>
                                             </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-{{--                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">--}}
+{{--                                <div class="col-xl-4 order-1 order-xl-2 kt--align-right">--}}
 {{--                                    <button type="button" data-toggle="modal" data-target="#log_incident_modal"--}}
-{{--                                            class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">--}}
+{{--                                            class="btn btn-primary kt-btn kt-btn--custom kt-btn--icon kt-btn--air kt-btn--pill">--}}
 {{--                                    <span>--}}
 {{--                                        <i class="la la-plus"></i>--}}
 {{--                                        <span>{{ __('Log Incident') }}</span>--}}
 {{--                                    </span>--}}
 {{--                                    </button>--}}
-{{--                                    <div class="m-separator m-separator--dashed d-xl-none"></div>--}}
+{{--                                    <div class="kt-separator kt-separator--dashed d-xl-none"></div>--}}
 {{--                                </div>--}}
                             </div>
                         </div>
 
                         <!--end: Search Form -->
-                        <table class="m_datatable" id="incidents">
+                        <table class="kt_datatable" id="incidents">
                             <thead>
                             <tr>
                                 <th data-field="id">{{ __('#') }}</th>
@@ -130,12 +130,12 @@
                                     <td>{{ $incident->created_at }}</td>
                                     <td>
                                         <span>
-                                            <span class="m-badge m-badge--{{ $incident->status->state_color->css_class }} m-badge--wide">{{ $incident->status->name }}</span>
+                                            <span class="kt-badge kt-badge--{{ $incident->status->state_color->css_class }} kt-badge--wide">{{ $incident->status->name }}</span>
                                         </span>
                                     </td>
                                     <td>
                                         <span>
-                                            <span class="m-badge m-badge--dot m-badge--{{ $incident->type->categories()->first()->state_color->css_class }}"></span>&nbsp;<span class="m--font-bold m--font-{{$incident->type->categories()->first()->state_color->css_class}}">
+                                            <span class="kt-badge kt-badge--dot kt-badge--{{ $incident->type->categories()->first()->state_color->css_class }}"></span>&nbsp;<span class="kt--font-bold kt--font-{{$incident->type->categories()->first()->state_color->css_class}}">
                                             {{$incident->type->categories()->first()->name }}</span>
                                         </span>
                                     </td>
@@ -145,25 +145,25 @@
                                         <div role="group">
 {{--                                            @if(!in_array($incident->status->name, $statuses->whereIn('name', ['Deleted', 'Trashed', 'Completed', 'Cancelled'])->pluck('name')->toArray()))--}}
                                                 <a  href="{{ route('incidents.engineers', $incident->id) }}"
-                                                    data-toggle="m-tooltip" data-placement="top"
+                                                    data-toggle="kt-tooltip" data-placement="top"
                                                     data-original-title="Assign Engineer"
-                                                    class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill assign-btn">
+                                                    class="kt-portlet__nav-link btn kt-btn kt-btn--hover-accent kt-btn--icon kt-btn--icon-only kt-btn--pill assign-btn">
                                                 <i class="la la-user"></i></a>
                                                 <a  href="{{ route('incidents.specialists', $incident->id) }}"
-                                                    data-toggle="m-tooltip" data-placement="top"
+                                                    data-toggle="kt-tooltip" data-placement="top"
                                                     data-original-title="Assign Specialist"
-                                                    class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
+                                                    class="kt-portlet__nav-link btn kt-btn kt-btn--hover-accent kt-btn--icon kt-btn--icon-only kt-btn--pill">
                                                 <i class="la la-user-secret"></i></a>
-                                                <a data-toggle="m-tooltip" data-placement="top"
+                                                <a data-toggle="kt-tooltip" data-placement="top"
                                                    data-original-title="Assign Working Group"
                                                    href="{{ route('incidents.groups',['incident' => $incident->id]) }}"
-                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                   class="kt-portlet__nav-link btn kt-btn kt-btn--hover-accent kt-btn--icon kt-btn--icon-only kt-btn--pill"><i
                                                             class="la la-users"></i></a>
 {{--                                            @endif--}}
-                                                <a data-toggle="m-tooltip" data-placement="top"
+                                                <a data-toggle="kt-tooltip" data-placement="top"
                                                    data-original-title="Edit Details"
                                                    href="{{ route('incidents.edit', $incident->id) }}"
-                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                   class="kt-portlet__nav-link btn kt-btn kt-btn--hover-accent kt-btn--icon kt-btn--icon-only kt-btn--pill"><i
                                                             class="la la-edit"></i></a>
                                         </div>
 
@@ -184,7 +184,7 @@
 
 @section('css')
     <style>
-        .m-datatable__lock--right {
+        .kt-datatable__lock--right {
             overflow: visible !important;
         }
 
@@ -229,7 +229,7 @@
 
 @section('js')
 
-    {{ Html::script('js/project-mdatatable.js') }}
+{{--    {{ Html::script('js/project-mdatatable.js') }}--}}
     <script>
         //table column definitions
         const columns = [
@@ -274,17 +274,17 @@
         const TableMethods = function () {
             return {
                 init: function (datatable) {
-                    $('#m_form_status').on('change', function () {
+                    $('#kt_form_status').on('change', function () {
                         datatable.search($(this).val().toLowerCase(), 'Status');
                     });
-                    $('#m_form_type').on('change', function () {
+                    $('#kt_form_type').on('change', function () {
                         datatable.search($(this).val().toLowerCase(), 'Category');
                     });
-                    $('#m_form_status, #m_form_type').selectpicker();
+                    $('#kt_form_status, #kt_form_type').selectpicker();
                 }
             }
         }();
-        TableElement.init($('#incidents'), columns);
+        // TableElement.init($('#incidents'), columns);
 
         var LoadTypes = function () {
             var types = function () {

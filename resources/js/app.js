@@ -6,13 +6,13 @@
  */
 
 require('./bootstrap');
-require('simplelightbox')
+require('simplelightbox');
 
 window.Vue = require('vue');
 
 // import axios from 'axios'
-import VueAxios from 'vue-axios'
-import Notify from 'vue2-notify'
+import VueAxios from 'vue-axios';
+import Notify from 'vue2-notify';
 
 // Use Notify
 Vue.use(Notify, {
@@ -40,14 +40,14 @@ import 'chart.js';
 /**
  * Load Components
  */
-import TypesChart from './components/dashboard/TypesChart'
-import StatusesChart from './components/dashboard/StatusesChart'
-import IncidentsChart from './components/dashboard/IncidentsChart'
+import TypesChart from './components/dashboard/TypesChart';
+import StatusesChart from './components/dashboard/StatusesChart';
+import IncidentsChart from './components/dashboard/IncidentsChart';
 
 /**
  * Import the store
  */
-import store from '../js/store'
+import store from '../js/store';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

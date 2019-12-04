@@ -12,7 +12,9 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
-} catch (e) {}
+} catch (e) {
+    console.log('Something happened while trying to load jquery & bootstrap');
+}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -21,7 +23,6 @@ try {
  */
 
 window.axios = require('axios');
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
@@ -44,7 +45,7 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-import Echo from 'laravel-echo'
+import Echo from 'laravel-echo';
 
 window.Pusher = require('pusher-js');
 

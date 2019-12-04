@@ -1,14 +1,17 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/css/styles.bundle.css": "/css/styles.bundle.css",
-    "/css/custom/users/create.css": "/css/custom/users/create.css",
-    "/js/mandatory.js": "/js/mandatory.js",
-    "/js/vendors.js": "/js/vendors.js",
-    "/js/scripts.bundle.js": "/js/scripts.bundle.js",
-    "/js/dashboard.js": "/js/dashboard.js",
-    "/js/google-maps.js": "/js/google-maps.js",
-    "/js/project-mdatatable.js": "/js/project-mdatatable.js",
-    "/js/incidents-ajax.js": "/js/incidents-ajax.js",
-    "/firebase-messaging-sw.js": "/firebase-messaging-sw.js"
+    "/assets/v614/css/style.css": "/assets/v614/css/style.css",
+    "/js/manifest.js": "/js/manifest.js",
+    "/js/vendor.js": "/js/vendor.js",
+    "/assets/v614/plugins/custom/fullcalendar/fullcalendar.bundle.css": "/assets/v614/plugins/custom/fullcalendar/fullcalendar.bundle.css",
+    "/assets/v614/plugins/global/plugins.bundle.css": "/assets/v614/plugins/global/plugins.bundle.css",
+    "/assets/v614/css/skins/header/menu/light.css": "/assets/v614/css/skins/header/menu/light.css",
+    "/assets/v614/css/skins/header/base/light.css": "/assets/v614/css/skins/header/base/light.css",
+    "/assets/v614/css/skins/brand/dark.css": "/assets/v614/css/skins/brand/dark.css",
+    "/assets/v614/css/skins/aside/dark.css": "/assets/v614/css/skins/aside/dark.css",
+    "/assets/v614/css/pages/login/login-1.css": "/assets/v614/css/pages/login/login-1.css",
+    "/assets/v614/plugins/custom/fullcalendar/fullcalendar.bundle.js": "/assets/v614/plugins/custom/fullcalendar/fullcalendar.bundle.js",
+    "/assets/v614/js/scripts.bundle.js": "/assets/v614/js/scripts.bundle.js",
+    "/assets/v614/plugins/global/plugins.bundle.js": "/assets/v614/plugins/global/plugins.bundle.js",
+    "/assets/v614/js/pages/dashboard.js": "/assets/v614/js/pages/dashboard.js"
 }
