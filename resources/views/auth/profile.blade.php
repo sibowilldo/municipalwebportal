@@ -84,7 +84,7 @@
                                                         </span>
                                                     </span>
                                                     <span class="m-option__body">
-                                                         {{ $user->created_at->format('d M Y j:s') }}
+                                                         {{ $user->created_at }}
                                                     </span>
                                                 </span>
                                     </label>
@@ -97,11 +97,11 @@
                                                            Last Updated
                                                         </span>
                                                         <span class="m-option__focus">
-                                                            {{$user->updated_at ? $user->updated_at->diffForHumans() : 'Never'}}
+                                                            {{$user->updated_at ? \Carbon\Carbon::parse($user->updated_at)->diffForHumans(): 'Never'}}
                                                         </span>
                                                     </span>
                                                     <span class="m-option__body">
-                                                         {{ $user->updated_at ? $user->updated_at->format('d M Y j:s') : '' }}
+                                                         {{ $user->updated_at ? \Carbon\Carbon::parse($user->updated_at)->format('Y M d, H:i:s A') : '' }}
                                                     </span>
                                                 </span>
                                     </label>

@@ -2,6 +2,8 @@
 
 namespace App;
 
+
+use App\Helpers\Traits\FormatDates;
 use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Incident extends Model
 {
-    use SoftDeletes, Notifiable, GeneratesUuid;
+    use SoftDeletes, Notifiable, GeneratesUuid, FormatDates;
 
     protected $casts = ['uuid' => 'uuid'];
     /**

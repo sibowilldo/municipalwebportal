@@ -12,7 +12,7 @@ Route::post('/register', function (){abort(403, 'Unauthorized action.');});
 Route::get('/auth/social/{social}', 'SocialLoginController@redirectToSocial')->name('social.redirect');
 Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallback')->name('social.callback');
 //
-Route::group(['middleware' => ['verified']], function () {
+Route::group(['middleware' => ['auth:web', 'verified']], function () {
 
     Route::get('push', function () {
 
@@ -29,7 +29,7 @@ Route::group(['middleware' => ['verified']], function () {
     });
 
 
-    Route::get('/', 'HomeController@index')->name('dashboard')->middleware('verified');
+    Route::get('/', 'HomeController@index')->name('dashboard');
     Route::get('dashboard', 'HomeController@index')->name('dashboard');
 
     /**
@@ -68,12 +68,16 @@ Route::group(['middleware' => ['verified']], function () {
     /**
      * Custom JSON formatted output
      */
-    Route::get('api/incidents', 'IncidentController@jsonIndex');
     Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
     Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
-    Route::get('api/system/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
-    Route::get('api/system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
 
+    Route::prefix('api')->group(function (){
+        Route::get('incidents', 'IncidentController@jsonIndex');
+        Route::apiResource('roles', 'SPA\RoleController');
+        Route::apiResource('permissions', 'SPA\PermissionController');
+        Route::get('system/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
+        Route::get('system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
+    });
     /**
      * Charts Controller
      */

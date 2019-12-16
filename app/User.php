@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\Traits\FormatDates;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -12,7 +13,7 @@ use Dyrynda\Database\Support\GeneratesUuid;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, Notifiable, HasRoles, GeneratesUuid;
+    use HasApiTokens, Notifiable, HasRoles, GeneratesUuid, FormatDates;
 
 //    protected $guard_name = 'api';
 

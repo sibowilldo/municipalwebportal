@@ -88,7 +88,7 @@
 															Reported
 														</span>
                                         <span class="m-widget17__desc">
-                                            {{ $incident->created_at->diffForHumans() }} by
+                                            {{ \Carbon\Carbon::parse($incident->created_at)->diffForHumans() }} by
                                             <strong>{{ $incident->user()->fullname }}</strong>
 										</span>
                                     </div>
@@ -117,7 +117,7 @@
                                             Last Updated
                                         </span>
                                         <span class="m-widget17__desc">
-                                            {{ $incident->updated_at->diffForHumans() }}
+                                            {{ \Carbon\Carbon::parse($incident->updated_at)->diffForHumans() }}
                                         </span>
                                     </div>
                                     <div class="m-widget17__item">
@@ -187,13 +187,13 @@
                                                         <div class="m-list-timeline__item">
                                                             <span class="m-list-timeline__badge m-list-timeline__badge--warning"></span>
                                                             <span class="m-list-timeline__text"> {{ $history->update_reason }} by <span class="font-weight-bolder m--font-danger">{{ $history->user->fullname }}</span> </span>
-                                                            <span class="m-list-timeline__time">  {{ $history->created_at->diffForHumans() }}</span>
+                                                            <span class="m-list-timeline__time">  {{ \Carbon\Carbon::parse($history->created_at)->diffForHumans() }}</span>
                                                         </div>
                                                     @endforeach
                                                     <div class="m-list-timeline__item">
                                                         <span class="m-list-timeline__badge m-list-timeline__badge--success"></span>
                                                         <span class="m-list-timeline__text">Incident logged</span>
-                                                        <span class="m-list-timeline__time">{{ $incident->created_at->diffForHumans() }}</span>
+                                                        <span class="m-list-timeline__time">{{ \Carbon\Carbon::parse($incident->created_at)->diffForHumans() }}</span>
                                                     </div>
                                                 </div>
                                             </div>

@@ -20,7 +20,7 @@ class CategoryResource extends JsonResource
             'description' => $this->description,
             'state_color_id' => $this->state_color->name,
             'is_active' => $this->is_active,
-            'created_at' => $this->created_at->format('d M Y h:i:s A'),
+            'created_at' => $this->created_at,
             'types' => $this->types
         ];
     }

@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Helpers\Traits\FormatDates;
 use Illuminate\Database\Eloquent\Model;
 
 class IncidentHistory extends Model
 {
+    use FormatDates;
     /**
      * The attributes that are mass assignable.
      *

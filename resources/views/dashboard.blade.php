@@ -68,13 +68,13 @@
                                         <div class="col-md-4">
                                             <div class="m-form__group m-form__group--inline">
                                                 <div class="m-form__label">
-                                                    <label class="m-label m-label--single">{{ __('Categories:') }}</label>
+                                                    <label class="m-label m-label--single">{{ __('Types:') }}</label>
                                                 </div>
                                                 <div class="m-form__control">
                                                     <select class="form-control m-bootstrap-select" id="m_form_type">
                                                         <option value="">{{ __('All') }}</option>
-                                                        @foreach($categories as $category)
-                                                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                                        @foreach($types as $type)
+                                                            <option value="{{ $type->name }}">{{ $type->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -114,7 +114,7 @@
                                 <th data-field="Name">{{ __('Name') }}</th>
                                 <th data-field="LoggedAt">{{ __('Logged At') }}</th>
                                 <th data-field="Status">{{ __('Status') }}</th>
-                                <th data-field="Category">{{ __('Category') }}</th>
+                                <th data-field="Type">{{ __('Type') }}</th>
                                 <th data-field="Location">{{ __('Location') }}</th>
                                 <th data-field="SuburbID">{{ __('Suburb') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
@@ -135,8 +135,8 @@
                                     </td>
                                     <td>
                                         <span>
-                                            <span class="m-badge m-badge--dot m-badge--{{ $incident->type->categories()->first()->state_color->css_class }}"></span>&nbsp;<span class="m--font-bold m--font-{{$incident->type->categories()->first()->state_color->css_class}}">
-                                            {{$incident->type->categories()->first()->name }}</span>
+                                            <span class="m-badge m-badge--dot m-badge--{{ $incident->type->categories()->first()->state_color->css_class }}"></span>&nbsp;<span class="m--font-bold" style="color: m--font-{{$incident->type->categories()->first()->state_color->css_font_color}};">
+                                            {{$incident->type->name }}</span>
                                         </span>
                                     </td>
                                     <td>{{ $incident->longitude }}, {{ $incident->latitude }}</td>
@@ -253,8 +253,8 @@
                 title: 'Status'
             },
             {
-                field: 'Category',
-                title: 'Category',
+                field: 'Type',
+                title: 'Type',
                 width: 150
             },
             {
@@ -278,7 +278,7 @@
                         datatable.search($(this).val().toLowerCase(), 'Status');
                     });
                     $('#m_form_type').on('change', function () {
-                        datatable.search($(this).val().toLowerCase(), 'Category');
+                        datatable.search($(this).val().toLowerCase(), 'Type');
                     });
                     $('#m_form_status, #m_form_type').selectpicker();
                 }

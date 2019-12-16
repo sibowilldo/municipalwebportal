@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Incident;
 use App\Status;
+use App\Type;
 use Auth;
 use App\Http\Resources\Incident as IncidentResource;
 
@@ -17,7 +18,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
     }
 
     /**
@@ -30,7 +31,8 @@ class HomeController extends Controller
         $incidents = Incident::with('users')->get()->sortByDesc('created_at');
         $statuses = Status::whereIn('group', ['incidents', 'both'])->select('id', 'name')->get();
         $categories = Category::all('id', 'name');
-        return view('dashboard', compact('incidents', 'statuses', 'categories'));
+        $types = Type::all('id', 'name')->unique('name');
+        return view('dashboard', compact('incidents','statuses', 'categories', 'types'));
     }
 
     public function welcome()

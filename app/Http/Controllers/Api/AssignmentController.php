@@ -76,7 +76,7 @@ class AssignmentController extends Controller
                 'previous_status'   => $incident->status_id,
                 'status_id'         => $status->id,
                 'account_number'    => '',
-                'update_reason'     =>"[Accepted {$date_now}] {$user->fullname} has accepted the request."
+                'update_reason'     =>"[Accepted {$date_now}] Request accepted."
         ]);
         //Update incident status
         $incident->update(['status_id' => $status->id]);
@@ -101,8 +101,9 @@ class AssignmentController extends Controller
         ]);
         $user = Auth::user();
         $date_now = Carbon::now();
+        $status = Status::where('name', 'Review')->firstOrFail();
 
-        $assignment->udpate(['instructions' => "[Declined {$date_now}] {$user->fullname} has declined the request with reason: 
+        $assignment->update(['instructions' => "[Declined {$date_now}] {$user->fullname} has declined the request with reason: 
                                                 {$request->reason} \n{$assignment->instructions}",
                             'declined_at' => Carbon::now(),
                             'executed_at' => null,
@@ -112,15 +113,15 @@ class AssignmentController extends Controller
                             ]);
 
         $reason = $request->reason;
-        $status = Status::where('name', 'Review')->firstOrFail();
 
         //Add Incident History Entry
         $incident_history= IncidentHistory::create([
             'incident_id'   => $assignment->incident->id,
             'user_id'       => $user->id,
-            'previous_id'   => $assignment->incident->status_id,
+            'previous_status'   => $assignment->incident->status_id,
             'status_id'     => $status->id,
-            'update_reason' => "$user->fullname has declined the request: $request->reason"
+            'update_reason' => "[Declined {$date_now}] Request Declined, reason: $request->reason",
+            'account_number' => ''
         ]);
 
         $assignment->incident()->update(['status_id' => $status->id]);
@@ -144,6 +145,7 @@ class AssignmentController extends Controller
             'reason' => 'required|string'
         ]);
 
+        $date_now = Carbon::now();
         $reason = $request->reason;
         $status = Status::where('name', 'Escalated')->firstOrFail();
 
@@ -155,16 +157,17 @@ class AssignmentController extends Controller
 
         //Add Incident History Entry
         $incident_history= IncidentHistory::create([
-            'incident_id'   => $incident->id,
+            'incident_id'   => $assignment->incident->id,
             'user_id'       => $user->id,
-            'previous_id'   => $incident->status_id,
+            'previous_status'   => $assignment->incident->status_id,
             'status_id'     => $status->id,
-            'update_reason' =>  "$user->fullname has escalated the request."
+            'update_reason' => "[Escalated {$date_now}] Request escalated, reason: $request->reason",
+            'account_number' => ''
         ]);
 
         //Update incident status
         $incident->update(['status_id' => $status->id]);
-        
+
         //ToDo: Notify user, Reason to be included
         //ToDo: System notification
         return response()->json([

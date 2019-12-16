@@ -12,7 +12,11 @@ use Session;
 class RoleController extends Controller
 {
     public function __construct() {
-        $this->middleware(['auth']);//isAdmin middleware lets only users with a //specific permission permission to access these resources
+        $this->middleware(['auth']);
+        $this->middleware('permission:list roles', ['only' => ['index']]);
+        $this->middleware('permission:create role', ['only' => ['store']]);
+        $this->middleware('permission:edit role', ['only' => ['update']]);
+        $this->middleware('permission:delete role', ['only' => ['destroy']]);
     }
 
     /**
@@ -22,8 +26,8 @@ class RoleController extends Controller
      */
     public function index() {
         $roles = Role::all();//Get all roles
-
-        return view('backend.roles.index')->with('roles', $roles);
+        $guards = $roles->unique('guard_name')->pluck('guard_name');
+        return view('backend.roles.index')->with(['roles'=>$roles, 'guards' => $guards]);
     }
 
     /**
@@ -33,15 +37,19 @@ class RoleController extends Controller
      */
     public function create() {
         $permissions = Permission::all();//Get all permissions
+        $guards = $permissions->unique('guard_name')->pluck('guard_name');
 
-        return view('backend.roles.create', ['permissions'=>$permissions]);
+//        return response()->json(['permissions'=>$permissions, 'guards'  => $guards], 200);
+
+        return view('backend.roles.create', ['permissions'=>$permissions, 'guards'  => $guards]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request) {
         //Validate name and permissions field
@@ -53,13 +61,14 @@ class RoleController extends Controller
 
         $name = strtolower($request['name']);
         $role = new Role();
-        //        $role = Role::create(['guard_name' => 'web', 'name' => 'administrator']);
+
         $role->name = $name;
-        $role->guard_name = 'web';
+        $role->guard_name = 'api';
 
         $permissions = $request['permissions'];
 
         $role->save();
+
         //Looping thru selected permissions
         foreach ($permissions as $permission) {
             $p = Permission::where('id', '=', $permission)->firstOrFail();
@@ -97,9 +106,10 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id) {
 

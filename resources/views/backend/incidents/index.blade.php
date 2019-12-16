@@ -81,7 +81,7 @@
 													Logged:
 												</span>
                                 <span class="m-widget13__text m-widget13">
-                                        {{ $incident->created_at->diffForHumans() }}. {{ $incident->created_at->format('M, d Y @ h:m:s') }}
+                                        <strong>{{ \Carbon\Carbon::parse($incident->created_at)->diffForHumans() }}</strong><br>{{ \Carbon\Carbon::parse($incident->created_at)->format('M, d Y. h:m:s') }}
                                     </span>
                             </div>
                             <div class="m-widget13__item">

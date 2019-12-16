@@ -20,8 +20,8 @@ class DeviceResource extends JsonResource
             'os' => $this->os,
             'token' => $this->token,
             'is_active' => $this->is_active,
-            'created_at' => $this->created_at->format('d M Y h:i:s A'),
-            'updated_at' => $this->updated_at->format('d M Y h:i:s A')
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }
