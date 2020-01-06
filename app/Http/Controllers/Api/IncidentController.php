@@ -31,9 +31,9 @@ class IncidentController extends Controller
     public function index(Request $request)
     {
 
-        $incidents = EloquentBuilder::to(Incident::class, $request->all())->with('users')->get()->sortBy('created_at');
+        $incidents = EloquentBuilder::to(Incident::class, $request->except(['page']))->with('users');
 
-        if (!count($incidents)) {
+        if (!count($incidents->get())) {
             return response()->json(
                 [
                     'data' => 'Nothing Found!',
@@ -42,6 +42,10 @@ class IncidentController extends Controller
                 404
             );
         }
+
+        //Paginate Incidents
+        $incidents = $incidents->paginate(20)->appends($request->all());
+
         return IncidentResource::collection($incidents);
     }
 
