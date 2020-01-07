@@ -39,7 +39,7 @@ class RoleController extends Controller
                 'permissions' =>'required',
             ]
         );
-        
+
         $name = strtolower($request['name']);
         $role = new Role();
 

@@ -44,7 +44,7 @@ class IncidentController extends Controller
         }
 
         //Paginate Incidents
-        $incidents = $incidents->paginate(20)->appends($request->all());
+        $incidents = $incidents->orderByDesc('created_at')->paginate(20)->appends($request->all());
 
         return IncidentResource::collection($incidents);
     }
