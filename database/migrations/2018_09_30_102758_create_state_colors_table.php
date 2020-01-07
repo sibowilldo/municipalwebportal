@@ -15,7 +15,7 @@ class CreateStateColorsTable extends Migration
     {
         Schema::create('state_colors', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('css_class');
             $table->string('css_color');
             $table->string('css_font_color')->default('#ffffff');

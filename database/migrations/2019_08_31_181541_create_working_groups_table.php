@@ -15,7 +15,7 @@ class CreateWorkingGroupsTable extends Migration
     {
         Schema::create('working_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->mediumText('description');
             $table->boolean('is_active');
             $table->timestamps();

@@ -19,7 +19,7 @@
 
                 <div class="form-group m-form__group">
                     {{--<label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>--}}
-                    <input id="email" type="email" class="form-control m-input{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                    <input id="email" type="email" class="form-control m-input{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="E-mail Address" required autofocus>
 
                     @if ($errors->has('email'))
                         <span class="invalid-feedback" role="alert">
@@ -31,7 +31,7 @@
                 <div class="form-group m-form__group">
                     {{--<label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>--}}
 
-                    <input id="password" type="password" class="form-control m-input{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                    <input id="password" type="password" class="form-control m-input{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
 
                     @if ($errors->has('password'))
                         <span class="invalid-feedback" role="alert">

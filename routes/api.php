@@ -4,6 +4,10 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'Api\AuthController@login');
     Route::post('signup', 'Api\AuthController@signup');
     Route::get('account/activate/{token}', 'Api\AuthController@AccountActivate');
+    // Send reset password mail
+    Route::post('password/reset', 'Api\AuthController@sendPasswordResetLink');
+    // handle reset password form process
+    Route::post('reset/password', 'Api\AuthController@callResetPassword');
 
     Route::group(['middleware' => ['auth:api', 'accountVerified']], function() {
 

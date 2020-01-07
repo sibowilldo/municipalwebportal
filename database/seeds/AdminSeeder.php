@@ -1,5 +1,7 @@
 <?php
 
+use App\Status;
+use App\User;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 class AdminSeeder extends Seeder
@@ -8,13 +10,14 @@ class AdminSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     * @throws Exception
      */
     public function run()
     {
         $faker = Faker::create();
-        $statuses = \App\Status::pluck('id');
+        $statuses = Status::pluck('id');
 
-        $sah = \App\User::create([
+        $sah = User::create([
             'uuid' => $faker->uuid,
             'firstname' => 'Sandile',
             'lastname' => 'Ndimande',
@@ -29,7 +32,7 @@ class AdminSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
-        $luh = \App\User::create([
+        $luh = User::create([
             'uuid' => $faker->uuid,
             'firstname' => 'Lungisani',
             'lastname' => 'Blose',
@@ -44,7 +47,7 @@ class AdminSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
-        $sbo = \App\User::create([
+        $sbo = User::create([
             'uuid' => $faker->uuid,
             'firstname' => 'Sibongiseni',
             'lastname' => 'Msomi',
@@ -59,7 +62,7 @@ class AdminSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
-        $oye = \App\User::create([
+        $oye = User::create([
             'uuid' => $faker->uuid,
             'firstname' => 'Oye',
             'lastname' => 'Oridota',
@@ -74,7 +77,7 @@ class AdminSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
-        $zeh = \App\User::create([
+        $zeh = User::create([
             'uuid' => $faker->uuid,
             'firstname' => 'Zethembiso',
             'lastname' => 'Msomi',
@@ -89,7 +92,7 @@ class AdminSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
             'deleted_at' => null]);
-        $jev = \App\User::create([
+        $jev = User::create([
             'uuid' => $faker->uuid,
             'firstname' => 'Jevon',
             'lastname' => 'Bhagaloo',

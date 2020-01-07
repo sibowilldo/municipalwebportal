@@ -15,7 +15,6 @@ class UserTableSeeder extends Seeder
         $roles = Role::where('name', '!=', 'super-administrator')->pluck('id');
 
         factory(App\User::class,50)->create()->each(function ($user){
-            // Seed the relation with 5 purchases
             $incidents = factory(App\Incident::class, 2)->make();
             $user->incidents()->saveMany($incidents);
         });

@@ -152,4 +152,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return 'uuid';
     }
+
+    /**
+     * Override the mail body for reset password notification mail.
+     * @param $token
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\MailResetPasswordNotification($token));
+    }
 }

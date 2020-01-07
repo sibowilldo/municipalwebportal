@@ -15,7 +15,7 @@ class CreateTypesTable extends Migration
     {
         Schema::create('types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('state_color_id');
             $table->boolean('is_active')->default(false);

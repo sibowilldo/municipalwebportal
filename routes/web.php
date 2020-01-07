@@ -5,16 +5,17 @@ use App\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\IncidentUpdated;
 
-Auth::routes(['verify' => true]);
-Route::get('/register', function (){abort(403, 'Unauthorized action.');});
-Route::post('/register', function (){abort(403, 'Unauthorized action.');});
+Auth::routes(['verify' => true, 'register' => false]);
+Route::get('password/success', 'Auth\ResetPasswordController@resetSuccess')->name('password.success');
 
 Route::get('/auth/social/{social}', 'SocialLoginController@redirectToSocial')->name('social.redirect');
 Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallback')->name('social.callback');
 //
+
 Route::group(['middleware' => ['auth:web', 'verified']], function () {
 
     Route::get('push', function () {
+        return view('auth.passwords.success');
 
         $incident = App\Incident::first();
         $user = $incident->user()->fullname;
@@ -23,7 +24,6 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
     });
 
     Route::get('notify', function () {
-
         //send account activation notification
         Auth::user()->notify(new AccountActivate(Auth::user()));
     });
@@ -73,7 +73,13 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
 
     Route::prefix('api')->group(function (){
         Route::get('incidents', 'IncidentController@jsonIndex');
-        Route::apiResource('roles', 'SPA\RoleController');
+        Route::apiResource('roles', 'SPA\RoleController')->names([
+            'index' => 'spa.role.index',
+            'store' => 'spa.role.store',
+            'show' => 'spa.role.show',
+            'update' => 'spa.role.update',
+            'destroy' => 'spa.role.destroy'
+        ]);
         Route::apiResource('permissions', 'SPA\PermissionController');
         Route::get('system/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
         Route::get('system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
