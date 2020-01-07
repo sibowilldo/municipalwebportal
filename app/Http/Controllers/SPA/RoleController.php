@@ -39,13 +39,7 @@ class RoleController extends Controller
                 'permissions' =>'required',
             ]
         );
-
-        $role = Role::first();
-        return response()->json([
-            'message'=>"Role $role->name added successfully.",
-            'role'=>new RoleResource($role),
-            'permissions' => $role->permissions], Response::HTTP_CREATED);
-
+        
         $name = strtolower($request['name']);
         $role = new Role();
 
