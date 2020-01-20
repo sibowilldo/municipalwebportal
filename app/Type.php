@@ -37,4 +37,5 @@ class Type extends Model
     {
         return $this->belongsTo(StateColor::class);
     }
+
 }

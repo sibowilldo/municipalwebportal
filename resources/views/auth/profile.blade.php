@@ -63,14 +63,14 @@
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link" data-toggle="tab" href="#activity_tab" role="tab">
-                                Activity
+                                Incidents Logged
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="tab-content">
-                <div class="tab-pane active" id="user_profile_tab">
+                <div class="tab-pane" id="user_profile_tab">
                     <div class="form-group m-form__group row">
                         <div class="col-9 offset-1">
                             <div class="m-form__seperator m-form__seperator--solid m-form__seperator--space-2x"></div>
@@ -194,7 +194,18 @@
                         </div>
                     {{ Form::close() }}
                 </div>
-                <div class="tab-pane " id="activity_tab">
+                <div class="tab-pane  active" id="activity_tab">
+                    <div class="p-5">
+                        <ul>
+                            @foreach($user->incidents as $incident)
+                                <li>
+                                    <a href="{{ route('incidents.show', $incident->id) }}">{{ $incident->name }}</a>
+
+                                </li>
+                            @endforeach
+                        </ul>
+
+                    </div>
                 </div>
             </div>
         </div>

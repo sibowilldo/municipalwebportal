@@ -21,12 +21,14 @@ const getters = {
 
 const actions = {
     async FETCH_ROLES ({ commit }){
-        const response = await axios.get('/api/roles');
-        commit('SET_ROLES', response.data.roles);
-        commit('SET_GUARDS', response.data.guards);
+        await axios.get('/api/v1/roles')
+            .then((response)=>{
+                commit('SET_ROLES', response.data.roles);
+                commit('SET_GUARDS', response.data.guards);
+        });
     },
     async ADD_ROLE ({commit},payload){
-        await axios.post('/api/roles', payload)
+        await axios.post('/api/v1/roles', payload)
             .then((response)=> {
                 commit('NEW_ROLE', response.data);
                 commit('SET_ERRORS', {

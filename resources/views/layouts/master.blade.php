@@ -33,7 +33,8 @@
     <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-messaging.js"></script>
 
-</head>
+{{--    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=" async defer></script>--}}
+    </head>
 
 
 <!-- begin::Body -->
@@ -136,6 +137,8 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
+
+{{--<script src="{{ asset('js/google-maps.js') }}"></script>--}}
 
 {{--begin::Modals--}}
 @yield('modals')

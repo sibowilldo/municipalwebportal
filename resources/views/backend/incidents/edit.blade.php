@@ -7,6 +7,12 @@
 
 	<div class="row">
 		<div class="col-xl-8 offset-xl-2">
+            <div class="m-portlet m-portlet--mobile m-portlet--rounded">
+                <div class="m-portlet__body">
+                    <incident-edit></incident-edit>
+                </div>
+            </div>
+
 			<div class="m-portlet m-portlet--mobile  m-portlet--rounded">
 				<div class="m-portlet__head">
 					<div class="m-portlet__head-caption">
@@ -102,6 +108,7 @@
                                 $('#loader').css("visibility", "visible");
                             },
                             success:function(data) {
+                                console.log(data.data);
                                 $('select[name="type_id"]').empty();
                                 $.each(data.data, function(key, value){
                                     $('select[name="type_id"]').append('<option value="'+ key +'">' + value + '</option>');
@@ -116,7 +123,7 @@
                         $('select[name="type_id"]').empty();
                     }
                 })
-            }
+            };
 
             return {
                 init: function(){
@@ -176,7 +183,4 @@
             $('#delete_reason').restrictLength( $('#delete_reason-max-length') );
         });
 	</script>
-	<script src="{{ asset('js/google-maps.js') }}"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>
-
 @endsection

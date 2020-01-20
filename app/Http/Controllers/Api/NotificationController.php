@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use http\Client\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -29,7 +30,7 @@ class NotificationController extends Controller
     {
         $notification = Auth::user()->notifications->where('id', $id)->first();
         $notification?$notification->markAsRead():abort(404, 'Notification not found!');//Mark notification as read
-        return response()->json(['data' => $notification], 200);
+        return response()->json([$notification->data], 200);
     }
 
     /**

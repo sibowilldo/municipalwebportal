@@ -57,12 +57,14 @@ class IncidentUpdated extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'id' => $this->incident->id,
-            'title' => 'Incident Updated | '. $this->incident->reference,
-            'message'=> $this->message,
-            'name' => $this->incident->name,
-            'created_at' => $this->incident->created_at,
-            'updated_at' => $this->incident->updated_at
+            'notification' => [
+                'title' => 'Incident Updated | '. $this->incident->reference,
+                'message'=> $this->message,
+                'name' => $this->incident->name,
+                'created_at' => $this->incident->created_at,
+                'updated_at' => $this->incident->updated_at
+            ],
+            'incident' => new \App\Http\Resources\Incident($this->incident)
         ];
     }
 }

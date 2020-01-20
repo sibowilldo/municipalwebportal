@@ -1,1 +1,6 @@
-span.help-block.form-error{text-align:right;display:block;width:100%;padding-right:15px}
+span.help-block.form-error {
+    text-align: right;
+    display: block;
+    width: 100%;
+    padding-right: 15px;
+}

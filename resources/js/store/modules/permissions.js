@@ -10,7 +10,7 @@ const getters = {
 
 const actions = {
     async FETCH_PERMISSIONS ({ commit }){
-        const response = await axios.get('/api/permissions');
+        const response = await axios.get('/api/v1/permissions');
         commit('setPermissions', response.data.permissions);
     }
 };

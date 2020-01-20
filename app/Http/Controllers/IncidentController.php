@@ -81,7 +81,7 @@ class IncidentController extends Controller
      */
     public function create()
     {
-        return null;
+        return view('backend.incidents.create');
     }
 
     /**

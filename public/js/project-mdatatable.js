@@ -1,1 +1,90 @@
-const LoadDeleteFx={init:function(t,e){!function(t,e){t.preventDefault();var n=e.data("id"),o=e.data("url"),a=$('meta[name="csrf-token"]').attr("content");Swal.fire({title:"Are you sure?",text:"You may not be able to undo this!",type:"warning",showCancelButton:!0,confirmButtonColor:"#3085d6",cancelButtonColor:"#d33",confirmButtonText:"Yes, delete it!",preConfirm:function(){return new Promise(function(t){$.ajax({url:o,type:"delete",data:{id:n,_token:a}}).done(function(t){Swal.fire({title:"Deleted!",text:t.message,onClose:function(){window.location.href=t.url}})}).fail(function(){swal("Oops...","Something went wrong with ajax !","error")})})},allowOutsideClick:!1})}(t,e)}},TableElement={init:function(t,e){!function(t,e){var n=t.mDatatable({data:{saveState:{cookie:!1}},layout:{theme:"default",class:"",scroll:!0,height:550,footer:!1},rows:{autoHide:!0},sortable:!0,filterable:!1,pagination:!0,search:{input:$("#generalSearch")},columns:e}).on("click",".btn-delete",function(t){var e=$(this);LoadDeleteFx.init(t,e)});TableMethods.init(n)}(t,e)}};
+const LoadDeleteFx = (function(){
+    var deleteFx = function(ev, el){
+        ev.preventDefault();
+
+        var id = el.data('id');
+        var url = el.data('url');
+        var token = $('meta[name="csrf-token"]').attr('content');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You may not be able to undo this!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            preConfirm: function() {
+                return new Promise(function(resolve) {
+                    $.ajax({
+                        url: url,
+                        type: 'delete',
+                        data: {
+                            'id': id,
+                            '_token': token
+                        }
+                    })
+                        .done(function(response){
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: response.message,
+                                onClose: function() {
+                                    window.location.href = response.url;
+                                }
+                            });
+                        })
+                        .fail(function(){
+                            swal('Oops...', 'Something went wrong with ajax !', 'error');
+                        });
+                });
+            },
+            allowOutsideClick: false
+        });
+    }
+    return {
+        init: function(ev, el){
+            deleteFx(ev, el);
+        }
+    };
+}());
+
+const TableElement = function() {
+    var table = function(element, columns) {
+        var datatable = element.mDatatable({
+            data: {
+                saveState: {cookie: false}
+            },
+            layout: {
+                theme: 'default',
+                class: '',
+                scroll: true,
+                height: 550,
+                footer: false
+            },
+            rows: {
+                // auto hide columns, if rows overflow
+                autoHide: true,
+            },
+            sortable: true,
+            filterable: false,
+            pagination: true,
+            search: {
+                input: $('#generalSearch')
+            },
+            columns: columns,
+        }).on('click','.btn-delete' , function(ev){
+            var el = $(this);
+            LoadDeleteFx.init(ev, el);
+        });
+
+        TableMethods.init(datatable);
+
+    };
+
+    return {
+        //== Public functions
+        init: function(element, columns) {
+            // init permissions
+            table(element, columns);
+        },
+    };
+}();

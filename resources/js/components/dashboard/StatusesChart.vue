@@ -14,15 +14,14 @@
             </div>
         </div>
         <div class="m-portlet__body">
-            <div class="row align-items-center"  v-if="!dataFilled">
-                <div class="col" style="padding: 2.2rem;font-size: .8rem;">
-                    <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline m-alert--air alert alert-danger alert-dismissible fade show" role="alert">
-                        <div class="m-alert__icon">
-                            <i class="flaticon-exclamation-1"></i>
-                        </div>
-                        <div class="m-alert__text">
-                            <strong>No data to display!</strong><br> Once the data is available it will be displayed here.
-                        </div>
+            <div class="chart-no-data" role="alert" v-if="!dataFilled">
+                <div class="chart-no-data_content">
+                    <div class="chart-no-data__icon">
+                        <i class="flaticon-graphic"></i>
+                    </div>
+                    <div class="chart-no-data__text">
+                        <h3>No data to display!</h3>
+                        <p>Once the data is available it will be displayed here.</p>
                     </div>
                 </div>
             </div>
@@ -94,9 +93,33 @@
     }
 </script>
 
-<style>
+<style scoped>
     .small {
         max-width: 600px;
-        margin:  10px auto;
+        margin: 10px auto;
+    }
+    .chart-no-data {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(100% - 2.2rem - 2.2rem)
+    }
+    .chart-no-data__icon{
+        text-align: center;
+    }
+    .chart-no-data__icon i{
+        font-size: 12rem;
+        color: rgba(0,0,0,.1);
+        margin: 0 auto
+    }
+    .chart-no-data__text h3{
+        text-align: center;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        font-weight: 800;
+        color: #d50000;
+    }
+    .chart-no-data__text p{
+        text-align: center;
     }
 </style>

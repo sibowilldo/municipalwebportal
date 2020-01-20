@@ -71,19 +71,20 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
     Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
     Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
 
-    Route::prefix('api')->group(function (){
-        Route::get('incidents', 'IncidentController@jsonIndex');
-        Route::apiResource('roles', 'SPA\RoleController')->names([
-            'index' => 'spa.role.index',
-            'store' => 'spa.role.store',
-            'show' => 'spa.role.show',
-            'update' => 'spa.role.update',
-            'destroy' => 'spa.role.destroy'
-        ]);
-        Route::apiResource('permissions', 'SPA\PermissionController');
-        Route::get('system/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
-        Route::get('system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
-    });
+
+        Route::prefix('api/v1')->group(function (){
+            Route::get('incidents', 'IncidentController@jsonIndex');
+            Route::name('spa.')->group(function(){
+                Route::apiResource('roles', 'SPA\RoleController');
+                Route::apiResource('permissions', 'SPA\PermissionController');
+                Route::apiResource('incidents', 'SPA\IncidentController');
+                Route::apiResource('categories', 'SPA\CategoryController');
+                Route::apiResource('types', 'SPA\TypeController');
+                Route::apiResource('statuses', 'SPA\StatusController');
+            });
+            Route::get('system/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
+            Route::get('system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
+        });
     /**
      * Charts Controller
      */

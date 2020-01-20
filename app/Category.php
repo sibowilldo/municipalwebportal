@@ -32,12 +32,6 @@ class Category extends Model
         return $this->belongsToMany(Type::class);
     }
 
-    //A Category has one Incident
-    public function incidents()
-    {
-        return $this->belongsToMany(Incident::class);
-    }
-
     //A Category has one State Color
     public function state_color()
     {
