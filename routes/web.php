@@ -1,9 +1,14 @@
 <?php
+
+use App\Http\Resources\Incident as IncidentResource;
 use App\Incident;
 use App\Notifications\AccountActivate;
 use App\Status;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\IncidentUpdated;
+use Illuminate\Support\Str;
+use function MongoDB\BSON\toJSON;
 
 Auth::routes(['verify' => true, 'register' => false]);
 Route::get('password/success', 'Auth\ResetPasswordController@resetSuccess')->name('password.success');
@@ -13,20 +18,22 @@ Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallbac
 //
 
 Route::group(['middleware' => ['auth:web', 'verified']], function () {
+//
+//    Route::get('push', function () {
+//        return view('auth.passwords.success');
+//
+//        $incident = App\Incident::first();
+//        $user = $incident->user()->fullname;
+//        dd($user);
+//        Notification::send($incident, new IncidentUpdated($user, $incident, 'Another Notification Sent to no one'));
+//    });
 
-    Route::get('push', function () {
-        return view('auth.passwords.success');
-
-        $incident = App\Incident::first();
-        $user = $incident->user()->fullname;
-        dd($user);
-        Notification::send($incident, new IncidentUpdated($user, $incident, 'Another Notification Sent to no one'));
-    });
-
-    Route::get('notify', function () {
-        //send account activation notification
-        Auth::user()->notify(new AccountActivate(Auth::user()));
-    });
+//    Route::get('notify', function () {
+//        return Str::random();
+//        //send account activation notification
+////        Auth::user()->notify(new AccountActivate(Auth::user()));
+//
+//    });
 
 
     Route::get('/', 'HomeController@index')->name('dashboard');

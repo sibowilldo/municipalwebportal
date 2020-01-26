@@ -139,28 +139,33 @@
                 this.guard = event.target.value;
                 this.permissions = [];
             },
-            onSubmit(event) {
+            async onSubmit(event) {
                 let payload = {
                     name: this.name,
                     guard: this.guard,
                     permissions: this.permissions
                 };
-                this.isSubmitted = true;
-                this.$v.$touch();
-                if (!this.$v.permissions.$error) {
-                    this.ADD_ROLE(payload)
-                        .then(() => {
-                            this.serverErrors = JSON.parse(JSON.stringify(this.getErrors));
-                            if (this.getErrors.message) {
-                                this.hasServerErrors = true;
-                                setTimeout(() => {
-                                    this.hasServerErrors = false;
-                                }, 3500);
-                                return;
-                            }
-                            let redirectUrl = this.getRoles[this.getRoles.length - 1].links._index;
-                            window.location.replace(redirectUrl);
-                        });
+
+                try{
+                    this.isSubmitted = true;
+                    this.$v.$touch();
+                    if (!this.$v.permissions.$error) {
+                        await this.$store.dispatch('ADD_ROLE', payload)
+                            .then(() => {
+                                this.serverErrors = JSON.parse(JSON.stringify(this.getErrors));
+                                if (this.getErrors.message) {
+                                    this.hasServerErrors = true;
+                                    setTimeout(() => {
+                                        this.hasServerErrors = false;
+                                    }, 3500);
+                                    return;
+                                }
+                                let redirectUrl = this.getRoles[this.getRoles.length - 1].links._index;
+                                // window.location.replace(redirectUrl);
+                            });
+                    }
+                }catch (e) {
+
                 }
             }
 

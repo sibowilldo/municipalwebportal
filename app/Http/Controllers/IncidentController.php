@@ -14,6 +14,7 @@ use App\User;
 use App\WorkingGroup;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
@@ -47,9 +48,9 @@ class IncidentController extends Controller
         $incidents = Incident::take(-1);
         $total = count($incidents->get());
         $query = $incidents
-            ->skip(((int)$request->pagination['page']?:0) * ((int)$request->pagination['pages']?:0))
-            ->take($request->pagination['perpage']?:10)
-            ->orderBy($request->sort['field']?:'name',$request->sort['sort']?:'desc')
+            ->skip(((int)$request->pagination['page'] ?: 0) * ((int)$request->pagination['pages'] ?: 0))
+            ->take($request->pagination['perpage'] ?: 10)
+            ->orderBy($request->sort['field'] ?: 'name', $request->sort['sort'] ?: 'desc')
             ->get();
 
         if (!count($incidents->get())) {
@@ -88,8 +89,8 @@ class IncidentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param IncidentFormRequest $request
-     * @throws null
      * @return Response
+     * @throws null
      */
     public function store(IncidentFormRequest $request)
     {
@@ -126,8 +127,8 @@ class IncidentController extends Controller
     public function show(Incident $incident)
     {
         $histories = $incident->histories()->orderByDesc('created_at')->get();
-        $assigned_to = $incident->assignments()->latest('created_at')->first()?
-                        $incident->assignments()->latest('created_at')->first()->user:null;
+        $assigned_to = $incident->assignments()->latest('created_at')->first() ?
+            $incident->assignments()->latest('created_at')->first()->user : null;
 
         return view('backend.incidents.show', compact('incident', 'histories', 'assigned_to'));
     }
@@ -136,8 +137,8 @@ class IncidentController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Incident $incident
-     * @throws null
      * @return Response
+     * @throws null
      */
     public function edit(Incident $incident)
     {
@@ -154,8 +155,8 @@ class IncidentController extends Controller
      *
      * @param IncidentFormRequest $request
      * @param Incident $incident
-     * @throws null
      * @return Response
+     * @throws null
      */
     public function update(IncidentFormRequest $request, Incident $incident)
     {
@@ -171,11 +172,33 @@ class IncidentController extends Controller
     }
 
     /**
+     * @param Incident $incident
+     * @param User $user
+     * @param $update_reason
+     * @param string $account_number
+     * @return IncidentHistory
+     */
+    private function update_incident_history(Incident $incident, User $user, $update_reason, $account_number = '')
+    {
+        $current_status = $incident->histories()->latest('id')->first();
+
+        $incident_history = IncidentHistory::create([
+            'incident_id' => $incident->id,
+            'previous_status' => $current_status ? $current_status->status_id : $incident->status_id,
+            'status_id' => $incident->status_id,
+            'user_id' => $user->id,
+            'account_number' => $account_number,
+            'update_reason' => $update_reason]);
+
+        return $incident_history;
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param $incident
-     * @throws null
      * @return Response
+     * @throws null
      */
     public function destroy(Incident $incident, Request $request)
     {
@@ -207,6 +230,7 @@ class IncidentController extends Controller
             // Validate the value...
             // whereNotIn = Engineer cannot assign him/herself
             $engineers = User::role('engineer')->whereNotIn('id', [Auth::user()->id])->get();//todo: Add where Department is relative to incident
+//            dd($incident->assignments);
             return view('backend.engineers.list', compact('engineers', 'incident'));
         } catch (RoleDoesNotExist $e) {
             report($e);
@@ -249,15 +273,13 @@ class IncidentController extends Controller
         return view('backend.incidents.groups', compact('groups', 'incident'));
     }
 
-
-
     /**
      * Assign Engineer to Incident.
      *
      * @param Incident $incident
      * @param Request $request
+     * @return RedirectResponse
      * @throws null
-     * @return Response
      */
     public function assign(Incident $incident, Request $request)
     {
@@ -277,20 +299,21 @@ class IncidentController extends Controller
                 ->withInput();
         }
 
+        //Check Request is_group? True, call assign group method: False, call assign engineer method;
+
+
         $engineer = User::findOrFail($request->assigned_id);
         $status = Status::where('name', 'Assigned')->firstOrFail();
         $assigner = Auth::user();
         $date_now = Carbon::now();
 
         //Incident to Assignments table
-        $assignment = Assignment::create([
-            'user_id' => $engineer->id,
-            'assigner_id' => $assigner->id,
+        $assignment = new Assignment([
             'incident_id' => $incident->id,
             'instructions' => $request->instructions,
-            'executed_at' => null,
-            'due_at' => null]);
-
+            'assigner_id' => Auth::id(),
+        ]);
+        $engineer->assignments()->save($assignment);
         // update user status
         $engineer->status_id = $status->id;
         $engineer->saveOrFail();
@@ -305,27 +328,5 @@ class IncidentController extends Controller
         flash($engineer->fullname . ' was assigned.')->success();
 
         return redirect()->action('HomeController@index');
-    }
-
-    /**
-     * @param Incident $incident
-     * @param User $user
-     * @param $update_reason
-     * @param string $account_number
-     * @return IncidentHistory
-     */
-    private function update_incident_history(Incident $incident, User $user, $update_reason, $account_number='')
-    {
-        $current_status = $incident->histories()->latest('id')->first();
-
-        $incident_history = IncidentHistory::create([
-            'incident_id'  => $incident->id,
-            'previous_status'  => $current_status ? $current_status->status_id : $incident->status_id,
-            'status_id'  => $incident->status_id,
-            'user_id'  => $user->id,
-            'account_number'  => $account_number,
-            'update_reason'  => $update_reason]);
-
-        return $incident_history;
     }
 }

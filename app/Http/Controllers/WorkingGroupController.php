@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Incident;
 use App\User;
 use App\WorkingGroup;
 use Auth;
 use Carbon\Carbon;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class WorkingGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -28,21 +32,24 @@ class WorkingGroupController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
+        $incident=null;
+        if(request()->payload){
+            $incident = Incident::whereUuid(request()->payload)->first();
+        }
         $leaders = User::all();
 
-        $name = strtoupper(str_random(3)).' '.  Carbon::now()->format('Y/m/u/d');
-        return view('backend.working-groups.create', compact('leaders', 'name'));
+        return view('backend.working-groups.create', compact('leaders', 'incident'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -62,7 +69,7 @@ class WorkingGroupController extends Controller
      * Display the specified resource.
      *
      * @param  WorkingGroup $working_group
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(WorkingGroup $working_group)
     {
@@ -73,13 +80,21 @@ class WorkingGroupController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  WorkingGroup $working_group)
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(WorkingGroup $working_group)
     {
         $leaders = User::all();
+        $current_leader = null;
+        $group_users = $working_group->users;
+        foreach ($group_users as $user){
+            if($user->pivot->is_leader){
+                $current_leader = $user;
+                break ;
+            }
+        }
         $name = $working_group->name;
-        return view ('backend.working-groups.edit', compact('working_group', 'leaders', 'name'));
+        return view ('backend.working-groups.edit', compact('working_group', 'leaders', 'current_leader', 'name'));
     }
 
     /**
@@ -87,7 +102,7 @@ class WorkingGroupController extends Controller
      *
      * @param Request $request
      * @param  WorkingGroup $working_group
-     * @return Response
+     * @return RedirectResponse
      */
     public function update(Request $request, WorkingGroup $working_group)
     {
@@ -103,8 +118,8 @@ class WorkingGroupController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  WorkingGroup $working_group
+     * @return JsonResponse
      * @throws null
-     * @return Response
      */
     public function destroy(WorkingGroup $working_group)
     {
@@ -121,5 +136,10 @@ class WorkingGroupController extends Controller
             "message"=> $working_group->name . ' was deleted successfully',
             "url" => route('working-groups.index')
         ], 200);
+    }
+
+    public function assign(WorkingGroup $workingGroup, Incident $incident, Request $request)
+    {
+
     }
 }

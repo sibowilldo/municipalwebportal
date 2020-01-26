@@ -30,6 +30,7 @@ class Incident extends JsonResource
             'is_public' => $this->is_public,
             'created' => $this->created_at,
             'category' => new CategoryResource($this->type->categories->first()),
+            'type' => new TypeResource($this->type),
             'status' => new StatusResource($this->status),
             'users' => $this->users,
             'images' => $this->attachments,

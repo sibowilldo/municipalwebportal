@@ -3,6 +3,9 @@
 namespace App;
 
 use App\Helpers\Traits\FormatDates;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -52,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function assignments()
     {
-        return $this->hasMany(Assignment::class);
+        return $this->morphMany(Assignment::class, 'assignable');
     }
 
     /**
@@ -87,7 +90,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      *
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function otp()
     {
@@ -97,7 +100,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * A user has one Social Account Profile
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
     public function profile()
     {
@@ -107,7 +110,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * A user has one Status
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return BelongsTo
      */
     public function status()
     {

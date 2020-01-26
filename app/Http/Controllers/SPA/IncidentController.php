@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\IncidentFormRequest;
 use App\Http\Resources\Incident as IncidentResource;
 use App\Incident;
+use Auth;
+use Carbon\Carbon;
 use EloquentBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -20,7 +22,7 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        $incidents = EloquentBuilder::to(Incident::class, request()->except(['page', 'per_page']));
+        $incidents = EloquentBuilder::to(Incident::class, request()->except(['page', 'per_page']))->where('created_at', '<', Carbon::now());
         return IncidentResource::collection($incidents->paginate(10));
     }
 
@@ -32,18 +34,13 @@ class IncidentController extends Controller
      */
     public function store(IncidentFormRequest $request)
     {
-        $payload = [
-                "name" => "Trashed",
-                "description" => "Because I is lazy AF to type these 2 fields",
-                "location_description" => "39 Dales Ave, New Germany, Pinetown, 3620, South Africa",
-                "longitude" => "30.86103539999999",
-                "latitude" => "-29.8159511",
-                "category_id" => 2,
-                "type_id" => 2,
-                "status_id" => 7,
-                "suburb_id" => 0
-                ];
-        $incident = Incident::create($payload);
+        $user = null;
+        $incident = Incident::create($request->all());
+        //If incident is public or user opted to be notified about the incident
+
+        //ToDo: Get user information
+        //else
+        Auth::user()->incidents()->attach($incident, ['has_location' => true, 'has_attachment' => false, 'source_id' => 0]);
         return new IncidentResource($incident);
     }
 

@@ -18,6 +18,7 @@ class SortFilter implements Filter
     public function apply(Builder $builder, $value): Builder
     {
         $sorts = explode(',', $value);
+        $incidents = $builder;
         foreach ($sorts as $sort) {
             list($sortCol, $sortDir) = explode('|', $sort);
             $incidents = $builder->orderBy($sortCol, $sortDir);

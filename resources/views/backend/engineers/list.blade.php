@@ -82,7 +82,7 @@
                                                         <input type="radio" name="radio_engineers"  class="assigned-engineer"
                                                                data-id="{{ $engineer->id }}"
                                                                data-name="{{ $engineer->fullname }}"
-                                                                {{ $incident->assignments()->where('user_id', $engineer->id)->first() ? 'checked' : '' }}
+                                                                {{ $incident->has('assignments')->get() ? 'checked' : '' }}
                                                         >
                                                         <span></span>
                                                     </label>

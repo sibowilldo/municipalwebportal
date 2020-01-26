@@ -9,7 +9,7 @@ $factory->define(App\Category::class, function (Faker $faker) {
     $names = array ('Waste','Electricity','Water', 'Billing', 'Park', 'Road', 'Other');
 
     return [
-        'name' => $names[$count++],
+        'name' => $faker->unique()->randomElement($array= $names),
         'description' => $faker->realtext(50, 2),
         'is_active' => $faker->boolean,
         'state_color_id'=>$faker->randomElement($array = $colors),

@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Helpers\Traits\FormatDates;
 use Illuminate\Database\Eloquent\Model;
 
 class WorkingGroup extends Model
 {
+    use FormatDates;
     /**
      * The attributes that are mass assignable.
      *
@@ -30,5 +32,14 @@ class WorkingGroup extends Model
         return $this->belongsToMany(User::class)
                     ->withTimestamps()
                     ->withPivot('is_leader', 'instructions', 'assigner_id');
+    }
+
+    /**
+     *
+     *
+     */
+    public function assignments()
+    {
+        return $this->morphMany(Assignment::class, 'assignable');
     }
 }

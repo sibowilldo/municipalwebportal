@@ -18,10 +18,9 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'state_color_id' => $this->state_color->name,
+            'state_color' => strtolower($this->state_color->name),
             'is_active' => $this->is_active,
-            'created_at' => $this->created_at,
-            'types' => $this->types
+            'created_at' => $this->created_at
         ];
     }
 }

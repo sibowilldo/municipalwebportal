@@ -59,7 +59,7 @@
                                 <th data-field="Leader">{{ __('Leader') }}</th>
                                 <th data-field="# of Members">{{ __('# of Members') }}</th>
                                 <th data-field="Name">{{ __('Name') }}</th>
-                                <th data-field="Active">{{ __('Active') }}</th>
+                                <th data-field="Status">{{ __('Status') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
                                 <th data-field="Description">{{ __('Description') }}</th>
                             </tr>
@@ -88,10 +88,12 @@
                                     </td>
                                     <td>{{ $working_group->name }}</td>
                                     <td>
-                                        <i class="la {{ $working_group->is_active ? 'la-check' : 'la-close' }}"></i>
+                                        {{ $working_group->is_active ? 'Active' : 'Inactive' }}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill btn-danger btn-delete"  data-id="{{ $working_group->id }}" data-url="{{ route('working-groups.destroy', $working_group->id) }}"><i class="la la-trash-o"></i></button>
+                                        <button type="button" class="btn m-btn m-btn--hover-primary m-btn--icon m-btn--icon-only m-btn--pill btn-primary" title="Assign Group"><i class="la la-check"></i></button>
+                                        <button type="button" class="btn m-btn m-btn--hover-primary m-btn--icon m-btn--icon-only m-btn--pill"  title="Edit Group Details"><i class="la la-edit"></i></button>
+                                        <button type="button" class="btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill btn-delete"  data-id="{{ $working_group->id }}" data-url="{{ route('working-groups.destroy', $working_group->id) }}"><i class="la la-trash-o"></i></button>
                                     </td>
                                     <td>{{ $working_group->description }}</td>
                                 </tr>

@@ -17,7 +17,7 @@
                         <ul class="m-portlet__nav">
                             <li class="m-portlet__nav-item mr-3">
                                 <b-button
-                                    v-b-modal.report-incident
+                                    @click="onCreateIncident"
                                     variant="danger"
                                     class="m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                                     <span>
@@ -162,7 +162,8 @@
                 return  `<span class="m-badge m-badge--${ value.css_class } m-badge--wide shadow-sm"> ${ value.name } </span>`
             },
             categoryColumnFn: (value) => {
-                return  `<span class="m-badge  m-badge--dot shadow m-badge--${value.state_color_id.toLowerCase()} m-badge--wide"></span>
+                console.log(value);
+                return  `<span class="m-badge  m-badge--dot shadow m-badge--${value.state_color} m-badge--wide"></span>
                         &nbsp;<span class="m--font-bold">${value.name }</span>`
             },
             onPaginationData (paginationData) {
@@ -172,22 +173,28 @@
             onChangePage (page) {
                 this.$refs.vuetable.changePage(page)
             },
+            onCreateIncident(){
+                window.location.assign('/incidents/create')
+            },
             onAction (action, data, index) {
                 switch(action){
                     case 'assign-user':
                         console.log('assign user', data.name)
-
+                        window.location.assign(`/incidents/${data.id}/engineers`)
                         break;
                     case 'assign-specialist':
                         console.log('assign specialist', data.name)
+                        window.location.assign(`/incidents/${data.id}/specialists`)
 
                         break;
                     case 'assign-team':
                         console.log('assign team/group', data.name)
+                        window.location.assign(`/incidents/${data.id}/groups`)
 
                         break;
                     case 'view-item':
                         console.log('view details', data.name )
+                        window.location.assign(`/incidents/${data.id}`)
 
                         break;
                     default:

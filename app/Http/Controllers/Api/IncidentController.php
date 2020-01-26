@@ -159,7 +159,7 @@ class IncidentController extends Controller
             //get image from json as base64
             $origimage = Image::make($image['data']);
             //generate random name, jpg because all images will be saved as jpg
-            $imageName = time().str_random().".jpg";
+            $imageName = time().Str::random().".jpg";
 
             //resize the image if it's larger than 1920x1080 otherwise keep as is, set quality to about 75% and convert image to jpg
             $origimage->resize(1920, 1080, function($constr){

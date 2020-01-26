@@ -14,7 +14,7 @@ class Assignment extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'assigner_id','incident_id', 'instructions', 'is_active',
+        'user_id', 'assigner_id','incident_id', 'instructions', 'is_active', 'is_group',
         'executed_at', 'declined_at', 'completed_at', 'due_at'
     ];
 
@@ -31,23 +31,28 @@ class Assignment extends Model
      *
      * @var array
      */
-    protected  $casts = ['is_active' => 'boolean'];
+    protected  $casts = ['is_active' => 'boolean', 'is_group' => 'boolean'];
 
     //An Assignment belongs to one user
     public function assigner()
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo(User::class);
     }
 
     //An Assignment belongs to one user
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo(User::class);
     }
 
     //An Assignment belongs to one incident
     public function incident()
     {
-        return $this->belongsTo(Incident::class);
+        return $this->morphTo(Incident::class);
+    }
+
+    public function assignable()
+    {
+        return $this->morphTo();
     }
 }

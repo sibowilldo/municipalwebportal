@@ -1,11 +1,13 @@
 <?php
 namespace App;
+use App\Helpers\Traits\FormatDates;
 use Carbon\Carbon;
 use Laravel\Socialite\Contracts\Provider;
 use Spatie\Permission\Models\Role;
 
 class SocialAccountService
 {
+    use FormatDates;
     public function setOrGetUser(Provider $provider)
     {
         $providerUser = $provider->user();

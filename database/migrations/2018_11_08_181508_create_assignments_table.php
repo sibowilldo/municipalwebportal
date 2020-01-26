@@ -15,11 +15,12 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('assigner_id');
             $table->unsignedInteger('incident_id');
             $table->longText('instructions')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_group')->default(false);
+            $table->unsignedInteger('assigner_id');
+            $table->morphs('assignable');
             $table->timestamp('executed_at')->nullable();
             $table->timestamp('declined_at')->nullable();
             $table->timestamp('completed_at')->nullable();
@@ -27,12 +28,6 @@ class CreateAssignmentsTable extends Migration
 
             $table->timestamps();
 
-            $table->foreign('user_id')
-                ->references('id')->on('users')
-                ->onUpdate('cascade');
-            $table->foreign('assigner_id')
-                ->references('id')->on('users')
-                ->onUpdate('cascade');
             $table->foreign('incident_id')
                 ->references('id')->on('incidents')
                 ->onUpdate('cascade');

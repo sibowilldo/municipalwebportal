@@ -4,6 +4,8 @@ use App\Status;
 use App\User;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Str;
+
 class AdminSeeder extends Seeder
 {
     /**
@@ -27,7 +29,7 @@ class AdminSeeder extends Seeder
             'activation_token' => '',
             'last_loggedin_at' => null,
             'password' => bcrypt('admin123'), // secret
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
             'status_id' => $faker->randomElement($array = $statuses),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
@@ -42,7 +44,7 @@ class AdminSeeder extends Seeder
             'activation_token' => '',
             'last_loggedin_at' => null,
             'password' => bcrypt('admin123'), // secret
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
             'status_id' => $faker->randomElement($array = $statuses),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
@@ -57,7 +59,7 @@ class AdminSeeder extends Seeder
             'activation_token' => '',
             'last_loggedin_at' => null,
             'password' => bcrypt('admin123'), // secret
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
             'status_id' => $faker->randomElement($array = $statuses),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
@@ -72,7 +74,7 @@ class AdminSeeder extends Seeder
             'activation_token' => '',
             'last_loggedin_at' => null,
             'password' => bcrypt('admin123'), // secret
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
             'status_id' => $faker->randomElement($array = $statuses),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
@@ -87,7 +89,7 @@ class AdminSeeder extends Seeder
             'activation_token' => '',
             'last_loggedin_at' => null,
             'password' => bcrypt('admin123'), // secret
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
             'status_id' => $faker->randomElement($array = $statuses),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),
@@ -102,7 +104,7 @@ class AdminSeeder extends Seeder
             'activation_token' => '',
             'last_loggedin_at' => null,
             'password' => bcrypt('admin123'), // secret
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
             'status_id' => $faker->randomElement($array = $statuses),
             'created_at' => \Carbon\Carbon::now()->subDays(random_int(10,15)),
             'updated_at' => \Carbon\Carbon::now(),

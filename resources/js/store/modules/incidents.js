@@ -12,14 +12,15 @@ const getters = {
 
 const actions = {
     async FETCH_INCIDENTS ({ commit }){
-        const response = await axios.get('/api/v1/incidents');
-        commit('setIncidents', response.data.data);
+        await axios.get('/api/v1/incidents')
+            .then(response=>{
+                commit('setIncidents', response.data.data);
+            });
     },
-    SAVE_INCIDENT : async  (context, payload) => {
+    async SAVE_INCIDENT ({commit},payload){
         await axios.post('/api/v1/incidents', payload)
             .then(response => {
-                console.info('incidents.js', response.data.incident);
-                // context.commit('addIncident', response.data.incident)
+                commit('addIncident', response.data.data)
             })
             .catch(error => {
                 return Promise.reject(error);
@@ -30,7 +31,9 @@ const actions = {
 const mutations = {
     setIncidents: (state, incidents) => (state.incidents = incidents),
     setIncidentErrors: (state, error) => (state.errors = error),
-    addIncident: (state, incident) => ( state.incidents.push(incident))
+    addIncident: (state, incident) => {
+        state.incidents.push(incident)
+    }
 };
 
 export default {

@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Helpers\Traits\FormatDates;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SocialAccount extends Model
 {
+    use FormatDates;
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $fillable = ['user_id', 'provider_user_id', 'provider'];

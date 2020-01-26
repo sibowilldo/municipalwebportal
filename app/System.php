@@ -2,11 +2,12 @@
 
 namespace App;
 
+use App\Helpers\Traits\FormatDates;
 use Illuminate\Database\Eloquent\Model;
 
 class System extends Model
 {
-
+use FormatDates;
     /**
      * The array of $state_colors.
      *

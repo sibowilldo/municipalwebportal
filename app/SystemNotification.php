@@ -3,10 +3,12 @@
 namespace App;
 
 use App\Events\SystemNotificationReadEvent;
+use App\Helpers\Traits\FormatDates;
 use Illuminate\Database\Eloquent\Model;
 
 class SystemNotification extends Model
 {
+    use FormatDates;
 
     /**
      * The attributes that are mass assignable.

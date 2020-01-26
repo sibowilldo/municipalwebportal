@@ -8,6 +8,7 @@ use App\User;
 use Auth;
 
 //Importing laravel-permission models
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -70,8 +71,8 @@ class UserController extends Controller
         );
 
         //Randomly generate a password and hash it immediately
-        $request['password'] = bcrypt(str_random(10));
-        $request['activation_token'] = str_random(25);
+        $request['password'] = bcrypt(Str::random(10));
+        $request['activation_token'] = Str::random(25);
 
         $user = User::create($request->only('firstname', 'lastname', 'email', 'contactnumber', 'status_id', 'password', 'activation_token')); //Retrieving only the email and password data
 

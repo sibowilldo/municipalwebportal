@@ -19,6 +19,7 @@ import VueEvents from 'vue-events'
 import 'vue-good-table/dist/vue-good-table.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '../assets/css/app.css'
 
 /**
  * Import the store

@@ -56,13 +56,12 @@
                 <div class="m-portlet__head-tools">
                     <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link active" data-toggle="tab" href="#user_profile_tab" role="tab">
-                                <i class="flaticon-share m--hide"></i>
+                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#user_profile_tab" role="tab">
                                 Update Profile
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#activity_tab" role="tab">
+                            <a class="nav-link m-tabs__link active" data-toggle="tab" href="#activity_tab" role="tab">
                                 Incidents Logged
                             </a>
                         </li>
@@ -200,7 +199,6 @@
                             @foreach($user->incidents as $incident)
                                 <li>
                                     <a href="{{ route('incidents.show', $incident->id) }}">{{ $incident->name }}</a>
-
                                 </li>
                             @endforeach
                         </ul>
