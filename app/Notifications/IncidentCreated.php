@@ -59,7 +59,8 @@ class IncidentCreated extends Notification implements ShouldQueue
     {
         return [
             'notification' => [
-                'title' => 'Incident Created | '. $this->incident->reference,
+                'reference' => $this->incident->reference,
+                'title' => 'Incident Created',
                 'message'=> $this->message,
                 'name' => $this->incident->name,
                 'created_at' => $this->incident->created_at,
