@@ -27,12 +27,8 @@
 
 				<div class="m-portlet__foot m-portlet__foot--fit">
 					<div class="m-form__actions m-form__actions--solid">
-						<div class="row">
-							<div class="col-md-10 offset-md-2">
-								<button type="submit" class="btn btn-success m-btn--pill m-btn--air">Add Working Group</button>
-								<button type="reset" class="btn btn-secondary m-btn--pill m-btn--air">Reset Form</button>
-							</div>
-						</div>
+                        <button type="reset" class="btn m-btn--pill btn-light  m-btn pull-left m-btn--custom">Reset Form</button>
+                        <button type="submit" class="btn btn-success m-btn--pill pull-right m-btn--icon m-btn--custom"><span><i class="la la-check"></i> <span>Save Working Group</span></span></button>
 					</div>
 				</div>
 				{!! Form::close() !!}

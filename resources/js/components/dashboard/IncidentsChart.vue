@@ -85,7 +85,7 @@
                     },
                     elements: {
                         line: {
-                            tension: 0,
+                            tension: 0.4,
                             borderWidth: 0
                         },
                         point: {

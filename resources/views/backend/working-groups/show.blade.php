@@ -8,7 +8,7 @@
 
     <div class="row">
         <div class="col-xl-8 offset-xl-2">
-            <div class="m-portlet m-portlet--mobile ">
+            <div class="m-portlet m-portlet--mobile m-form m-form--fit">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
@@ -19,6 +19,40 @@
                     </div>
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
+                                <a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill m-btn btn-outline-dark m-btn--hover-dark">
+                                    Quick Actions
+                                </a>
+                                <div class="m-dropdown__wrapper">
+                                    <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                                    <div class="m-dropdown__inner">
+                                        <div class="m-dropdown__body">
+                                            <div class="m-dropdown__content">
+                                                <ul class="m-nav">
+                                                    <li class="m-nav__section m-nav__section--first">
+                                                        <span class="m-nav__section-text">Available Actions</span>
+                                                    </li>
+                                                    @if($working_group->users()->count() < 6)
+                                                    <li class="m-nav__item">
+                                                        <a href="{{ route('working-group.list', $working_group->id) }}" class="m-nav__link">
+                                                            <i class="m-nav__link-icon la la-user-plus"></i>
+                                                            <span class="m-nav__link-text">Assign Engineers</span>
+                                                        </a>
+                                                    </li>
+                                                    @else
+                                                        <li class="m-nav__item">
+                                                            <a href="#" class="m-nav__link">
+                                                                <i class="m-nav__link-icon la la-user-plus"></i>
+                                                                <span class="m-nav__link-text">Maximum # of Engineers reached for this group</span>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -66,8 +100,8 @@
                                         <div class="m-list-timeline__items">
                                             @foreach($working_group->users as $user)
                                                     <div class="m-list-timeline__item">
-                                                        <span class="m-list-timeline__badge m-list-timeline__badge--success"></span>
-                                                        <span class="m-list-timeline__icon fa fa-user{{ $user->pivot->is_leader ? '-tie':'' }}"></span>
+                                                        <span class="m-list-timeline__badge m-list-timeline__badge--{{ $user->pivot->is_leader ? 'success':'warning' }}"></span>
+                                                        <span class="m-list-timeline__icon la la-user{{ $user->pivot->is_leader ? '-secret':'' }}"></span>
                                                         <span class="m-list-timeline__text">{{$user->fullname}}</span>
                                                         <span class="m-list-timeline__time">{{ $user->pivot->is_leader ? 'Leader':'' }}</span>
                                                     </div>
@@ -77,11 +111,12 @@
                                     @endif
                             </span>
                         </div>
-                        <div class="m-widget13__action m--align-right">
-                            <a href="{{ route('working-groups.edit', $working_group->id) }}" class="m-widget__details  btn m-btn--pill  btn-accent">Edit Details</a>
-                            <button type="button" class="btn m-btn--pill btn-danger btn-delete"  data-id="{{ $working_group->id }}" data-url="{{ route('working-groups.destroy', $working_group->id) }}">Remove</button>
-                        </div>
                     </div>
+                </div>
+                <div class="m-form__actions m-form__actions--solid">
+                    <button type="button" class="btn m-btn--pill btn-delete btn-light btn-outline text-danger m-btn--custom"  data-id="{{ $working_group->id }}" data-url="{{ route('working-groups.destroy', $working_group->id) }}">Remove</button>
+                    <a href="{{ route('working-groups.edit', $working_group->id) }}" class="m-widget__details  btn m-btn--pill btn-success pull-right m-btn--custom m-btn--icon">
+                        <span><i class="la la-pencil-square"></i><span>Edit Details</span></span></a>
                 </div>
             </div>
         </div>
@@ -103,7 +138,7 @@
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
+                    cancelButtonClass: "btn btn-light m-btn m-btn--custom",
                     confirmButtonText: 'Yes, delete it!',
                     preConfirm: function() {
                         return new Promise(function(resolve) {

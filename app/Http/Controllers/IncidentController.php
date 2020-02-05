@@ -14,6 +14,7 @@ use App\User;
 use App\WorkingGroup;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -128,8 +129,7 @@ class IncidentController extends Controller
     {
         $histories = $incident->histories()->orderByDesc('created_at')->get();
         $assigned_to = $incident->assignments()->latest('created_at')->first() ?
-            $incident->assignments()->latest('created_at')->first()->user : null;
-
+            $incident->assignments()->latest('created_at')->first()->assignable : null;
         return view('backend.incidents.show', compact('incident', 'histories', 'assigned_to'));
     }
 
@@ -217,6 +217,7 @@ class IncidentController extends Controller
     }
 
     /**
+     * GET: incidents/{incident}/engineers/
      * List Available Engineers.
      *
      *
@@ -230,7 +231,6 @@ class IncidentController extends Controller
             // Validate the value...
             // whereNotIn = Engineer cannot assign him/herself
             $engineers = User::role('engineer')->whereNotIn('id', [Auth::user()->id])->get();//todo: Add where Department is relative to incident
-//            dd($incident->assignments);
             return view('backend.engineers.list', compact('engineers', 'incident'));
         } catch (RoleDoesNotExist $e) {
             report($e);
@@ -239,6 +239,7 @@ class IncidentController extends Controller
     }
 
     /**
+     * GET: incidents/{incident}/specialists/
      * List Available Specialist.
      *
      *
@@ -260,6 +261,7 @@ class IncidentController extends Controller
     }
 
     /**
+     * GET: incidents/{incident}/groups/
      * List Available Working Groups.
      *
      *
@@ -269,11 +271,13 @@ class IncidentController extends Controller
      */
     public function groups(Incident $incident)
     {
-        $groups = WorkingGroup::all(); //todo: Add where Department is relative to incident
-        return view('backend.incidents.groups', compact('groups', 'incident'));
+        $assigned_group = $incident->assignments()->where('is_group', true)->latest('created_at')->first()?:null;
+        $groups = WorkingGroup::get(); //todo: Add where Department is relative to incident
+        return view('backend.incidents.groups', compact('groups', 'incident', 'assigned_group'));
     }
 
     /**
+     * POST: incidents/{incident}/assign
      * Assign Engineer to Incident.
      *
      * @param Incident $incident
@@ -292,40 +296,45 @@ class IncidentController extends Controller
                 'instructions.required' => 'The Instructions Field is required.',
                 'assigned_id.required' => 'Please select an Engineer, Repairman or Specialist from the list.',
             ]);
-
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
 
-        //Check Request is_group? True, call assign group method: False, call assign engineer method;
-
-
-        $engineer = User::findOrFail($request->assigned_id);
-        $status = Status::where('name', 'Assigned')->firstOrFail();
         $assigner = Auth::user();
+        $status = Status::where('name', 'Assigned')->firstOrFail();
         $date_now = Carbon::now();
+
+        //check request->is_group ? true: get group object;
+        if ($request->is_group){
+            $assignable = WorkingGroup::findOrfail($request->assigned_id);
+            $assignable_name = $assignable->name;
+        }else{// false: get user object
+            $assignable = User::whereUuid($request->assigned_id);
+            $assignable_name = $assignable->fullname;
+        }
 
         //Incident to Assignments table
         $assignment = new Assignment([
             'incident_id' => $incident->id,
             'instructions' => $request->instructions,
-            'assigner_id' => Auth::id(),
+            'assigner_id' => $assigner->id
         ]);
-        $engineer->assignments()->save($assignment);
+
+        $assignable->assignments()->save($assignment);
         // update user status
-        $engineer->status_id = $status->id;
-        $engineer->saveOrFail();
+        $assignable->status_id = $status->id;
+        $assignable->saveOrFail();
 
         //Add Incident to IncidentHistory table
-        $this->update_incident_history($incident, Auth::user(), "[Assigned {$date_now}] $engineer->fullname was assigned.");
+        $this->update_incident_history($incident, $assigner, "[Assigned {$date_now}] $assignable_name was assigned.");
 
         // update incident status
         $incident->status_id = $status->id;
         $incident->saveOrFail();
 
-        flash($engineer->fullname . ' was assigned.')->success();
+        flash("$assignable_name was assigned.")->success();
 
         return redirect()->action('HomeController@index');
     }

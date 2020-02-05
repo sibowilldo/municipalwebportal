@@ -1,81 +1,185 @@
 <template>
-    <form @submit.prevent="" class="m-form m-form--fit m-form--label-align-right m-form--states">
-        <div class="form-group m-form__group">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" class="" :class="this.styles.inputText.css"/>
-        </div>
-        <div class="form-group m-form__group">
-            <label for="description">Description:</label>
-            <textarea name="description" id="description" cols="30" rows="10" class="" :class="this.styles.inputText.css"></textarea>
-        </div>
-        <div class="form-group m-form__group">
-            <div class="mb-3">
-                <label for="searchMapInput">Search Location</label>
-                <gmap-autocomplete class="m-input form-control mb-3" @place_changed="setPlace" :options="autocompleteOptions">
-                </gmap-autocomplete>
-                <GmapMap
-                    :center="marker.position"
-                    :zoom="15"
-                    style="width: 100%; height: 300px"
-                    ref="mapRef"
-                >
-                    <GmapMarker
-                        :position="marker.position"
-                        :clickable="true"
-                        :draggable="true"
-                        @click="center=marker.position"
-                    />
-                </GmapMap>
-            </div>
-        </div>
-        <div class="form-group m-form__group">
-            <label for="location_description">Location Description:</label>
-            <input type="text" name="location_description" id="location_description" class="" :class="this.styles.inputText.css"/>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group m-form__group">
-                    <label for="longitude">Longitude:</label>
-                    <input type="text" name="longitude" id="longitude" class="" :class="this.styles.inputText.css"/>
+    <b-form @submit.stop.prevent="" class="m-form">
+        <div class="m-portlet__body">
+            <b-form-group label="Visibility:" label-for="is_public">
+                <b-form-radio-group
+                    id="btn-radios-2"
+                    v-model="form.is_public"
+                    :options="[{'text':'Public', 'value':true},{'text':'Private','value':false}]"
+                    buttons
+                    button-variant="outline-dark"
+                    name="is_public"/>
+            </b-form-group>
+            <b-form-group label="Name:" label-for="name">
+                <b-form-input id="name" size="lg" type="text" v-model.trim="form.name"
+                              :state="validateInput('name')">
+                </b-form-input>
+                <b-form-invalid-feedback
+                    id="name-live-feedback"
+                >Name is a required field and must be min of 3 and max of 100 characters.
+                </b-form-invalid-feedback>
+            </b-form-group>
+            <b-form-group label="Description:" label-for="description">
+                <b-form-textarea id="description" max-rows="6"
+                                 rows="6" v-model.trim="form.description"
+                                 :state="validateInput('description')">
+                </b-form-textarea>
+                <b-form-invalid-feedback
+                    id="description-live-feedback"
+                >Description is a required field and must be min of 10 and max of 500 characters.
+                </b-form-invalid-feedback>
+            </b-form-group>
+            <div class="form-group m-form__group">
+                <div class="mb-3">
+                    <label for="searchMapInput">Search Location</label>
+                    <gmap-autocomplete :options="autocompleteOptions" @place_changed="setPlace"
+                                       class="m-input form-control mb-3 form-control-lg">
+                    </gmap-autocomplete>
+                    <GmapMap
+                        :center="marker.position"
+                        :zoom="15"
+                        ref="mapRef"
+                        style="width: 100%; height: 300px"
+                    >
+                        <GmapMarker
+                            :clickable="true"
+                            :draggable="true"
+                            :position="marker.position"
+                            @click="center=marker.position"
+                        />
+                    </GmapMap>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group m-form__group">
-                    <label for="latitude">Latitude:</label>
-                    <input type="text" name="latitude" id="latitude" class="" :class="this.styles.inputText.css"/>
+            <b-form-group label="Location Description:" label-for="location_description">
+                <b-form-input id="location_description" size="lg"
+                              :state="validateInput('location_description')"
+                              type="text" v-model.trim="form.location_description">
+                </b-form-input>
+                <b-form-invalid-feedback
+                    id="location-description-live-feedback"
+                >Location Description is a required field and must be min of 10 and max of 255 characters.
+                </b-form-invalid-feedback>
+            </b-form-group>
+            <b-row>
+                <b-col>
+                    <b-form-group label="Longitude:" label-for="longitude">
+                        <b-form-input id="longitude" size="lg" type="text"
+                                      :state="validateInput('longitude')"
+                                      v-model.trim="form.longitude">
+                        </b-form-input>
+                        <b-form-invalid-feedback
+                            id="longitude-live-feedback"
+                        >Longitude is a required .
+                        </b-form-invalid-feedback>
+                    </b-form-group>
+                </b-col>
+                <b-col>
+                    <b-form-group label="Latitude:" label-for="latitude">
+                        <b-form-input id="latitude" size="lg" type="text" v-model.trim="form.latitude"
+                                      :state="validateInput('latitude')">
+                        </b-form-input>
+                        <b-form-invalid-feedback
+                            id="latitude-live-feedback"
+                        >Latitude is a required field.
+                        </b-form-invalid-feedback>
+                    </b-form-group>
+                </b-col>
+            </b-row>
+            <b-form-group label="Category:" label-for="category_id" :state="validateInput('category')">
+                <multiselect label="name" placeholder="Select a category" track-by="id"
+                             v-model.trim="form.category"
+                             :close-on-select="true" :options="this.categories" :searchable="true"
+                             :show-labels="true"
+                             @select="onSelectedCategory"
+                             @remove="onRemoveCategory">
+                </multiselect>
+            </b-form-group>
+            <b-form-group label="Type:" label-for="type_id" :state="validateInput('type')">
+                <multiselect :close-on-select="true" :options="this.types" :searchable="true"
+                             :show-labels="true"
+                             label="name" placeholder="Select a type" track-by="id"
+                             v-model.trim="form.type" :disabled="this.form.category==null"/>
+            </b-form-group>
+            <b-form-group label="Status:" label-for="status_id" :state="validateInput('status')">
+                <multiselect :close-on-select="true" :options="this.statuses" :searchable="true"
+                             :show-labels="true"
+                             label="name" placeholder="Select a status" track-by="id"
+                             v-model.trim="form.status"/>
+            </b-form-group>
+        </div>
+        <div class="m-alert m-alert--icon alert alert-danger m-alert--square mb-0" role="alert"
+             v-if="this.errors">
+            <div class="m-alert__icon">
+                <i class="la la-warning"/>
+            </div>
+            <div class="m-alert__text">
+                <strong>Oh snap! </strong> {{ this.errors.message }}
+                <div v-for="error in this.errors.errors">
+                    <span> {{ error[0]}}</span>
                 </div>
             </div>
         </div>
-        <div class="form-group m-form__group m--hide">
-            <label for="suburb_id">Latitude:</label>
-            <input type="hidden" name="suburb_id" id="suburb_id" class="" :class="this.styles.inputText.css"/>
+        <div class="m-alert m-alert--icon alert alert-danger m-alert--square mb-0" role="alert"
+             v-if="this.$v.form.$anyError">
+            <div class="m-alert__icon">
+                <i class="la la-warning"/>
+            </div>
+            <div class="m-alert__text">
+                <strong>Invalid Form Inputs! </strong> Please check that all fields were filled correctly.
+            </div>
         </div>
-        <div class="form-group m-form__group">
-            <label for="category">Categories:</label>
-            <multiselect v-model="form.category" :options="categories" :searchable="true" :close-on-select="true" :show-labels="true" placeholder="Select a category"></multiselect>
+        <div class="m-portlet__foot m-portlet__foot--fit">
+            <div class="m-form__actions m-form__actions--solid">
+                <b-row>
+                    <b-col>
+                        <button class="btn m-btn--pill btn-light  m-btn pull-left" @click.prevent="onReset"
+                                type="button"> Clear Form
+                        </button>
+                        <button class="btn btn-success m-btn--pill m-btn--icon pull-right m-btn--air"
+                                type="submit"
+                                :disabled="(this.form.type == null || this.form.category == null || this.form.status == null)">
+                                        <span>
+                                        <i class="la la-check"/>
+                                        <span>Save Incident</span>
+                                    </span></button>
+                    </b-col>
+                </b-row>
+            </div>
         </div>
-        <div class="form-group m-form__group">
-            <label for="types">Types:</label>
-            <multiselect v-model="form.type" :options="types" :searchable="true" :close-on-select="true" :show-labels="true" placeholder="Select a type"></multiselect>
-        </div>
-        <div class="form-group m-form__group">
-            <label for="status_id">Statuses:</label>
-            <multiselect v-model="form.status" :options="this.statuses" label="name" track-by="id" :searchable="true" :close-on-select="true" :show-labels="true" placeholder="Select a status"></multiselect>
-        </div>
-    </form>
+    </b-form>
 </template>
 
 <script>
+    import Loading from 'vue-loading-overlay';
     import {Multiselect} from "vue-multiselect";
-    import { mapGetters, mapActions } from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
+    import {maxLength, minLength, required} from 'vuelidate/lib/validators';
+    import moment from "moment";
 
     export default {
         name: "incident-edit",
         components: {
             'multiselect': Multiselect,
+            Loading
+        },
+        validations: {
+            form: {
+                name: {required, maxLength: maxLength(100), minLength: minLength(3)},
+                description: {required, maxLength: maxLength(500)},
+                location_description: {required, maxLength: maxLength(255)},
+                latitude: {required, maxLength: maxLength(20)},
+                longitude: {required, maxLength: maxLength(20)},
+                category: {required},
+                type: {required},
+                status: {required}
+            }
         },
         data() {
             return {
+                isLoading: false,
+                isSubmitted: false,
+                types: [],
+                errors: null,
                 autocompleteOptions: {
                     componentRestrictions: {
                         country: [
@@ -84,20 +188,26 @@
                     },
                 },
                 marker: {
-                    position:{
+                    position: {
                         lat: -29.84790876,
                         lng: 31.01342899
                     }
                 },
-                form: {
-                    category: "",
-                    type:"",
-                    status: {id: 1, name: "Accepted"}
+                overlay: {
+                    backgroundColor: "#000",
+                    color: "#5867dd",
+                    loader: "dots"
                 },
-                styles:{
-                    inputText: {
-                        css: "form-control m-input"
-                    }
+                form: {
+                    is_public: true,
+                    name: 'Uncovered Manhole',
+                    description: 'Got no reason to stray too far, \'cause it\'s all right here in my own backyard! This is a Burger King town, it\'s made just for me! This is a Burger King town, we know how burgers should be! Right up the road, left at the sign.',
+                    location_description: '176 Blamey Rd, Montclair, Durban, 4000',
+                    longitude: '30.3453854888',
+                    latitude: '-29.49203969082',
+                    category: null,
+                    type: null,
+                    status: null
                 }
             }
         },
@@ -105,13 +215,16 @@
             ...mapGetters({
                 statuses: 'getStatuses',
                 categories: 'getCategories',
-                types: 'getTypes'
+                incidents: 'getIncidents',
             })
         },
         methods: {
-            ...mapActions(['FETCH_STATUSES', 'FETCH_CATEGORIES', 'FETCH_TYPES']),
+            ...mapActions(['FETCH_STATUSES', 'FETCH_CATEGORIES', 'SAVE_INCIDENT']),
+            validateInput(name) {
+                const {$dirty, $error} = this.$v.form[name];
+                return $dirty ? !$error : null;
+            },
             setPlace(place) {
-                console.log(place)
                 this.place = place;
                 this.usePlace(this.place);
             },
@@ -129,8 +242,87 @@
                             lng: place.geometry.location.lng(),
                         })
                     });
+                    this.form.location_description = place.formatted_address;
+                    this.form.longitude = place.geometry.location.lng();
+                    this.form.latitude = place.geometry.location.lat();
                     this.place = null;
                 }
+            },
+            onSelectedCategory(data, id) {
+                this.types = JSON.parse(JSON.stringify(data.types));
+            },
+            onRemoveCategory() {
+                this.types = [];
+                this.form.type_id = null;
+            },
+            async onSubmitIncident() {
+                this.isSubmitted = true;
+                this.$v.form.$touch();
+                if (this.$v.form.$error) {
+                    return;
+                }
+                try {
+                    this.isLoading = true;
+                    let payload = {
+                        reference: moment().unix(),
+                        name: this.form.name,
+                        description: this.form.description,
+                        location_description: this.form.location_description,
+                        longitude: this.form.longitude.toString(),
+                        latitude: this.form.latitude.toString(),
+                        category_id: this.form.category.id,
+                        type_id: this.form.type.id,
+                        status_id: this.form.status.id,
+                        suburb_id: 0,
+                        is_public: this.form.is_public
+                    };
+                    await axios.post('/api/v1/incidents', payload)
+                        .then(response => {
+                            let incident = response.data.data;
+                            this.$store.commit('addIncident',incident)
+                            this.$swal({
+                                icon: 'success',
+                                title: 'Success',
+                                text:  'The incident was logged successfully!',
+                                timer: 5000,
+                                toast: true,
+                                timerProgressBar: true,
+                                position: 'top-end'
+                            }).then(results=>{
+                                this.isLoading = false;
+                                window.location.assign(incident.links._self);
+                            })
+                        })
+                        .catch(error => {
+                            return Promise.reject(error);
+                        });
+                } catch (e) {
+                    this.errors = e.response.data;
+                }
+            },
+            onReset() {
+                // Reset form values
+                this.form = {
+                    name: '',
+                    description: '',
+                    location_description: '',
+                    longitude: '',
+                    latitude: '',
+                    category: null,
+                    type: null,
+                    status: null,
+                    is_public: true
+                };
+            },
+            onLaunchSwal(){
+                this.$swal({
+                    icon: 'success',
+                    title: 'Yeah, Fine',
+                    text:  'It\'s Done',
+                    timer: 5000,
+                    toast: true,
+                    position: 'top-end'
+                })
             }
         },
         mounted() {

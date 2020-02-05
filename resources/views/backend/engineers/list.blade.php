@@ -80,7 +80,7 @@
                                                 <span class="m-switch m-switch--outline m-switch--icon m-switch--info">
                                                     <label>
                                                         <input type="radio" name="radio_engineers"  class="assigned-engineer"
-                                                               data-id="{{ $engineer->id }}"
+                                                               data-id="{{ $engineer->uuid }}"
                                                                data-name="{{ $engineer->fullname }}"
                                                                 {{ $incident->has('assignments')->get() ? 'checked' : '' }}
                                                         >

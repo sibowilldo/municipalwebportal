@@ -33,7 +33,8 @@
                                     <div class="form-group m-form__group row align-items-center">
                                         <div class="col-md-8">
                                             <div class="m-input-icon m-input-icon--left">
-                                                <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
+                                                <input type="text" class="form-control m-input" placeholder="Search..."
+                                                       id="generalSearch">
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
                                                 <span><i class="la la-search"></i></span>
                                             </span>
@@ -42,7 +43,8 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a href="{{ route('working-groups.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                    <a href="{{ route('working-groups.create') }}"
+                                       class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                                     <span>
                                         <i class="la la-plus"></i>
                                         <span>{{ __('Create New Working Group') }}</span>
@@ -58,9 +60,10 @@
                             <tr>
                                 <th data-field="id">{{ __('#') }}</th>
                                 <th data-field="Name">{{ __('Name') }}</th>
-                                <th data-field="Active">{{ __('Active') }}</th>
+                                <th data-field="State">{{ __(' State') }}</th>
                                 <th data-field="Leader">{{ __('Leader') }}</th>
-                                <th data-field="Actions">{{ __('Actions') }}</th>
+                                <th data-field="NoOfMembers">{{ __('# of Members') }}</th>
+                                <th data-field="Actions">{{ __('Quick Actions') }}</th>
                                 <th data-field="Description">{{ __('Description') }}</th>
                             </tr>
                             </thead>
@@ -70,16 +73,41 @@
                                     <td>{{ $working_group->id }}</td>
                                     <td>{{ $working_group->name }}</td>
                                     <td>
-                                        <i class="la {{ $working_group->is_active ? 'la-check' : 'la-close' }}"></i>
+                                        <span>
+
+                                        <span
+                                            class="m-badge  m-badge--dot shadow m-badge--{{ $working_group->is_active ? 'success' : 'light' }} m-badge--wide"></span>
+                                        &nbsp;<span class="m--font-bold">{{ $working_group->is_active ? 'Active' : 'Inactive' }}</span>
+                                        </span>
+
                                     </td>
                                     <td>
                                         {{ $working_group->users()->where('is_leader', true)->first() ? $working_group->users()->where('is_leader', true)->first()->fullname:'No Leader Assigned' }}
                                     </td>
                                     <td>
-                                        <a href="{{ route('working-groups.edit', $working_group->id) }}" data-toggle="m-tooltip" title="Edit Working Group" data-placement="left" data-original-title="Edit Working Group" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-edit"></i></a>
-                                        <a href="{{ route('working-groups.show', $working_group->id) }}" data-toggle="m-tooltip" title="View Working Group" data-placement="left" data-original-title="View Working Group" class="m-portlet__nav-link btn m-btn m-btn--hover-primary m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-eye"></i></a>
-                                        <button type="button" class="btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill btn-danger btn-delete"  data-id="{{ $working_group->id }}" data-url="{{ route('working-groups.destroy', $working_group->id) }}"><i class="la la-trash-o"></i></button>
-
+                                        {{ $working_group->users->count() }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('working-group.list', $working_group->id) }}"
+                                           data-toggle="m-tooltip" title="Assign Engineers" data-placement="left"
+                                           data-original-title="Assign Engineers"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                class="la la-user-plus"></i></a>
+                                        <a href="{{ route('working-groups.edit', $working_group->id) }}"
+                                           data-toggle="m-tooltip" title="Edit Working Group" data-placement="left"
+                                           data-original-title="Edit Working Group"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                class="la la-edit"></i></a>
+                                        <a href="{{ route('working-groups.show', $working_group->id) }}"
+                                           data-toggle="m-tooltip" title="View Working Group" data-placement="left"
+                                           data-original-title="View Working Group"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-primary m-btn--icon m-btn--icon-only m-btn--pill"><i
+                                                class="la la-eye"></i></a>
+                                        <button type="button"
+                                                class="btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill btn-delete"
+                                                data-id="{{ $working_group->id }}"
+                                                data-url="{{ route('working-groups.destroy', $working_group->id) }}"><i
+                                                class="la la-trash-o"></i></button>
                                     </td>
                                     <td>{{ $working_group->description }}</td>
                                 </tr>
@@ -99,9 +127,9 @@
 @section('js')
     {{ Html::script('js/project-mdatatable.js') }}
     <script>
-        const TableMethods = function(){
-            return{
-                init:function(datatable){
+        const TableMethods = function () {
+            return {
+                init: function (datatable) {
 
                 }
             }
@@ -120,18 +148,25 @@
                 width: 200
             },
             {
-                field: 'Active',
-                title: 'Active',
-                sortable: false,
-                width: 50,
-                autoHide: true
+                field: 'NoOfMembers',
+                title: '# of Members',
+                sortable: true,
+                width: 150,
+                autoHide: false
             },
             {
                 field: 'Actions',
                 title: 'Actions',
                 sortable: false,
-                width: 110,
+                width: 150,
                 overflow: 'visible',
+            },
+            {
+                field: 'State',
+                title: 'State',
+                sortable: false,
+                width: 150,
+                autoHide: true
             },
             {
                 field: 'Description',
@@ -141,7 +176,7 @@
                 width: 350
             }
         ];
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
 
             TableElement.init($('#working_groups'), columns);
         });

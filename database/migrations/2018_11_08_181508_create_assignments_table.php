@@ -31,6 +31,9 @@ class CreateAssignmentsTable extends Migration
             $table->foreign('incident_id')
                 ->references('id')->on('incidents')
                 ->onUpdate('cascade');
+            $table->foreign('assigner_id')
+                ->references('id')->on('users')
+                ->onUpdate('cascade');
         });
     }
 

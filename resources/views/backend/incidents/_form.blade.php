@@ -61,7 +61,7 @@
 </div>
 <div class="form-group m-form__group{{ $errors->has('') ? ' has-danger' : '' }}">
     {!! Form::label('type_id', 'Type:') !!}
-    {!! Form::select('type_id',  isset($incident)?$incident->type()->get()->pluck('name', 'id'):[], null, ['class'=>'m-select2 form-control', 'style' => 'width: 100%']) !!}
+    {!! Form::select('type_id', $categories->first()->types()->first()->pluck('name', 'id'), isset($incident)?$incident->type->id:[],  ['class'=>'m-select2 form-control', 'style' => 'width: 100%']) !!}
 </div>
 <div class="form-group m-form__group{{ $errors->has('') ? ' has-danger' : '' }}">
     {!! Form::label('status_id', 'Status:') !!}

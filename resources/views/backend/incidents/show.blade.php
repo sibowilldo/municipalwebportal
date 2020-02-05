@@ -22,17 +22,17 @@
                         <div class="m-portlet__head-tools">
                             <ul class="m-portlet__nav">
                                 <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
-                                    <a href="#" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl">
-                                        <i class="fa fa-genderless m--font-light"></i>
+                                    <a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill m-btn btn-outline-light m-btn--hover-light">
+                                        Quick Actions
                                     </a>
                                     <div class="m-dropdown__wrapper" style="z-index: 101;">
-                                        <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 14.5px;"></span>
+                                        <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
                                         <div class="m-dropdown__inner">
                                             <div class="m-dropdown__body">
                                                 <div class="m-dropdown__content">
                                                     <ul class="m-nav">
                                                         <li class="m-nav__section m-nav__section--first">
-                                                            <span class="m-nav__section-text">Quick Actions</span>
+                                                            <span class="m-nav__section-text">Available Actions</span>
                                                         </li>
                                                         @if($incident->status->name != 'Assigned')
                                                         <li class="m-nav__item">
@@ -49,7 +49,7 @@
                                                             </a>
                                                         </li>
                                                         <li class="m-nav__item">
-                                                            <a href="" class="m-nav__link">
+                                                            <a href="{{ route('incidents.groups', $incident->id) }}" class="m-nav__link">
                                                                 <i class="m-nav__link-icon la la-users"></i>
                                                                 <span class="m-nav__link-text">Assign Working Group</span>
                                                             </a>
@@ -102,8 +102,8 @@
                                         <span class="m-widget17__desc">
                                             {{ $incident->status->name }}
                                             @if($assigned_to)
-                                                to <strong> {!! $assigned_to->fullname !!} </strong>
-                                                <em> ({{ ucwords(implode(', ', $assigned_to->roles->pluck('name')->toArray())) }}) </em>
+                                                to <strong> {!! $assigned_to->fullname?:$assigned_to->name !!} </strong>
+                                                <span class="text-danger"> {{ $assigned_to->roles? ucwords(implode(', ', $assigned_to->roles->pluck('name')->toArray())):'' }} </span>
                                             @endif
                                         </span>
                                     </div>

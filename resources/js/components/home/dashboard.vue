@@ -22,7 +22,7 @@
                                     class="m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                                     <span>
                                     <i class="la la-plus"></i>
-                                    Log Incident
+                                    <span>Log Incident</span>
                                     </span>
                                 </b-button>
 
@@ -162,7 +162,6 @@
                 return  `<span class="m-badge m-badge--${ value.css_class } m-badge--wide shadow-sm"> ${ value.name } </span>`
             },
             categoryColumnFn: (value) => {
-                console.log(value);
                 return  `<span class="m-badge  m-badge--dot shadow m-badge--${value.state_color} m-badge--wide"></span>
                         &nbsp;<span class="m--font-bold">${value.name }</span>`
             },

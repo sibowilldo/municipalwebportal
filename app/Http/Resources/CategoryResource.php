@@ -9,7 +9,7 @@ class CategoryResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -20,7 +20,8 @@ class CategoryResource extends JsonResource
             'description' => $this->description,
             'state_color' => strtolower($this->state_color->name),
             'is_active' => $this->is_active,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+            'types' => TypeResource::collection($this->types)
         ];
     }
 }

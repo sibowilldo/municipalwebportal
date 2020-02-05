@@ -14,6 +14,7 @@ use EloquentBuilder;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Image;
 
 class IncidentController extends Controller

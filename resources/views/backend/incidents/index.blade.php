@@ -8,95 +8,126 @@
     <div class="row">
         @foreach($incidents as $incident)
             <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="m-portlet m-portlet--full-height">
-                    <div class="m-portlet__head">
+
+                <!--begin:: Widgets-->
+                <div class="m-portlet m-portlet--head-overlay m-portlet--full-height   m-portlet--rounded-force">
+                    <div class="m-portlet__head m-portlet__head--fit">
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
-                                <h3 class="m-portlet__head-text">
-                                    <a href="{{ route('incidents.show', $incident->id) }}"># {{ $incident->id }} - {{ $incident->reference }}</a>
+                                <h3 class="m-portlet__head-text m--font-light">
+                                   REF: {{ $incident->reference }}
                                 </h3>
                             </div>
-                        </div><div class="m-portlet__head-tools">
+                        </div>
+                        <div class="m-portlet__head-tools">
                             <ul class="m-portlet__nav">
-                                @if(!count($incident->assignments))
-                                <li class="m-portlet__nav-item">
-                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Engineer" href="{{ route('incidents.engineers',$incident->id) }}" class="m-portlet__nav-link btn btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill">
-                                        <i class="la la-user"></i>
+                                <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
+                                    <a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill m-btn btn-outline-light m-btn--hover-light">
+                                        Quick Actions
                                     </a>
-                                </li> @endif
-                                <li class="m-portlet__nav-item">
-                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Specialist" href="{{ route('incidents.specialists', $incident->id) }}" class="m-portlet__nav-link btn btn-dark m-btn m-btn--icon m-btn--icon-only m-btn--pill">
-                                        <i class="la la-user-secret"></i>
-                                    </a>
-                                </li>
-                                <li class="m-portlet__nav-item">
-                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Assign Working Group" href="{{ route('incidents.engineers',$incident->id) }}" class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--pill">
-                                        <i class="la la-users"></i>
-                                    </a>
-                                </li>
-                                <li class="m-portlet__nav-item">
-                                    <a data-toggle="m-tooltip" data-placement="top" data-original-title="Edit Details" href="{{ route('incidents.edit', $incident->id) }}" class="m-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill">
-                                        <i class="la la-edit"></i>
-                                    </a>
+                                    <div class="m-dropdown__wrapper" style="z-index: 101;">
+                                        <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 44.5px;"></span>
+                                        <div class="m-dropdown__inner">
+                                            <div class="m-dropdown__body">
+                                                <div class="m-dropdown__content">
+                                                    <ul class="m-nav">
+                                                        <li class="m-nav__section m-nav__section--first">
+                                                            <span class="m-nav__section-text">Reports</span>
+                                                        </li>
+                                                        @if(!count($incident->assignments))
+                                                            <li class="m-nav__item">
+                                                                <a href="{{ route('incidents.engineers',$incident->id) }}" class="m-nav__link">
+                                                                    <i class="m-nav__link-icon la la-user"></i>
+                                                                    <span class="m-nav__link-text">Assign Engineer</span>
+                                                                </a>
+                                                            </li> @endif
+                                                        <li class="m-nav__item">
+                                                            <a href="{{ route('incidents.specialists', $incident->id) }}"  class="m-nav__link">
+                                                                <i class="m-nav__link-icon la la-user-secret"></i>
+                                                                <span class="m-nav__link-text">Assign Specialist</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="m-nav__item">
+                                                            <a href="{{ route('incidents.engineers',$incident->id) }}"  class="m-nav__link">
+                                                                <i class="m-nav__link-icon la la-users"></i>
+                                                                <span class="m-nav__link-text">Assign Working Group</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="m-nav__item">
+                                                            <a href="{{ route('incidents.edit', $incident->id) }}"  class="m-nav__link">
+                                                                <i class="m-nav__link-icon la la-edit"></i>
+                                                                <span class="m-nav__link-text">Edit Details</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="m-portlet__body">
-                        <div class="m-widget13">
-                            <div class="m-widget13__item">
-												<span class="m-widget13__desc m--align-right">
-                                                    Name
-												</span>
-                                <span class="m-widget13__text m-widget13__text-bolder">
-													{{ $incident->name }}
-												</span>
-                            </div>
-                            <div class="m-widget13__item">
-												<span class="m-widget13__desc m--align-right">
-													Status:
-												</span>
-                                <span class="m-widget13__text m-widget13__number-bolder m--font-{{ $incident->status->state_color }}">
-													{{ $incident->status->name }}
-												</span>
-                            </div>
-                            <div class="m-widget13__item">
-												<span class="m-widget13__desc m--align-right">
-													Category:
-												</span>
-                                <span class="m-widget13__text m-widget13__text-bolder">
-													{{ $incident->type->categories->first()?$incident->type->categories->first()->name:'' }}
-												</span>
-                            </div>
-                            <div class="m-widget13__item">
-												<span class="m-widget13__desc m--align-right">
-													Type:
-												</span>
-                                <span class="m-widget13__text">
-													{{ $incident->type->name }}
-												</span>
-                            </div>
-                            <div class="m-widget13__item">
-												<span class="m-widget13__desc m--align-right">
-													Logged:
-												</span>
-                                <span class="m-widget13__text m-widget13">
-                                        <strong>{{ \Carbon\Carbon::parse($incident->created_at)->diffForHumans() }}</strong><br>{{ \Carbon\Carbon::parse($incident->created_at)->format('M, d Y. h:m:s') }}
-                                    </span>
-                            </div>
-                            <div class="m-widget13__item">
-												<span class="m-widget13__desc m--align-right">
-													Location:
-												</span>
-                                <span class="m-widget13__text">
-                                    <span class="m--font-bold m--font-brand">{{ $incident->longitude }}, {{ $incident->latitude }} </span>
-                                        <br>
-                                        {{ $incident->location_description }}
-                                    </span>
+                        <div class="m-widget28">
+                            <div class="m-widget28__pic m-portlet-fit--sides"></div>
+                            <div class="m-widget28__container">
+
+                                <!-- begin::Nav pills -->
+                                <ul class="m-widget28__nav-items nav nav-pills nav-fill" role="tablist">
+                                    <li class="m-widget28__nav-item nav-item">
+                                        <a class="nav-link active" data-toggle="pill" href="#details-{{ $incident->uuid }}"><span><i class="fa flaticon-clipboard"></i></span><span>Details</span></a>
+                                    </li>
+                                    <li class="m-widget28__nav-item nav-item">
+                                        <a class="nav-link" data-toggle="pill" href="#location-{{ $incident->uuid }}"><span><i class="fa flaticon-map-location"></i></span><span>Location Info</span></a>
+                                    </li>
+                                </ul>
+
+                                <!-- end::Nav pills -->
+
+                                <!-- begin::Tab Content -->
+                                <div class="m-widget28__tab tab-content">
+                                    <div id="details-{{ $incident->uuid }}" class="m-widget28__tab-container tab-pane active">
+                                        <div class="m-widget28__tab-items">
+                                            <div class="m-widget28__tab-item">
+                                                <span>Name</span>
+                                                <span>{{ $incident->name }}</span>
+                                            </div>
+                                            <div class="m-widget28__tab-item">
+                                                <span>Status</span>
+                                                <span>{{ $incident->status->name }}</span>
+                                            </div>
+                                            <div class="m-widget28__tab-item">
+                                                <span>Category</span>
+                                                <span>{{ $incident->type->categories->first()?$incident->type->categories->first()->name:'' }}</span>
+                                            </div>
+                                            <div class="m-widget28__tab-item">
+                                                <span>Type</span>
+                                                <span>{{ $incident->type->name }}</span>
+                                            </div>
+                                            <div class="m-widget28__tab-item">
+                                                <span>Logged at</span>
+                                                <span>{{ $incident->created_at }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="location-{{ $incident->uuid }}" class="m-widget28__tab-container tab-pane fade">
+                                        <div class="m-widget28__tab-items">
+                                            <div class="m-widget28__tab-item">
+                                                <span>Location Description</span>
+                                                <span>{{ $incident->location_description }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- end::Tab Content -->
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!--end:: Widgets-->
             </div>
         @endforeach
     </div>

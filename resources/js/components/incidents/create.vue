@@ -154,8 +154,8 @@
                                             type="button"> Clear Form
                                     </button>
                                     <button class="btn btn-success m-btn--pill m-btn--icon pull-right m-btn--air"
-                                            type="submit">
-                                        <!--                                        :disabled="(this.form.type == null || this.form.category == null || this.form.status == null)"-->
+                                            type="submit"
+                                            :disabled="(this.form.type == null || this.form.category == null || this.form.status == null)">
                                         <span>
                                         <i class="la la-check"/>
                                         <span>Save Incident</span>
@@ -215,17 +215,17 @@
                     }
                 },
                 overlay: {
-                    backgroundColor: "#fff",
+                    backgroundColor: "#000",
                     color: "#5867dd",
                     loader: "dots"
                 },
                 form: {
                     is_public: true,
-                    name: '',
-                    description: 'Because I is lazy AF to type these 2 fields',
-                    location_description: '',
-                    longitude: '',
-                    latitude: '',
+                    name: 'Uncovered Manhole',
+                    description: 'Got no reason to stray too far, \'cause it\'s all right here in my own backyard! This is a Burger King town, it\'s made just for me! This is a Burger King town, we know how burgers should be! Right up the road, left at the sign.',
+                    location_description: '176 Blamey Rd, Montclair, Durban, 4000',
+                    longitude: '30.3453854888',
+                    latitude: '-29.49203969082',
                     category: null,
                     type: null,
                     status: null
@@ -236,6 +236,7 @@
             ...mapGetters({
                 statuses: 'getStatuses',
                 categories: 'getCategories',
+                incidents: 'getIncidents',
             })
         },
         methods: {
@@ -245,7 +246,6 @@
                 return $dirty ? !$error : null;
             },
             setPlace(place) {
-                console.log(place);
                 this.place = place;
                 this.usePlace(this.place);
             },
@@ -294,19 +294,32 @@
                         category_id: this.form.category.id,
                         type_id: this.form.type.id,
                         status_id: this.form.status.id,
-                        suburb_id: 0
+                        suburb_id: 0,
+                        is_public: this.form.is_public
                     };
-                    await this.$store.dispatch('SAVE_INCIDENT', payload)
-                        .then(() => {
-                            this.$notify("Incident logged successfully!", "success");
-                            this.errors = null;
+                    await axios.post('/api/v1/incidents', payload)
+                        .then(response => {
+                            let incident = response.data.data;
+                            this.$store.commit('addIncident',incident)
+                            this.$swal({
+                                icon: 'success',
+                                title: 'Success',
+                                text:  'The incident was logged successfully!',
+                                timer: 5000,
+                                toast: true,
+                                timerProgressBar: true,
+                                position: 'top-end'
+                            }).then(results=>{
+                                this.isLoading = false;
+                                window.location.assign(incident.links._self);
+                            })
+                        })
+                        .catch(error => {
+                            return Promise.reject(error);
                         });
                 } catch (e) {
                     this.errors = e.response.data;
                 }
-                setTimeout(() => {
-                    this.isLoading = false;
-                }, 1000)
             },
             onReset() {
                 // Reset form values
@@ -318,8 +331,19 @@
                     latitude: '',
                     category: null,
                     type: null,
-                    status: null
+                    status: null,
+                    is_public: true
                 };
+            },
+            onLaunchSwal(){
+                this.$swal({
+                    icon: 'success',
+                    title: 'Yeah, Fine',
+                    text:  'It\'s Done',
+                    timer: 5000,
+                    toast: true,
+                    position: 'top-end'
+                })
             }
         },
         mounted() {

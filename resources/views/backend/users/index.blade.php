@@ -278,7 +278,7 @@
                         type: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
+                        cancelButtonClass: "btn btn-light m-btn m-btn--custom",
                         confirmButtonText: 'Yes, delete it!',
                         preConfirm: function () {
                             return new Promise(function (resolve) {
@@ -317,7 +317,7 @@
                         type: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
+                        cancelButtonClass: "btn btn-light m-btn m-btn--custom",
                         confirmButtonText: 'Yes, restore entry!',
                         preConfirm: function () {
                             return new Promise(function (resolve) {

@@ -23,8 +23,8 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary m-btn--pill" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-danger m-btn--pill">Confirm</button>
+                <button type="button" class="btn btn-outline-dark m-btn--pill" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger m-btn--pill pull-right">Yes! Delete</button>
             </div>
         </form>
         </div>

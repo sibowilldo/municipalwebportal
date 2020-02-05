@@ -63,14 +63,15 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
     Route::get('incidents/{incident}/engineers/', 'IncidentController@engineers')->name('incidents.engineers');
     Route::get('incidents/{incident}/specialists/', 'IncidentController@specialists')->name('incidents.specialists');
     Route::get('incidents/{incident}/groups/', 'IncidentController@groups')->name('incidents.groups');
-    Route::get('working-group/{incident}/list', 'AssignGroupController@list')->name('working-group.list');
+    Route::get('working-groups/{working_group}/engineers/list', 'WorkingGroupController@listEngineers')->name('working-group.list');
+
 
     /**
      * POST Routes
      */
     Route::post('incidents/{incident}/assign', 'IncidentController@assign')->name('incidents.assign');
     Route::post('users/{user}/restore', 'UserController@restore')->name('users.restore');
-    Route::post('working-group/{incident}/assign', 'AssignGroupController@assign')->name('working-group.assign');
+    Route::post('working-groups/{working_group}/engineers/assign', 'WorkingGroupController@assignEngineers')->name('working-group.assign');
 
     /**
      * Custom JSON formatted output

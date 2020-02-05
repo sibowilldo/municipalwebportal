@@ -18,14 +18,17 @@ class CreateWorkingGroupsTable extends Migration
             $table->string('name')->unique();
             $table->mediumText('description');
             $table->boolean('is_active');
+            $table->unsignedInteger('status_id');
             $table->timestamps();
+
+            $table->foreign('status_id')->references('id')->on('statuses');
         });
 
         Schema::create('user_working_group', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('working_group_id');
             $table->boolean('is_leader')->default(false);
-            $table->longText('instructions');
+            $table->longText('instructions')->nullable();
             $table->unsignedInteger('assigner_id');
             $table->timestamps();
 

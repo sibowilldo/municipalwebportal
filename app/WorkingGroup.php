@@ -14,7 +14,7 @@ class WorkingGroup extends Model
      * @var array
      */
     protected $fillable = [
-        'name','description', 'is_active', 'state_color_id'
+        'name','description', 'is_active', 'state_color_id', 'status_id'
     ];
 
     /**
@@ -32,6 +32,12 @@ class WorkingGroup extends Model
         return $this->belongsToMany(User::class)
                     ->withTimestamps()
                     ->withPivot('is_leader', 'instructions', 'assigner_id');
+    }
+
+    //An Incident belongs to many users through pivot (user_working_group)
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 
     /**

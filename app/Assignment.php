@@ -36,19 +36,25 @@ class Assignment extends Model
     //An Assignment belongs to one user
     public function assigner()
     {
-        return $this->morphTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
-    //An Assignment belongs to one user
+    //An Assignment morphs to one user
     public function user()
     {
         return $this->morphTo(User::class);
     }
 
+    //An Assignment morphs to one user
+    public function working_group()
+    {
+        return $this->morphTo(WorkingGroup::class);
+    }
+
     //An Assignment belongs to one incident
     public function incident()
     {
-        return $this->morphTo(Incident::class);
+        return $this->belongsTo(Incident::class);
     }
 
     public function assignable()

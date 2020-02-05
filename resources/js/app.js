@@ -1,6 +1,8 @@
 require('./bootstrap');
 require('simplelightbox');
 
+import '@sweetalert2/theme-material-ui/material-ui.scss'
+
 window.Vue = require('vue');
 
 import * as VueGoogleMaps from 'vue2-google-maps'
@@ -12,6 +14,7 @@ import Vuelidate from "vuelidate";
 import VueRouter from 'vue-router';
 import 'chart.js';
 import VueEvents from 'vue-events'
+import VueSweetalert2 from 'vue-sweetalert2';
 
 /**
  * import styles
@@ -20,6 +23,7 @@ import 'vue-good-table/dist/vue-good-table.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '../assets/css/app.css'
+// import 'sweetalert2/dist/sweetalert2.min.css'
 
 /**
  * Import the store
@@ -50,6 +54,7 @@ Vue.use(Notify, {
     visibility: 5000,
     mode: 'html'
 });
+Vue.use(VueSweetalert2);
 
 // Initialize notify types
 Vue.$notify.setTypes({
