@@ -311,7 +311,7 @@ class IncidentController extends Controller
             $assignable = WorkingGroup::findOrfail($request->assigned_id);
             $assignable_name = $assignable->name;
         }else{// false: get user object
-            $assignable = User::whereUuid($request->assigned_id);
+            $assignable = User::whereUuid($request->assigned_id)->firstOrFail();
             $assignable_name = $assignable->fullname;
         }
 
