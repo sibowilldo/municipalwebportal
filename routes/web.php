@@ -18,6 +18,12 @@ Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallbac
 //
 
 Route::group(['middleware' => ['auth:web', 'verified']], function () {
+    Route::get('/clear-cache', function() {
+        $run = Artisan::call('config:clear');
+        $run = Artisan::call('cache:clear');
+        $run = Artisan::call('config:cache');
+        return 'FINISHED';
+    });
 //
 //    Route::get('push', function () {
 //        return view('auth.passwords.success');
