@@ -43,9 +43,8 @@ class IncidentController extends Controller
                 404
             );
         }
-
         //Paginate Incidents
-        $incidents = $incidents->orderByDesc('created_at')->paginate(20)->appends($request->all());
+        $incidents = $incidents->whereDate('created_at', '<=', Carbon::now()->format('Y-m-d H:i:s'))->orderByDesc('created_at')->paginate(20)->appends($request->all());
 
         return IncidentResource::collection($incidents);
     }
