@@ -115,7 +115,10 @@ class IncidentController extends Controller
      */
     public function show(Incident $incident)
     {
-        return new IncidentResource($incident);
+
+        $histories = $incident->histories()->orderByDesc('created_at')->get();
+        return response()->json(['data'=>new IncidentResource($incident), 'history' => $histories]);
+//        return ;
     }
 
     /**

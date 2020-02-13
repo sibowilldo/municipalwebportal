@@ -236,8 +236,7 @@ class WorkingGroupController extends Controller
     public function assignEngineers(WorkingGroup $working_group, Request $request)
     {
         $request['selectedEngineers'] = explode(',', $request->selectedEngineers);
-
-        dd($request->all());
+        
         $status = Status::where('name', 'assigned')->firstOrFail();
         foreach ($request->selectedEngineers as $engineerUuid) {
             //assign engineer to working group
