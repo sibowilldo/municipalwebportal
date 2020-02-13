@@ -27,7 +27,8 @@
     <div class="form-group m-form__group row{{ $errors->has('name') ? ' has-danger' : '' }}">
         <label for="incident_id" class="col-3 col-form-label">Incident Name</label>
         <div class="col-9">
-            {!! Form::text('incident_name', $incident->name, ['class'=>'form-control m-input', 'disabled' => 'disabled']) !!}
+            {!! Form::text('disabled_incident_name', $incident->name, ['class'=>'form-control m-input', 'disabled' => 'disabled']) !!}
+            {!! Form::hidden('incident_uuid', $incident->uuid) !!}
         </div>
     </div>
     @endif

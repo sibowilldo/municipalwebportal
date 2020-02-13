@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Assignment;
 use App\Incident;
+use App\IncidentHistory;
 use App\Status;
 use App\User;
 use App\WorkingGroup;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -17,7 +20,7 @@ class WorkingGroupController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function index()
     {
@@ -29,7 +32,7 @@ class WorkingGroupController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -42,29 +45,79 @@ class WorkingGroupController extends Controller
         return view('backend.working-groups.create', compact('leaders', 'incident', 'statuses'));
     }
 
+
+    /**
+     * @param Incident $incident
+     * @param Request $request
+     * @param WorkingGroup $workingGroup
+     * @throws \Throwable
+     */
+    public function assign_group(Incident $incident, Request $request, WorkingGroup $workingGroup)
+    {
+        $assigner = Auth::user();
+        $date_now = Carbon::now();
+        $status = Status::where('name', 'Assigned')->firstOrFail();
+
+        $assignable = $workingGroup;
+        $assignable_name = $assignable->name;
+
+        //Incident to Assignments table
+        $assignment = new Assignment([
+            'incident_id' => $incident->id,
+            'instructions' => $request->instructions,
+            'assigner_id' => $assigner->id
+        ]);
+
+        $assignable->assignments()->save($assignment);
+        // update user status
+        $assignable->status_id = $status->id;
+        $assignable->saveOrFail();
+
+
+        // update incident status
+        $incident->status_id = $status->id;
+        $incident->saveOrFail();
+
+        $current_status = $incident->histories()->latest('id')->first();
+
+        // Create Incident History
+        $incident_history = IncidentHistory::create([
+            'incident_id' => $incident->id,
+            'previous_status' => $current_status ? $current_status->status_id : $incident->status_id,
+            'status_id' => $incident->status_id,
+            'user_id' => $assigner->id,
+            'account_number' => '',
+            'update_reason' => "[Assigned {$date_now}] $assignable_name was assigned. Incident status changed to ASSIGNED"]);
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
      * @return RedirectResponse
+     * @throws \Throwable
      */
     public function store(Request $request)
     {
-
         $leader = User::whereUuid($request->leader)->firstOrFail();
         $request['is_active'] = $request->is_active === 'on' ? true : false;
         $working_group = WorkingGroup::create($request->all());
 
         //Attach to pivot table
-        $leader->working_groups()->attach($working_group, ['is_leader' => true, 'instructions' => 'Coming Soon', 'assigner_id' => Auth::id()]);
+        $leader->working_groups()->attach($working_group, ['is_leader' => true, 'instructions' => '', 'assigner_id' => Auth::id()]);
 
         // Check if there is an incident passed through, and assign the newly created working group to that incident
-//        if(request()->incident_id){
-//            $incident = Incident::whereUuid(request()->incident_id)->first();
-//        }
+        if(request()->incident_uuid){
+            $incident = Incident::whereUuid(request()->incident_uuid)->first();
+            if($incident){
+                $this->assign_group($incident, $request, $working_group);
+                $msg = "Working Group created and Assigned to Incident.";
+            }
+        }
 
         //Flash message and return response
-        flash('Working Group created successfully')->success();
+        flash($msg ?? 'Working Group created successfully')->success();
         return response()->redirectToRoute('working-groups.index');
     }
 
@@ -72,7 +125,7 @@ class WorkingGroupController extends Controller
      * Display the specified resource.
      *
      * @param WorkingGroup $working_group
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function show(WorkingGroup $working_group)
     {
@@ -83,7 +136,7 @@ class WorkingGroupController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param WorkingGroup $working_group )
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function edit(WorkingGroup $working_group)
     {
@@ -104,13 +157,20 @@ class WorkingGroupController extends Controller
      */
     public function update(Request $request, WorkingGroup $working_group)
     {
-        $assigned_engineers = $request->assigned_engineers ?? [];
         $leader = User::whereUuid($request->leader)->firstOrFail();
+        $assigned_engineers = $request->assigned_engineers ?? [];
         //Merge engineers with leader
         array_push($assigned_engineers, $leader->id);
 
+        $merged = [];
+        foreach ($assigned_engineers as $engineer){
+            $merged[$engineer] = ['assigner_id' => Auth::id(), 'is_leader' => $leader->id===$engineer];
+        }
+
         //sync all engineers
-        $sync_response = $working_group->users()->where('is_leader', false)->sync($assigned_engineers ?: []);
+        if (count($merged)){
+            $sync_response = $working_group->users()->where('is_leader', false)->sync($merged);
+        }
 
         $request['is_active'] = $request->is_active === 'on' ? true : false;
         $working_group->update($request->all());
@@ -175,9 +235,11 @@ class WorkingGroupController extends Controller
      */
     public function assignEngineers(WorkingGroup $working_group, Request $request)
     {
-        $selectedEngineers = explode(',', $request->selectedEngineers);
+        $request['selectedEngineers'] = explode(',', $request->selectedEngineers);
+
+        dd($request->all());
         $status = Status::where('name', 'assigned')->firstOrFail();
-        foreach ($selectedEngineers as $engineerUuid) {
+        foreach ($request->selectedEngineers as $engineerUuid) {
             //assign engineer to working group
             $engineer = User::whereUuid($engineerUuid)->firstOrFail();
             $engineer->working_groups()->attach($working_group, ['is_leader' => false, 'instructions' => $request->instructions, 'assigner_id' => Auth::id()]);

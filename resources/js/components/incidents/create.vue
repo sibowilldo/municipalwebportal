@@ -198,6 +198,11 @@
         data() {
             return {
                 isLoading: false,
+                overlay: {
+                    backgroundColor: "#000",
+                    color: "#5867dd",
+                    loader: "dots"
+                },
                 isSubmitted: false,
                 types: [],
                 errors: null,
@@ -214,18 +219,13 @@
                         lng: 31.01342899
                     }
                 },
-                overlay: {
-                    backgroundColor: "#000",
-                    color: "#5867dd",
-                    loader: "dots"
-                },
                 form: {
                     is_public: true,
-                    name: 'Uncovered Manhole',
-                    description: 'Got no reason to stray too far, \'cause it\'s all right here in my own backyard! This is a Burger King town, it\'s made just for me! This is a Burger King town, we know how burgers should be! Right up the road, left at the sign.',
-                    location_description: '176 Blamey Rd, Montclair, Durban, 4000',
-                    longitude: '30.3453854888',
-                    latitude: '-29.49203969082',
+                    name: '',
+                    description: '',
+                    location_description: '',
+                    longitude: '',
+                    latitude: '',
                     category: null,
                     type: null,
                     status: null

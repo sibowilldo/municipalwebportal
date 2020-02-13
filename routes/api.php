@@ -27,9 +27,12 @@ Route::group(['prefix' => 'auth'], function () {
             'permissions'   =>'Api\PermissionController',
             'roles'         =>'Api\RoleController',
             'statuses'      =>'Api\StatusController',
-            'types'         =>'Api\TypeController'
+            'types'         =>'Api\TypeController',
+            'working-groups'=> 'Api\WorkingGroupController'
 
         ]);
+
+        Route::post('working-groups/{working_group}/add/engineers', 'Api\WorkingGroupController@engineers');
 
         // Assignment Routes
         Route::post('assignments/accept/{assignment}','Api\AssignmentController@accept');
