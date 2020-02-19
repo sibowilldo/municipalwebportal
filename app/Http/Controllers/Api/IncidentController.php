@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Attachment;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\HistoryResource;
 use App\Http\Resources\Incident as IncidentResource;
 use App\Incident;
 use App\Meta;
@@ -110,15 +111,13 @@ class IncidentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Incident $incident
      * @return IncidentResource
      */
     public function show(Incident $incident)
     {
-
         $histories = $incident->histories()->orderByDesc('created_at')->get();
-        return response()->json(['data'=>new IncidentResource($incident), 'history' => $histories]);
-//        return ;
+        return response()->json(['data'=>new IncidentResource($incident), 'history' => HistoryResource::collection($histories)]);
     }
 
     /**

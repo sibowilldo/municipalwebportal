@@ -46,7 +46,7 @@
                     <b-form-group label="Select Guard:" label-for="guard">
                         <multiselect :close-on-select="true" :options="this.guards" :searchable="true"
                                      :show-labels="true" placeholder="Select a Guard"
-                                     v-model.trim="form.guard"/>
+                                     v-model.trim="form.guard" @select="form.permissions=[]"/>
                     </b-form-group>
                     <b-form-group label="Permissions" label-for="permissions" :state="validateInput('permissions')">
                         <div class="m-portlet m-portlet--bordered m-portlet--unair m--marginless m-portlet--rounded">
@@ -180,6 +180,7 @@
 
                 try {
                     this.isSubmitted = true;
+                    this.isLoading = true;
                     this.$v.$touch();
                     if (!this.$v.form.permissions.$error) {
                         await this.$store.dispatch('ADD_ROLE', payload)

@@ -140,7 +140,7 @@
                                 :disabled="(this.form.type == null || this.form.category == null || this.form.status == null)">
                                         <span>
                                         <i class="la la-check"/>
-                                        <span>Save Incident</span>
+                                        <span>Update Incident</span>
                                     </span></button>
                     </b-col>
                 </b-row>

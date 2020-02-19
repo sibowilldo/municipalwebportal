@@ -21,7 +21,7 @@ class CategoryResource extends JsonResource
             'state_color' => strtolower($this->state_color->name),
             'is_active' => $this->is_active,
             'created_at' => $this->created_at,
-            'types' => TypeResource::collection($this->types)
+            'types' => $this->types
         ];
     }
 }

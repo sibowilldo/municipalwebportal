@@ -236,7 +236,7 @@ class WorkingGroupController extends Controller
     public function assignEngineers(WorkingGroup $working_group, Request $request)
     {
         $request['selectedEngineers'] = explode(',', $request->selectedEngineers);
-        
+
         $status = Status::where('name', 'assigned')->firstOrFail();
         foreach ($request->selectedEngineers as $engineerUuid) {
             //assign engineer to working group
@@ -248,7 +248,7 @@ class WorkingGroupController extends Controller
             //Notify engineer
         }
 
-        flash(count($selectedEngineers) . " engineers were assigned successfully", "success");
+        flash(count($request->selectedEngineers) . " engineers were assigned successfully", "success");
         return response()->redirectToRoute('working-groups.show', $working_group->id);
     }
 }
