@@ -15,7 +15,7 @@ class HistoryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "history_id"=> $this->id,
+            "id"=> $this->id,
             "incident_id"=> $this->incident_id,
             "statuses" => [
                 "previous"=> StatusResource::collection($this->previous_status()->get()),
