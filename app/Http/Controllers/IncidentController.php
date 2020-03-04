@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assignment;
 use App\Category;
+use App\Events\IncidentHistoryEntryEvent;
 use App\Http\Requests\IncidentFormRequest;
 use App\Http\Resources\IncidentCollection;
 use App\Incident;
@@ -145,7 +146,9 @@ class IncidentController extends Controller
         $this->authorize('update', $incident);
         $categories = Category::all('id', 'name');
         $types = Type::pluck('name', 'id');
-        $statuses = Status::whereIn('group', ['incidents', 'both'])->select('id', 'name');
+        $statuses = Status::whereIn('group', ['incidents', 'both'])
+                    ->whereIn('name', ['active', 'in progress', 'escalated', 'completed'])
+                    ->select('id', 'name');
 
         return view('backend.incidents.edit', compact('incident', 'categories', 'types', 'statuses'));
     }
@@ -161,57 +164,46 @@ class IncidentController extends Controller
     public function update(IncidentFormRequest $request, Incident $incident)
     {
         $this->authorize('update', $incident);
-
-        $date_now = Carbon::now();
-        $this->update_incident_history($incident, Auth::user(), "[Updated {$date_now}] Details about $incident->name were updated.");
-
+        $message=null;
+        $status = $incident->status;
+        if($incident->status_id !== intval($request->status_id)) {
+            $newStatus =  Status::where('id', $request->status_id)->first()->name;
+            $message = "Status changed from $status->name to $newStatus";
+        }
         $incident->update($request->only(['name', 'description', 'location_description', 'latitude', 'longitude', 'suburb_id', 'type_id', 'status_id']));
 
+        //Add Incident to IncidentHistory table
+        event(new IncidentHistoryEntryEvent(
+            $status, $incident, Auth::user(), $message?:"Incident details updated."));
+
         flash($incident->name . ' <b>Updated</b> Successfully')->success();
-        return back();
-    }
-
-    /**
-     * @param Incident $incident
-     * @param User $user
-     * @param $update_reason
-     * @param string $account_number
-     * @return IncidentHistory
-     */
-    private function update_incident_history(Incident $incident, User $user, $update_reason, $account_number = '')
-    {
-        $current_status = $incident->histories()->latest('id')->first();
-
-        $incident_history = IncidentHistory::create([
-            'incident_id' => $incident->id,
-            'previous_status' => $current_status ? $current_status->status_id : $incident->status_id,
-            'status_id' => $incident->status_id,
-            'user_id' => $user->id,
-            'account_number' => $account_number,
-            'update_reason' => $update_reason]);
-
-        return $incident_history;
+        return response()->redirectToRoute('incidents.show', $incident->id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param $incident
+     * @param Incident $incident
+     * @param Request $request
      * @return Response
-     * @throws null
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Incident $incident, Request $request)
     {
         $this->authorize('delete', $incident);
 
         //Get status
-        $status = Status::where('name', 'deleted')->firstOrFail();
+        $status = Status::where('name', 'review')->firstOrFail();
 
-        $date_now = Carbon::now();
         //Add Incident to IncidentHistory table
-        $this->update_incident_history($incident, Auth::user(), "[Deleted {$date_now}] $request->delete_reason");
+        event(new IncidentHistoryEntryEvent(
+            $incident->status, $incident,
+            Auth::user(),
+            "Status changed from " . $incident->status->name . " to $status->name" . ". REASON: $request->delete_reason"));
 
+        $incident->update(['status_id', $status->id]);
         $incident->delete();
+
         flash("$incident->name was sent to trash.")->success();
         return response()->redirectToRoute('dashboard');
     }
@@ -328,7 +320,10 @@ class IncidentController extends Controller
         $assignable->saveOrFail();
 
         //Add Incident to IncidentHistory table
-        $this->update_incident_history($incident, $assigner, "[Assigned {$date_now}] $assignable_name was assigned.");
+        event(new IncidentHistoryEntryEvent(
+            $incident->status, $incident,
+            Auth::user(),
+            "Status changed from " . $incident->status->name . " to $status->name"));
 
         // update incident status
         $incident->status_id = $status->id;

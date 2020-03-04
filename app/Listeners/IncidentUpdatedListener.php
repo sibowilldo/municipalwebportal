@@ -28,6 +28,5 @@ class IncidentUpdatedListener implements ShouldQueue
     public function handle(IncidentUpdatedEvent $event)
     {
         $event->user->notify(new IncidentUpdated($event->user, $event->incident, $event->message));
-
     }
 }

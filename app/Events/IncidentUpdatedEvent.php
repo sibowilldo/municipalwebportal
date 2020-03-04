@@ -14,11 +14,6 @@ class IncidentUpdatedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Information about the shipping status update.
-     *
-     * @var string
-     */
     public $incident;
     public $message;
     public $user;

@@ -112,11 +112,19 @@ class TypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Type $type
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Type $type)
     {
+        if(count($type->categories)){
+
+            return response()->json([
+                "message"=> "Cannot delete $type->name type because it is associated with 1 or more categories.",
+                "url" => route('types.show', $type->id)
+            ], 500);
+        }
         $type->delete();
 
         return response()->json([

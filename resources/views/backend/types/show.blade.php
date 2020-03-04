@@ -151,18 +151,18 @@
                                     "_token": token
                                 }
                             })
-                                .done(function(response){
-                                    Swal.fire({
-                                        title: 'Deleted!',
-                                        text: response.message,
-                                        onClose: function() {
-                                            window.location.href = response.url;
-                                        }
-                                    })
+                            .done(function(response){
+                                Swal.fire({
+                                    title: 'Deleted!',
+                                    text: response.message,
+                                    onClose: function() {
+                                        window.location.href = response.url;
+                                    }
                                 })
-                                .fail(function(){
-                                    swal('Oops...', 'Something went wrong with ajax !', 'error');
-                                });
+                            })
+                            .fail(function(ex){
+                                swal('Oops...', ex.responseJSON.message, 'error');
+                            });
                         });
                     },
                     allowOutsideClick: false
