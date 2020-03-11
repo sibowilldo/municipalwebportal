@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
 
         //Custom Middleware
         'accountVerified' => \App\Http\Middleware\AccountVerified::class,
+        'checkrole' => \App\Http\Middleware\CheckRole::class,
     ];
 
     /**
