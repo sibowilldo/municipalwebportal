@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         //
         $roles = Role::get();
-        $statuses = Status::where('group', 'users')->pluck('name', 'id');
+        $statuses = Status::where('group', 'both')->pluck('name', 'id');
         return view('backend.users.create', compact('roles', 'statuses'));
     }
 

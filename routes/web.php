@@ -17,31 +17,7 @@ Route::get('/auth/social/{social}', 'SocialLoginController@redirectToSocial')->n
 Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallback')->name('social.callback');
 //
 
-Route::group(['middleware' => ['auth:web', 'verified']], function () {
-    Route::get('/clear-cache', function() {
-        $run = Artisan::call('config:clear');
-        $run = Artisan::call('cache:clear');
-        $run = Artisan::call('config:cache');
-        return 'FINISHED';
-    });
-//
-//    Route::get('push', function () {
-//        return view('auth.passwords.success');
-//
-//        $incident = App\Incident::first();
-//        $user = $incident->user()->fullname;
-//        dd($user);
-//        Notification::send($incident, new IncidentUpdated($user, $incident, 'Another Notification Sent to no one'));
-//    });
-
-//    Route::get('notify', function () {
-//        return Str::random();
-//        //send account activation notification
-////        Auth::user()->notify(new AccountActivate(Auth::user()));
-//
-//    });
-
-
+Route::group(['middleware' => ['auth:web', 'verified','checkrole:administrator,super-administrator']], function () {
     Route::get('/', 'HomeController@index')->name('dashboard');
     Route::get('dashboard', 'HomeController@index')->name('dashboard');
 
@@ -71,7 +47,6 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
     Route::get('incidents/{incident}/groups/', 'IncidentController@groups')->name('incidents.groups');
     Route::get('working-groups/{working_group}/engineers/list', 'WorkingGroupController@listEngineers')->name('working-group.list');
 
-
     /**
      * POST Routes
      */
@@ -85,26 +60,41 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
     Route::get('json/types/{category}', 'TypeController@jsonShowByCategory');
     Route::get('json/categories/{type}', 'CategoryController@jsonShowByType');
 
-
-        Route::prefix('api/v1')->group(function (){
-            Route::get('incidents', 'IncidentController@jsonIndex');
-            Route::name('spa.')->group(function(){
-                Route::apiResource('roles', 'SPA\RoleController');
-                Route::apiResource('permissions', 'SPA\PermissionController');
-                Route::apiResource('incidents', 'SPA\IncidentController');
-                Route::apiResource('categories', 'SPA\CategoryController');
-                Route::apiResource('types', 'SPA\TypeController');
-                Route::apiResource('statuses', 'SPA\StatusController');
-            });
-            Route::get('system/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
-            Route::get('system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
+    Route::prefix('api/v1')->group(function (){
+        Route::get('incidents', 'IncidentController@jsonIndex');
+        Route::name('spa.')->group(function(){
+            Route::apiResource('roles', 'SPA\RoleController');
+            Route::apiResource('permissions', 'SPA\PermissionController');
+            Route::apiResource('incidents', 'SPA\IncidentController');
+            Route::apiResource('categories', 'SPA\CategoryController');
+            Route::apiResource('types', 'SPA\TypeController');
+            Route::apiResource('statuses', 'SPA\StatusController');
         });
+        Route::get('system/categories', 'CategoryController@jsonIndex')->name('categories.index.json');
+        Route::get('system/statuses', 'StatusController@jsonIndex')->name('statuses.json');
+    });
     /**
      * Charts Controller
      */
     Route::get('charts/types', 'ChartController@types');
     Route::get('charts/statuses', 'ChartController@statuses');
     Route::get('charts/incidents', 'ChartController@incidents');
+
+//    Route::get('push', function () {
+//        return view('auth.passwords.success');
+//
+//        $incident = App\Incident::first();
+//        $user = $incident->user()->fullname;
+//        dd($user);
+//        Notification::send($incident, new IncidentUpdated($user, $incident, 'Another Notification Sent to no one'));
+//    });
+
+//    Route::get('notify', function () {
+//        return Str::random();
+//        //send account activation notification
+////        Auth::user()->notify(new AccountActivate(Auth::user()));
+//
+//    });
 });
 
 

@@ -15,6 +15,7 @@ import VueRouter from 'vue-router';
 import 'chart.js';
 import VueEvents from 'vue-events'
 import VueSweetalert2 from 'vue-sweetalert2';
+import Loading from 'vue-loading-overlay';
 
 /**
  * import styles
@@ -55,7 +56,14 @@ Vue.use(Notify, {
     mode: 'html'
 });
 Vue.use(VueSweetalert2);
-
+Vue.use(Loading, {
+    backgroundColor:'#000',
+    canCancel:true,
+    color:'#fff',
+    isFullPage:true,
+    loader:"dots",
+    opacity: 0.9
+})
 // Initialize notify types
 Vue.$notify.setTypes({
     info:       {itemClass:'alert-info m-alert', iconClass: 'icon la la-info-circle', },
@@ -109,6 +117,7 @@ const app = new Vue({
         IncidentEdit,
         Multiselect,
         Dashboard,
-        IncidentForm
+        IncidentForm,
+        Loading
     }
 });

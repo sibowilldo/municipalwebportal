@@ -2,6 +2,7 @@
 
 return [
 
+    'noreply_email' => env('NO_REPLY_EMAIL', 'mwp-noreply@nomasisolutions.co.za' ),
     /*
     |--------------------------------------------------------------------------
     | Application Name

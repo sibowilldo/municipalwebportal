@@ -47,7 +47,7 @@
                                             <i class="la la-refresh"></i>
                                         </button>
                                     </div>
-                                    <input @keyup.enter="doFilter" class="form-control" placeholder="Reference or Name"
+                                    <input @keyup.enter="doFilter" class="form-control" placeholder="Reference or Summary"
                                            type="text"
                                            v-model="filterText">
                                     <div class="input-group-append input-group-btn">

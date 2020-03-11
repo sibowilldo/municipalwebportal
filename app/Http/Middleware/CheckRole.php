@@ -7,14 +7,18 @@ use Closure;
 class CheckRole
 {
     /**
-     * Handle an incoming request.
+     * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
+     * @param array $roles
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, ...$roles)
     {
+        if (! $request->user()->hasAnyRole($roles)) {
+            abort(403, "You're not unauthorized to perform this action.");
+        }
         return $next($request);
     }
 }

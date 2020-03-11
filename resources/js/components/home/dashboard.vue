@@ -25,31 +25,6 @@
                                     <span>Log Incident</span>
                                     </span>
                                 </b-button>
-
-                                <b-modal id="report-incident"
-                                         title="Log Incident"
-                                         size="lg"
-                                        footer-bg-variant="light">
-                                        <incident-form></incident-form>
-                                    <template v-slot:modal-footer>
-                                        <div class="w-100">
-                                            <b-button
-                                                variant="success"
-                                                @click="onSubmitIncident"
-                                                class="float-right m-btn--pill m-btn--air"
-                                            >
-                                                Save Incident
-                                            </b-button>
-                                            <b-button
-                                                variant="light"
-                                                @click="show=false"
-                                                class="float-left m-btn--pill m-btn--air"
-                                            >
-                                                Cancel & Close
-                                            </b-button>
-                                        </div>
-                                    </template>
-                                </b-modal>
                             </li>
                             <li class="m-portlet__nav-item">
                                 <a href="" m-portlet-tool="toggle" class="m-portlet__nav-link btn btn-sm btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-angle-down"></i></a>
@@ -159,10 +134,10 @@
                 return `${value.longitude}, ${value.latitude}`
             },
             statusColumnFn: (value) => {
-                return  `<span class="m-badge m-badge--${ value.css_class } m-badge--wide shadow-sm"> ${ value.name } </span>`
+                return  `<span class="m-badge m-badge--${ value.css_class } m-badge--rounded px-2 shadow-sm"> ${ value.name } </span>`
             },
             categoryColumnFn: (value) => {
-                return  `<span class="m-badge  m-badge--dot shadow m-badge--${value.state_color} m-badge--wide"></span>
+                return  `<span class="m-badge  m-badge--dot shadow m-badge--${value.state_color}"></span>
                         &nbsp;<span class="m--font-bold">${value.name }</span>`
             },
             onPaginationData (paginationData) {

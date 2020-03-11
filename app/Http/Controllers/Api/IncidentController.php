@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Attachment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IncidentFormRequest;
 use App\Http\Resources\HistoryResource;
 use App\Http\Resources\Incident as IncidentResource;
 use App\Incident;
@@ -58,21 +59,9 @@ class IncidentController extends Controller
      *
      * @return IncidentResource
      */
-    public function store(Request $request)
+    public function store(IncidentFormRequest $request)
     {
         $user = User::whereUuid($request->user_id)->firstOrFail();
-        $request->validate(
-            [
-                'name' => 'required|string',
-                'description' => 'required|string',
-                'location_description' => 'required|string',
-                'latitude' => 'required',
-                'longitude' => 'required',
-                'suburb_id' => 'required',
-                'is_public' => 'required',
-            ]
-        );
-
         $incident = new Incident([
                 'reference' => Carbon::now()->timestamp, //ToDo: Auto-Generate
                 'name' => $request->name,

@@ -12,7 +12,7 @@ export default{
        },
        {
            name: "name",
-           title: "Name",
+           title: "Summary",
            sortField: "name"
        },
        {

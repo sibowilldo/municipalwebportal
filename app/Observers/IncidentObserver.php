@@ -18,7 +18,7 @@ class IncidentObserver
      */
     public function created(Incident $incident)
     {
-        event(new IncidentCreated($incident->user()?:Auth::user(), $incident));
+//        event(new IncidentCreated($incident->user()?:Auth::user(), $incident));
     }
 
     /**
@@ -33,11 +33,11 @@ class IncidentObserver
 
 //        Check if the status was updated and send specific message to user
         if($incident->isDirty('status_id')) {
-            $statuses = Status::all();
+            $statuses = Status::whereIn('id', [$incident->getOriginal('status_id'),  $incident->status_id])->get();
             $oldStatus = $statuses->where('id', $incident->getOriginal('status_id'))->first()->name;
             $newStatus =  $statuses->where('id', $incident->status_id)->first()->name;
             $message = "Incident Status changed from " . strtoupper($oldStatus). " to " . strtoupper($newStatus);
         }
-        event(new IncidentUpdatedEvent($incident, $incident->user(), $message));
+//        event(new IncidentUpdatedEvent($incident, $incident->user(), $message));
     }
 }
