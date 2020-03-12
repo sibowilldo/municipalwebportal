@@ -6,30 +6,12 @@
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
                             <span class="m-portlet__head-icon">
-                                <i class="flaticon-exclamation"></i>
+                                <i class="flaticon-warning-sign"></i>
                             </span>
                             <h3 class="m-portlet__head-text">
                                 Incidents
                             </h3>
                         </div>
-                    </div>
-                    <div class="m-portlet__head-tools">
-                        <ul class="m-portlet__nav">
-                            <li class="m-portlet__nav-item mr-3">
-                                <b-button
-                                    @click="onCreateIncident"
-                                    variant="danger"
-                                    class="m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-                                    <span>
-                                    <i class="la la-plus"></i>
-                                    <span>Log Incident</span>
-                                    </span>
-                                </b-button>
-                            </li>
-                            <li class="m-portlet__nav-item">
-                                <a href="" m-portlet-tool="toggle" class="m-portlet__nav-link btn btn-sm btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill"><i class="la la-angle-down"></i></a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
                 <div class="m-portlet__body">

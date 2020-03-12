@@ -45,6 +45,21 @@
 
             <!-- END: Brand -->
             <div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav">
+
+                <!-- BEGIN: Horizontal Menu -->
+                <button class="m-aside-header-menu-mobile-close  m-aside-header-menu-mobile-close--skin-dark " id="m_aside_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
+                <div id="m_header_menu" class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-light m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-dark m-aside-header-menu-mobile--submenu-skin-dark ">
+                    <ul class="m-menu__nav  m-menu__nav--submenu-arrow ">
+                        <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel bg-danger px-5">
+                            <a href="{{ route('incidents.create') }}" class="m-menu__link">
+                                <i class="m-menu__link-icon flaticon-warning-sign m--font-light"></i>
+                                <span class="m-menu__link-text  m--font-light">Log Incident</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- END: Horizontal Menu -->
                 <!-- BEGIN: Topbar -->
                 <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general m-stack--fluid">
                     <div class="m-stack__item m-topbar__nav-wrapper">
@@ -64,10 +79,6 @@
                                             <div class="m-card-user m-card-user--skin-dark">
                                                 <div class="m-card-user__pic">
                                                     <img src="{{ Avatar::create(Auth::user()->email)->toGravatar(['d' => 'mp', 'r' => 'pg', 's' => 50])}}" class="m--img-rounded m--marginless" />
-
-                                                    <!--
-            <span class="m-type m-type--lg m--bg-danger"><span class="m--font-light">S<span><span>
-            -->
                                                 </div>
                                                 <div class="m-card-user__details">
                                                     <span class="m-card-user__name m--font-weight-500">{{ Auth::user()->fullname }}</span>
