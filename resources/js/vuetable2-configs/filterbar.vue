@@ -1,10 +1,10 @@
 <template>
     <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
-            <div class="col-xl-10">
+            <div class="col-xl-12">
                 <div class="form-group m-form__group row align-items-center">
                     <div class="col-md-3">
-                        <div class="m-form__group m-form__group--inline">
+                        <div class="m-form__group">
                             <div class="m-form__label">
                                 <label for="m_form_status">Status</label>
                             </div>
@@ -19,7 +19,7 @@
                         <div class="d-md-none m--margin-bottom-10"></div>
                     </div>
                     <div class="col-md-3">
-                        <div class="m-form__group m-form__group--inline">
+                        <div class="m-form__group">
                             <div class="m-form__label">
                                 <label class="m-label m-label--single" for="m_form_type">Category</label>
                             </div>
@@ -33,38 +33,47 @@
                         </div>
                         <div class="d-md-none m--margin-bottom-10"></div>
                     </div>
-                    <div class="col-md-5">
-                        <div class="m-form__group m-form__group--inline">
+                    <div class="col-md-3">
+                        <div class="m-form__group">
                             <div class="m-form__label">
-                                <label class="m-label m-label--single text-nowrap" for="m_form_type">Search for</label>
+                                <label class="m-label m-label--single text-nowrap">Search for</label>
                             </div>
                             <div class="m-form__control">
                                 <div class="input-group input-group">
-                                    <div class="input-group-prepend input-group-btn">
-                                        <button @click="resetFilter"
-                                                class="btn btn-danger m-btn"
-                                                title="Clear Filter" v-b-tooltip.hover>
-                                            <i class="la la-refresh"></i>
-                                        </button>
-                                    </div>
                                     <input @keyup.enter="doFilter" class="form-control" placeholder="Reference or Summary"
                                            type="text"
                                            v-model="filterText">
                                     <div class="input-group-append input-group-btn">
-
                                         <b-button
                                             @click="doFilter"
-                                            class="m-btn"
+                                            class="m-btn m-btn--icon"
                                             title="Search" v-b-tooltip.hover
                                             variant="dark">
                                             <span>
-                                            <i class="la la-search"></i>
+                                            <i class="la la-search"></i> <span>Search</span>
                                             </span>
                                         </b-button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="d-md-none m--margin-bottom-10"></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="m-form__group">
+                            <div class="m-form__label">
+                                <label class="m-label m-label--single">Actions</label>
+                            </div>
+                            <div class="m-form__control">
+                                <button @click="resetFilter"
+                                        class="btn m-btn m-btn--custom btn-outline-secondary py-3 m-btn--icon"
+                                        title="Clear Filters" v-b-tooltip.hover>
+                                    <span><i class="la la-refresh"></i><span>Clear All Filters</span> </span>
+
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-md-none m--margin-bottom-10"></div>
                     </div>
                 </div>
             </div>

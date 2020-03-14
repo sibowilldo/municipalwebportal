@@ -27,6 +27,22 @@ export default {
     mounted () {
         // this.chartData is created in the mixin.
         // If you want to pass options please create a local options object
-        this.renderChart(this.chartData, this.options)
+        this.renderChart(this.chartData, {
+            maintainAspectRatio: true,
+            aspectRatio: 3,
+            legend: {
+                position: 'bottom',
+                labels: {
+                    boxWidth: 10,
+                }
+            },
+            onClick: this.handle
+        })
+    },
+    methods: {
+        handle (point, event) {
+            const item = event[0]
+            this.$events.fire('chart-filter', item)
+        }
     }
 }

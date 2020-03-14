@@ -147,7 +147,7 @@ class IncidentController extends Controller
         $categories = Category::all('id', 'name');
         $types = Type::pluck('name', 'id');
         $statuses = Status::whereIn('group', ['incidents', 'both'])
-                    ->whereIn('name', ['active', 'in progress', 'escalated', 'completed'])
+                    ->whereIn('name', ['active', 'in progress', 'escalated', 'completed', $incident->status->name])
                     ->select('id', 'name');
 
         return view('backend.incidents.edit', compact('incident', 'categories', 'types', 'statuses'));

@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <pie-chart :chart-data="chartData" :options="chartOptions" v-if="dataFilled"/>
+            <pie-chart :chart-data="chartData" v-if="dataFilled" />
         </div>
     </div>
 </template>
@@ -40,17 +40,7 @@
         data() {
             return {
                 dataFilled: false,
-                chartData: {},
-                chartOptions: {
-                    maintainAspectRatio: true,
-                    aspectRatio: 3,
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            boxWidth: 10,
-                        }
-                    }
-                }
+                chartData: {}
             }
         },
         mounted() {
@@ -72,12 +62,14 @@
                 Vue.axios.get('charts/types').then((response) => {
                     let labelsData = [],
                         datasetsData = [],
-                        colors = [];
+                        colors = [],
+                        ids = [];
                     let data = response.data.data, start = response.data.start, end = response.data.end;
                     data.forEach(function (i, v) {
                         i.data > 0 ? labelsData.push(i.label) : '';
                         i.data > 0 ? datasetsData.push(i.data) : '';
                         i.data > 0 ? colors.push(i.color) : '';
+                        i.data > 0 ? ids.push(i.id):'';
                     });
 
                     this.chartData = {
@@ -86,7 +78,13 @@
                             {
                                 backgroundColor: colors,
                                 data: datasetsData,
-                                borderWidth: 1
+                                borderWidth: 1,
+                                ids: ids,
+                                queryMeta: {
+                                    type: 'types',
+                                    startDate: start,
+                                    endDate: end
+                                }
                             }
                         ]
                     };

@@ -15,34 +15,39 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
-                    <div class="m_datatable">
+                    <div class="m_datatable vuetable-wrapper">
+                        <loading :active.sync="isLoading"
+                                 :is-full-page="false"/>
                         <filter-bar></filter-bar>
                         <vuetable ref="vuetable"
                                   api-url="api/v1/incidents"
+                                  wrapper-class="vuetable-wrapper"
                                   :fields="columns"
                                   :css="css.table"
                                   :sort-order="sortOrder"
                                   :append-params="moreParams"
                                   pagination-path="meta"
-                                  @vuetable:pagination-data="onPaginationData">
+                                  @vuetable:pagination-data="onPaginationData"
+                                  @vuetable:loading="isLoading=true"
+                                  @vuetable:loaded="isLoading=false">
                         <template slot="actions" slot-scope="props">
                             <div class="custom-actions">
-                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
                                         v-b-tooltip.hover title="Assign Engineer"
                                         @click="onAction('assign-user', props.rowData, props.rowIndex)">
                                     <i class="la la-user"></i>
                                 </button>
-                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
                                         v-b-tooltip.hover title="Assign Specialist"
                                         @click="onAction('assign-specialist', props.rowData, props.rowIndex)">
                                     <i class="la la-user-secret"></i>
                                 </button>
-                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
                                         v-b-tooltip.hover title="Assign Group"
                                         @click="onAction('assign-team', props.rowData, props.rowIndex)">
                                     <i class="la la-users"></i>
                                 </button>
-                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
                                         v-b-tooltip.hover title="View Details"
                                         @click="onAction('view-item', props.rowData, props.rowIndex)">
                                     <i class="la la-eye"></i>
@@ -68,11 +73,11 @@
 </template>
 
 <script>
+    import Loading from 'vue-loading-overlay';
     import Vuetable from 'vuetable-2/src/components/Vuetable'
     import VuetablePagination from '../../vuetable2-configs/VuetablePaginationBootstrap'
     import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
     import FilterBar from '../../vuetable2-configs/filterbar'
-    import IncidentForm from '../incidents/form'
     import vuetablecss from '../../vuetable2-configs/css'
     import vuetableColumns from '../../vuetable2-configs/columns'
     import moment from  'moment'
@@ -80,22 +85,30 @@
     export default {
         name: "dashboard",
         components: {
+            Loading,
             Vuetable,
             VuetablePagination,
             VuetablePaginationInfo,
-            FilterBar,
-            IncidentForm
+            FilterBar
         },
         mounted() {
+            Echo.channel('incidentUpdatedChannel').listen('.incidentUpdatedEvent', (e) => {
+                    Vue.nextTick( () => this.$refs.vuetable.refresh());
+                });
+            Echo.channel('newIncidentChannel').listen('.newIncidentEvent', (e) => {
+                    Vue.nextTick( () => this.$refs.vuetable.refresh());
+                });
             this.$events.$on('remove-status-filter', eventData => this.onRemoveStatusFilter(eventData));
             this.$events.$on('remove-category-filter', eventData => this.onRemoveCategoryFilter(eventData));
             this.$events.$on('status-filter', eventData => this.onStatusFilter(eventData));
             this.$events.$on('category-filter', eventData => this.onCategoryFilter(eventData));
             this.$events.$on('search-filter', eventData => this.onSearchFilter(eventData));
-            this.$events.$on('filter-reset', e => this.onFilterReset())
+            this.$events.$on('filter-reset', e => this.onFilterReset());
+            this.$events.$on('chart-filter', eventData => this.onChartFilter(eventData));
         },
         data: () => {
             return {
+                isLoading: false,
                 css: vuetablecss,
                 columns: vuetableColumns.columns,
                 sortOrder: [
@@ -120,7 +133,7 @@
             },
             categoryColumnFn: (value) => {
                 return  `<span class="m-badge  m-badge--dot shadow m-badge--${value.state_color}"></span>
-                        &nbsp;<span class="m--font-bold">${value.name }</span>`
+                        &nbsp;<span class="m--font-boldest m--font-${value.state_color}">${value.name }</span>`
             },
             onPaginationData (paginationData) {
                 this.$refs.pagination.setPaginationData(paginationData)
@@ -168,11 +181,11 @@
                 this.moreParams.category = data.id;
                 Vue.nextTick( () => this.$refs.vuetable.refresh());
             },
-            onRemoveStatusFilter(data){
+            onRemoveStatusFilter(){
                 this.moreParams.status = null;
                 Vue.nextTick( () => this.$refs.vuetable.refresh());
             },
-            onRemoveCategoryFilter(data){
+            onRemoveCategoryFilter(){
                 this.moreParams.category = null
                 Vue.nextTick( () => this.$refs.vuetable.refresh());
             },
@@ -181,7 +194,28 @@
                 Vue.nextTick( () => this.$refs.vuetable.refresh());
             },
             onFilterReset(){
-                this.moreParams.search =  null;
+                let parameters = this.moreParams;
+                Object.keys(this.moreParams).forEach(function (param) {
+                    parameters[param] = null;
+                });
+                Vue.nextTick( () => this.$refs.vuetable.refresh());
+            },
+            onChartFilter(data) {
+                let chartType = data._chart.data.datasets[0].queryMeta.type;
+                let selectedValue = data._chart.data.datasets[0].ids[data._index];
+                switch (chartType){
+                    case "types":{
+                        this.moreParams.type = selectedValue;
+                        break;
+                    }
+                    case "statuses":{
+                        this.moreParams.status = selectedValue;
+                        break;
+                    }
+                }
+                this.moreParams.start_date =  data._chart.data.datasets[0].queryMeta.startDate;
+                this.moreParams.end_date =  data._chart.data.datasets[0].queryMeta.endDate;
+                this.moreParams.has_range =  true;
                 Vue.nextTick( () => this.$refs.vuetable.refresh());
             }
         }
@@ -189,5 +223,4 @@
 </script>
 
 <style>
-
 </style>

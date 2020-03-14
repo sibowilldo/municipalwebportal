@@ -137,9 +137,6 @@
                     }
                     this.dataFilled = !!this.chartData.datasets[0].data.length;
                 });
-            },
-            getRandomInt() {
-                return Math.floor(Math.random() * (40 - 5 + 1)) + 5
             }
         }
     }

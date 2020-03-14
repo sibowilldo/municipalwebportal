@@ -28,7 +28,7 @@ class ChartController extends Controller
 
         foreach ($incidents as $incident){
             $dateFormat = new Carbon($incident->date);
-            $series = new ChartSeries($dateFormat->format('d M Y'), '', $incident->total);
+            $series = new ChartSeries($dateFormat->format('d M Y'), '',$incident->id, $incident->total);
             array_push($data, $series);
         }
 
@@ -46,7 +46,7 @@ class ChartController extends Controller
         $statuses = Status::all();
         $incidents = Incident::whereBetween('created_at', [$today->startOfWeek()->format('Y-m-d H:i'), $today->endOfWeek()->format('Y-m-d H:i')])->Orderby('created_at')->get();
         foreach ($statuses as $status){
-            $series = new ChartSeries($status->name, $status->state_color->css_color, count($incidents->where('status_id', $status->id)));
+            $series = new ChartSeries($status->name, $status->state_color->css_color,$status->id, count($incidents->where('status_id', $status->id)));
             array_push($data, $series);
         }
         return response()
@@ -63,7 +63,7 @@ class ChartController extends Controller
         $types = Type::all('id', 'name', 'state_color_id');
         $incidents = Incident::whereBetween('created_at', [$today->startOfWeek()->format('Y-m-d H:i'), $today->endOfWeek()->format('Y-m-d H:i')])->get();
         foreach ($types as $type){
-            $series = new ChartSeries($type->name, $type->state_color->css_color, count($incidents->where('type_id', $type->id)));
+            $series = new ChartSeries($type->name, $type->state_color->css_color, $type->id, count($incidents->where('type_id', $type->id)));
             array_push($data, $series);
         }
         return response()
@@ -78,11 +78,13 @@ class ChartSeries{
     public $label;
     public $color;
     public $data;
+    public $id;
 
-    public function __construct($label, $color, $data)
+    public function __construct($label, $color, $id, $data)
     {
         $this->label = $label;
         $this->color = $color;
+        $this->id = $id;
         $this->data = $data;
     }
 }
