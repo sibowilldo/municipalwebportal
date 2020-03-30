@@ -14,6 +14,7 @@ Route::group(['prefix' => 'auth'], function () {
         // Auth, Roles and Permissions Routes
         Route::post('logout', 'Api\AuthController@logout');
         Route::get('user', 'Api\UserController@profile');
+        Route::patch('users/{user}', 'Api\UserController@update');
         Route::get('users/{user}', 'Api\UserController@show');
         Route::get('users/{user}/incidents', 'Api\UserController@incidents');
 
@@ -28,7 +29,7 @@ Route::group(['prefix' => 'auth'], function () {
             'roles'         =>'Api\RoleController',
             'statuses'      =>'Api\StatusController',
             'types'         =>'Api\TypeController',
-            'working-groups'=> 'Api\WorkingGroupController'
+            'working-groups'=>'Api\WorkingGroupController'
 
         ]);
 

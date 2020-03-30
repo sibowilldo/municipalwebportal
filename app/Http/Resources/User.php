@@ -23,7 +23,8 @@ class User extends JsonResource
             'contactnumber' => $this->contactnumber,
             'roles' => $this->getRoleNames(),
             'incidents' => IncidentResource::collection($this->incidents),
-            'departments' => $this->departments
+            'departments' => $this->departments,
+            'devices' => DeviceResource::collection($this->devices)
         ];
     }
 }

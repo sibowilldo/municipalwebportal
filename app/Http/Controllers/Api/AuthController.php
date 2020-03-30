@@ -75,7 +75,8 @@ class AuthController extends Controller
         $device = new Device([
             'device_id' => $request->device_id,
             'os' => $request->os,
-            'token' => $request->token
+            'token' => $request->token,
+            'is_active' => true
         ]);
         $device->save();
 
@@ -129,9 +130,9 @@ class AuthController extends Controller
         //if device with same device_id and os exists [update token], else [create new device]
         $device = Device::updateOrCreate(
             ['device_id' => $request->input('device.device_id'), 'os'=>$request->input('device.os')],
-            ['token'=>$request->input('device.token')]
+            ['token'=>$request->input('device.token'), 'is_active' => true]
         );
-        Log::info( 'request ' . $request);
+        Log::info( 'login request ' . $request);
         $device->save();
 
         if($device->wasRecentlyCreated){
@@ -161,6 +162,11 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        $device = Device::where('device_id', $request->device_id)->first();
+        if($device){
+            $device->update(['is_active' => false]);
+            $device->save();
+        }
         $request->user()->token()->revoke();
         return response()->json([
             'message' => 'Successfully logged out'
