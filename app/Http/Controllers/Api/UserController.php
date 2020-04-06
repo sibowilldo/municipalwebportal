@@ -49,11 +49,12 @@ class UserController extends Controller
             [
                 'firstname'=>'required|max:120',
                 'lastname'=>'required|max:120',
+                'email' => 'email|unique:users',
                 'contactnumber'=>'required|max:20'
             ]
         );
 
-        $input = $request->only(['firstname', 'lastname', 'contactnumber']); //Retreive the name, email and password fields
+        $input = $request->only(['firstname', 'lastname', 'email', 'contactnumber']);
         $user->fill($input)->save();
 
         return new UserResource($user);

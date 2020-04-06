@@ -9,7 +9,11 @@ Route::group(['prefix' => 'auth'], function () {
     // handle reset password form process
     Route::post('reset/password', 'Api\AuthController@callResetPassword');
 
+
     Route::group(['middleware' => ['auth:api', 'accountVerified']], function() {
+
+        //Change logged user password
+        Route::patch('password/change', 'Api\AuthController@changePassword');
 
         // Auth, Roles and Permissions Routes
         Route::post('logout', 'Api\AuthController@logout');
