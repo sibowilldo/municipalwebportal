@@ -1,13 +1,6 @@
 <template>
-    <form @submit.prevent="onSubmit" class="m-form m-form--fit m-form--label-align-right m-form--state">
-
-        <loading :active.sync="isLoading"
-                 :background-color='overlay.backgroundColor'
-                 :can-cancel="true"
-                 :color='overlay.color'
-                 :is-full-page="true"
-                 :loader="overlay.loader"/>
-
+    <form @submit.prevent="onSubmit" class="m-form m-form--fit m-form--label-align-right m-form--state position-relative">
+        <loading :active.sync="isLoading" :is-full-page="false"/>
         <transition name="fade">
             <div class="m-alert m-alert--icon alert alert-danger m-alert--square" role="alert"
                  v-if="this.hasServerErrors">
@@ -124,11 +117,6 @@
         data() {
             return {
                 isLoading: false,
-                overlay: {
-                    backgroundColor: "#000",
-                    color: "#5867dd",
-                    loader: "dots"
-                },
                 form: {
                     name: '',
                     guard: '',
@@ -197,11 +185,7 @@
                                 this.$swal({
                                     icon: 'success',
                                     title: 'Success',
-                                    text:  'The incident was logged successfully!',
-                                    timer: 5000,
-                                    toast: true,
-                                    timerProgressBar: true,
-                                    position: 'top-end'
+                                    text:  'Role was added successfully.',
                                 }).then(results=>{
                                     this.isLoading = false;
                                     let redirectUrl = this.getRoles[this.getRoles.length - 1].links._index;

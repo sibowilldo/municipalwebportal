@@ -283,11 +283,7 @@
                             this.$swal({
                                 icon: 'success',
                                 title: 'Success',
-                                text:  'The incident was logged successfully!',
-                                timer: 5000,
-                                toast: true,
-                                timerProgressBar: true,
-                                position: 'top-end'
+                                text:  'The incident was updated successfully!'
                             }).then(results=>{
                                 this.isLoading = false;
                                 window.location.assign(incident.links._self);

@@ -24,14 +24,12 @@
             </span>
         </div>
     </div>
-
     <div class="form-group m-form__group row{{ $errors->has('categories') ? ' has-danger' : '' }}">
         <label for="types" class="col-3 col-form-label">Categories</label>
         <div class="col-9">
             {!! Form::select('categories[]', $categories, null, ['class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker', 'multiple']) !!}
         </div>
     </div>
-
     <div class="form-group m-form__group row{{ $errors->has('state_color_id') ? ' has-danger' : '' }}">
         <label for="state_color" class="col-3 col-form-label">State Color</label>
         <div class="col-9">

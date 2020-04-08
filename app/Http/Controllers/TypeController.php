@@ -47,6 +47,10 @@ class TypeController extends Controller
      */
     public function store(TypesFormRequest $request)
     {
+        if(Type::where('name', $request->name)->first()){
+            flash("<strong>Error!</strong> A type with a same name already exists.")->error();
+            return back();
+        }
         $request['is_active'] = $request->is_active ? true : false;
         $type = Type::create($request->only(['name', 'description', 'is_active', 'state_color_id']));
         $type->categories()->attach($request->categories);

@@ -7,8 +7,8 @@
 @section('content')
 
     <div class="row">
-        <div class="col-xl-8 offset-xl-2">
-            <div class="m-portlet m-portlet--mobile ">
+        <div class="col-xl-4 offset-xl-4">
+            <div class="m-portlet m-portlet--mobile  m-portlet--rounded m-form">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
@@ -103,9 +103,28 @@
                             <span class="m-badge m-badge--{{ $status->state_color->css_class }}"></span>  {{ title_case($status->state_color->css_color) }}
                             </span>
                         </div>
-                        <div class="m-widget13__action m--align-right">
-                            <a href="{{ route('statuses.edit', $status->id) }}" class="m-widget__details  btn m-btn--pill  btn-accent">Edit Details</a>
-                            <button type="button" class="btn m-btn--pill btn-danger btn-delete"  data-id="{{ $status->id }}" data-url="{{ route('statuses.destroy', $status->id) }}">Remove</button>
+                        <div class="m-widget13__item">
+                            <span class="m-widget13__desc m--align-right">
+                                Created on:
+                            </span>
+                            <span class="m-widget13__text">
+                             {{ title_case(\Carbon\Carbon::parse($status->created_at)->format('d M yy, h:m:s')) }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-light m-btn--pill pull-left m-btn--custom text-danger btn-delete"  data-id="{{ $status->id }}" data-url="{{ route('statuses.destroy', $status->id) }}">Delete Status
+                                </button>
+                            </div>
+                            <div class="col">
+                                <a href="{{ route('statuses.edit', $status->id) }}"
+                                    class="btn btn-primary m-btn m-btn--pill m-btn--air pull-right m-btn--custom m-btn--icon">
+                                    <span><i class="la la-edit"></i><span>Edit Status</span></span></a>
+                            </div>
                         </div>
                     </div>
                 </div>

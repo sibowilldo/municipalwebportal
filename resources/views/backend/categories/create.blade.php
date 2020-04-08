@@ -59,16 +59,23 @@
 
 				@include('backend.categories._form')
 
-				<div class="m-portlet__foot m-portlet__foot--fit">
-					<div class="m-form__actions m-form__actions--solid">
-						<div class="row">
-							<div class="col-10">
-								<button type="submit" class="btn btn-success m-btn--pill">Add Category</button>
-								<button type="reset" class="btn btn-secondary m-btn--pill">Reset Form</button>
-							</div>
-						</div>
-					</div>
-				</div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-outline-light m-btn--pill pull-left m-btn--custom text-dark"
+                                        type="reset">Reset Form
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button
+                                    class="btn btn-success m-btn m-btn--pill m-btn--air pull-right m-btn--custom m-btn--icon"
+                                    type="submit">
+                                    <span><i class="la la-check"></i><span>Add Category</span></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 				{!! Form::close() !!}
 			</div>
 		</div>

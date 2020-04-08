@@ -10,7 +10,7 @@
     {!! Form::textarea('description', null, [
         'class'=>'form-control m-input',
         'data-validation'=>'length,required',
-        'data-validation-length' => 'min50' ]) !!}
+        'data-validation-length' => 'min10' ]) !!}
     <p class="text-right mt-1">
         <span class="m-badge m-badge--metal m-badge--wide"><span id="desc-max-length">500</span> characters left</span></p>
 </div>
