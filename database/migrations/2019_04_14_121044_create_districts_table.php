@@ -18,6 +18,7 @@ class CreateDistrictsTable extends Migration
             $table->mediumText('name');
             $table->string('contact_number')->nullable();
             $table->mediumText('email')->nullable();
+            $table->text('website')->nullable();
             // Add a Point spatial data field named location
             $table->point('location')->nullable();
             // Add a Polygon spatial data field named area
