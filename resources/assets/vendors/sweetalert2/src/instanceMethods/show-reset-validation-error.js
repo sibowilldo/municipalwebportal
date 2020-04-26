@@ -1,30 +1,30 @@
-import * as dom from '../utils/dom/index'
-import { swalClasses } from '../utils/classes'
-import privateProps from '../privateProps'
+import * as dom from '../utils/dom/index.js'
+import { swalClasses } from '../utils/classes.js'
+import privateProps from '../privateProps.js'
 
-// Show block with validation error
-export function showValidationError (error) {
+// Show block with validation message
+export function showValidationMessage (error) {
   const domCache = privateProps.domCache.get(this)
-  domCache.validationError.innerHTML = error
+  dom.setInnerHtml(domCache.validationMessage, error)
   const popupComputedStyle = window.getComputedStyle(domCache.popup)
-  domCache.validationError.style.marginLeft = `-${popupComputedStyle.getPropertyValue('padding-left')}`
-  domCache.validationError.style.marginRight = `-${popupComputedStyle.getPropertyValue('padding-right')}`
-  dom.show(domCache.validationError)
+  domCache.validationMessage.style.marginLeft = `-${popupComputedStyle.getPropertyValue('padding-left')}`
+  domCache.validationMessage.style.marginRight = `-${popupComputedStyle.getPropertyValue('padding-right')}`
+  dom.show(domCache.validationMessage)
 
   const input = this.getInput()
   if (input) {
     input.setAttribute('aria-invalid', true)
-    input.setAttribute('aria-describedBy', swalClasses.validationerror)
+    input.setAttribute('aria-describedBy', swalClasses['validation-message'])
     dom.focusInput(input)
     dom.addClass(input, swalClasses.inputerror)
   }
 }
 
-// Hide block with validation error
-export function resetValidationError () {
+// Hide block with validation message
+export function resetValidationMessage () {
   const domCache = privateProps.domCache.get(this)
-  if (domCache.validationError) {
-    dom.hide(domCache.validationError)
+  if (domCache.validationMessage) {
+    dom.hide(domCache.validationMessage)
   }
 
   const input = this.getInput()

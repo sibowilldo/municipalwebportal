@@ -44,7 +44,7 @@ class StateColorController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param StateColor $state_color
      * @return \Illuminate\Http\Response
      */
     public function show(StateColor $state_color)
@@ -55,7 +55,7 @@ class StateColorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param StateColor $state_color
      * @return \Illuminate\Http\Response
      */
     public function edit(StateColor $state_color)
@@ -66,8 +66,8 @@ class StateColorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param StateColor $state_color
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, StateColor $state_color)
@@ -80,11 +80,16 @@ class StateColorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param StateColor $stateColor
+     * @return void
      */
-    public function destroy($id)
+    public function destroy(StateColor $stateColor)
     {
-        //
+        $stateColor->delete();
+
+        return response()->json([
+            "message"=> $stateColor->name . ' was deleted successfully',
+            "url" => route('state-colors.index')
+        ], 200);
     }
 }

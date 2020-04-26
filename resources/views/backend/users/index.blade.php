@@ -22,9 +22,8 @@
                                 <div
                                     class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"
                                     m-dropdown-toggle="hover" aria-expanded="true">
-                                    <a href="#"
-                                       class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
-                                        <i class="la la-ellipsis-h m--font-brand"></i>
+                                    <a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill m-btn btn-outline-dark m-btn--hover-dark">
+                                        Quick Actions
                                     </a>
                                     <div class="m-dropdown__wrapper">
                                         <span
@@ -129,12 +128,13 @@
                             <thead>
                             <tr>
                                 {{--                                <th data-field="uuid">{{ __('id') }}</th>--}}
-                                <th data-field="User">{{ __('User') }}</th>
-                                <th data-field="ContactNumber">{{ __('Contact Number') }}</th>
-                                <th data-field="Role">{{ __('Role') }}</th>
-                                <th data-field="Actions">{{ __('Actions') }}</th>
-                                <th data-field="Status">{{ __('Status') }}</th>
-                                <th data-field="JoinedAt">{{ __('Joined At') }}</th>
+                                <th data-field="user">{{ __('User') }}</th>
+                                <th data-field="contactNumber">{{ __('Contact Number') }}</th>
+                                <th data-field="role">{{ __('Role') }}</th>
+                                <th data-field="department">{{ __('Department') }}</th>
+                                <th data-field="actions">{{ __('Actions') }}</th>
+                                <th data-field="status">{{ __('Status') }}</th>
+                                <th data-field="joinedAt">{{ __('Joined At') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -155,7 +155,11 @@
                                     </td>
                                     <td>{{ $user->contactnumber }}</td>
                                     <td>
-                                        {{ ucwords($user->roles()->pluck('name')->implode(', ')) }}</td>
+                                        {{ ucwords($user->roles()->pluck('name')->implode(', ')) }}
+                                    </td>
+                                    <td>
+                                        {{ $user->departments()->first()? $user->departments()->first()->name:'Not Assigned/Applicable' }}
+                                    </td>
                                     <td>
                                             <a href="{{ route('users.edit', $user->uuid) }}" data-toggle="m-tooltip"
                                                title="Edit User" data-placement="left" data-original-title="Edit User"
@@ -168,9 +172,9 @@
                                                     data-id="{{ $user->uuid }}"
                                                     data-url="{{ route('users.restore', $user->uuid) }}"
                                                     data-toggle="m-tooltip"
-                                                    title="Edit User"
+                                                    title="Restore User"
                                                     data-placement="left"
-                                                    data-original-title="Edit User"
+                                                    data-original-title="Restore User"
                                                     class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon btn-sm m-btn--sm m-btn--pill btn-restore">
                                                     <i class="la la-recycle"></i> Restore
                                                 </button>
@@ -189,8 +193,8 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td><span><span class="m-badge m-badge--wide"
-                                                    style="background-color: {{ $user->status->state_color->css_color }}; color:{{ $user->status->state_color->css_font_color }};">{{ ucfirst($user->status->name) }}</span></span>
+                                    <td><span><span class="m-badge m-badge--dot m-badge--{{ $user->status->state_color->css_class }}"
+                                                    ></span> {{ ucfirst($user->status->name) }}</span>
                                     </td>
                                     <td>{{ $user->created_at }}</td>
                                 </tr>
@@ -250,17 +254,18 @@
                             }
                         },
                         {
-                            field: 'User',
+                            field: 'user',
                             title: 'User',
                             width: 250,
                         },
                         {
-                            field: 'JoinedAt',
+                            field: 'joinedAt',
                             type: 'date',
                             format: 'YYYY-MM-DD',
                         },
                         {
-                            field: 'Actions',
+                            field: 'actions',
+                            title: 'Actions',
                             width: 160,
                             locked: {right: 'lg'}
                         }
@@ -272,14 +277,12 @@
                     var id = $(this).data("id");
                     var url = $(this).data("url");
                     var token = $("meta[name='csrf-token']").attr("content");
-                    Swal.fire({
+                    swalDelete.fire({
                         title: 'Are you sure?',
                         text: "You may not be able to undo this!",
-                        type: 'warning',
+                        icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonClass: "btn btn-light m-btn m-btn--custom",
-                        confirmButtonText: 'Yes, delete it!',
+                        confirmButtonText: 'Yes, delete user!',
                         preConfirm: function () {
                             return new Promise(function (resolve) {
                                 $.ajax({
@@ -312,13 +315,10 @@
                     var id = $(this).data("id");
                     var url = $(this).data("url");
                     var token = $("meta[name='csrf-token']").attr("content");
-                    Swal.fire({
+                    swalDelete.fire({
                         title: 'Are you sure?',
-                        type: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonClass: "btn btn-light m-btn m-btn--custom",
-                        confirmButtonText: 'Yes, restore entry!',
+                        icon: 'warning',
+                        confirmButtonText: 'Yes, restore user!',
                         preConfirm: function () {
                             return new Promise(function (resolve) {
                                 $.ajax({
@@ -339,11 +339,10 @@
                                         })
                                     })
                                     .fail(function () {
-                                        swal('Oops...', 'Something went wrong with ajax !', 'error');
+                                        Swal.fire('Oops...', 'Something went wrong with ajax !', 'error');
                                     });
                             });
-                        },
-                        allowOutsideClick: false
+                        }
                     })
                 });
 

@@ -1,19 +1,16 @@
-<div id="flash-overlay-modal" class="modal fade {{ $modalClass or '' }}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+<script>
 
-                <h4 class="modal-title">{{ $title }}</h4>
-            </div>
+    const Toast = Swal.mixin({
+        showConfirmButton: true,
+        confirmButtonText: 'Close',
+        allowOutsideClick: false
+    })
 
-            <div class="modal-body">
-                <p>{!! $body !!}</p>
-            </div>
+    console.log("{{ $body }}")
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+    Toast.fire({
+        icon: "{{ $level!=='danger'? $level :'error' }}",
+        title: "{{ $title }}",
+        text: "{!! $body !!}"
+    })
+</script>

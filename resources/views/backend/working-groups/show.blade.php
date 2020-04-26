@@ -32,7 +32,7 @@
                                                     <li class="m-nav__section m-nav__section--first">
                                                         <span class="m-nav__section-text">Available Actions</span>
                                                     </li>
-                                                    @if($working_group->users()->count() < 6)
+                                                    @if($working_group->users()->count() <  6)
                                                     <li class="m-nav__item">
                                                         <a href="{{ route('working-group.list', $working_group->id) }}" class="m-nav__link">
                                                             <i class="m-nav__link-icon la la-user-plus"></i>
@@ -113,11 +113,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="m-form__actions m-form__actions--solid">
-                    <button type="button" class="btn m-btn--pill btn-delete btn-light btn-outline text-danger m-btn--custom"  data-id="{{ $working_group->id }}" data-url="{{ route('working-groups.destroy', $working_group->id) }}">Remove</button>
-                    <a href="{{ route('working-groups.edit', $working_group->id) }}" class="m-widget__details  btn m-btn--pill btn-success pull-right m-btn--custom m-btn--icon">
-                        <span><i class="la la-pencil-square"></i><span>Edit Details</span></span></a>
-                </div>
+
+                @include('layouts.portlets.footer._footer', [
+                    'type'=> 'show',
+                    'name' => 'Type',
+                    'id' => $working_group->id,
+                    'edit_url' => route('working-groups.edit', $working_group->id),
+                    'delete_url' => route('working-groups.destroy', $working_group->id)])
             </div>
         </div>
     </div>
@@ -132,14 +134,12 @@
                 var id = $(this).data("id");
                 var url = $(this).data("url");
                 var token = $("meta[name='csrf-token']").attr("content");
-                Swal.fire({
+                swalDelete.fire({
                     title: 'Are you sure?',
                     text: "You may not be able to undo this!",
                     type: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonClass: "btn btn-light m-btn m-btn--custom",
-                    confirmButtonText: 'Yes, delete it!',
+                    confirmButtonText: 'Yes, delete group!',
                     preConfirm: function() {
                         return new Promise(function(resolve) {
                             $.ajax({
@@ -160,7 +160,7 @@
                                     })
                                 })
                                 .fail(function(){
-                                    swal('Oops...', 'Something went wrong with ajax !', 'error');
+                                    Swal.fire('Oops...', 'Something went wrong with ajax !', 'error');
                                 });
                         });
                     },

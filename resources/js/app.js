@@ -1,7 +1,9 @@
 require('./bootstrap');
 require('simplelightbox');
+require('bootstrap-colorpicker');
+require('lottie-web');
 
-import '@sweetalert2/theme-material-ui/material-ui.scss'
+import '@sweetalert2/theme-material-ui/material-ui.scss';
 
 window.Vue = require('vue');
 
@@ -20,6 +22,7 @@ import Loading from 'vue-loading-overlay';
 /**
  * import styles
  */
+import 'bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css';
 import 'vue-good-table/dist/vue-good-table.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'

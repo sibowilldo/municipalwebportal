@@ -1,5 +1,6 @@
 
 {{ csrf_field() }}
+@include('layouts.form-errors')
 <div class="m-portlet__body">
     <div class="form-group m-form__group row{{ $errors->has('leader') ? ' has-danger' : '' }}">
         <label for="types" class="col-3 col-form-label">Select Superintendent</label>

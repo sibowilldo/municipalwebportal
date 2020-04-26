@@ -62,12 +62,11 @@ class TypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Type $type
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Type $type)
     {
-        $type = Type::findOrFail($id);
         return view('backend.types.show', compact('type'));
     }
 
@@ -99,8 +98,8 @@ class TypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param TypesFormRequest $request
+     * @param Type $type
      * @return \Illuminate\Http\Response
      */
     public function update(TypesFormRequest $request, Type $type)

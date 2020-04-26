@@ -3,22 +3,21 @@
 namespace App;
 
 use App\Helpers\Traits\FormatDates;
+
+use Dyrynda\Database\Support\GeneratesUuid;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Dyrynda\Database\Support\GeneratesUuid;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, Notifiable, HasRoles, GeneratesUuid, FormatDates;
-
-//    protected $guard_name = 'api';
 
     use SoftDeletes;
 
@@ -30,7 +29,14 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'uuid','firstname','lastname', 'contactnumber', 'email', 'email_verified_at', 'activation_token','password', 'status_id', 'last_loggedin_at'
+        'uuid','firstname','lastname',
+        'contactnumber', 'email',
+        'email_verified_at',
+        'last_loggedin_at',
+        'activation_token',
+        'password',
+        'status_id',
+        'is_online'
     ];
 
     /**
@@ -39,6 +45,13 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $dates = ['deleted_at', 'last_loggedin_at', 'email_verified_at'];
+
+    /**
+     * The attributes that should be mutated to boolean.
+     *
+     * @var array
+     */
+    protected $boolean = ['is_online'];
 
     /**
      * The attributes that should be hidden for arrays.

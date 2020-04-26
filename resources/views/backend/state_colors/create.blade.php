@@ -17,20 +17,10 @@
 						</div>
 					</div>
 				</div>
-				@include('layouts.form-errors')
 				{!! Form::open(['route'=> 'state-colors.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
 				@include('backend.state_colors._form')
+                @include('layouts.portlets.footer._footer', ['type'=> 'create', 'name' => 'Color'])
 
-				<div class="m-portlet__foot m-portlet__foot--fit">
-					<div class="m-form__actions m-form__actions--solid">
-						<div class="row">
-							<div class="col-md-10 offset-md-2">
-								<button type="submit" class="btn btn-success m-btn--pill m-btn--air">Add Color</button>
-								<button type="reset" class="btn btn-secondary m-btn--pill m-btn--air">Reset Form</button>
-							</div>
-						</div>
-					</div>
-				</div>
 				{!! Form::close() !!}
 			</div>
 		</div>
@@ -40,9 +30,40 @@
 
 @section('js')
 	<script>
-		jQuery(document).ready(function() {
-
-		});
-
+        jQuery(document).ready(function() {
+            $('.m-input.color-picker').colorpicker({
+                extensions: [
+                    {
+                        name: 'swatches', // extension name to load
+                        options: { // extension options
+                            colors: {
+                                'primary': '#007bff',
+                                'secondary': '#6c757d',
+                                'success': '#28a745',
+                                'info': '#17a2b8',
+                                'warning': '#ffc107',
+                                'danger': '#dc3545',
+                                'light': '#f8f9fa',
+                                'dark': '#343a40',
+                                'blue': '#007bff',
+                                'indigo': '#6610f2',
+                                'purple': '#6f42c1',
+                                'pink': '#e83e8c',
+                                'red': '#dc3545',
+                                'orange': '#fd7e14',
+                                'yellow': '#ffc107',
+                                'green': '#28a745',
+                                'teal': '#20c997',
+                                'cyan': '#17a2b8',
+                                'white': '#fff',
+                                'gray': '#6c757d',
+                                'gray-dark': '#343a40',
+                            },
+                            namesAsValues: false
+                        }
+                    }
+                ]
+            });
+        });
 	</script>
 @endsection

@@ -1,17 +1,10 @@
 <?php
 
-use App\Http\Resources\Incident as IncidentResource;
-use App\Incident;
-use App\Notifications\AccountActivate;
-use App\Status;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\IncidentUpdated;
-use Illuminate\Support\Str;
-use function MongoDB\BSON\toJSON;
 
 Auth::routes(['verify' => true, 'register' => false]);
-Route::get('password/success', 'Auth\ResetPasswordController@resetSuccess')->name('password.success');
+
+Route::post('password/success', 'Auth\ResetPasswordController@resetSuccess')->name('password.success');
 
 Route::get('/auth/social/{social}', 'SocialLoginController@redirectToSocial')->name('social.redirect');
 Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallback')->name('social.callback');
@@ -33,8 +26,9 @@ Route::group(['middleware' => ['auth:web', 'verified','checkrole:administrator,s
     Route::resource('working-groups', 'WorkingGroupController');
 
     Route::resource('manage/departments', 'DepartmentController');
-    Route::resource('manage/permissions', 'PermissionController');
-    Route::resource('manage/roles', 'RoleController');
+    Route::resource('manage/districts', 'DistrictController');
+    Route::resource('security/permissions', 'PermissionController');
+    Route::resource('security/roles', 'RoleController');
     Route::resource('system/state-colors', 'StateColorController');
     Route::resource('system/statuses', 'StatusController');
 
@@ -88,15 +82,13 @@ Route::group(['middleware' => ['auth:web', 'verified','checkrole:administrator,s
 //        dd($user);
 //        Notification::send($incident, new IncidentUpdated($user, $incident, 'Another Notification Sent to no one'));
 //    });
-
-//    Route::get('notify', function () {
-//        return Str::random();
-//        //send account activation notification
-////        Auth::user()->notify(new AccountActivate(Auth::user()));
-//
-//    });
 });
 
+
+Route::get('notify', function () {
+
+    return response()->redirectToRoute('dashboard');
+});
 
 //
 //Route::get('/{vue?}', function () {

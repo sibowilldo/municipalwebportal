@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Dyrynda\Database\Support\GeneratesUuid;
 
 class CreateUsersTable extends Migration
 {
@@ -25,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->unsignedInteger('status_id');
             $table->rememberToken();
+            $table->boolean('is_online')->default(false);
             $table->timestamp('last_loggedin_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -5,14 +5,9 @@ const LoadDeleteFx = (function(){
         var id = el.data('id');
         var url = el.data('url');
         var token = $('meta[name="csrf-token"]').attr('content');
-        Swal.fire({
+        swalDelete.fire({
             title: 'Are you sure?',
             text: 'You may not be able to undo this!',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
             preConfirm: function() {
                 return new Promise(function(resolve) {
                     $.ajax({
@@ -33,7 +28,7 @@ const LoadDeleteFx = (function(){
                             });
                         })
                         .fail(function(){
-                            swal('Oops...', 'Something went wrong with ajax !', 'error');
+                            Swal.fire('Oops...', 'Something went wrong with ajax !', 'error');
                         });
                 });
             },

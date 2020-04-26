@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
-                    <div class="m_datatable vuetable-wrapper">
+                    <div class="m_datatable vuetable-wrapper table-responsive table-responsive-md">
                         <loading :active.sync="isLoading"
                                  :is-full-page="false"/>
                         <filter-bar></filter-bar>
@@ -32,22 +32,22 @@
                                   @vuetable:loaded="isLoading=false">
                         <template slot="actions" slot-scope="props">
                             <div class="custom-actions">
-                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
+                                <button class="m-portlet__nav-link m-btn--pill btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
                                         v-b-tooltip.hover title="Assign Engineer"
                                         @click="onAction('assign-user', props.rowData, props.rowIndex)">
                                     <i class="la la-user"></i>
                                 </button>
-                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
+                                <button class="m-portlet__nav-link m-btn--pill btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
                                         v-b-tooltip.hover title="Assign Specialist"
                                         @click="onAction('assign-specialist', props.rowData, props.rowIndex)">
                                     <i class="la la-user-secret"></i>
                                 </button>
-                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
+                                <button class="m-portlet__nav-link m-btn--pill btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
                                         v-b-tooltip.hover title="Assign Group"
                                         @click="onAction('assign-team', props.rowData, props.rowIndex)">
                                     <i class="la la-users"></i>
                                 </button>
-                                <button class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
+                                <button class="m-portlet__nav-link m-btn--pill btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only "
                                         v-b-tooltip.hover title="View Details"
                                         @click="onAction('view-item', props.rowData, props.rowIndex)">
                                     <i class="la la-eye"></i>
@@ -223,4 +223,29 @@
 </script>
 
 <style>
+    .table-striped tbody tr:hover{
+        background-color:rgba(0, 0, 0, 0.1);
+    }
+    tr:hover td .custom-actions{
+        width: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+    }
+    .custom-actions {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 50px;
+        background: rgb(232,232,232) ;
+        /*background: -moz-linear-gradient(95deg, rgba(255,255,255,0.0578606442577031) 0%, rgba(232,232,232,1) 30%);*/
+        /*background: -webkit-linear-gradient(95deg, rgba(255,255,255,0.0578606442577031) 0%, rgba(232,232,232,1) 30%);*/
+        /*background: linear-gradient(95deg, rgba(255,255,255,0.0578606442577031) 0%, rgba(232,232,232,1) 30%);*/
+        /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#f4f4f4",GradientType=1);*/
+        overflow: hidden;
+        transition: cubic-bezier(0, 0, 0.2, 1) width 200ms;
+    }
+    td.vuetable-slot.text-center {position: relative;}
 </style>

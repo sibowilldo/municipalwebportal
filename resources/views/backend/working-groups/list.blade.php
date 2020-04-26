@@ -2,11 +2,12 @@
 
 
 @section('title', 'Available Engineers')
-@section('breadcrumbs', Breadcrumbs::render('working-groups.index'))
+@section('breadcrumbs', Breadcrumbs::render('working-groups.show', $working_group))
 
 @section('content')
 
-    <div class="row">
+    {!! Form::open(['route' => ['working-group.assign', $working_group->id], 'method' => 'post', 'class'=>'row']) !!}
+    {!! Form::hidden('selectedEngineers',null, ['id' => 'selectedEngineers']) !!}
         <div class="col-xl-8">
             <div class="m-portlet m-portlet--mobile m-portlet--full-height">
                 <div class="m-portlet__head">
@@ -23,6 +24,7 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
+                    @include('layouts.form-errors')
                     <!--begin: Datatable -->
                     <div class="m_datatable">
                         <!--begin: Search Form -->
@@ -56,7 +58,14 @@
                             <tbody>
                             @foreach($engineers as $engineer)
                                 <tr>
-                                    <td>{{ $engineer->uuid }}</td>
+                                    <td>
+                                        <span class="m-switch m-switch--sm">
+                                            <label>
+                                                <input type="checkbox" name="engineers[]" class="engineers" value="{{ $engineer->uuid }}" {{ in_array($engineer->uuid, $selected)?'checked':'' }}>
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </td>
                                     <td>
                                         <div>
                                             <div class="m-card-user">
@@ -82,7 +91,16 @@
                                         </span>
 
                                     </td>
-                                    <td> {{ implode(', ', $engineer->roles()->pluck('name')->toArray())}}
+                                    <td>
+                                        <div class="m-list__content">
+                                            <div class="m-list-badge m--margin-bottom-20">
+                                                <div class="m-list-badge__items">
+                                                    @foreach($engineer->roles()->pluck('name')->toArray() as $role)
+                                                        <span class="m-list-badge__item m-list-badge__item--metal text-light">{{$role}}</span>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -108,8 +126,6 @@
                         </ul>
                     </div>
                 </div>
-                {!! Form::open(['route' => ['working-group.assign', $working_group->id], 'method' => 'post']) !!}
-                {!! Form::hidden('selectedEngineers',null, ['id' => 'selectedEngineers']) !!}
                 <div class="m-portlet__body">
                     <div class="m-widget1__item mb-3">
                         <div class="m-widget4__info">
@@ -156,7 +172,7 @@
                     <div class="m-widget1__item mb-3">
                         <div class="m-widget4__info">
                             <label for="instructions" class="m-widget4__title m--font-boldest">Group Instructions</label>
-                            <p class="m-widget4__sub text-md-right">{{ Form::textarea('instructions', null, ['class'=>'form-control']) }}</p>
+                            <p class="m-widget4__sub text-md-right">{{ Form::textarea('instructions', null, ['class'=>'form-control','data-validation'=>'required']) }}</p>
                             <br><br>
                         </div>
                     </div>
@@ -168,11 +184,9 @@
                         </button>
                     </div>
                 </div>
-                {!! Form::close() !!}
             </div>
         </div>
-    </div>
-    </div>
+    {!! Form::close() !!}
 
 @endsection
 
@@ -195,8 +209,7 @@
                         title: "#",
                         width: 50,
                         sortable: false,
-                        textAlign: 'center',
-                        selector: {class: 'selected-engineer'}
+                        textAlign: 'center'
                     },
                     {
                         field: 'Name',
@@ -215,33 +228,25 @@
                         title: 'Roles',
                         sortable: true,
                         overflow: 'visible',
+                        width: 350
                     }]
             };
 
             var fx = function () {
                 options.search = {};
                 var datatable = $('#engineers').mDatatable(options);
-                datatable.on('m-datatable--on-check m-datatable--on-uncheck m-datatable--on-layout-updated', function (a, e) {
-                    var checkedNodes = datatable.rows('.m-datatable__row--active').nodes();
-                    var checkedItems = checkedNodes.find('.m-checkbox--single > [type="checkbox"]').map(function (i, chk) {
-                        return $(chk).val();
-                    }).toArray();
-                    var count = $(checkedItems).length;
-                    if (count> 5) {
-                        var theChk = $(checkedNodes[count - 1]).find('.m-checkbox--single > [type="checkbox"]');
+                let limit = '{{ $limit }}';
+                datatable.on('change', '.engineers', function () {
+                    console.log("Limit is: ", limit)
 
-                        $(theChk).prop('checked', false);
-                        $(checkedNodes[count - 1]).removeClass('m-datatable__row--active');
-                        checkedItems.pop();
+                    if(this.checked && $('input.engineers:checked').length > limit) {
+                        this.checked = false;
                         Swal.fire({
-                            icon: 'danger',
-                            title: 'Oops! Maximum selection reached.',
-                            text: 'You can only select at a maximum of 5 engineers at one time.',
-                            backdrop: "#00000033"
+                            icon: 'error',
+                            title: 'Maximum selection reached',
+                            text: 'This group only allows a maximum of ' + limit + " personnel."
                         });
                     }
-
-                    $("#selectedEngineers").val(checkedItems);
                 });
             };
 
@@ -253,6 +258,10 @@
         }();
         jQuery(document).ready(function () {
             EngineerList.init();
+            //Handle Form Validation
+            $.validate({
+                modules : 'security'
+            });
         });
 
     </script>

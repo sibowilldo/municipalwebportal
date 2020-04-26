@@ -286,8 +286,7 @@
                 ', <strong>Long: </strong>'+ long);
             infowindow.open(map, marker);
         }
-    </script>
-    <script type="text/javascript">
+
         //Global Declaration and Initialization
         let GroupSelection = JSON.parse(localStorage.getItem('GroupSelection')) || {}, engineerSelect = $('.m-select2').select2();
         if (performance.navigation.type !== 1) {
@@ -348,6 +347,7 @@
                             sortable: false,
                             width: 110,
                             overflow: 'visible',
+                            locked: {right:'lg'}
                         },
                         {
                             field: 'Description',
@@ -371,16 +371,11 @@
                     if(item.is(':checked')){
                         elAssigned.val(item.data('name'));
                         $('input[name=assigned_id]').val(item.data('id'));
-                        jQuery.notify({
-                            message: item.data('name') + " was assigned. <br>Click <strong>Save Changes</strong> to commit.",
-                            icon: "icon la la-check-circle"
-                        }, {
-                            type: "success",
-                            animate: {
-                                enter: 'animated slideInRight',
-                                exit: 'animated slideOutRight'
-                            }
-                        });
+
+                        swalToast.fire({
+                            icon: 'success',
+                            title: item.data('name') + " was assigned. Click<strong> &nbsp;Save Changes&nbsp;</strong> to commit."
+                        })
                     }
                     GroupSelection = { id:item.data('id'), name:item.data('name'), state: this.checked};
                     localStorage.setItem("GroupSelection", JSON.stringify(GroupSelection));

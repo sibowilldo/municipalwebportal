@@ -15,28 +15,22 @@ export const uniqueArray = (arr) => {
 }
 
 /**
+ * Capitalize the first letter of a string
+ * @param str
+ */
+export const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1)
+
+/**
+ * Returns the array ob object values (Object.values isn't supported in IE11)
+ * @param obj
+ */
+export const objectValues = (obj) => Object.keys(obj).map(key => obj[key])
+
+/**
  * Convert NodeList to Array
  * @param nodeList
  */
 export const toArray = (nodeList) => Array.prototype.slice.call(nodeList)
-
-  /**
- * Converts `inputOptions` into an array of `[value, label]`s
- * @param inputOptions
- */
-export const formatInputOptions = (inputOptions) => {
-  const result = []
-  if (typeof Map !== 'undefined' && inputOptions instanceof Map) {
-    inputOptions.forEach((value, key) => {
-      result.push([key, value])
-    })
-  } else {
-    Object.keys(inputOptions).forEach(key => {
-      result.push([key, inputOptions[key]])
-    })
-  }
-  return result
-}
 
 /**
  * Standardise console warnings
@@ -73,10 +67,17 @@ export const warnOnce = (message) => {
 }
 
 /**
+ * Show a one-time console warning about deprecated params/methods
+ */
+export const warnAboutDepreation = (deprecatedParam, useInstead) => {
+  warnOnce(`"${deprecatedParam}" is deprecated and will be removed in the next major release. Please use "${useInstead}" instead.`)
+}
+
+/**
  * If `arg` is a function, call it (with no arguments or context) and return the result.
  * Otherwise, just pass the value through
  * @param arg
  */
 export const callIfFunction = (arg) => typeof arg === 'function' ? arg() : arg
 
-export const isThenable = (arg) => typeof arg === 'object' && typeof arg.then === 'function'
+export const isPromise = (arg) => arg && Promise.resolve(arg) === arg

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -65,11 +67,29 @@ class ResetPasswordController extends Controller
 
         flash('Password reset successfully')->success();
 
-        if(!$user->hasRole('user')){
-            return response()->redirectToRoute('login');
+
+    }
+
+
+    /**
+     * Get the response for a successful password reset.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return mixed
+     */
+    protected function sendResetResponse(Request $request, $response)
+    {
+        $user = User::where('email', $request->email)->firstOrFail();
+
+        if($user->hasRole('user')){
+            return view('layouts.redirect')->with(['destination_route' => 'password.success']);
         }
+
         $this->guard()->login($user);
 
+        return redirect($this->redirectPath())
+            ->with('status', trans($response));
     }
 
     /**

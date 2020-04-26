@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Assignment;
+use App\Http\Requests\WorkingGroupFormRequest;
 use App\Incident;
 use App\IncidentHistory;
 use App\Status;
@@ -14,9 +15,13 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class WorkingGroupController extends Controller
 {
+    private $maxSelection = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -48,11 +53,11 @@ class WorkingGroupController extends Controller
 
     /**
      * @param Incident $incident
-     * @param Request $request
+     * @param WorkingGroupFormRequest $request
      * @param WorkingGroup $workingGroup
      * @throws \Throwable
      */
-    public function assign_group(Incident $incident, Request $request, WorkingGroup $workingGroup)
+    public function assign_group(Incident $incident, WorkingGroupFormRequest $request, WorkingGroup $workingGroup)
     {
         $assigner = Auth::user();
         $date_now = Carbon::now();
@@ -94,11 +99,11 @@ class WorkingGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param WorkingGroupFormRequest $request
      * @return RedirectResponse
      * @throws \Throwable
      */
-    public function store(Request $request)
+    public function store(WorkingGroupFormRequest $request)
     {
         $leader = User::whereUuid($request->leader)->firstOrFail();
         $request['is_active'] = $request->is_active === 'on' ? true : false;
@@ -157,6 +162,12 @@ class WorkingGroupController extends Controller
      */
     public function update(Request $request, WorkingGroup $working_group)
     {
+        Validator::make($request->all(), [
+            'name' => [
+                'required',
+                Rule::unique('working_groups')->ignore($working_group->id),
+            ],
+        ]);
         $leader = User::whereUuid($request->leader)->firstOrFail();
         $assigned_engineers = $request->assigned_engineers ?? [];
         //Merge engineers with leader
@@ -216,13 +227,18 @@ class WorkingGroupController extends Controller
     public function listEngineers(WorkingGroup $working_group, Request $request)
     {
         $leader = $working_group->users()->where('is_leader', true)->first();
-        $statuses = Status::all();
+        $selected = $working_group->users()->where('is_leader', false)->pluck('uuid')->toArray();//pluck('id')->toArray();
+
+        $limit = $this->maxSelection;// - count($selected);
+
+        $statuses = Status::all()->whereNotIn('name', ['In Progress', 'Trashed', 'Review'])->pluck('id')->toArray();
         $engineers = User::role('Engineer')
-            ->whereIn('status_id', $statuses->whereNotIn('name', ['In Progress', 'Trashed', 'Review'])
-                ->pluck('id'))->whereNotIn('id', [$leader->id ?? null])
+//            ->whereNotIn('id', $selected)
+            ->whereIn('status_id', $statuses)
             ->with('roles')
             ->get();
-        return view("backend.working-groups.list", compact('working_group', 'engineers', 'leader'));
+
+        return view("backend.working-groups.list", compact('working_group', 'engineers', 'leader', 'limit', 'selected'));
     }
 
     /**
@@ -235,20 +251,37 @@ class WorkingGroupController extends Controller
      */
     public function assignEngineers(WorkingGroup $working_group, Request $request)
     {
-        $request['selectedEngineers'] = explode(',', $request->selectedEngineers);
+        $validator = Validator::make($request->all(),
+            [
+                'engineers' => 'required',
+                'instructions' => 'required|string'],
+            [
+                'engineers.required' => 'Please select at least 1 name from the list below.'
+            ]);
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
 
+        $leader = $working_group->users()->where('is_leader', true)->first();
+        $engineers = $request->engineers;
+
+        array_push($engineers, $leader->uuid);
         $status = Status::where('name', 'assigned')->firstOrFail();
-        foreach ($request->selectedEngineers as $engineerUuid) {
+        $syncEngineers = [];
+        foreach ($engineers as $engineerUuid) {
             //assign engineer to working group
             $engineer = User::whereUuid($engineerUuid)->firstOrFail();
-            $engineer->working_groups()->attach($working_group, ['is_leader' => false, 'instructions' => $request->instructions, 'assigner_id' => Auth::id()]);
+            $syncEngineers[$engineer->id] = ['is_leader' => $leader->id===$engineer->id, 'instructions' => $request->instructions, 'assigner_id' => Auth::id()];
             //set status to Assigned
             $engineer->status_id = $status->id;
             $engineer->save();
-            //Notify engineer
+            //Todo: Notify engineer
         }
 
-        flash(count($request->selectedEngineers) . " engineers were assigned successfully", "success");
+        $working_group->users()->where('is_leader', false)->sync($syncEngineers);
+
+        $count = count($request->engineers);
+        flash("$count engineers were assigned successfully", "success");
         return response()->redirectToRoute('working-groups.show', $working_group->id);
     }
 }

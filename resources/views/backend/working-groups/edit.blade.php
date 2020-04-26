@@ -7,7 +7,7 @@
 
 	<div class="row">
 		<div class="col-xl-8 offset-xl-2">
-			<div class="m-portlet m-portlet--mobile  m-portlet--rounded">
+			<div class="m-portlet m-portlet--mobile">
 				<div class="m-portlet__head">
 					<div class="m-portlet__head-caption">
 						<div class="m-portlet__head-title">
@@ -54,20 +54,8 @@
 				</div>
 
 				{!! Form::model($working_group, ['route'=> ['working-groups.update', $working_group->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
-				@include('backend.working-groups._form')
-
-				<div class="m-portlet__foot m-portlet__foot--fit">
-					<div class="m-form__actions m-form__actions--solid">
-						<div class="row">
-							<div class="col-md-10 offset-md-2">
-								<button type="submit" class="btn btn-success m-btn--pill m-btn--air pull-right m-btn--custom m-btn--icon">
-                                    <span><i class="la la-check"></i><span>Update Details</span></span>
-
-                                </button>
-							</div>
-						</div>
-					</div>
-				</div>
+				    @include('backend.working-groups._form')
+                    @include('layouts.portlets.footer._footer', ['type'=> 'edit', 'name' => 'Group'])
 				{!! Form::close() !!}
 			</div>
 		</div>

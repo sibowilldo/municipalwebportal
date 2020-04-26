@@ -21,8 +21,8 @@
                         <ul class="m-portlet__nav">
                             <li class="m-portlet__nav-item">
                                 <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
-                                    <a href="#" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
-                                        <i class="la la-ellipsis-h m--font-brand"></i>
+                                    <a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill m-btn btn-outline-dark m-btn--hover-dark">
+                                        Quick Actions
                                     </a>
                                     <div class="m-dropdown__wrapper">
                                         <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
@@ -84,12 +84,11 @@
                             <thead>
                             <tr>
                                 <th data-field="id">{{ __('#') }}</th>
-                                <th data-field="Name">{{ __('Name') }}</th>
-                                <th data-field="Active">{{ __('Active') }}</th>
-                                <th data-field="State Color">{{ __('State Color') }}</th>
-                                <th data-field="Actions">{{ __('Actions') }}</th>
-                                <th data-field="Description">{{ __('Description') }}</th>
-                                <th data-field="Associated Categories">{{ __('Associated Categories') }}</th>
+                                <th data-field="name">{{ __('Name') }}</th>
+                                <th data-field="stateColor">{{ __('State Color') }}</th>
+                                <th data-field="actions">{{ __('Actions') }}</th>
+                                <th data-field="description">{{ __('Description') }}</th>
+                                <th data-field="associatedCategories">{{ __('Associated Categories') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -98,16 +97,8 @@
                                     <td>{{ $type->id }}</td>
                                     <td>{{ $type->name }}</td>
                                     <td>
-                                        <span class="m-switch with-icon m-switch--icon m-switch--outline m-switch--success">
-                                            <label>
-                                                <input type="checkbox" disabled name="" {{ $type->is_active ? 'checked' : '' }}>
-                                                <span></span>
-                                            </label>
-                                        </span>
-                                    </td>
-                                    <td>
                                         <span>
-                                            <span class="m-badge m-badge--{{ $type->state_color->css_class }}"></span>
+                                            <span class="m-badge m-badge--dot m-badge--dot-small m-badge--{{ $type->state_color->css_class }}"></span>
                                             {{ title_case($type->state_color->name) }}
                                         </span>
                                     </td>
@@ -153,28 +144,29 @@
                 width: 25
             },
             {
-                field: 'Name',
+                field: 'name',
                 title: 'Name',
                 type: 'text',
                 width: 150
             },
             {
-                field: 'Description',
+                field: 'description',
                 title: 'Description',
                 type: 'text',
                 autoHide: true,
                 width: 350
             },
             {
-                field: 'Active',
+                field: 'active',
                 title: 'Active',
                 autoHide: true
             },
             {
-                field: 'Actions',
+                field: 'actions',
                 title: 'Actions',
                 sortable: false,
                 width: 110,
+                locked: {right: 'lg'},
                 overflow: 'visible',
             }
         ];

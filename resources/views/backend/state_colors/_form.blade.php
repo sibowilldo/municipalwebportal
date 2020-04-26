@@ -1,5 +1,6 @@
 
 {{ csrf_field() }}
+@include('layouts.form-errors')
 <div class="m-portlet__body">
     <div class="form-group m-form__group row{{ $errors->has('name') ? ' has-danger' : '' }}">
         <label for="name" class="col-3 col-form-label">Name</label>
@@ -16,13 +17,13 @@
     <div class="form-group m-form__group row{{ $errors->has('css_color') ? ' has-danger' : '' }}">
         <label for="css_color" class="col-3 col-form-label">CSS Color</label>
         <div class="col-9">
-            {!! Form::text('css_color', null, ['class'=>'form-control m-input']) !!}
+            {!! Form::text('css_color', null, ['class'=>'form-control m-input color-picker', 'autocomplete'=>'off']) !!}
         </div>
     </div>
     <div class="form-group m-form__group row{{ $errors->has('css_font_color') ? ' has-danger' : '' }}">
         <label for="css_font_color" class="col-3 col-form-label">CSS Font Color</label>
         <div class="col-9">
-            {!! Form::text('css_font_color', null, ['class'=>'form-control m-input']) !!}
+            {!! Form::text('css_font_color', null, ['class'=>'form-control m-input color-picker', 'autocomplete'=>'off']) !!}
         </div>
     </div>
 </div>

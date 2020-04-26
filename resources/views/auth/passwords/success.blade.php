@@ -21,47 +21,37 @@
     <!--end::Web font -->
     <link href=" {{ mix('css/app.css') }}" rel="stylesheet">
     <link href=" {{ mix('css/styles.bundle.css') }}" rel="stylesheet">
-    <style>
-       .m-widget7 .icon{
-            font-size: 8em;
-            text-align: center;
-            display: block;
-            margin: .5em;
-        }
-    </style>
 </head>
 
 <!-- end::Head -->
-
-<!-- begin::Body -->
 <body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
-
 <!-- begin:: Page -->
 <div class="m-grid m-grid--hor m-grid--root m-page">
-    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-2">
-        <div class="m-grid__item m-grid__item--fluid	m-login__wrapper">
-            <div class="m-portlet m-portlet--skin-dark m-portlet--full-height rounded-sm">
-                <div class="m-portlet__body">
-
-                    <!--begin::Widget 7-->
-                    <div class="m-widget7 m-widget7--skin-dark">
-                        <i class="la la-check-circle icon m--font-success animated zoomIn" style=""></i>
-                        <h1 class="animated fadeIn delay-1s text-uppercase">Password Reset Success </h1>
-                        <div class="m-widget7__desc animated fadeInUp delay-1s">
-                            What to do next...
-                        </div>
-                        <p></p>
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-2" id="m_login" style="background-image: url(/assets/img/bg-3.jpg);">
+        <div class="m-grid__item m-grid__item--fluid pt-2	m-login__wrapper d-flex flex-column align-items-center justify-content-center">
+            <div class="m-login__container">
+                <div class="m-login__logo ">
+                    <div class="d-flex flex-column align-items-center justify-content-center">
+                        <div style="width:100px;height:100px" class="lottie"
+                             data-animation-path="/assets/lottie-animations/Success.json"
+                             data-anim-loop="false"
+                             data-name="success"></div>
                     </div>
-
-                    <!--end::Widget 7-->
+                </div>
+                <div class="m-login__signin">
+                    <div class="m-login__head">
+                        <h3 class="m-login__title">Your password was reset successfully.</h3>
+                    </div>
+                </div>
+                <div class="m-login__account">
+                    <span class="m-login__account-msg">
+                        You can now use your new password to sign-in to the app.
+                    </span>&nbsp;&nbsp;
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- end:: Page -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.6.8/lottie.min.js" integrity="sha256-HlqBFI4b3mzFNE97JQcgI/uhJvHBI5czBqfVtEeA1Hg=" crossorigin="anonymous"></script>
 </body>
-
-<!-- end::Body -->
 </html>

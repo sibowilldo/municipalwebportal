@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
+use Auth;
 class CheckRole
 {
     /**
@@ -18,6 +18,7 @@ class CheckRole
     {
         if (! $request->user()->hasAnyRole($roles)) {
             abort(403, "You're not unauthorized to perform this action.");
+            Auth::logout();
         }
         return $next($request);
     }

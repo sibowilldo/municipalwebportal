@@ -78,16 +78,7 @@
                                     </div>
                             </div>
                         </div>
-                        <div class="m-portlet__foot m-portlet__foot--fit">
-                            <div class="m-form__actions m-form__actions--solid">
-                                <div class="row">
-                                    <div class="col-md-10 offset-md-2">
-                                        <button type="submit" class="btn btn-success m-btn--pill m-btn--air">Add User</button>
-                                        <button type="reset" class="btn btn-secondary m-btn--pill m-btn--air">Reset Form</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @include('layouts.portlets.footer._footer', ['type'=> 'create', 'name' => 'User'])
                     </form>
                     <!--end::Form-->
             </div>

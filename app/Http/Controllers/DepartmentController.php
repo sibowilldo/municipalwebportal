@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Department;
-use Illuminate\Http\Request;
+use App\District;
+use App\Http\Requests\DepartmentFormRequest;
+use App\Status;
+use Spatie\Permission\Models\Role;
 
 class DepartmentController extends Controller
 {
@@ -19,40 +23,35 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-//        dd(Department::all());
-        return view('backend.departments.index')->with('departments', Department::all());
+        $statuses = Status::all()->pluck('name', 'name');
+        $categories = Category::all()->pluck('name', 'name');
+        $departments=Department::all();
+        return view('backend.departments.index', compact('statuses', 'categories', 'departments'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
-        return view('backend.departments.create')->with('statuses', Department::$statuses);
+        $statuses = Status::all()->pluck('name', 'id');
+        $districts = District::all()->pluck('name', 'id');
+        $categories = Category::all()->pluck('name', 'id');
+        count($districts)>0?:flash()->overlay('Please add at least 1 district before attempting to add a department.', '0 Districts Found')->warning();
+        return view('backend.departments.create', compact('statuses', 'districts', 'categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param DepartmentFormRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DepartmentFormRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'district' => 'required|string',
-            'description' => 'required|string',
-            'contact_number' => 'required|string',
-            'email' => 'required|email|string',
-            'alt_contact_number' => 'required|string',
-            'address' => 'required',
-        ]);
-
         $department = Department::create($request->all());
-
         flash($department->name . ' added successfully')->success();
         return redirect()->route('departments.index');
     }
@@ -60,39 +59,40 @@ class DepartmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Department $department
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($id)
+    public function show(Department $department)
     {
-        //
-        $department = Department::findorFail($id);
-        return view('backend.departments.show', compact('department'));
+        $statuses = Status::pluck('name', 'name');
+        $roles = Role::all();
+        $users = $department->users()->get();
+        return view('backend.departments.show', compact('department', 'statuses', 'roles', 'users'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Department $department
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(Department $department)
     {
-        $department = Department::findorFail($id);
-        $statuses = Department::$statuses;
-        return view('backend.departments.edit', compact('department', 'statuses'));
+        $statuses = Status::all()->pluck('name', 'id');
+        $districts = District::all()->pluck('name', 'id');
+        $categories = Category::all()->pluck('name', 'id');
+        return view('backend.departments.edit', compact('department', 'statuses', 'districts', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param DepartmentFormRequest $request
+     * @param Department $department
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(DepartmentFormRequest $request, Department $department)
     {
-        $department = Department::findorFail($id);
         $department->update($request->all());
 
         $department->save();
@@ -104,11 +104,17 @@ class DepartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Department $department
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Department $department)
     {
-        //
+        $department->delete();
+
+        return response()->json([
+            "message"=> $department->name . ' was deleted successfully',
+            "url" => route('departments.index')
+        ], 200);
     }
 }

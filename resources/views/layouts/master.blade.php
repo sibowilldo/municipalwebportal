@@ -144,5 +144,12 @@
 @yield('modals')
 {{--end::Modals--}}
 @include('flash::message')
+<style>
+    input.form-control{
+        height: calc(2.95rem + 2px) !important;}
+    input:disabled, button:disabled, textarea:disabled{
+        cursor: not-allowed;
+    }
+</style>
 </body>
 </html>

@@ -1,27 +1,23 @@
 import { error } from './utils/utils.js'
-import { DismissReason } from './utils/DismissReason'
-import { version } from '../package.json'
-import * as staticMethods from './staticMethods'
-import * as instanceMethods from './instanceMethods'
-import privateProps from './privateProps'
+import { DismissReason } from './utils/DismissReason.js'
+import * as staticMethods from './staticMethods.js'
+import * as instanceMethods from './instanceMethods.js'
+import privateProps from './privateProps.js'
 
 let currentInstance
 
 // SweetAlert constructor
 function SweetAlert (...args) {
   // Prevent run in Node env
+  /* istanbul ignore if */
   if (typeof window === 'undefined') {
     return
   }
 
   // Check for the existence of Promise
+  /* istanbul ignore if */
   if (typeof Promise === 'undefined') {
     error('This package requires a Promise library, please include a shim to enable it in this browser (See: https://github.com/sweetalert2/sweetalert2/wiki/Migration-from-SweetAlert-to-SweetAlert2#1-ie-support)')
-  }
-
-  if (args.length === 0) {
-    error('At least 1 argument is expected!')
-    return false
   }
 
   currentInstance = this
@@ -32,7 +28,8 @@ function SweetAlert (...args) {
     params: {
       value: outerParams,
       writable: false,
-      enumerable: true
+      enumerable: true,
+      configurable: true
     }
   })
 
@@ -41,13 +38,9 @@ function SweetAlert (...args) {
 }
 
 // `catch` cannot be the name of a module export, so we define our thenable methods here instead
-SweetAlert.prototype.then = function (onFulfilled, onRejected) {
+SweetAlert.prototype.then = function (onFulfilled) {
   const promise = privateProps.promise.get(this)
-  return promise.then(onFulfilled, onRejected)
-}
-SweetAlert.prototype.catch = function (onRejected) {
-  const promise = privateProps.promise.get(this)
-  return promise.catch(onRejected)
+  return promise.then(onFulfilled)
 }
 SweetAlert.prototype.finally = function (onFinally) {
   const promise = privateProps.promise.get(this)
@@ -71,8 +64,6 @@ Object.keys(instanceMethods).forEach(key => {
 
 SweetAlert.DismissReason = DismissReason
 
-SweetAlert.noop = () => { }
-
-SweetAlert.version = version
+SweetAlert.version = '9.10.12'
 
 export default SweetAlert

@@ -151,7 +151,7 @@
                     });
                 })
                 .fail(function(){
-                    swal('Oops...', 'Something went wrong with ajax !', 'error');
+                    Swal.fire('Oops...', 'Something went wrong with ajax !', 'error');
                 });
             });
             LoadTypes.init();

@@ -1,8 +1,8 @@
 @extends('layouts.master')
 
 
-@section('title', 'Types')
-@section('breadcrumbs', Breadcrumbs::render('types.index'))
+@section('title', 'Statuses')
+@section('breadcrumbs', Breadcrumbs::render('statuses.index'))
 
 @section('content')
 

@@ -132,78 +132,78 @@
                         <div id="event-details" class="tab-pane active show">
                             <div class="m-widget1">
                                 {!! Form::open(array('route' => array('incidents.assign', $incident->id), 'method' => 'POST')) !!}
-                                    {{ csrf_field() }}
-                                    {{ Form::hidden('user_id', $engineer->id) }}
-                                    {{ Form::hidden('incident_id', $incident->id) }}
-                                    <div class="m-widget1__item">
-                                        <div class="m-widget4__info">
+                                {{ csrf_field() }}
+                                {{ Form::hidden('user_id', $engineer->id) }}
+                                {{ Form::hidden('incident_id', $incident->id) }}
+                                <div class="m-widget1__item">
+                                    <div class="m-widget4__info">
                                         <span class="m-widget4__title m--font-boldest">
                                             Reference
                                         </span><br>
-                                            <span class="m-widget4__sub">
+                                        <span class="m-widget4__sub">
                                             {{ $incident->reference }}
                                         </span>
-                                        </div>
                                     </div>
-                                    <div class="m-widget1__item">
-                                        <div class="m-widget4__info">
+                                </div>
+                                <div class="m-widget1__item">
+                                    <div class="m-widget4__info">
                                         <span class="m-widget4__title m--font-boldest">
                                             Logged at
                                         </span><br>
-                                            <span class="m-widget4__sub">
+                                        <span class="m-widget4__sub">
                                             {{ $incident->created_at }}
                                         </span>
-                                        </div>
                                     </div>
-                                    <div class="m-widget1__item">
-                                        <div class="m-widget4__info">
+                                </div>
+                                <div class="m-widget1__item">
+                                    <div class="m-widget4__info">
                                         <span class="m-widget4__title m--font-boldest">
                                             Category
                                         </span><br>
-                                            <span class="m-widget4__sub">
+                                        <span class="m-widget4__sub">
                                             {{ $incident->type->name }}
                                         </span>
-                                        </div>
                                     </div>
-                                    <div class="m-widget1__item">
-                                        <div class="m-widget4__info">
+                                </div>
+                                <div class="m-widget1__item">
+                                    <div class="m-widget4__info">
                                         <span class="m-widget4__title m--font-boldest">
                                             Status
                                         </span><br>
-                                            <span class="m-widget4__sub">
+                                        <span class="m-widget4__sub">
                                             {{ $incident->status->name }}
                                         </span>
-                                        </div>
                                     </div>
-                                    <div class="m-widget1__item">
-                                        <div class="m-widget4__info">
-                                            <label for="engineers-list" class="m-widget4__title m--font-boldest">
-                                                Assigned Personnel
-                                            </label>
-                                             <span class="m-widget4__sub">
+                                </div>
+                                <div class="m-widget1__item">
+                                    <div class="m-widget4__info">
+                                        <label for="engineers-list" class="m-widget4__title m--font-boldest">
+                                            Assigned Personnel
+                                        </label>
+                                        <span class="m-widget4__sub">
                                                 {{ Form::text('assigned', null, [
                                                     "id" => "assigned",
                                                     "class"=>"form-control m-input",
                                                     "data-id" => "",
                                                     "disabled"=>"disabled"]) }}
-                                                {{ Form::hidden('assigned_id') }}
+                                            {{ Form::hidden('assigned_id') }}
                                             </span>
-                                        </div>
-                                    </div><div class="m-widget1__item">
-                                        <div class="m-widget4__info">
-                                            <label for="engineers-list" class="m-widget4__title m--font-boldest">
-                                                Instructions
-                                            </label>
-                                            <div class="mb-5">
+                                    </div>
+                                </div><div class="m-widget1__item">
+                                    <div class="m-widget4__info">
+                                        <label for="engineers-list" class="m-widget4__title m--font-boldest">
+                                            Instructions
+                                        </label>
+                                        <div class="mb-5">
                                                  <span class="m-widget4__sub">
                                                      {{ Form::textarea('instructions', old('instructions'),
                                                         ["id" => "instructions","class"=>"form-control m-input"]) }}
                                                     <br>
                                                     <button class="btn btn-success m--margin-top-20 m-btn--pill" type="submit">Save Changes</button>
                                                 </span>
-                                            </div>
                                         </div>
                                     </div>
+                                </div>
                                 {!! Form::close() !!}
                             </div>
                         </div>
@@ -242,7 +242,7 @@
 @endsection
 
 @section('js')
-{{--    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>--}}
+    {{--    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>--}}
     <script>
         // Initialize and add the map
         function initMap() {
@@ -268,8 +268,7 @@
                 ', <strong>Long: </strong>'+ long);
             infowindow.open(map, marker);
         }
-    </script>
-    <script type="text/javascript">
+
         //Global Declaration and Initialization
         let EngineerSelection = JSON.parse(localStorage.getItem('EngineerSelection')) || {}, engineerSelect = $('.m-select2').select2();
         if (performance.navigation.type !== 1) {
@@ -309,6 +308,7 @@
                         {
                             field: 'Assign',
                             title: 'Assign',
+                            locked: {right: 'lg'},
                             width: 150
                         }
                     ],
@@ -326,16 +326,11 @@
                     if(item.is(':checked')){
                         elAssigned.val(item.data('name'));
                         $('input[name=assigned_id]').val(item.data('id'));
-                        jQuery.notify({
-                            message: item.data('name') + " was assigned. <br>Click <strong>Save Changes</strong> to commit.",
-                            icon: "icon la la-check-circle"
-                            }, {
-                            type: "success",
-                            animate: {
-                                enter: 'animated slideInRight',
-                                exit: 'animated slideOutRight'
-                            }
-                        });
+
+                        swalToast.fire({
+                            icon: 'success',
+                            title: item.data('name') + " was assigned. Click<strong> &nbsp;Save Changes&nbsp;</strong> to commit."
+                        })
                     }
                     EngineerSelection = { id:item.data('id'), name:item.data('name'), state: this.checked};
                     localStorage.setItem("EngineerSelection", JSON.stringify(EngineerSelection));
@@ -343,7 +338,6 @@
                 $('#m_user_role').on('change', function () {
                     datatable.search($(this).val().toLowerCase(), 'Role');
                 });
-
             };
             return {
                 //== Public functions

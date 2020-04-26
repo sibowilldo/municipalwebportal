@@ -20,18 +20,18 @@
 						<ul class="m-portlet__nav">
 							<li class="m-portlet__nav-item">
 								<div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
-									<a href="#" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
-										<i class="la la-ellipsis-h m--font-brand"></i>
-									</a>
+                                    <a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill m-btn btn-outline-dark m-btn--hover-dark">
+                                        Quick Actions
+                                    </a>
 									<div class="m-dropdown__wrapper">
 										<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
 										<div class="m-dropdown__inner">
 											<div class="m-dropdown__body">
 												<div class="m-dropdown__content">
 													<ul class="m-nav">
-														<li class="m-nav__section">
-															<span class="m-nav__section-text">Useful Links</span>
-														</li>
+                                                        <li class="m-nav__section m-nav__section--first">
+                                                            <span class="m-nav__section-text">Available Actions</span>
+                                                        </li>
 														<li class="m-nav__item">
 															<a href="{{ route('types.create') }}" class="m-nav__link">
 																{{--<i class="m-nav__link-icon la la-users"></i>--}}
@@ -62,17 +62,8 @@
 				</div>
 
 				{!! Form::model($type, ['route'=> ['types.update', $type->id], 'method'=>'PUT', 'class' => 'm-form m-form--fit m-form--label-align-right']) !!}
-				@include('backend.types._form')
-
-				<div class="m-portlet__foot m-portlet__foot--fit">
-					<div class="m-form__actions m-form__actions--solid">
-						<div class="row">
-							<div class="col-md-10 offset-md-2">
-								<button type="submit" class="btn btn-success m-btn--pill m-btn--air">Update Details</button>
-							</div>
-						</div>
-					</div>
-				</div>
+                    @include('backend.types._form')
+                    @include('layouts.portlets.footer._footer', ['type'=> 'edit', 'name' => 'Type'])
 				{!! Form::close() !!}
 			</div>
 		</div>

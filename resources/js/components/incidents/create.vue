@@ -206,6 +206,7 @@
     import {maxLength, minLength, required, requiredIf, email, helpers} from 'vuelidate/lib/validators';
     import moment from "moment";
     import 'vue-form-wizard/dist/vue-form-wizard.min.css';
+    import { gmapApi } from 'vue2-google-maps';
 
     const selected = (param) => !(param == null);
 
@@ -292,6 +293,18 @@
                 return $dirty ? !$error : null;
             },
             setDragPlace(place){
+
+                //TODO: Enable when pay option is available
+                if(false){
+                    let geocoder = new google.maps.Geocoder();
+                    geocoder.geocode( { 'location': place.latLng}, function(results, status) {
+
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        this.form.location_description = results[0].formatted_address;
+                    }
+                    });
+                }
+
                 this.form.location_description = place.latLng.toString();
                 this.form.longitude = place.latLng.lng();
                 this.form.latitude = place.latLng.lat();

@@ -16,16 +16,19 @@ class CreateDepartmentsTable extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('district')->default('');
             $table->text('description')->nullable();
             $table->string('contact_number')->default('');
             $table->string('email')->default('');
-            $table->string('alt_contact_number')->default('');
             $table->mediumText('address')->nullable();
+            $table->unsignedInteger('category_id');
+            $table->unsignedInteger('district_id');
             $table->unsignedInteger('status_id');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('status_id')->references('id')->on('statuses');
+            $table->foreign('district_id')->references('id')->on('districts');
+            $table->foreign('category_id')->references('id')->on('categories');
         });
 
         Schema::create('department_user', function (Blueprint $table) {

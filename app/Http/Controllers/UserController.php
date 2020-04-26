@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use App\Status;
-use Illuminate\Http\Request;
 use App\User;
 use Auth;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Session;
+use Spatie\Permission\Models\Role;
 
 //Importing laravel-permission models
-use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 //Enables us to output flash messaging
-use Session;
 class UserController extends Controller
 {
     public function __construct()
@@ -32,7 +33,6 @@ class UserController extends Controller
         $users = User::withTrashed()->get();
         $statuses = Status::where('group', 'users')->pluck('name', 'id');
         $roles = Role::all();
-
         return view('backend.users.index', compact('users', 'statuses', 'roles'));
     }
 
@@ -110,8 +110,9 @@ class UserController extends Controller
         }
 
         $roles = Role::pluck('name', 'id'); //Get all roles
+        $departments = Department::pluck('name', 'id');
         $statuses = Status::whereIn('group', ['users','both'])->pluck('name', 'id');
-        return view('backend.users.edit', compact('user', 'roles', 'statuses')); //pass user roles and statuses data to view
+        return view('backend.users.edit', compact('user', 'roles', 'statuses', 'departments')); //pass user roles and statuses data to view
     }
 
     /**
@@ -138,6 +139,9 @@ class UserController extends Controller
         $roles = $request['roles']; //Retreive all roles
         $user->fill($input)->save();
 
+        if($request->department_id){
+            $user->departments()->sync([$request->department_id=>['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]]);
+        }
         if (isset($roles)) {
             $user->roles()->sync($roles);  //If one or more role is selected associate user to roles
         } else {

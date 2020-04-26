@@ -176,6 +176,7 @@
                                 this.serverErrors = JSON.parse(JSON.stringify(this.getErrors));
                                 if (this.getErrors.message) {
                                     this.hasServerErrors = true;
+                                    this.isLoading = false;
                                     setTimeout(() => {
                                         this.hasServerErrors = false;
                                     }, 4500);

@@ -8,14 +8,12 @@ use App\Events\IncidentHistoryEntryEvent;
 use App\Http\Requests\IncidentFormRequest;
 use App\Http\Resources\IncidentCollection;
 use App\Incident;
-use App\IncidentHistory;
 use App\Status;
 use App\Type;
 use App\User;
 use App\WorkingGroup;
 use Auth;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -204,7 +202,7 @@ class IncidentController extends Controller
         $incident->update(['status_id', $status->id]);
         $incident->delete();
 
-        flash("$incident->name was sent to trash.")->success();
+        flash("$incident->name incident was sent to trash.")->success();
         return response()->redirectToRoute('dashboard');
     }
 

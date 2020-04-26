@@ -252,3 +252,27 @@ Breadcrumbs::for('working-groups.edit', function ($trail, $working_group) {
     $trail->parent('working-groups.show', $working_group);
     $trail->push('Edit Working Group', route('working-groups.edit', $working_group->id));
 });
+
+// Districts
+Breadcrumbs::for('districts.index', function ($trail) {
+    $trail->parent('dashboard');
+    $trail->push('Districts', route('districts.index'));
+});
+
+// Districts > Upload District
+Breadcrumbs::for('districts.create', function ($trail) {
+    $trail->parent('districts.index');
+    $trail->push('Add District', route('districts.create'));
+});
+
+// Districts > [District Name]
+Breadcrumbs::for('districts.show', function ($trail, $district) {
+    $trail->parent('districts.index');
+    $trail->push($district->name, route('districts.show', $district->id));
+});
+
+// Districts > [District Name] > Edit District
+Breadcrumbs::for('districts.edit', function ($trail, $district) {
+    $trail->parent('districts.show', $district);
+    $trail->push('Edit District', route('districts.edit', $district->id));
+});

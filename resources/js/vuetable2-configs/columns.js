@@ -41,10 +41,9 @@ export default{
        },
        {
            name: '__slot:actions',
-           title: 'Quick Actions',
+           title: '',
            titleClass: 'text-center',
            dataClass: 'text-center',
-           width: '200px'
        }
    ]
 }

@@ -6,7 +6,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-xl-8 offset-xl-2">
+        <div class="col-xl-6 offset-xl-3">
             <div class="m-portlet m-portlet--mobile ">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
@@ -16,36 +16,39 @@
                             </h3>
                         </div>
                     </div>
+
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
-                            <li class="m-portlet__nav-item">
-                                <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
-                                    <a href="#" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
-                                        <i class="la la-ellipsis-h m--font-brand"></i>
-                                    </a>
-                                    <div class="m-dropdown__wrapper">
-                                        <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
-                                        <div class="m-dropdown__inner">
-                                            <div class="m-dropdown__body">
-                                                <div class="m-dropdown__content">
-                                                    <ul class="m-nav">
-                                                        <li class="m-nav__section">
-                                                            <span class="m-nav__section-text">Useful Links</span>
-                                                        </li>
-                                                        <li class="m-nav__item">
-                                                            <a href="{{ route('users.index') }}" class="m-nav__link">
-                                                                <i class="m-nav__link-icon la la-users"></i>
-                                                                <span class="m-nav__link-text">Users</span>
-                                                            </a>
-                                                        </li>
-                                                        <li class="m-nav__item">
-                                                            <a href="{{ route('roles.index') }}" class="m-nav__link">
-                                                                <i class="m-nav__link-icon flaticon-users-1"></i>
-                                                                <span class="m-nav__link-text">Available Roles</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                            <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
+                                <a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill m-btn btn-outline-dark m-btn--hover-dark">
+                                    Quick Actions
+                                </a>
+                                <div class="m-dropdown__wrapper">
+                                    <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                                    <div class="m-dropdown__inner">
+                                        <div class="m-dropdown__body">
+                                            <div class="m-dropdown__content">
+                                                <ul class="m-nav">
+                                                    <li class="m-nav__section m-nav__section--first">
+                                                        <span class="m-nav__section-text">Available Actions</span>
+                                                    </li>
+                                                    <li class="m-nav__item">
+                                                        <a href="{{ route('users.index') }}" class="m-nav__link">
+                                                            <i class="m-nav__link-icon la la-users"></i>
+                                                            <span class="m-nav__link-text">Users</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="m-nav__item">
+                                                        <a href="{{ route('roles.index') }}" class="m-nav__link">
+                                                            <i class="m-nav__link-icon la la-shield"></i>
+                                                            <span class="m-nav__link-text">Available Roles</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="m-nav__separator m-nav__separator--fit"></li>
+                                                    <li class="m-nav__item">
+                                                        <a href="{{ route('permissions.create') }}" class="btn btn-primary m-btn m-btn--wide m-btn--air btn-block btn-sm">Add New Permission</a>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -53,6 +56,7 @@
                             </li>
                         </ul>
                     </div>
+
                 </div>
                 <div class="m-portlet__body">
 
@@ -63,7 +67,7 @@
                             <div class="row align-items-center">
                                 <div class="col-xl-8 order-2 order-xl-1">
                                     <div class="form-group m-form__group row align-items-center">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="m-input-icon m-input-icon--left">
                                                 <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
@@ -72,15 +76,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a href="{{ route('permissions.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-                                    <span>
-                                        <i class="la la-plus"></i>
-                                        {{ __('Add Permission')}}
-                                    </span>
-                                    </a>
-                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
                                 </div>
                             </div>
                         </div>

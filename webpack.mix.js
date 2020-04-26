@@ -8,11 +8,13 @@ mix
     .sass('resources/sass/app.scss', 'public/css')
     .sass('node_modules/simplelightbox/dist/simplelightbox.scss', 'public/css')
 
-    .copyDirectory(vendors + 'socicon/font', 'public/font')
-    .copyDirectory(vendors + 'line-awesome/fonts', 'public/fonts')
-    .copyDirectory(vendors + 'flaticon/fonts', 'public/fonts')
-    .copyDirectory(vendors + 'metronic/fonts', 'public/fonts')
-    .copyDirectory(vendors + 'fontawesome5/webfonts', 'public/webfonts')
+    .copyDirectory(vendors + 'socicon/font', 'public/assets/webfonts')
+    .copyDirectory(vendors + 'line-awesome/fonts', 'public/assets/webfonts')
+    .copyDirectory(vendors + 'flaticon/fonts', 'public/assets/webfonts')
+    .copyDirectory(vendors + 'metronic/fonts', 'public/assets/webfonts')
+    .copyDirectory(vendors + 'fontawesome5/webfonts', 'public/assets/webfonts')
+
+    .copyDirectory('resources/assets/lottie-animations', 'public/assets/lottie-animations')
 
     .styles(['resources/assets/css/style.bundle.css'], 'public/css/styles.bundle.css')
     .styles(['resources/assets/css/custom/users/create.css'], 'public/css/custom/users/create.css')
