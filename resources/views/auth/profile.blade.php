@@ -96,11 +96,11 @@
                                                            Last Updated
                                                         </span>
                                                         <span class="m-option__focus">
-                                                            {{$user->updated_at ? \Carbon\Carbon::parse($user->updated_at)->diffForHumans(): 'Never'}}
+                                                            {{$user->updated_at ? Carbon::parse($user->updated_at)->diffForHumans(): 'Never'}}
                                                         </span>
                                                     </span>
                                                     <span class="m-option__body">
-                                                         {{ $user->updated_at ? \Carbon\Carbon::parse($user->updated_at)->format('Y M d, H:i:s A') : '' }}
+                                                         {{ $user->updated_at ? Carbon::parse($user->updated_at)->format('Y M d, H:i:s A') : '' }}
                                                     </span>
                                                 </span>
                                     </label>

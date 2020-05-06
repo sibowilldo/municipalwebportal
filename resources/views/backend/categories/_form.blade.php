@@ -39,11 +39,11 @@
             <select name="state_color_id" id="state_color_id" class="form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker">
                 @foreach($state_colors as $state_color)
                     <option value="{{$state_color->id}}"
-                            data-content="<span class='m-badge m-badge--{{$state_color->css_class}} m-badge--dot'></span> {{ title_case($state_color->name) }}"
+                            data-content="<span class='m-badge m-badge--{{$state_color->css_class}} m-badge--dot'></span> {{ Str::title($state_color->name) }}"
                             @isset($category)
                                 {{$state_color->id === $category->state_color_id ? 'selected' : '' }}
                             @endisset>
-                        {{ title_case($state_color) }}
+                        {{ Str::title($state_color) }}
                     </option>
                 @endforeach
             </select>

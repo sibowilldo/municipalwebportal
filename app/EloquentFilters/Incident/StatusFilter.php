@@ -2,10 +2,10 @@
 
 namespace App\EloquentFilters\Incident;
 
-use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\IFilter as Filter;
+use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
-class StatusFilter implements Filter
+class StatusFilter extends Filter
 {
     /**
      * Apply is public condition to the query.

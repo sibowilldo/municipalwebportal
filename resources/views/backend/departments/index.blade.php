@@ -117,7 +117,7 @@
                                     <td>
                                         <span>
                                             <span class="m-badge m-badge--dot-small m-badge--{{ $department->status->state_color->css_class }}"></span>
-                                            {{ title_case($department->status->name) }}
+                                            {{ Str::title($department->status->name) }}
                                         </span>
                                     </td>
                                     <td>{{ $department->category->name }}</td>

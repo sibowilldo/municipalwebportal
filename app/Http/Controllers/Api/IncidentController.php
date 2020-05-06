@@ -28,8 +28,9 @@ class IncidentController extends Controller
 
     /**
      * Display a listing of the resource.
+     * @param $request
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return \Illuminate\Http\JsonResponse| \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {

@@ -99,7 +99,7 @@
                                     <td>
                                         <span>
                                             <span class="m-badge m-badge--dot m-badge--dot-small m-badge--{{ $type->state_color->css_class }}"></span>
-                                            {{ title_case($type->state_color->name) }}
+                                            {{ Str::title($type->state_color->name) }}
                                         </span>
                                     </td>
                                     <td>

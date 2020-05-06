@@ -90,7 +90,7 @@
                                 Created on:
                             </span>
                             <span class="m-widget13__text">
-                             {{ title_case(\Carbon\Carbon::parse($department->created_at)->format('d M yy, h:m:s')) }}
+                             {{ Str::title(Carbon::parse($department->created_at)->format('d M yy, h:m:s')) }}
                             </span>
                         </div>
 

@@ -74,7 +74,7 @@
                                     <td>
                                         <span>
                                             <span class="m-badge m-badge--{{ $status->state_color->css_class }}"></span>
-                                            {{ title_case($status->state_color->css_class) }}
+                                            {{ Str::title($status->state_color->css_class) }}
                                         </span>
                                     </td>
                                     <td>

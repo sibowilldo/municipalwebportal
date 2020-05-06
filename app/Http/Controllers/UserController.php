@@ -31,7 +31,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::withTrashed()->get();
-        $statuses = Status::where('group', 'users')->pluck('name', 'id');
+        $statuses = Status::whereIn('group', ['both','users'])->pluck('name', 'id');
         $roles = Role::all();
         return view('backend.users.index', compact('users', 'statuses', 'roles'));
     }

@@ -1,8 +1,8 @@
 <?php
 namespace App\EloquentFilters\User;
-use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\IFilter as Filter;
+use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\Filter;
 use Illuminate\Database\Eloquent\Builder;
-class AgeMoreThanFilter implements Filter
+class AgeMoreThanFilter extends Filter
 {
     /**
      * Apply the age condition to the query.

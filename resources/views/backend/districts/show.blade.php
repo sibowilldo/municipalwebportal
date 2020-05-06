@@ -94,7 +94,7 @@
                                 Created on:
                             </span>
                             <span class="m-widget13__text">
-                             {{ title_case(\Carbon\Carbon::parse($district->created_at)->format('d M yy, h:m:s')) }}
+                             {{ Carbon::parse($district->created_at)->format('d M yy, h:m:s') }}
                             </span>
                         </div>
 

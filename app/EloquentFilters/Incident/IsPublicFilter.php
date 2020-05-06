@@ -1,11 +1,10 @@
 <?php
 
 namespace App\EloquentFilters\Incident;
-
-use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\IFilter as Filter;
+use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
-class IsPublicFilter implements Filter
+class IsPublicFilter extends Filter
 {
     /**
      * Apply is public condition to the query.

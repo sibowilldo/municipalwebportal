@@ -74,7 +74,7 @@
                                                     <td>{{ $engineer->fullname }}</td>
                                                     <td>{{ $engineer->contactnumber }}</td>
                                                     <td>{{ $engineer->email }}
-                                                    <td>{{ title_case(implode(' | ', $engineer->getRoleNames()->toArray())) }}
+                                                    <td>{{ Str::title(implode(' | ', $engineer->getRoleNames()->toArray())) }}
                                                     </td>
                                                     <td>
                                                 <span class="m-switch m-switch--outline m-switch--icon m-switch--info">

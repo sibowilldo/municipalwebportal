@@ -58,7 +58,7 @@
             <div class="m-grid__item">
                 <div class="m-login__info">
                     <div class="m-login__section">
-                        <a href="#" class="m-link">&copy {{ \Carbon\Carbon::now()->year }} {{ config('app.name') }}</a>
+                        <a href="#" class="m-link">&copy {{ Carbon::now()->year }} {{ config('app.name') }}</a>
                     </div>
                     <div class="m-login__section">
                         <a href="#" class="m-link">Privacy</a>

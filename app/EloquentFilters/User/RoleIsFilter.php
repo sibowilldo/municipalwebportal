@@ -1,11 +1,10 @@
 <?php
 namespace App\EloquentFilters\User;
-
-use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\IFilter as Filter;
+use Fouladgar\EloquentBuilder\Support\Foundation\Contracts\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
-class RoleIsFilter implements Filter
+class RoleIsFilter extends Filter
 {
     /**
      * Apply role name condition to the query.

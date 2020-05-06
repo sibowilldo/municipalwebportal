@@ -99,7 +99,7 @@
                                 State Color:
                             </span>
                             <span class="m-widget13__text">
-                            <span class="m-badge m-badge--{{ $status->state_color->css_class }}"></span>  {{ title_case($status->state_color->css_color) }}
+                            <span class="m-badge m-badge--{{ $status->state_color->css_class }}"></span>  {{ Str::title($status->state_color->css_color) }}
                             </span>
                         </div>
                         <div class="m-widget13__item">
@@ -107,7 +107,7 @@
                                 Created on:
                             </span>
                             <span class="m-widget13__text">
-                             {{ title_case(\Carbon\Carbon::parse($status->created_at)->format('d M yy, h:m:s')) }}
+                             {{ Str::title(Carbon::parse($status->created_at)->format('d M yy, h:m:s')) }}
                             </span>
                         </div>
                     </div>
