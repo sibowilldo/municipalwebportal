@@ -15,7 +15,7 @@ class CreateIncidentsTable extends Migration
     {
         Schema::create('incidents', function (Blueprint $table) {
             $table->increments('id');
-            $table->uuid('uuid')->index();
+            $table->efficientUuid('uuid')->index();
             $table->string('reference');
             $table->string('name');
             $table->text('description')->nullable();
