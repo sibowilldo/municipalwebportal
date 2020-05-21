@@ -60,32 +60,18 @@
 @endsection
 
 @section('js')
-	{{ Html::script('js/project-mdatatable.js') }}
 	<script>
-		const TableMethods = function(){
-			return{
-				init:function(datatable){
-
-				}
-			}
-		}();
-		const columns = [
-			{
-				field: 'id',
-				title: '#',
-				type: 'number',
-				width: 25
-			},
-			{
-				field: 'Actions',
-				title: 'Actions',
-				width: 150
-			}
-		];
-		jQuery(document).ready(function() {
-
-			TableElement.init($('#engineers'), columns);
-		});
-
+        jQuery(document).ready(function() {
+            let btnSubmit = $('#saveBtn');
+            let form = btnSubmit.closest('form');
+            btnSubmit.on('click', function (e) {
+                e.preventDefault();
+                btnSubmit.addClass('m-loader m-loader--light m-loader--right').attr('disabled', true);
+                setTimeout(function () {
+                    form.submit();
+                    btnSubmit.removeClass('m-loader m-loader--light m-loader--right').attr('disabled', false);
+                }, 800)
+            });
+        });
 	</script>
 @endsection

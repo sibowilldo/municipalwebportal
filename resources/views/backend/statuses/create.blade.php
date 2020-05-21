@@ -59,10 +59,5 @@
 @endsection
 
 @section('js')
-
-	<script>
-		jQuery(document).ready(function() {
-		});
-
-	</script>
+    <script src="{{ asset('js/button-loading.js') }}" type="text/javascript"></script>
 @endsection

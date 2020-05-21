@@ -18,7 +18,7 @@ class IncidentObserver
      */
     public function created(Incident $incident)
     {
-//        event(new IncidentCreated($incident->user()?:Auth::user(), $incident));
+        event(new IncidentCreated($incident->user()?:Auth::user(), $incident));
     }
 
     /**
@@ -38,6 +38,6 @@ class IncidentObserver
             $newStatus =  $statuses->where('id', $incident->status_id)->first()->name;
             $message = "Incident Status changed from " . strtoupper($oldStatus). " to " . strtoupper($newStatus);
         }
-//        event(new IncidentUpdatedEvent($incident, $incident->user(), $message));
+        event(new IncidentUpdatedEvent($incident, $incident->user(), $message));
     }
 }

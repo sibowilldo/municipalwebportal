@@ -3,18 +3,22 @@
 namespace App;
 
 use App\Helpers\Traits\FormatDates;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Status extends Model
 {
-    use FormatDates;
+    use FormatDates, SoftDeletes, CascadeSoftDeletes;
+
+    protected $cascadeDeletes = ['incidents'];
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name','description', 'is_active', 'state_color_id', 'group'
+        'name','description', 'is_active', 'state_color_id', 'model_type'
     ];
 
     /**
@@ -26,10 +30,14 @@ class Status extends Model
         'is_active' => 'boolean',
     ];
 
-    //
-    public function incident()
+    public static function statusExists($name = null, $model_type = null)
     {
-        return $this->hasOne(Incident::class);
+        return Status::where(['name'=> $name, 'model_type' => $model_type])->first();
+    }
+    //
+    public function incidents()
+    {
+        return $this->hasMany(Incident::class);
     }
 
     public function status()
@@ -47,14 +55,18 @@ class Status extends Model
     {
         return $this->hasMany(IncidentHistory::class);
     }
+
     /**
-     * The array of $state_colors.
-     *
-     * @var array
+     * @var string[]
      */
-    public static $groups = [
-        'users' => 'Users',
-        'incidents' => 'Incidents',
-        'both' => 'Both'
+
+    public static $model_types = [
+        'App\User' => 'Users',
+        'App\Incident' => 'Incidents',
+        'App\Department' => 'Departments',
+        'App\District' => 'Districts',
+        'App\Device' => 'Devices',
+        'App\IncidentHistory' => 'Incident Histories',
+        'App\WorkingGroup' => 'Working Groups',
     ];
 }

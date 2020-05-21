@@ -81,7 +81,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="d-md-none m--margin-bottom-10"></div>
+                                            <div class="m--margin-bottom-10"></div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="m-form__group m-form__group--inline">
@@ -89,7 +89,7 @@
                                                     <label class="m-label m-label--single">{{ __('Roles:') }}</label>
                                                 </div>
                                                 <div class="m-form__control">
-                                                    <select class="form-control m-bootstrap-select" id="m_form_type">
+                                                    <select class="form-control m-bootstrap-select" id="m_form_role">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach($roles as $role)
                                                             <option value="{{ $role->name }}">{{ $role->name }}</option>
@@ -100,22 +100,30 @@
                                             <div class="d-md-none m--margin-bottom-10"></div>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="m-input-icon m-input-icon--left">
-                                                <input type="text" class="form-control m-input" placeholder="Search..."
-                                                       id="generalSearch">
-                                                <span class="m-input-icon__icon m-input-icon__icon--left">
-                                                <span><i class="la la-search"></i></span>
-                                            </span>
+                                            <div class="m--margin-bottom-10"></div>
+                                            <div class="m-form__group m-form__group--inline">
+                                                <div class="m-form__label">
+                                                    <label class="m-label m-label--single">{{ __('Search:') }}</label>
+                                                </div>
+                                                <div class="m-form__control">
+                                                    <div class="m-input-icon m-input-icon--left">
+                                                        <input type="text" class="form-control m-input" placeholder="Search..."
+                                                               id="generalSearch">
+                                                        <span class="m-input-icon__icon m-input-icon__icon--left">
+                                                            <span><i class="la la-search"></i></span>
+                                                        </span>
+                                                </div>
                                             </div>
+                                            </div>
+                                            <div class="d-md-none m--margin-bottom-10"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
                                     <a href="{{ route('users.create') }}"
-                                       class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                       class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--sm">
                                     <span>
-                                        <i class="la la-plus"></i>
-                                        {{ __('Add User')}}
+                                        {{ __('Create User')}}
                                     </span>
                                     </a>
                                     <div class="m-separator m-separator--dashed d-xl-none"></div>
@@ -194,7 +202,7 @@
                                         @endif
                                     </td>
                                     <td><span><span class="m-badge m-badge--dot m-badge--{{ $user->status->state_color->css_class }}"
-                                                    ></span> {{ ucfirst($user->status->name) }}</span>
+                                                    ></span> {{ $user->status->name }}</span>
                                     </td>
                                     <td>{{ $user->created_at }}</td>
                                 </tr>
@@ -232,7 +240,7 @@
                         class: '',
                         scroll: true,
                         height: 550,
-                        footer: false
+                        footer: true
                     },
                     rows: {
                         // auto hide columns, if rows overflow
@@ -257,6 +265,10 @@
                             field: 'user',
                             title: 'User',
                             width: 250,
+                        },,
+                        {
+                            field: 'status',
+                            title: 'Status'
                         },
                         {
                             field: 'joinedAt',
@@ -347,14 +359,15 @@
                 });
 
                 $('#m_form_status').on('change', function () {
-                    datatable.search($(this).val().toLowerCase(), 'Status');
+                    datatable.search($(this).val().toLowerCase(), 'status');
                 });
 
-                $('#m_form_type').on('change', function () {
-                    datatable.search($(this).val().toLowerCase(), 'Role');
+                $('#m_form_role').on('change', function () {
+                    console.log($(this).val());
+                    datatable.search($(this).val().toLowerCase(), 'role');
                 });
 
-                $('#m_form_status, #m_form_type').selectpicker();
+                $('#m_form_status, #m_form_role').selectpicker();
 
             };
             return {
@@ -365,42 +378,7 @@
                 },
             };
         }();
-        const LoadTypes = function () {
-            var types = function () {
-                $('select[name="category_id"]').on('change', function () {
-                    var categoryId = $(this).val();
-                    if (categoryId) {
-                        $.ajax({
-                            url: '/json/types/' + categoryId,
-                            type: "GET",
-                            dataType: "json",
-                            beforeSend: function () {
-                                $('#loader').css("visibility", "visible");
-                            },
-                            success: function (data) {
-                                $('select[name="type_id"]').empty();
-                                $.each(data.data, function (key, value) {
-                                    $('select[name="type_id"]').append('<option value="' + key + '">' + value + '</option>');
-                                });
-                            },
-                            complete: function () {
-                                $('#loader').css("visibility", "hidden");
-                            }
-                        });
-                    } else {
-                        $('select[name="type_id"]').empty();
-                    }
-                })
-            }
-            return {
-                init: function () {
-                    types();
-                }
-            }
-        }();
-
         jQuery(document).ready(function () {
-            LoadTypes.init();
             UsersTable.init();
         });
 

@@ -38,7 +38,7 @@ class IncidentController extends Controller
     {
 
         $incidents = Incident::with('users', 'status')->orderByDesc('created_at')->paginate(12);
-        $statuses = Status::whereIn('group', ['incidents', 'both'])->select('id', 'name');
+        $statuses = Status::whereIn('model_type', ['App\Incident', 'both'])->select('id', 'name');
         $categories = Category::all('id', 'name');
         return view('backend.incidents.index', compact('incidents', 'statuses', 'categories'));
     }
@@ -129,6 +129,7 @@ class IncidentController extends Controller
         $histories = $incident->histories()->orderByDesc('created_at')->get();
         $assigned_to = $incident->assignments()->latest('created_at')->first() ?
             $incident->assignments()->latest('created_at')->first()->assignable : null;
+
         return view('backend.incidents.show', compact('incident', 'histories', 'assigned_to'));
     }
 
@@ -143,12 +144,12 @@ class IncidentController extends Controller
     {
         $this->authorize('update', $incident);
         $categories = Category::all('id', 'name');
-        $types = Type::pluck('name', 'id');
-        $statuses = Status::whereIn('group', ['incidents', 'both'])
-                    ->whereIn('name', ['active', 'in progress', 'escalated', 'completed', $incident->status->name])
+//        $types = Type::pluck('name', 'id');
+        $statuses = Status::where('model_type', 'App\Incident')
+                    ->whereIn('name', ['active', 'Duplicate', 'in progress', 'escalated', 'completed', $incident->status->name])
                     ->select('id', 'name');
 
-        return view('backend.incidents.edit', compact('incident', 'categories', 'types', 'statuses'));
+        return view('backend.incidents.edit', compact('incident', 'categories', 'statuses'));
     }
 
     /**

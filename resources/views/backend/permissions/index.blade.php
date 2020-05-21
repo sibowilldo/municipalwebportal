@@ -6,7 +6,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-xl-6 offset-xl-3">
+        <div class="col-xl-8 offset-xl-2">
             <div class="m-portlet m-portlet--mobile ">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
@@ -46,7 +46,7 @@
                                                     </li>
                                                     <li class="m-nav__separator m-nav__separator--fit"></li>
                                                     <li class="m-nav__item">
-                                                        <a href="{{ route('permissions.create') }}" class="btn btn-primary m-btn m-btn--wide m-btn--air btn-block btn-sm">Add New Permission</a>
+                                                        <a href="{{ route('permissions.create') }}" class="btn btn-primary m-btn m-btn--air btn-block btn-sm">Add New Permission</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -65,7 +65,7 @@
                         <!--begin: Search Form -->
                         <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
                             <div class="row align-items-center">
-                                <div class="col-xl-8 order-2 order-xl-1">
+                                <div class="col-xl-4 order-3 order-xl-1">
                                     <div class="form-group m-form__group row align-items-center">
                                         <div class="col-md-12">
                                             <div class="m-input-icon m-input-icon--left">
@@ -76,6 +76,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-xl-4 order-2"></div>
+                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
+                                    <a href="{{ route('permissions.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--sm">
+                                    <span>
+                                        <span>{{ __('Create Permission') }}</span>
+                                    </span>
+                                    </a>
+                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
                                 </div>
                             </div>
                         </div>

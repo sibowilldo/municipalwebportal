@@ -44,6 +44,7 @@ const LoadDeleteFx = (function(){
 
 const TableElement = function() {
     var table = function(element, columns) {
+
         var datatable = element.mDatatable({
             data: {
                 saveState: {cookie: false}
@@ -66,7 +67,9 @@ const TableElement = function() {
                 input: $('#generalSearch')
             },
             columns: columns,
-        }).on('click','.btn-delete' , function(ev){
+        });
+
+        datatable.on('click','.btn-delete' , function(ev){
             var el = $(this);
             LoadDeleteFx.init(ev, el);
         });

@@ -150,6 +150,9 @@
                                         <h6 class="font-weight-bold">Reference</h6>
                                         <p>{{ $incident->reference }}</p>
                                         <div class="m-separator--dashed m-separator"></div>
+                                        <h6 class="font-weight-bold">Type</h6>
+                                        <p>{{ $incident->type->name }} </p>
+                                        <div class="m-separator--dashed m-separator"></div>
                                         <h6 class="font-weight-bold">Map Coordinates</h6>
                                         <p class="m--font-primary ">{{ $incident->longitude }}, {{ $incident->latitude }} </p>
                                         <div class="m-separator--dashed m-separator"></div>
@@ -165,9 +168,8 @@
                                                 @foreach($incident->attachments as $attachment)
                                                     <div class="col">
                                                         <a href="{{ asset($attachment->path . $attachment->filename) }}">
-                                                            {{ asset($attachment->path . $attachment->filename) }}
-{{--                                                            <img src="{{ asset($attachment->path . $attachment->filename) }}"--}}
-{{--                                                                 class="img-fluid hidden">--}}
+                                                            <img src="{{ asset($attachment->path . $attachment->filename) }}"
+                                                                 class="img-fluid hidden img-rounded">
                                                         </a>
                                                     </div>
 
@@ -223,10 +225,7 @@
         }
         .m-portlet__head{
             /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
-            background: -moz-linear-gradient(top,  rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-            background: -webkit-linear-gradient(top,  rgba(0,0,0,0.4) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-            background: linear-gradient(to bottom,  rgba(0,0,0,0.4) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+            background-color: #000000;
         }
         .incident-attachments a img{
            margin-right: 5px; border-radius: 5px
@@ -235,7 +234,7 @@
 @endsection
 
 @section('js')
-{{--    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAoBJMrVixK0pJrgDih4jwykKILuSnql5M&callback=initMap" async defer></script>--}}
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAvIMlJTlLmGJL26pLPydvDX0eKduvnXag&callback=initMap" async defer></script>
     <script>
         // Initialize and add the map
         function initMap() {
@@ -246,7 +245,7 @@
             // The map, centered at the Location
             var map = new google.maps.Map(
                 document.getElementById('gmap'), {zoom: 15, center: loc,
-                    disableDefaultUI: true,
+                    disableDefaultUI: false,
                     gestureHandling: 'cooperative'});
             // The marker, positioned at the Location
             var marker = new google.maps.Marker({position: loc, map: map});

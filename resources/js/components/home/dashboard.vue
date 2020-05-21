@@ -148,21 +148,16 @@
             onAction (action, data, index) {
                 switch(action){
                     case 'assign-user':
-                        console.log('assign user', data.name)
                         window.location.assign(`/incidents/${data.id}/engineers`)
                         break;
                     case 'assign-specialist':
-                        console.log('assign specialist', data.name)
                         window.location.assign(`/incidents/${data.id}/specialists`)
 
                         break;
                     case 'assign-team':
-                        console.log('assign team/group', data.name)
                         window.location.assign(`/incidents/${data.id}/groups`)
-
                         break;
                     case 'view-item':
-                        console.log('view details', data.name )
                         window.location.assign(`/incidents/${data.id}`)
 
                         break;

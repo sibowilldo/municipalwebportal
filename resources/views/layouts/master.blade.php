@@ -20,8 +20,8 @@
 
     <!--end::Web font -->
 
-    <link href=" {{ mix('css/app.css') }}" rel="stylesheet">
     <link href=" {{ mix('css/styles.bundle.css') }}" rel="stylesheet">
+    <link href=" {{ mix('css/app.css') }}" rel="stylesheet">
     <link href=" {{ asset('assets/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet">
 
     @yield('css')
@@ -146,7 +146,10 @@
 @include('flash::message')
 <style>
     input.form-control{
-        height: calc(2.95rem + 2px) !important;}
+        height: calc(2.95rem + 4px) !important; border-color: #ebedf2}
+    .nav-tabs .nav-link{
+        border:none;
+    }
     input:disabled, button:disabled, textarea:disabled{
         cursor: not-allowed;
     }

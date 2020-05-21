@@ -56,7 +56,7 @@
                             <div class="row align-items-center">
                                 <div class="col-xl-8 order-2 order-xl-1">
                                     <div class="form-group m-form__group row align-items-center">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="m-input-icon m-input-icon--left">
                                                 <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
@@ -65,6 +65,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
+                                    <a href="{{ route('districts.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--sm">
+                                    <span>
+                                        <span>{{ __('Create District') }}</span>
+                                    </span>
+                                    </a>
+                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
                                 </div>
                             </div>
                         </div>

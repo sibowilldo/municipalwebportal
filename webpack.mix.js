@@ -87,6 +87,7 @@ mix
     ], 'public/js/vendors.js')
 
     .scripts(['resources/assets/js/scripts.bundle.js'], 'public/js/scripts.bundle.js')
+    .scripts(['resources/assets/js/button-loading.js'], 'public/js/button-loading.js')
     .scripts(['resources/assets/js/dashboard.js'], 'public/js/dashboard.js')
     .scripts(['resources/assets/js/google-maps.js'], 'public/js/google-maps.js')
     .scripts(['resources/assets/js/project-mdatatable.js'], 'public/js/project-mdatatable.js')

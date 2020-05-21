@@ -29,6 +29,7 @@
 @endsection
 
 @section('js')
+    <script src="{{ asset('js/button-loading.js') }}" type="text/javascript"></script>
 	<script>
         jQuery(document).ready(function() {
             $('.m-input.color-picker').colorpicker({

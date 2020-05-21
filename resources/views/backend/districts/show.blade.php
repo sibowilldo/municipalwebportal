@@ -37,7 +37,7 @@
                                                         </a>
                                                     </li>
                                                     <li class="m-nav__item">
-                                                        <a href="{{ route('statuses.index') }}" class="m-nav__link">
+                                                        <a href="{{ route('departments.index') }}" class="m-nav__link">
                                                             <i class="m-nav__link-icon la la-list"></i>
                                                             <span class="m-nav__link-text">View Departments</span>
                                                         </a>
@@ -86,7 +86,7 @@
                                 Contact Number:
                             </span>
                             <span class="m-widget13__text">
-                                {{ $district->contact_number }}
+                                <span class="text-nowrap">{{ $district->contact_number }}</span>
                             </span>
                         </div>
                         <div class="m-widget13__item">

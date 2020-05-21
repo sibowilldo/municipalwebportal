@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
-use Ramsey\Uuid;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -15,7 +15,7 @@ use Ramsey\Uuid;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
-    $statuses = \App\Status::pluck('id');
+    $statuses = \App\Status::where('model_type', 'App\User')->pluck('id');
     return [
         'uuid' => $faker->uuid,
         'firstname' => $faker->firstName,

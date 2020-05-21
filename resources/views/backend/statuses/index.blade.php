@@ -26,7 +26,7 @@
                             <div class="row align-items-center">
                                 <div class="col-xl-8 order-2 order-xl-1">
                                     <div class="form-group m-form__group row align-items-center">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="m-input-icon m-input-icon--left">
                                                 <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
@@ -37,10 +37,9 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a href="{{ route('statuses.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                    <a href="{{ route('statuses.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--sm">
                                     <span>
-                                        <i class="la la-plus"></i>
-                                        <span>{{ __('Add New Status') }}</span>
+                                        <span>{{ __('Create Status') }}</span>
                                     </span>
                                     </a>
                                     <div class="m-separator m-separator--dashed d-xl-none"></div>
@@ -54,7 +53,6 @@
                                 <th data-field="id">{{ __('#') }}</th>
                                 <th data-field="Name">{{ __('Name') }}</th>
                                 <th data-field="Active">{{ __('Active') }}</th>
-                                <th data-field="Group">{{ __('Group') }}</th>
                                 <th data-field="State Color">{{ __('State Color') }}</th>
                                 <th data-field="Actions">{{ __('Actions') }}</th>
                                 <th data-field="Description">{{ __('Description') }}</th>
@@ -64,16 +62,19 @@
                             @foreach($statuses as $status)
                                 <tr>
                                     <td>{{ $status->id }}</td>
-                                    <td>{{ $status->name }}</td>
                                     <td>
-                                        <i class="fa fa-{{ $status->is_active ? 'check' : 'times' }}"></i>
-                                    </td>
+                                        <div class="font-weight-bold">
+                                            {{ $status->name }}
+                                        </div>
+                                        <div class="text-muted">{{$model_types[$status->model_type]}}</div></td>
                                     <td>
-                                        {{$status->group}}
+                                        <span>
+                                            <span class="m-badge m-badge--rounded m-badge--{{ $status->is_active ? 'success' : 'danger' }}">{{ $status->is_active? 'Active':'Inactive'  }}</span>
+                                        </span>
                                     </td>
                                     <td>
                                         <span>
-                                            <span class="m-badge m-badge--{{ $status->state_color->css_class }}"></span>
+                                            <span class="m-badge m-badge--dot-small m-badge--{{ $status->state_color->css_class }}"></span>
                                             {{ Str::title($status->state_color->css_class) }}
                                         </span>
                                     </td>

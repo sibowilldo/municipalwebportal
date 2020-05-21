@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StateColorFormRequest;
 use App\StateColor;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,7 @@ class StateColorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StateColorFormRequest $request)
     {
         $state_color = StateColor::create($request->only('name', 'css_class', 'css_color', 'css_font_color'));
         flash(ucfirst($state_color->name) . ' created successfully')->success();
@@ -70,7 +71,7 @@ class StateColorController extends Controller
      * @param StateColor $state_color
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StateColor $state_color)
+    public function update(StateColorFormRequest $request, StateColor $state_color)
     {
         $state_color->update($request->only('name', 'css_class', 'css_color', 'css_font_color'));
         flash(ucfirst($state_color->name) . ' updated successfully')->success();

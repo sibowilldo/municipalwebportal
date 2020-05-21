@@ -150,20 +150,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return ucfirst($this->firstname) . ' ' . ucfirst($this->lastname);
     }
 
-    /**
-     * The array of $statuses.
-     *
-     * @var array
-     */
-    public static $statuses = [
-        'available' => 'available',
-        'inactive' => 'inactive',
-        'active' => 'active',
-        'blocked' => 'blocked',
-        'assigned' => 'assigned',
-        'trashed' => 'trashed'
-    ];
-
     public function getRouteKeyName()
     {
         return 'uuid';

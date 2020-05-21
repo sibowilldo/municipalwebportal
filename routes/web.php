@@ -8,7 +8,8 @@ Route::post('password/success', 'Auth\ResetPasswordController@resetSuccess')->na
 
 Route::get('/auth/social/{social}', 'SocialLoginController@redirectToSocial')->name('social.redirect');
 Route::get('/auth/{social}/callback', 'SocialLoginController@handleSocialCallback')->name('social.callback');
-//
+
+Route::view('apis', 'apis');
 
 Route::group(['middleware' => ['auth:web', 'verified','checkrole:administrator,super-administrator']], function () {
     Route::get('/', 'HomeController@index')->name('dashboard');

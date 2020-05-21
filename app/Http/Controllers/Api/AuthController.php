@@ -40,6 +40,7 @@ class AuthController extends Controller
     /**
      * Create user
      *
+     * @param Request $request
      * @return UserResource
      */
     public function signup(Request $request)
@@ -233,7 +234,7 @@ class AuthController extends Controller
                 'message' => 'This activation token is invalid.'
             ], HTTPResponse::HTTP_NOT_FOUND);
         }
-        $status = Status::where(['name'=>'active', 'group'=>'both'])->firstOrFail();
+        $status = Status::where(['name'=>'active', 'model_type'=>'App\User'])->firstOrFail();
         $user->status_id = $status->id;
         $user->email_verified_at = Carbon::now();
         $user->activation_token = '';

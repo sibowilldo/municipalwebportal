@@ -12,7 +12,7 @@
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
                             <h3 class="m-portlet__head-text">
-                                {{ __('Add New User') }}
+                                {{ __('Create User') }}
                             </h3>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                                     {{ Form::label('firstname', 'First Name', ['class'=> 'col-3']) }}
                                 <div class="col-9">
                                     {{ Form::text('firstname', '', [
-                                        'class' => 'form-control m-input m-input--square',
+                                        'class' => 'form-control m-input',
                                         'data-validation'=>'required']) }}
 
                                 </div>
@@ -35,7 +35,7 @@
                                     {{ Form::label('lastname', 'Last Name', ['class'=> 'col-3']) }}
                                 <div class="col-9">
                                     {{ Form::text('lastname', '', [
-                                        'class' => 'form-control m-input m-input--square',
+                                        'class' => 'form-control m-input',
                                         'data-validation'=>'length,required',
                                         'data-validation-length' => 'min2']) }}
 
@@ -45,7 +45,7 @@
                                     {{ Form::label('contactnumber', 'Contact Number', ['class'=> 'col-3']) }}
                                 <div class="col-9">
                                     {{ Form::tel('contactnumber', '', [
-                                        'class' => 'form-control m-input m-input--square',
+                                        'class' => 'form-control m-input',
                                         'data-validation'=>'custom',
                                         'data-validation-error-msg'=>'You have not given a correct phone number',
                                         'data-validation-regexp' => '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$']) }}
@@ -56,7 +56,7 @@
                                     {{ Form::label('email', 'Email', ['class'=> 'col-3']) }}
                                 <div class="col-9">
                                     {{ Form::email('email', '', [
-                                        'class' => 'form-control m-input m-input--square',
+                                        'class' => 'form-control m-input',
                                         'data-validation'=>'email,required']) }}
 
                                 </div>
@@ -64,7 +64,7 @@
                             <div class="form-group m-form__group row{{ $errors->has('status_id') ? ' has-danger' : '' }}">
                                     {{ Form::label('status_id', 'Status', ['class'=> 'col-3']) }}
                                 <div class="col-9">
-                                    {{ Form::select('status_id', $statuses, '', ['class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) }}
+                                    {{ Form::select('status_id', $statuses, '', ['class' => 'form-control m-bootstrap-select m_selectpicker selectpicker']) }}
 
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                                     {{ Form::label('rolea', 'Roles', ['class'=> 'col-3']) }}
                                     <div class="col-9">
                                         {{ Form::select('roles[]', $roles->pluck('name', 'id'), '', [
-                                            'class' => 'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker',
+                                            'class' => 'form-control m-bootstrap-select m_selectpicker selectpicker',
                                             'multiple' => 'multiple',
                                             'data-validation'=>'required']) }}
                                     </div>
@@ -93,7 +93,8 @@
 
 @section('js')
     <script>
-        $(document).ready(function(){
+        jQuery(document).ready(function(){
+            $('input[type=tel]').inputmask('(999) 999-9999');
             //Handle Form Validation
             $.validate({
                 modules : 'security'

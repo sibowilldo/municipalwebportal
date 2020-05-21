@@ -2,15 +2,16 @@
 
 use Faker\Generator as Faker;
 use Carbon\Carbon;
+use Ramsey\Uuid\Uuid;
 
 $factory->define(App\Incident::class, function (Faker $faker) {
 
     $types = App\Type::pluck('id')->toArray();
-    $statuses = App\Status::pluck('id')->toArray();
+    $statuses = App\Status::where('model_type', 'App\Incident')->pluck('id')->toArray();
     $WeekAgo = Carbon::now()->subWeek();
 
     return [
-        'uuid' => $faker->uuid,
+        'uuid' => Uuid::uuid4()->getBytes(),
         'reference' => Carbon::now()->timestamp,
         'name' => $faker->randomElement($array = array ('Burst Water Pipe','Sinkhole','Electric Wire on the road', 'Smoke Coming from Substation', 'Uncovered Manhole', 'Collapse Street Pole')),
         'description' => $faker->realtext(70, 2),

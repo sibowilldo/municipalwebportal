@@ -96,6 +96,14 @@
                         </div>
                         <div class="m-widget13__item">
                             <span class="m-widget13__desc m--align-right">
+                                Associated Group:
+                            </span>
+                            <span class="m-widget13__text m-widget13__text-bolder">
+                                {{ $model_types[$status->model_type] }}
+                            </span>
+                        </div>
+                        <div class="m-widget13__item">
+                            <span class="m-widget13__desc m--align-right">
                                 State Color:
                             </span>
                             <span class="m-widget13__text">

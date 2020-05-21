@@ -59,14 +59,14 @@
 					<div class="m-form__actions m-form__actions--solid">
 						<div class="row">
 							<div class="col-md-12">
-                                <button class="btn m-btn--pill btn-outline-light-inverse m-btn m-btn--icon m-btn--custom m-btn--hover-danger"
+                                <button class="btn btn-outline-light-inverse m-btn m-btn--icon m-btn--custom m-btn--hover-danger"
                                         type="button" data-toggle="modal" data-target="#delete_modal">
                                     <span>
                                         <i class="la la-trash"></i>
                                         <span>Trash </span>
                                     </span>
                                 </button>
-								<button type="submit" class="btn btn-success m-btn--pill pull-right m-btn--icon m-btn--custom"><span><i
+								<button type="submit" class="btn btn-success pull-right m-btn--icon m-btn--custom"><span><i
                                             class="la la-check"></i><span>Update Incident</span></span></button>
 							</div>
 						</div>
@@ -81,7 +81,62 @@
 @endsection
 
 @section('js')
-	<script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAvIMlJTlLmGJL26pLPydvDX0eKduvnXag&callback=initAutocomplete" async defer></script>
+    <script>
+        var placeSearch, autocomplete;
+
+        var componentForm = {
+            street_number: 'short_name',
+            route: 'long_name',
+            locality: 'long_name',
+            administrative_area_level_1: 'short_name',
+            country: 'long_name',
+            postal_code: 'short_name'
+        };
+
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search predictions to
+            // geographical location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('location_description'), {types: ['geocode']});
+
+            // Avoid paying for data that you don't need by restricting the set of
+            // place fields that are returned to just the address components.
+            autocomplete.setFields(['geometry']);
+
+            // Set initial restrict to the greater list of countries.
+            autocomplete.setComponentRestrictions(
+                {'country': ['za']});
+
+            // When the user selects an address from the drop-down, populate the
+            // address fields in the form.
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+            console.log()
+            $('input[name=longitude]').val(place.geometry.location.lng())
+            $('input[name=latitude]').val(place.geometry.location.lat())
+        }
+
+        // Bias the autocomplete object to the user's geographical location,
+        // as supplied by the browser's 'navigator.geolocation' object.
+        function geolocate() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var geolocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    var circle = new google.maps.Circle(
+                        {center: geolocation, radius: position.coords.accuracy});
+                    autocomplete.setBounds(circle.getBounds());
+                });
+            }
+        }
+
         var LoadTypes = function(){
             var types = function(){
                 $('select[name="category_id"]').on('change', function() {
@@ -95,10 +150,10 @@
                                 $('#loader').css("visibility", "visible");
                             },
                             success:function(data) {
-                                console.log(data.data);
-                                $('select[name="type_id"]').empty();
+                                let typeSelect = $('select[name="type_id"]');
+                                typeSelect.empty();
                                 $.each(data.data, function(key, value){
-                                    $('select[name="type_id"]').append('<option value="'+ key +'">' + value + '</option>');
+                                    typeSelect.append('<option value="'+ key +'">' + value + '</option>').selectpicker('refresh');
 
                                 });
                             },
@@ -155,12 +210,6 @@
                 });
             });
             LoadTypes.init();
-            $('#type_id').select2({
-                placeholder: {
-                    id: '-1', // the value of the option
-                    text: 'Choose a category from the list above first...'
-                }
-            });
 
             //Handle Form Validation
             $.validate({

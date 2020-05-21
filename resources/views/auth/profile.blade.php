@@ -56,12 +56,12 @@
                 <div class="m-portlet__head-tools">
                     <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#user_profile_tab" role="tab">
+                            <a class="nav-link m-tabs__link active" data-toggle="tab" href="#user_profile_tab" role="tab">
                                 Update Profile
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link active" data-toggle="tab" href="#activity_tab" role="tab">
+                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#activity_tab" role="tab">
                                 Incidents Logged
                             </a>
                         </li>
@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="tab-content">
-                <div class="tab-pane" id="user_profile_tab">
+                <div class="tab-pane active" id="user_profile_tab">
                     <div class="form-group m-form__group row">
                         <div class="col-9 offset-1">
                             <div class="m-form__seperator m-form__seperator--solid m-form__seperator--space-2x"></div>
@@ -114,7 +114,7 @@
                                                         </span>
                                                     </span>
                                                     <span class="m-option__body">
-                                                        {{ ucfirst($user->status_is) }}
+                                                        {{ ucfirst($user->status->name) }}
                                                     </span>
                                                 </span>
                                     </label>
@@ -152,7 +152,7 @@
                             <div class="form-group m-form__group row">
                                 <label for="contactnumber" class="col-2 col-form-label">Contact Number</label>
                                 <div class="col-7">
-                                    <input class="form-control m-input" name="contactnumber" type="text" value="{{ $user->contactnumber }}">
+                                    <input class="form-control m-input" name="contactnumber" type="tel" value="{{ $user->contactnumber }}">
                                 </div>
                             </div>
                             <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
@@ -186,27 +186,55 @@
                                     <div class="col-2">
                                     </div>
                                     <div class="col-7">
-                                        <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom m-btn--pill">Save changes</button>&nbsp;&nbsp;
+                                        <button type="submit" class="btn btn-success m-btn m-btn--air m-btn--custom">Save changes</button>&nbsp;&nbsp;
                                     </div>
                                 </div>
                             </div>
                         </div>
                     {{ Form::close() }}
                 </div>
-                <div class="tab-pane  active" id="activity_tab">
-                    <div class="p-5">
-                        <ul>
+                <div class="tab-pane" id="activity_tab">
+                    <div class="m-timeline-1 m-timeline-1--fixed">
+                        <div class="m-timeline-1__items">
+                            <div class="m-timeline-1__marker"></div>
                             @foreach($user->incidents as $incident)
-                                <li>
-                                    <a href="{{ route('incidents.show', $incident->id) }}">{{ $incident->name }}</a>
-                                </li>
+                                <div class="m-timeline-1__item {{ $loop->odd?'m-timeline-1__item--left':'m-timeline-1__item--right' }} {{ $loop->first?'m-timeline-1__item--first':'' }} {{ $loop->last?'m-timeline-1__item--last':'' }}">
+                                    <div class="m-timeline-1__item-circle">
+                                        <div class="m--bg-danger"></div>
+                                    </div>
+                                    <div class="m-timeline-1__item-arrow"></div>
+                                    <span class="m-timeline-1__item-time m--font-brand">{{ Carbon::parse($incident->created_at)->format('M d, Y. g:i A') }}</span>
+                                    <div class="m-timeline-1__item-content">
+                                        <div class="m-timeline-1__item-title text-uppercase text-muted">
+                                            {{ $incident->name }}
+                                        </div>
+                                        <div class="m-timeline-1__item-body">
+                                            <div class="m-list-pics">
+                                            </div>
+                                            <div class="m-timeline-1__item-body m--margin-top-15">
+                                               <p class="text-truncate">{{ $incident->description }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="m-timeline-1__item-actions">
+                                            <a href="{{ route('incidents.show', $incident->id) }}" class="btn btn-sm btn-outline-brand">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
-                        </ul>
-
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+    <script>
+        jQuery(document).ready(function(){
+            $('input[type=tel]').inputmask('(999) 999-9999')
+        });
+    </script>
 @endsection

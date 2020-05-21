@@ -70,5 +70,10 @@
 @endsection
 
 @section('js')
-
+    <script>
+        jQuery(document).ready(function(){
+            $('input[type=tel]').inputmask('(999) 999-9999');
+            $('input[type=email]').inputmask({alias: 'email'});
+        });
+    </script>
 @endsection

@@ -45,10 +45,6 @@
                                                             <span class="m-nav__link-text">View Users</span>
                                                         </a>
                                                     </li>
-                                                    <li class="m-nav__separator m-nav__separator--fit"></li>
-                                                    <li class="m-nav__item">
-                                                        <a href="{{ route('departments.create') }}" class="btn btn-primary m-btn m-btn--pill m-btn--wide btn-sm">Add Department</a>
-                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -68,7 +64,6 @@
                                 <div class="col-xl-8 order-2 order-xl-1">
                                     <div class="form-group m-form__group row align-items-center">
                                         <div class="col-md-4 pt-3">
-                                            <label for="status_id">Search Phrase</label>
                                             <div class="m-input-icon m-input-icon--left">
                                                 <input type="text" class="form-control m-input m-input--square" placeholder="Search..." id="generalSearch">
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
@@ -77,15 +72,22 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="category_id">Category</label>
                                             {!! Form::select('category_id', array_merge([null => 'Select Category'], $categories->toArray()), null, ['id'=>'category_id', 'class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) !!}
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="status_id">Status</label>
                                             {!! Form::select('status_id', array_merge([null => 'Select Status'], $statuses->toArray()) , null, ['id'=>'status_id', 'class'=>'form-control m-bootstrap-select m-bootstrap-select--square m_selectpicker selectpicker']) !!}
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
+                                    <a href="{{ route('departments.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--sm">
+                                    <span>
+                                        <span>{{ __('Create Department') }}</span>
+                                    </span>
+                                    </a>
+                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
+                                </div>
+                                <!--end: Search Form -->
                             </div>
                         </div>
 

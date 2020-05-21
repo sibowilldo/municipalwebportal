@@ -44,10 +44,9 @@
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
                                     <a href="{{ route('working-groups.create') }}"
-                                       class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                       class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--sm">
                                     <span>
-                                        <i class="la la-plus"></i>
-                                        <span>{{ __('Create New Working Group') }}</span>
+                                        <span>{{ __('Create Working Group') }}</span>
                                     </span>
                                     </a>
                                     <div class="m-separator m-separator--dashed d-xl-none"></div>

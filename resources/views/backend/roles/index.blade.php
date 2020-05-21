@@ -74,10 +74,9 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a href="{{ route('roles.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                    <a href="{{ route('roles.create') }}" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--sm">
                                     <span>
-                                        <i class="la la-plus"></i>
-                                        {{ __('Add Role')}}
+                                        {{ __('Create Role')}}
                                     </span>
                                     </a>
                                     <div class="m-separator m-separator--dashed d-xl-none"></div>

@@ -54,7 +54,7 @@
 						</ul>
 					</div>
 				</div>
-				{!! Form::open(['route'=> 'types.store', 'method'=>'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
+				{!! Form::open([ 'route' => 'types.store', 'method'=>'POST', 'data-action'=> route('types.store'), 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
 				@include('backend.types._form')
                 @include('layouts.portlets.footer._footer', ['type'=> 'create', 'name' => 'Type'])
 				{!! Form::close() !!}
@@ -65,32 +65,5 @@
 @endsection
 
 @section('js')
-	{{ Html::script('js/project-mdatatable.js') }}
-	<script>
-		const TableMethods = function(){
-			return{
-				init:function(datatable){
-
-				}
-			}
-		}();
-		const columns = [
-			{
-				field: 'id',
-				title: '#',
-				type: 'number',
-				width: 25
-			},
-			{
-				field: 'Actions',
-				title: 'Actions',
-				width: 150
-			}
-		];
-		jQuery(document).ready(function() {
-
-			TableElement.init($('#engineers'), columns);
-		});
-
-	</script>
+    <script src="{{ asset('js/button-loading.js') }}" type="text/javascript"></script>
 @endsection

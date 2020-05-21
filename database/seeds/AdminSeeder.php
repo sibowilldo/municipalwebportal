@@ -17,7 +17,7 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $statuses = Status::pluck('id');
+        $statuses = Status::where(['model_type'=>'App\User', 'name' => 'Active'])->pluck('id');
 
         $sah = User::create([
             'uuid' => $faker->uuid,

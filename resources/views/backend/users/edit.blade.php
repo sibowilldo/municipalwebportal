@@ -95,7 +95,8 @@
 
 @section('js')
     <script>
-        $(document).ready(function () {
+        jQuery(document).ready(function () {
+            $('input[type=tel]').inputmask('(999) 999-9999')
             //Handle Form Validation
             $.validate({
                 modules: 'security'

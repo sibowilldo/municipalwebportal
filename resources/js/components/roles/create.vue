@@ -91,9 +91,9 @@
                     </b-col>
                     <b-col>
                         <button
-                            class="btn btn-success m-btn m-btn--pill m-btn--air pull-right m-btn--custom m-btn--icon"
+                            class="btn btn-success m-btn m-btn--air pull-right m-btn--custom m-btn--icon"
                             type="submit">
-                            <span><i class="la la-check"></i><span>Add Role</span></span></button>
+                            <span><span>Add Role</span></span></button>
                     </b-col>
                 </b-row>
 

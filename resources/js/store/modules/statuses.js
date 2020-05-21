@@ -6,7 +6,8 @@ const state = {
 
 const getters = {
     getStatuses: (state) => state.statuses,
-    getStatus: (state) => (id) => { return state.statuses.find(status => status.id === id) }
+    getStatus: (state) => (id) => { return state.statuses.find(status => status.id === id) },
+    getIncidentStatuses: (state) => { return state.statuses.filter(status => status.model_type === 'App\\Incident')}
 };
 
 const actions = {

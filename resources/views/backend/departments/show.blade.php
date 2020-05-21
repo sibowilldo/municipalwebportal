@@ -31,7 +31,7 @@
                                                         <span class="m-nav__section-text">Available Actions</span>
                                                     </li>
                                                     <li class="m-nav__item">
-                                                        <a href="{{ route('departments.create') }}" class="m-nav__link">
+                                                        <a href="{{ route('departments.edit', $department->id) }}" class="m-nav__link">
                                                             <i class="m-nav__link-icon la la-edit"></i>
                                                             <span class="m-nav__link-text">Edit Details</span>
                                                         </a>

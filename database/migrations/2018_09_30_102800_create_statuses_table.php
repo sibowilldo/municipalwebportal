@@ -15,11 +15,12 @@ class CreateStatusesTable extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->text('description')->nullable();
-            $table->string('group')->default('users');
             $table->unsignedInteger('state_color_id');
+            $table->string('model_type');
             $table->boolean('is_active')->default(false);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('state_color_id')->references('id')->on('state_colors');

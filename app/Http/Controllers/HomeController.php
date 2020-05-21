@@ -29,7 +29,7 @@ class HomeController extends Controller
     public function index()
     {
         $incidents = Incident::with('users')->get()->sortByDesc('created_at');
-        $statuses = Status::whereIn('group', ['incidents', 'both'])->select('id', 'name')->get();
+        $statuses = Status::where('model_type', 'App\Incident')->select('id', 'name')->get();
         $categories = Category::all('id', 'name');
         $types = Type::all('id', 'name')->unique('name');
         return view('dashboard', compact('incidents','statuses', 'categories', 'types'));

@@ -103,7 +103,7 @@
         computed: {
             ...mapGetters(
                 {
-                    statuses: 'getStatuses',
+                    statuses: 'getIncidentStatuses',
                     categories: 'getCategories',
                 }
             )

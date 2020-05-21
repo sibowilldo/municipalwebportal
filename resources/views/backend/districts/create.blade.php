@@ -66,7 +66,13 @@
 @endsection
 
 @section('js')
-
+    <script src="{{ asset('js/button-loading.js') }}" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function(){
+            $('input[type=tel]').inputmask('(999) 999-9999');
+            $('input[type=email]').inputmask({alias: 'email'});
+        });
+    </script>
 @endsection
 
 @section('css')

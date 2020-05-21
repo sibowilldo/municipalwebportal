@@ -24,11 +24,10 @@ class StatusFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:statuses|max:50',
+            'name' => 'required|max:50',
             'description' => 'required|max:255',
-            'is_active' => 'required|boolean',
             'state_color_id' => 'required',
-            'group' => 'required'
+            'model_type' => 'required'
         ];
     }
 }

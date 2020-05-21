@@ -31,7 +31,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::withTrashed()->get();
-        $statuses = Status::whereIn('group', ['both','users'])->pluck('name', 'id');
+        $statuses = Status::whereIn('model_type', ['App\User'])->pluck('name', 'id');
         $roles = Role::all();
         return view('backend.users.index', compact('users', 'statuses', 'roles'));
     }
@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         //
         $roles = Role::get();
-        $statuses = Status::where('group', 'both')->pluck('name', 'id');
+        $statuses = Status::where('model_type', 'App\User')->pluck('name', 'id');
         return view('backend.users.create', compact('roles', 'statuses'));
     }
 
@@ -111,7 +111,7 @@ class UserController extends Controller
 
         $roles = Role::pluck('name', 'id'); //Get all roles
         $departments = Department::pluck('name', 'id');
-        $statuses = Status::whereIn('group', ['users','both'])->pluck('name', 'id');
+        $statuses = Status::whereIn('model_type', ['App\User'])->pluck('name', 'id');
         return view('backend.users.edit', compact('user', 'roles', 'statuses', 'departments')); //pass user roles and statuses data to view
     }
 

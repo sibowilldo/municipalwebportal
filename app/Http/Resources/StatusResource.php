@@ -19,6 +19,7 @@ class StatusResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'is_active' => $this->is_active,
+            'model_type' => $this->model_type,
             'hex_color' => $this->state_color->css_color,
             'css_class' => $this->state_color->css_class,
             'created_at' => $this->created_at
