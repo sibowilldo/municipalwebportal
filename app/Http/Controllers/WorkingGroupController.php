@@ -15,6 +15,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -45,8 +46,8 @@ class WorkingGroupController extends Controller
         if (request()->payload) {
             $incident = Incident::whereUuid(request()->payload)->first();
         }
-        $leaders = User::all();
-        $statuses = Status::all();
+        $leaders = User::role(['engineer', 'specialist'])->get();
+        $statuses = Status::where('model_type', 'App\WorkingGroup')->get();
         return view('backend.working-groups.create', compact('leaders', 'incident', 'statuses'));
     }
 
@@ -61,7 +62,7 @@ class WorkingGroupController extends Controller
     {
         $assigner = Auth::user();
         $date_now = Carbon::now();
-        $status = Status::where('name', 'Assigned')->firstOrFail();
+        $status = Status::where(['name'=> 'Assigned', 'model_type'=>'App\WorkingGroup'])->firstOrFail();
 
         $assignable = $workingGroup;
         $assignable_name = $assignable->name;
@@ -106,7 +107,10 @@ class WorkingGroupController extends Controller
     public function store(WorkingGroupFormRequest $request)
     {
         $leader = User::whereUuid($request->leader)->firstOrFail();
-        $request['is_active'] = $request->is_active === 'on' ? true : false;
+        $request['is_active'] = $request->is_active === 'on';
+
+
+        DB::beginTransaction();
         $working_group = WorkingGroup::create($request->all());
 
         //Attach to pivot table
@@ -120,7 +124,7 @@ class WorkingGroupController extends Controller
                 $msg = "Working Group created and Assigned to Incident.";
             }
         }
-
+        DB::commit();
         //Flash message and return response
         flash($msg ?? 'Working Group created successfully')->success();
         return response()->redirectToRoute('working-groups.index');
@@ -141,14 +145,14 @@ class WorkingGroupController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param WorkingGroup $working_group )
-     * @return View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(WorkingGroup $working_group)
     {
         $leaders = User::all();
         $current_leader = $working_group->users()->where('is_leader', true)->first() ?: null;
         $group_engineers = $working_group->users()->where('is_leader', false)->get() ?: null;
-        $statuses = Status::all();
+        $statuses = Status::where('model_type', 'App\WorkingGroup')->get();
         $name = $working_group->name;
         return view('backend.working-groups.edit', compact('working_group', 'leaders', 'current_leader', 'name', 'statuses', 'group_engineers'));
     }
@@ -183,7 +187,7 @@ class WorkingGroupController extends Controller
             $sync_response = $working_group->users()->where('is_leader', false)->sync($merged);
         }
 
-        $request['is_active'] = $request->is_active === 'on' ? true : false;
+        $request['is_active'] = $request->is_active === 'on';
         $working_group->update($request->all());
         $working_group->save();
 
@@ -229,11 +233,10 @@ class WorkingGroupController extends Controller
         $leader = $working_group->users()->where('is_leader', true)->first();
         $selected = $working_group->users()->where('is_leader', false)->pluck('uuid')->toArray();//pluck('id')->toArray();
 
-        $limit = $this->maxSelection;// - count($selected);
+        $limit = $this->maxSelection;
 
-        $statuses = Status::all()->whereNotIn('name', ['In Progress', 'Trashed', 'Review'])->pluck('id')->toArray();
+        $statuses = Status::where('model_type', 'App\User')->whereNotIn('name', ['In Progress', 'Trashed', 'Review'])->pluck('id')->toArray();
         $engineers = User::role('Engineer')
-//            ->whereNotIn('id', $selected)
             ->whereIn('status_id', $statuses)
             ->with('roles')
             ->get();
