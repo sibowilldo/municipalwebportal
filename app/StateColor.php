@@ -16,4 +16,10 @@ class StateColor extends Model
     protected $fillable = [
         'name','css_class', 'css_color', 'css_font_color'
     ];
+
+
+    public function status()
+    {
+        return $this->hasOne(Status::class);
+    }
 }

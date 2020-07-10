@@ -45,14 +45,14 @@
         <div class="m-grid__item m-grid__item--order-tablet-and-mobile-3 m-grid m-grid--hor m-login__aside " style="background-color: #33338B;">
             <div class="m-grid__item">
                 <div class="m-login__logo m--img-centered">
-                    <a href="#">
-                        <img src="/assets/img/ethekwini-logo.jpg" width="250px">
-                    </a>
                 </div>
             </div>
             <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver m-stack__item--center">
                 <div class="m-grid__item m-grid__item--middle" style="width: 100%; font-family: anton;">
-                    <h1 class="text-center text-white font-size-4 text-uppercase">{{ config('app.name')  }}</h1>
+                    <a href="#">
+                        <img src="{{ asset('assets/img/RMS_Logo.svg') }}" width="100%">
+                    </a>
+{{--                    <h1 class="text-center text-white font-size-4 text-uppercase">{{ config('app.name')  }}</h1>--}}
                 </div>
             </div>
             <div class="m-grid__item">

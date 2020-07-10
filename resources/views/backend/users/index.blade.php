@@ -163,10 +163,10 @@
                                     </td>
                                     <td>{{ $user->contactnumber }}</td>
                                     <td>
-                                        {{ ucwords($user->roles()->pluck('name')->implode(', ')) }}
+                                        {{ ucwords($user->roles->pluck('name')->implode(', ')) }}
                                     </td>
                                     <td>
-                                        {{ $user->departments()->first()? $user->departments()->first()->name:'Not Assigned/Applicable' }}
+                                        {{ $user->departments->first()? $user->departments->first()->name:'Not Assigned/Applicable' }}
                                     </td>
                                     <td>
                                             <a href="{{ route('users.edit', $user->uuid) }}" data-toggle="m-tooltip"

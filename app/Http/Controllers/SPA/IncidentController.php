@@ -27,7 +27,7 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        $incidents = EloquentBuilder::to(Incident::class, request()->except(['page', 'per_page', 'start_date', 'end_date', 'has_range']));
+        $incidents = EloquentBuilder::to(Incident::class, request()->only(['sort', 'status', 'category', 'search']));
         if(request('has_range')){
             $incidents = $incidents->whereBetween('created_at', [request()->start_date, request()->end_date]);
         }else{

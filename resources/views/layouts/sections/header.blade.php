@@ -7,7 +7,7 @@
                 <div class="m-stack m-stack--ver m-stack--general">
                     <div class="m-stack__item m-stack__item--middle m-brand__logo">
                         <a href="/" class="m-brand__logo-wrapper">
-                            <img alt="" src="{{ asset('assets/img/Webportal_logo_Inverted.png') }}" style="height:38px"/>
+                            <img alt="" src="{{ asset('assets/img/RMS_Logo.svg') }}" style="height:70px"/>
                         </a>
                     </div>
                     <div class="m-stack__item m-stack__item--middle m-brand__tools">
