@@ -14,10 +14,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Magros\Encryptable\Encryptable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, Notifiable, HasRoles, GeneratesUuid, FormatDates;
+    use HasApiTokens, Notifiable, HasRoles, GeneratesUuid, FormatDates, Encryptable;
 
     use SoftDeletes;
 
@@ -38,6 +39,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'status_id',
         'is_online'
     ];
+
+    /**
+     * @var string[]
+     */
+    protected $encryptable = ['email'];
 
     /**
      * The attributes that should be mutated to dates.
