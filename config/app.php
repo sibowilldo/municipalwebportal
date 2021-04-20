@@ -152,6 +152,7 @@ return [
          * Package Service Providers...
          */
         Dyrynda\Database\LaravelEfficientUuidServiceProvider::class,
+        Magros\Encryptable\EncryptServiceProvider::class,
 
         /*
          * Application Service Providers...
