@@ -1,7 +1,0 @@
-.form-control-lg{
-    font-size: 1rem
-}
-.was-validated .form-control:invalid, .form-control.is-invalid {
-    border-color: #dc35454d;
-    border-width: 3px;
-}

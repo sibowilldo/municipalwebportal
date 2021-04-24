@@ -2,12 +2,8 @@
 
 namespace App\Providers;
 
-use App\Incident;
-use App\Policies\IncidentPolicy;
-use App\Policies\UserPolicy;
-use App\User;
-use Laravel\Passport\Passport;
-use Illuminate\Support\Facades\Gate;
+use App\Models\Team;
+use App\Policies\TeamPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -18,8 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Incident::class => IncidentPolicy::class,
-        User::class => UserPolicy::class,
+        Team::class => TeamPolicy::class,
     ];
 
     /**
@@ -30,7 +25,6 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        Passport::routes();
 
         //
     }

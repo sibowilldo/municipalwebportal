@@ -2,18 +2,10 @@
 
 namespace App\Providers;
 
-use App\Events\DeviceEvent;
-use App\Events\IncidentCreated;
-use App\Events\IncidentUpdatedEvent;
-use App\Events\IncidentHistoryEntryEvent;
-use App\Listeners\DeviceCreatedListener;
-use App\Listeners\IncidentCreatedListener;
-use App\Listeners\IncidentHistoryEntryListener;
-use App\Listeners\FCMSendToDeviceListener;
-use App\Listeners\IncidentUpdatedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,19 +18,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        DeviceEvent::class => [
-            DeviceCreatedListener::class
-        ],
-        IncidentCreated::class => [
-            IncidentCreatedListener::class
-        ],
-        IncidentUpdatedEvent::class => [
-            FCMSendToDeviceListener::class,
-            IncidentUpdatedListener::class,
-        ],
-        IncidentHistoryEntryEvent::class => [
-            IncidentHistoryEntryListener::class,
-        ]
     ];
 
     /**
@@ -48,8 +27,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        parent::boot();
-
         //
     }
 }
