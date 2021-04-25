@@ -27,17 +27,21 @@
 
 <!-- begin::Body -->
 <body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
-
 <!-- begin:: Page -->
-
 <style>
-    .m-grid.m-grid--hor-tablet-and-mobile.m-grid--tablet-and-mobile > .m-grid__item.m-grid__item--order-tablet-and-mobile-1 {
-        -webkit-box-ordinal-group: 2;
-        -ms-flex-order: 1;
-        order: 1; }
-    .m-grid.m-grid--hor-tablet-and-mobile.m-grid--tablet-and-mobile > .m-grid__item.m-grid__item--order-tablet-and-mobile-2 {
-        -webkit-box-ordinal-group: 3;
-        -ms-flex-order: 2;
+@media (max-width:1024px){
+    .m-login.m-login--6{
+        display:flex;
+        flex-direction: column-reverse;
+    }
+}
+.m-grid.m-grid--hor-tablet-and-mobile.m-grid--tablet-and-mobile > .m-grid__item.m-grid__item--order-tablet-and-mobile-1 {
+    -webkit-box-ordinal-group: 2;
+    -ms-flex-order: 1;
+    order: 1; }
+.m-grid.m-grid--hor-tablet-and-mobile.m-grid--tablet-and-mobile > .m-grid__item.m-grid__item--order-tablet-and-mobile-2 {
+    -webkit-box-ordinal-group: 3;
+    -ms-flex-order: 2;
         order: 2; }
 </style>
 <div class="m-grid m-grid--hor m-grid--root m-page" id="app">
