@@ -76,7 +76,7 @@
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach($statuses as $status)
                                                             <option
-                                                                value="{{ $status }}">{{ ucfirst($status) }}</option>
+                                                                value="{{ $status->name }}">{{ ucfirst($status->name) }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -92,7 +92,7 @@
                                                     <select class="form-control m-bootstrap-select" id="m_form_role">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach($roles as $role)
-                                                            <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                                            <option value="{{ $role->name }}">{{  Str::ucfirst($role->name) }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

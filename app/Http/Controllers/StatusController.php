@@ -17,16 +17,12 @@ class StatusController extends Controller
      */
     public function index()
     {
-        $statuses = Cache::remember('all_statuses', now()->addHour(), function () {
-            return Status::all('id', 'name', 'description', 'model_type', 'is_active');
-        });
 
-        $colors = Cache::remember('all_colors', now()->addHour(), function () use ($statuses){
-            return StateColor::select('id', 'name', 'css_color', 'css_class')->whereIn('id', $statuses->pluck('id'))->get();
-        });
 
+        $statuses = Status::with('state_color')->select('id', 'name', 'description', 'model_type', 'is_active', 'state_color_id')->get();
         $model_types = Status::$model_types;
-        return view('backend.statuses.index', compact('statuses', 'model_types', 'colors'));
+
+        return view('backend.statuses.index', compact('statuses', 'model_types'));
     }
 
     /**

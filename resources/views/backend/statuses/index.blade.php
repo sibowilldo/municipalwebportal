@@ -74,8 +74,8 @@
                                     </td>
                                     <td>
                                         <span>
-                                            <span class="m-badge m-badge--dot-small m-badge--{{ $colors->where('id', $status->state_color_id)->first()->css_class }}"></span>
-                                            {{ Str::title($colors->where('id', $status->state_color_id)->first()->name) }}
+                                            <span class="m-badge m-badge--dot-small m-badge--{{ $status->state_color->css_class}}"></span>
+                                            {{ Str::title($status->state_color->name) }}
                                         </span>
                                     </td>
                                     <td>
